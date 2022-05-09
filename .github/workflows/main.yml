@@ -6,10 +6,10 @@ name: CI Epitech Project
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  # push:
-  #   branches: [ master ]
-  # pull_request:
-  #   branches: [ master ]
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -63,7 +63,7 @@ jobs:
         with:
           source-directory: 'project/'
           destination-github-username: 'EpitechPromo2025'
-          destination-repository-name: 'fill-with-your-epitech-repository-https'
+          destination-repository-name: 'B-YEP-400-PAR-4-1-indiestudio-martin.vanaud'
           user-email: ${{ secrets.USER_EMAIL_GITHUB }}
           commit-message: See ORIGIN_COMMIT from $GITHUB_REF
           target-branch: master
