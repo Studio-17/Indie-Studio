@@ -25,4 +25,14 @@ If you are heving an issue please submit it on this github : )
 
 Made by :
 
-John DOE <john.doe@epitech.eu>
+Clement FERNANDES <clement.fernandes@epitech.eu>
+
+Gurvan LE LETTY <gurvan.le-letty@epitech.eu>
+
+Martin VANAUD <martin.vanaud@epitech.eu>
+
+Maxime CARABINA <maxime.carabina@epitech.eu>
+
+Valentin DURIEUX <valentin.durieux@epitech.eu>
+
+Victor PALLE <victor.palle@epitech.eu>
