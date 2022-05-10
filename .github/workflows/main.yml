@@ -36,9 +36,10 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: make
         run: |
-          bash .github/scripts/epi-docker.sh
-          cmake project/
-          cmake --build .
+          bash .github/scripts/hello-world.sh
+          # bash .github/scripts/epi-docker.sh
+          # cmake project/
+          # cmake --build .
 
   # This workflow contains a job called "EpitechPromo2025"
   EpitechPromo2025:
