@@ -12,8 +12,12 @@ bash .github/scripts/setup.sh
 
 > Build & Execute
 ```
-cmake -B build/
-cmake --build build/
+mkdir build
+cd build
+cmake ..
+cmake --build .
+cd ..
+
 ./build/IndieStudio
 ```
 
