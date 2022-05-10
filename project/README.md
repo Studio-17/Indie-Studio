@@ -12,7 +12,6 @@ bash .github/scripts/setup.sh
 
 > Build & Execute
 ```
-mkdir build
 cd build
 cmake ..
 cmake --build .
