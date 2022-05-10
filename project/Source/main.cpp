@@ -5,16 +5,21 @@
 ** main
 */
 
-#include "Errors/Errors.hpp"
+#include "raylib.h"
 
-int main(int ac, char **av)
+int main(void)
 {
-    try {
-        if (ac != 2)
-            throw Errors(std::cerr, "Invalid number of arguments");
-    } catch (const std::exception &e) {
-        std::cerr << "Error(s): " << e.what() << std::endl;
-        return (84);
+    InitWindow(800, 450, "raylib [core] example - basic window");
+
+    while (!WindowShouldClose())
+    {
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        EndDrawing();
     }
-    return (0);
+
+    CloseWindow();
+
+    return 0;
 }
