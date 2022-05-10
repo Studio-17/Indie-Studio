@@ -10,10 +10,11 @@ Epitech Project
 bash .github/scripts/setup.sh
 ```
 
-> Execute
+> Build & Execute
 ```
-make -C project/
-./project
+cmake -B build/
+cmake --build build/
+./build/IndieStudio
 ```
 
 > Usage
