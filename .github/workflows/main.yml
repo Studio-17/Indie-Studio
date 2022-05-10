@@ -37,9 +37,6 @@ jobs:
       - name: make
         run: |
           bash .github/scripts/hello-world.sh
-          # bash .github/scripts/epi-docker.sh
-          # cmake project/
-          # cmake --build .
 
   # This workflow contains a job called "EpitechPromo2025"
   EpitechPromo2025:
