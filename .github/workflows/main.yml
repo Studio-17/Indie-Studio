@@ -35,9 +35,9 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: make
-        run: make -C 'project/'
-      - name: make re
-        run: make re -C 'project/'
+        run: |
+          cmake .
+          cmake --build .
 
   # This workflow contains a job called "EpitechPromo2025"
   EpitechPromo2025:
