@@ -22,6 +22,8 @@ file(GLOB SOURCES
 file(GLOB HEADERS
     Source/*.hpp
     Source/Errors/*.hpp
+    Source/Objects/*.hpp
+    Source/Scenes/*.hpp
 )
 
 add_executable(IndieStudio ${SOURCES} ${HEADERS})
