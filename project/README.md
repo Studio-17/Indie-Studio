@@ -20,6 +20,16 @@ cd ..
 ./build/IndieStudio
 ```
 
+> Generate Doxygen
+```
+cb build
+cmake -DDOXYGEN=ON .. # this is the step
+cmake --build .
+cd ..
+
+./build/IndieStudio
+```
+
 > Usage
 ```
 This repository is intended for epitech students for want to access github actions and other features
