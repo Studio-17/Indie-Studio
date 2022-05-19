@@ -12,6 +12,7 @@
     #include <memory>
     #include "IScene.hpp"
     #include "Objects/IObject.hpp"
+    #include "Audio/IAudio.hpp"
 
 namespace Scene
 {
@@ -20,10 +21,9 @@ namespace Scene
             AScene();
             virtual ~AScene() = default;
 
-            virtual void fadeBlack() = 0;
-
         protected:
             std::vector<std::shared_ptr<Object::IObject>> _objects;
+            std::vector<std::shared_ptr<Audio::IAudio>> _audios;
 
         private:
     };
