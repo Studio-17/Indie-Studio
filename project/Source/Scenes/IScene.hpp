@@ -20,10 +20,21 @@ namespace Scene
         END
     };
 
+    enum SOUNDS {
+        RIGHT_CLICK,
+        LEFT_CLICK,
+        MOUSE_SCROLL,
+        MOUSE_HOVER,
+        CLICK_ERROR
+    };
+
     class IScene {
         public:
             virtual ~IScene() = default;
             virtual Scenes run() = 0;
+            virtual void fadeBlack() = 0;
+            virtual void handelEvent() = 0;
+
 
     };
 }
