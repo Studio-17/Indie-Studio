@@ -31,8 +31,17 @@ namespace RayLib
 
             void setMasterVolume(float volume);                                 // Set master volume (listener)
 
+            // Game Audio management functions
+            void setAudioVolume(float volume);                                  // Set audio volume
+            float getAudioVolume(void);                                         // Get audio volume
+
+            void setSoundVolume(float volume);                                  // Set sound volume
+            float getSoundVolume(void);                                         // Get sound volume
+
         protected:
         private:
+            float _audioVolume;
+            float _soundVolume;
     };
 }
 

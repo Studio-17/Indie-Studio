@@ -34,3 +34,23 @@ void RayLib::Audio::setMasterVolume(float volume)
 {
     SetMasterVolume(volume);
 }
+
+void RayLib::Audio::setAudioVolume(float volume)
+{
+    _audioVolume = volume;
+}
+
+float RayLib::Audio::getAudioVolume(void)
+{
+    return (_audioVolume);
+}
+
+void RayLib::Audio::setSoundVolume(float volume)
+{
+    _soundVolume = volume;
+}
+
+float RayLib::Audio::getSoundVolume(void)
+{
+    return (_soundVolume);
+}
