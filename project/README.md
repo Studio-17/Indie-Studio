@@ -1,7 +1,7 @@
 ## Template
 Epitech Project
 
-![CI Epitech Project - Octopus](https://github.com/MyEpitech/B-EPI-000-PAR-0-0-template-user.email/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/MyEpitech/B-EPI-000-PAR-0-0-template-user.email/actions/workflows/main.yml)
+![CI Epitech Project - Indie Studio](https://github.com/MyEpitech/B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/MyEpitech/B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/actions/workflows/main.yml)
 
 #
 
@@ -14,6 +14,16 @@ bash .github/scripts/setup.sh
 ```
 cd build
 cmake ..
+cmake --build .
+cd ..
+
+./build/IndieStudio
+```
+
+> Generate Doxygen
+```
+cb build
+cmake -DDOXYGEN=ON .. # this is the step
 cmake --build .
 cd ..
 

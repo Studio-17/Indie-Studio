@@ -16,12 +16,26 @@ include(cmake-modules/Findraylib.cmake)
 file(GLOB SOURCES
     Source/*.cpp
     Source/Errors/*.cpp
+    Source/Core/*.cpp
+    Source/Core/Settings/*.cpp
+    Source/Core/Settings/SettingsModules/*.cpp
+    Source/Core/Settings/SettingsModules/Audio/*.cpp
+    Source/Core/Settings/SettingsModules/Camera/*.cpp
+    Source/Core/Settings/SettingsModules/Window/*.cpp
 )
 
 # specify the headers
 file(GLOB HEADERS
     Source/*.hpp
     Source/Errors/*.hpp
+    Source/Objects/*.hpp
+    Source/Scenes/*.hpp
+    Source/Core/*.hpp
+    Source/Core/Settings/*.hpp
+    Source/Core/Settings/SettingsModules/*.hpp
+    Source/Core/Settings/SettingsModules/Audio/*.hpp
+    Source/Core/Settings/SettingsModules/Camera/*.hpp
+    Source/Core/Settings/SettingsModules/Window/*.hpp
 )
 
 add_executable(IndieStudio ${SOURCES} ${HEADERS})
@@ -40,3 +54,12 @@ if (APPLE)
     target_link_libraries(${PROJECT_NAME} "-framework Cocoa")
     target_link_libraries(${PROJECT_NAME} "-framework OpenGL")
 endif()
+
+#include the Doxygen documentation
+option(DOXYGEN "Generate Doxyegn documentation" OFF) #OFF by default
+if(DOXYGEN)
+    include(cmake-modules/Doxygen.cmake)
+else()
+    # Do nothing
+endif(DOXYGEN)
+unset(DOXYGEN CACHE) # Unset the cache variable
