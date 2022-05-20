@@ -15,19 +15,20 @@ include(cmake-modules/Findraylib.cmake)
 # specify the sources
 file(GLOB SOURCES
     Source/*.cpp
-    Source/Errors/*.cpp
+    Source/Errors/Errors.cpp
     Source/Core/*.cpp
     Source/Core/Settings/*.cpp
     Source/Core/Settings/SettingsModules/*.cpp
     Source/Core/Settings/SettingsModules/Audio/*.cpp
     Source/Core/Settings/SettingsModules/Camera/*.cpp
     Source/Core/Settings/SettingsModules/Window/*.cpp
+    Source/Errors/ErrorsModules/*.cpp
 )
 
 # specify the headers
 file(GLOB HEADERS
     Source/*.hpp
-    Source/Errors/*.hpp
+    Source/Errors/Errors.hpp
     Source/Objects/*.hpp
     Source/Scenes/*.hpp
     Source/Core/*.hpp
@@ -36,6 +37,7 @@ file(GLOB HEADERS
     Source/Core/Settings/SettingsModules/Audio/*.hpp
     Source/Core/Settings/SettingsModules/Camera/*.hpp
     Source/Core/Settings/SettingsModules/Window/*.hpp
+    Source/Errors/ErrorsModules/*.hpp
 )
 
 add_executable(IndieStudio ${SOURCES} ${HEADERS})
