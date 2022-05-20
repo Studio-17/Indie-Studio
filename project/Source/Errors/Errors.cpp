@@ -7,16 +7,16 @@
 
 #include "Errors.hpp"
 
-Errors::Errors(std::ostream &os, const std::string &message) throw() : _os(os)
+Error::Errors::Errors(std::ostream &os, std::string const &message) throw() : _os(os)
 {
 	_message = message;
 }
 
-Errors::~Errors() throw()
+Error::Errors::~Errors() throw()
 {
 }
 
-const char *Errors::what() const throw()
+const char *Error::Errors::what() const throw()
 {
 	return _message.c_str();
 }

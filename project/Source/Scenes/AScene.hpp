@@ -12,18 +12,22 @@
     #include <memory>
     #include "IScene.hpp"
     #include "Objects/IObject.hpp"
+    #include "Audio/IAudio.hpp"
 
 namespace Scene
 {
+    /**
+     * @brief Abstract class of the scenes of the game
+     *
+     */
     class AScene : public IScene {
         public:
             AScene();
             virtual ~AScene() = default;
 
-            virtual void fadeBlack() = 0;
-
         protected:
-            std::vector<std::shared_ptr<Object::IObject>> _objects;
+            std::vector<std::shared_ptr<Object::IObject>> _objects; //< A vector of every object of the scene
+            std::vector<std::shared_ptr<Audio::IAudio>> _audios; //< A vector of every audio of the game
 
         private:
     };
