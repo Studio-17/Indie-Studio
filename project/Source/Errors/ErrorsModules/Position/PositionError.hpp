@@ -8,18 +8,16 @@
 #ifndef POSITIONERROR_HPP_
     #define POSITIONERROR_HPP_
 
-    #include "Errors.hpp"
+    #include "../../Errors.hpp"
 
-namespace Error {
-    class PositionError : public Errors {
-        public:
-            PositionError(std::ostream &os, std::string const &message) throw();
-            virtual ~PositionError() throw();
+class PositionError : public Errors {
+    public:
+        PositionError(std::ostream &os, std::string const &message) throw();
+        virtual ~PositionError() throw();
 
-        protected:
-        private:
-    };
-}
+    protected:
+    private:
+};
 
 
 namespace Error {
