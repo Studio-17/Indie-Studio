@@ -7,11 +7,11 @@
 
 #include "PositionError.hpp"
 
-Error::PositionError::PositionError(std::ostream &os, std::string const &message) throw()
+PositionError::PositionError(std::ostream &os, std::string const &message) throw()
 : Errors(os, "Position: " + message)
 {
 }
 
-Error::PositionError::~PositionError()
+PositionError::~PositionError()
 {
 }
