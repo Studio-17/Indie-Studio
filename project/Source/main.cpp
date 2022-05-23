@@ -6,16 +6,24 @@
 */
 
 #include "raylib.h"
+#include "Keyboard.hpp"
+#include <iostream>
 
 int main(void)
 {
-    InitWindow(800, 450, "raylib [core] example - basic window");
+    Keyboard key;
+    std::map<int, std::pair<int, bool>> map = {
+        {0, {81, false}},
+        {1, {'b', false}},
+    };
 
+    InitWindow(800, 450, "raylib [core] example - basic window");
     while (!WindowShouldClose())
     {
+        map = key.getKeysPressed(map);
         BeginDrawing();
-            ClearBackground(RAYWHITE);
-            DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+        ClearBackground(RAYWHITE);
+        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
         EndDrawing();
     }
 
