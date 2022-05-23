@@ -38,7 +38,7 @@ void Object::Button::draw()
 
 void Object::Button::setPosition(Position const &position)
 {
-    _position = position
+    _position = position;
 }
 
 void Object::Button::setPosition(float x, float y)

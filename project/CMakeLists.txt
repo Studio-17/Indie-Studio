@@ -16,6 +16,10 @@ include(cmake-modules/Findraylib.cmake)
 file(GLOB SOURCES
     Source/*.cpp
     Source/Errors/Errors.cpp
+    Source/Objects/*.cpp
+    Source/Objects/UIOject/*.cpp
+    Source/Objects/UIOject/Button/*.cpp
+    Source/Objects/UIOject/Text/*.cpp
     Source/Core/*.cpp
     Source/Core/Settings/*.cpp
     Source/Core/Settings/SettingsModules/*.cpp
@@ -30,6 +34,9 @@ file(GLOB HEADERS
     Source/*.hpp
     Source/Errors/Errors.hpp
     Source/Objects/*.hpp
+    Source/Objects/UIOject/*.hpp
+    Source/Objects/UIOject/Button/*.hpp
+    Source/Objects/UIOject/Text/*.hpp
     Source/Scenes/*.hpp
     Source/Core/*.hpp
     Source/Core/Settings/*.hpp
