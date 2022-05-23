@@ -1,19 +1,19 @@
 /*
 ** EPITECH PROJECT, 2022
-** project
+** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** IObject
+** IUIObject
 */
 
-#ifndef IOBJECT_HPP_
-    #define IOBJECT_HPP_
+#ifndef IUIOBJECT_HPP_
+    #define IUIOBJECT_HPP_
 
-    #include "Position.hpp"
+    #include "IObject.hpp"
+
 namespace Object {
-    class IObject
-    {
+    class IUIObject {
         public:
-            virtual ~IObject() = default;
+            virtual ~IUIObject() = default;
 
             virtual void draw() = 0;
 
@@ -23,4 +23,4 @@ namespace Object {
     };
 }
 
-#endif /* !IOBJECT_HPP_ */
+#endif /* !IUIOBJECT_HPP_ */
