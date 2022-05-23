@@ -1,19 +1,19 @@
 /*
 ** EPITECH PROJECT, 2022
-** project
+** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** IObject
+** IGameObject
 */
 
-#ifndef IOBJECT_HPP_
-    #define IOBJECT_HPP_
+#ifndef IGAMEOBJECT_HPP_
+    #define IGAMEOBJECT_HPP_
 
-    #include "Position.hpp"
+    #include "IObject.hpp"
+
 namespace Object {
-    class IObject
-    {
+    class IGameObject : public IObject {
         public:
-            virtual ~IObject() = default;
+            virtual ~IGameObject() = default;
 
             virtual void draw() = 0;
 
@@ -23,4 +23,4 @@ namespace Object {
     };
 }
 
-#endif /* !IOBJECT_HPP_ */
+#endif /* !IGAMEOBJECT_HPP_ */
