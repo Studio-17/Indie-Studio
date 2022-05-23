@@ -25,21 +25,40 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 20.0f, 00.0f };   // Camera position
-    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
-    camera.fovy = 100.0f;                               // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;             // Camera mode type
+    camera.position = (Vector3){ 0.0f, 20.0f, 00.0f };
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
+    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+    camera.fovy = 100.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
 
-    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
+    Vector3 cubePosition = { -30.0f, 0.0f, 30.0f };
 
     std::vector<Vector3> wallPositions = {
+        (Vector3){ -30.0f, 0.0f, 0.0f },
         (Vector3){ -20.0f, 0.0f, 0.0f },
         (Vector3){ -10.0f, 0.0f, 0.0f },
         (Vector3){ 0.0f, 0.0f, 0.0f },
         (Vector3){ 10.0f, 0.0f, 0.0f },
         (Vector3){ 20.0f, 0.0f, 0.0f },
+        (Vector3){ 30.0f, 0.0f, 0.0f },
+
+        (Vector3){ -30.0f, 0.0f, -10.0f },
+        (Vector3){ -20.0f, 0.0f, -10.0f },
+        (Vector3){ -10.0f, 0.0f, -10.0f },
+        (Vector3){ 0.0f, 0.0f, -10.0f },
+        (Vector3){ 10.0f, 0.0f, -10.0f },
+        (Vector3){ 20.0f, 0.0f, -10.0f },
+        (Vector3){ 30.0f, 0.0f, -10.0f },
+
+        (Vector3){ -30.0f, 0.0f, 10.0f },
+        (Vector3){ -20.0f, 0.0f, 10.0f },
+        (Vector3){ -10.0f, 0.0f, 10.0f },
+        (Vector3){ 0.0f, 0.0f, 10.0f },
+        (Vector3){ 20.0f, 0.0f, 10.0f },
+        (Vector3){ 30.0f, 0.0f, 10.0f },
     };
+
+    bool collision = false;
 
     SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
@@ -60,18 +79,25 @@ int main(void)
         if (IsKeyDown(KEY_UP)) cubePosition.z -= 0.25f;
 
         // Out-of-limits security check
-        if (cubePosition.x < -20) cubePosition.x = -20;
-        else if (cubePosition.x >= 20) cubePosition.x = 20;
+        if (cubePosition.x < -30) cubePosition.x = -30;
+        else if (cubePosition.x >= 30) cubePosition.x = 30;
 
         if (cubePosition.z < -20) cubePosition.z = -20;
         else if (cubePosition.z >= 20) cubePosition.z = 20 ;
 
         // Collision detection between boxes
         for (auto &wallPosition : wallPositions) {
-            if ((cubePosition.x > wallPosition.x - 2 && cubePosition.x < wallPosition.x + 2) && (cubePosition.z > wallPosition.z - 2 && cubePosition.z < wallPosition.z + 2))
+            if (CheckCollisionRecs((Rectangle){ cubePosition.x, cubePosition.z, 2, 2 },
+                                   (Rectangle){ wallPosition.x, wallPosition.z, 2, 2 }))
             {
-                cubePosition.x = 10.0f;
-                cubePosition.z = 10.0f;
+                if (cubePosition.z <= wallPosition.z - 1 && (cubePosition.x < wallPosition.x + 2 && cubePosition.x > wallPosition.x - 2))
+                    cubePosition.z -= cubePosition.z - (wallPosition.z - 2); // VERS LE BAS
+                else if (cubePosition.z >= wallPosition.z + 1 && (cubePosition.x < wallPosition.x + 2 && cubePosition.x > wallPosition.x - 2))
+                    cubePosition.z -= cubePosition.z - (wallPosition.z + 2); // VERS LE HAUT
+                else if (cubePosition.x <= wallPosition.x)
+                    cubePosition.x -= cubePosition.x - (wallPosition.x - 2); // VERS LA GAUCHE
+                else if (cubePosition.x >= wallPosition.x)
+                    cubePosition.x -= cubePosition.x - (wallPosition.x + 2); // VERS LA DROITE
             }
         }
 
@@ -85,11 +111,8 @@ int main(void)
                 DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
                 DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
 
-                DrawCube(wallPositions.at(0), 2.0f, 2.0f, 2.0f, BLACK);
-                DrawCube(wallPositions.at(1), 2.0f, 2.0f, 2.0f, BLACK);
-                DrawCube(wallPositions.at(2), 2.0f, 2.0f, 2.0f, BLACK);
-                DrawCube(wallPositions.at(3), 2.0f, 2.0f, 2.0f, BLACK);
-                DrawCube(wallPositions.at(4), 2.0f, 2.0f, 2.0f, BLACK);
+                for (auto &walls : wallPositions)
+                    DrawCube(walls, 2.0f, 2.0f, 2.0f, BLACK);
 
                 DrawGrid(80, 1.0f);
 
