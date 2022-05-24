@@ -29,12 +29,14 @@ file(GLOB SOURCES
     Source/Errors/ErrorsModules/*.cpp
     Source/Inputs/Keyboard/*.cpp
     Source/Inputs/Gamepad/*.cpp
+    Source/Map/*.cpp
 )
 
 # specify the headers
 include_directories(
     Source/
-    Source/Errors/Error
+    Source/Errors/
+    Source/Errors/ErrorsModules/
     Source/Objects/
     Source/Objects/UIOject/
     Source/Objects/UIOject/Button/
@@ -49,6 +51,7 @@ include_directories(
     Source/Errors/ErrorsModules/
     Source/Inputs/Keyboard/
     Source/Inputs/Gamepad/
+    Source/Map/
 )
 
 add_executable(IndieStudio ${SOURCES} ${HEADERS})
