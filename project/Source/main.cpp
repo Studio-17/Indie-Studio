@@ -9,6 +9,8 @@
 #include <vector>
 
 #include "raylib.h"
+#include "Keyboard.hpp"
+#include <iostream>
 
 int main(void)
 {
@@ -46,9 +48,6 @@ int main(void)
     Vector3 playerPosition = { -5.0f, 0.5f, -5.0f };
     float playerRadius = 0.2f;
 
-    // Vector3 enemyPosition = { 5.0f, 0.5f, 5.0f };
-
-
     UnloadImage(image);
 
     SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
@@ -70,11 +69,6 @@ int main(void)
         if (IsKeyDown(KEY_RIGHT)) playerPosition.x -= 0.08f;
         if (IsKeyDown(KEY_UP)) playerPosition.z += 0.08f;
         if (IsKeyDown(KEY_DOWN)) playerPosition.z -= 0.08f;
-
-        // if (IsKeyDown(KEY_A)) enemyPosition.x += 0.08f;
-        // if (IsKeyDown(KEY_D)) enemyPosition.x -= 0.08f;
-        // if (IsKeyDown(KEY_S)) enemyPosition.z += 0.08f;
-        // if (IsKeyDown(KEY_Z)) enemyPosition.z -= 0.08f;
 
         Vector2 playerPos = { playerPosition.x, playerPosition.z };
 
@@ -108,9 +102,6 @@ int main(void)
 
                 DrawCube(playerPosition, 0.5f, 0.5f, 0.5f, DARKBLUE);
                 DrawCubeWires(playerPosition, 0.5f, 0.5f, 0.5f, DARKBROWN);
-
-                // DrawCube(enemyPosition, 0.5f, 0.5f, 0.5f, RED);
-                // DrawCubeWires(enemyPosition, 0.5f, 0.5f, 0.5f, MAROON);
 
             EndMode3D();
 
