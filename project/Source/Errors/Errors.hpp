@@ -16,13 +16,12 @@ namespace Error {
     class Errors : public std::exception
     {
         public:
-            Errors(std::ostream &os, std::string const &message) throw();
+            Errors(std::string const &message) throw();
             virtual ~Errors() throw();
             const char *what() const throw();
 
         private:
             std::string _message;
-            std::ostream &_os;
     };
 }
 

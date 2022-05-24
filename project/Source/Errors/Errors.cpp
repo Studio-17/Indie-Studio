@@ -7,9 +7,8 @@
 
 #include "Errors.hpp"
 
-Error::Errors::Errors(std::ostream &os, std::string const &message) throw() : _os(os)
+Error::Errors::Errors(std::string const &message) throw() : _message(message)
 {
-	_message = message;
 }
 
 Error::Errors::~Errors() throw()

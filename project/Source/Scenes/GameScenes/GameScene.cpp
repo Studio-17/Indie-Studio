@@ -7,7 +7,7 @@
 
 #include "GameScene.hpp"
 
-Scene::GameScene::GameScene()
+Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
 }
 

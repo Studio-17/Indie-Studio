@@ -6,9 +6,9 @@
 */
 
 #ifndef GAMESCENE_HPP_
-#define GAMESCENE_HPP_
+    #define GAMESCENE_HPP_
 
-    #include "Scenes/AScene.hpp"
+    #include "AScene.hpp"
 
 /**
  * @brief Represents the main game scene
@@ -17,7 +17,7 @@
 namespace Scene {
     class GameScene : public AScene {
         public:
-            GameScene();
+            GameScene(std::shared_ptr<Settings> settings);
             ~GameScene();
 
         protected:

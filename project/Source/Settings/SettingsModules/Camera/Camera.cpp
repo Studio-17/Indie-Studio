@@ -7,8 +7,12 @@
 
 #include "Camera.hpp"
 
-RayLib::CinematicCamera::CinematicCamera()
+RayLib::CinematicCamera::CinematicCamera(Position position, Position target, CameraMode cameraMode, CameraProjection projection)
 {
+    setPosition(position);
+    setTarget(position);
+    setMode(cameraMode);
+    setProjection(projection);
 }
 
 RayLib::CinematicCamera::~CinematicCamera()
@@ -32,6 +36,20 @@ void RayLib::CinematicCamera::setTarget(float x, float y, float z)
     _camera.target.x = x;
     _camera.target.y = y;
     _camera.target.z = z;
+}
+
+void RayLib::CinematicCamera::setPosition(Position position)
+{
+    _camera.position.x = position.getX();
+    _camera.position.y = position.getY();
+    _camera.position.z = position.getZ();
+}
+
+void RayLib::CinematicCamera::setTarget(Position target)
+{
+    _camera.target.x = target.getX();
+    _camera.target.y = target.getY();
+    _camera.target.z = target.getZ();
 }
 
 void RayLib::CinematicCamera::movePosition(float x, float y, float z)

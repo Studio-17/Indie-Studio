@@ -6,9 +6,9 @@
 */
 
 #ifndef SETTINGSSCENE_HPP_
-#define SETTINGSSCENE_HPP_
+    #define SETTINGSSCENE_HPP_
 
-#include "Scenes/NonGameScenes/PopScenes/IPopScene.hpp"
+#include "IPopScene.hpp"
 
 /**
  * @brief The settings scene of the game

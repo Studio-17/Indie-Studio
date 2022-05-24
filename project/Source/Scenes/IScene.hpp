@@ -6,16 +6,15 @@
 */
 
 #ifndef ISCENE_HPP_
-#define ISCENE_HPP_
+    #define ISCENE_HPP_
 
 namespace Scene
 {
     /**
      * @brief An enumeration of every scene of the game
-     *
      */
-    enum Scenes {
-        QUIT = -1,
+    enum class Scenes {
+        QUIT,
         MAIN_MENU,
         GAME,
         SETTINGS,
@@ -56,7 +55,9 @@ namespace Scene
              * @brief To handle every event in the scene
              * 
              */
-            virtual void handelEvent() = 0;
+            virtual Scenes handelEvent() = 0;
+
+            virtual void draw() = 0;
 
 
     };

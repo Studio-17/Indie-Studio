@@ -7,10 +7,11 @@
 
 #include "WindowError.hpp"
 
-WindowError::WindowError(std::ostream &os, std::string const &message) : Errors(os, "Raylib Window: " + message)
+Error::WindowError::WindowError(std::string const &message) throw()
+: Errors("Raylib Window: " + message)
 {
 }
 
-WindowError::~WindowError()
+Error::WindowError::~WindowError()
 {
 }
