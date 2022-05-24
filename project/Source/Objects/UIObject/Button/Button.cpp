@@ -12,7 +12,6 @@ Object::Button::Button(std::string const &buttonPath, int nbFrame, Position cons
 {
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
     _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
-    // Sound fxButton = LoadSound("resources/buttonfx.wav");   // Load button sound
 }
 
 Object::Button::Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position) :
@@ -73,7 +72,10 @@ void Object::Button::checkHover(Vector2 const &mousePosition)
         else
                 _state = Hover;
 
-        // if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+        // if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            // if (_isAudio)
+                // _audio.play();
+        // }
     }
     else
         _state = Default;

@@ -12,18 +12,23 @@
     #include <memory>
 
     #include "IScene.hpp"
+    #include "Settings.hpp"
 
 class Core {
     public:
         Core();
         ~Core();
 
+        void loadMenuScenes();
         void loop();
+
+        void getEvent();
 
     protected:
     private:
+        std::shared_ptr<Settings> _settings;
         bool _isRunning;
-        std::unordered_map<Scene::Scenes, std::shared_ptr<Scene::IScene>> _scenes;
+        std::unordered_map<Scene::Scenes, std::shared_ptr<Scene::IScene>> _menuScenes;
         Scene::Scenes _activeScene;
 };
 

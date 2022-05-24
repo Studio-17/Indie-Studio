@@ -13,7 +13,7 @@
     #include <string>
     #include <functional>
 
-    #include "IAudio.hpp"
+    #include "MySound.hpp"
     #include "IUIObject.hpp"
 
 namespace Object {
@@ -51,7 +51,7 @@ namespace Object {
 
             float _frameHeight;
 
-            // Audio::IAudio _audio;
+            // MySound _audio;
             bool _isAudio;
 
             //Audio

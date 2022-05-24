@@ -13,7 +13,7 @@
 namespace Error {
     class FileError : public Errors {
         public:
-            FileError(std::ostream &os, std::string const &message) throw();
+            FileError(std::string const &message) throw();
             virtual ~FileError() throw();
     };
 }

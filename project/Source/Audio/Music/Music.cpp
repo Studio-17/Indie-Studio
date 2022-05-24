@@ -5,14 +5,13 @@
 ** Music
 */
 
-#include "Errors/ErrorsModules/ErrorsSettings.hpp"
-
+#include "AudioError.hpp"
 #include "Music.hpp"
 
 MyMusic::MyMusic(std::string const &filename) : _music(LoadMusicStream(filename.c_str()))
 {
     if (!_music.ctxData)
-        throw Error::ErrorsSettings(std::cerr, "MyMusic initialization failed");
+        throw Error::AudioError("MyMusic initialization failed");
 }
 
 MyMusic::~MyMusic()
