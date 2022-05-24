@@ -27,24 +27,28 @@ file(GLOB SOURCES
     Source/Core/Settings/SettingsModules/Camera/*.cpp
     Source/Core/Settings/SettingsModules/Window/*.cpp
     Source/Errors/ErrorsModules/*.cpp
+    Source/Inputs/Keyboard/*.cpp
+    Source/Inputs/Gamepad/*.cpp
 )
 
 # specify the headers
-file(GLOB HEADERS
-    Source/*.hpp
-    Source/Errors/Errors.hpp
-    Source/Objects/*.hpp
-    Source/Objects/UIOject/*.hpp
-    Source/Objects/UIOject/Button/*.hpp
-    Source/Objects/UIOject/Text/*.hpp
-    Source/Scenes/*.hpp
-    Source/Core/*.hpp
-    Source/Core/Settings/*.hpp
-    Source/Core/Settings/SettingsModules/*.hpp
-    Source/Core/Settings/SettingsModules/Audio/*.hpp
-    Source/Core/Settings/SettingsModules/Camera/*.hpp
-    Source/Core/Settings/SettingsModules/Window/*.hpp
-    Source/Errors/ErrorsModules/*.hpp
+include_directories(
+    Source/
+    Source/Errors/Error
+    Source/Objects/
+    Source/Objects/UIOject/
+    Source/Objects/UIOject/Button/
+    Source/Objects/UIOject/Text/
+    Source/Scenes/
+    Source/Core/
+    Source/Core/Settings/
+    Source/Core/Settings/SettingsModules/
+    Source/Core/Settings/SettingsModules/Audio/
+    Source/Core/Settings/SettingsModules/Camera/
+    Source/Core/Settings/SettingsModules/Window/
+    Source/Errors/ErrorsModules/
+    Source/Inputs/Keyboard/
+    Source/Inputs/Gamepad/
 )
 
 add_executable(IndieStudio ${SOURCES} ${HEADERS})
