@@ -29,6 +29,10 @@ namespace RayLib
 
             bool isWindowReady() const;                                           // Check if window has been initialized successfully
 
+            void startDrawing(void) const;
+            void endDrawing(void) const;
+            void clearBackground(Color color) const;
+
             bool isWindowFullscreen() const;                                      // Check if window is currently fullscreen
             bool isWindowHidden() const;                                          // Check if window is currently hidden (only PLATFORM_DESKTOP)
             bool isWindowMinimized() const;                                       // Check if window is currently minimized (only PLATFORM_DESKTOP)

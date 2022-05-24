@@ -33,14 +33,15 @@ void Core::loop()
 {
     while (!_settings->getWindow()->windowShouldClose()) {
         // _menuScenes.at(_activeScene)->run();
-        BeginDrawing();
+        _settings->getWindow()->startDrawing();
+            _activeScene = _menuScenes.at(_activeScene)->handelEvent();
 
-            ClearBackground(RAYWHITE);
+            _settings->getWindow()->clearBackground(BLACK);
             _menuScenes.at(_activeScene)->draw();
 
             // DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
-        EndDrawing();
+        _settings->getWindow()->endDrawing();
     }
 }
 

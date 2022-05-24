@@ -15,39 +15,64 @@ include(cmake-modules/Findraylib.cmake)
 # specify the sources
 file(GLOB SOURCES
     Source/*.cpp
-    Source/Errors/Errors.cpp
-    Source/Objects/*.cpp
-    Source/Objects/UIOject/*.cpp
-    Source/Objects/UIOject/Button/*.cpp
-    Source/Objects/UIOject/Text/*.cpp
+    Source/Audio/*.cpp
+    Source/Audio/Music/*.cpp
+    Source/Audio/Sound/*.cpp
     Source/Core/*.cpp
-    Source/Core/Settings/*.cpp
-    Source/Core/Settings/SettingsModules/*.cpp
-    Source/Core/Settings/SettingsModules/Audio/*.cpp
-    Source/Core/Settings/SettingsModules/Camera/*.cpp
-    Source/Core/Settings/SettingsModules/Window/*.cpp
+    Source/Datas/*.cpp
+    Source/Errors/*.cpp
     Source/Errors/ErrorsModules/*.cpp
+    Source/Errors/ErrorsModules/Audio/*.cpp
+    Source/Errors/ErrorsModules/File/*.cpp
+    Source/Errors/ErrorsModules/Position/*.cpp
+    Source/Errors/ErrorsModules/Window/*.cpp
+    Source/Objects/*.cpp
+    Source/Objects/UIObject/*.cpp
+    Source/Objects/UIObject/Button/*.cpp
+    Source/Objects/UIObject/Text/*.cpp
+    Source/Scenes/*.cpp
+    Source/Scenes/GameScenes/*.cpp
+    Source/Scenes/NonGameScenes/*.cpp
+    Source/Scenes/NonGameScenes/MainMenu/*.cpp
+    Source/Scenes/NonGameScenes/PopScenes/*.cpp
+    Source/Settings/*.cpp
+    Source/Settings/SettingsModules/Audio/*.cpp
+    Source/Settings/SettingsModules/Camera/*.cpp
+    Source/Settings/SettingsModules/Window/*.cpp
+    Source/Tools/*.cpp
 )
 
 # specify the headers
-file(GLOB HEADERS
-    Source/*.hpp
-    Source/Errors/Errors.hpp
-    Source/Objects/*.hpp
-    Source/Objects/UIOject/*.hpp
-    Source/Objects/UIOject/Button/*.hpp
-    Source/Objects/UIOject/Text/*.hpp
-    Source/Scenes/*.hpp
-    Source/Core/*.hpp
-    Source/Core/Settings/*.hpp
-    Source/Core/Settings/SettingsModules/*.hpp
-    Source/Core/Settings/SettingsModules/Audio/*.hpp
-    Source/Core/Settings/SettingsModules/Camera/*.hpp
-    Source/Core/Settings/SettingsModules/Window/*.hpp
-    Source/Errors/ErrorsModules/*.hpp
+include_directories(
+    Source/
+    Source/Audio/
+    Source/Audio/Music/
+    Source/Audio/Sound/
+    Source/Core/
+    Source/Datas/
+    Source/Errors/
+    Source/Errors/ErrorsModules/
+    Source/Errors/ErrorsModules/Audio/
+    Source/Errors/ErrorsModules/File/
+    Source/Errors/ErrorsModules/Position/
+    Source/Errors/ErrorsModules/Window/
+    Source/Objects/
+    Source/Objects/UIObject/
+    Source/Objects/UIObject/Button/
+    Source/Objects/UIObject/Text/
+    Source/Scenes/
+    Source/Scenes/GameScenes/
+    Source/Scenes/NonGameScenes/
+    Source/Scenes/NonGameScenes/MainMenu/
+    Source/Scenes/NonGameScenes/PopScenes/
+    Source/Settings/
+    Source/Settings/SettingsModules/Audio/
+    Source/Settings/SettingsModules/Camera/
+    Source/Settings/SettingsModules/Window/
+    Source/Tools/
 )
 
-add_executable(IndieStudio ${SOURCES} ${HEADERS})
+add_executable(IndieStudio ${SOURCES})
 
 target_link_libraries(IndieStudio raylib)
 

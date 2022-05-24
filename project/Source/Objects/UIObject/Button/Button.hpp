@@ -21,6 +21,7 @@ namespace Object {
         public:
             Button(std::string const &buttonPath, int nbFrame, Position const &position = {0, 0});
             Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position = {0, 0});
+            // Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> &callBack, std::string const &audioPath, Position const &position = {0, 0});
             ~Button() override;
 
             void draw() override;
@@ -51,8 +52,11 @@ namespace Object {
 
             float _frameHeight;
 
-            // MySound _audio;
+            MySound _audio;
             bool _isAudio;
+
+            // std::function<void(void)> _callBack;
+
 
             //Audio
             //Mouse Input

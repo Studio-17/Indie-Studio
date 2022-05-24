@@ -8,10 +8,21 @@
 #ifndef MAINMENUSCENE_HPP_
     #define MAINMENUSCENE_HPP_
 
-    #include "IMenuScene.hpp"
+
+    #include <vector>
+    #include <map>
+
+    #include "AScene.hpp"
     #include "Button.hpp"
 
 namespace Scene {
+
+    enum BUTTONSNAME {
+        NEWGAME,
+        LOADGAME,
+        EXIT,
+        SETTINGS
+    };
     class MainMenuScene : public AScene {
         public:
             MainMenuScene(std::shared_ptr<Settings> settings);
@@ -19,13 +30,22 @@ namespace Scene {
 
             Scenes run() override;
             void fadeBlack() override;
-            void handelEvent() override;
+            Scenes handelEvent() override;
+            void testFunction();
             void draw();
 
         protected:
         private:
             bool _isRunning;
+            Scene::Scenes _scenes;
             Object::Button _button;
+            Object::Button _button2;
+            Object::Button _button3;
+
+            // std::vector<std::map<BUTTONSNAME, Object::Button>> _buttons;
+
+
+
     };
 }
 

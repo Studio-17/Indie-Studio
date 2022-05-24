@@ -55,7 +55,7 @@ namespace Scene
              * @brief To handle every event in the scene
              * 
              */
-            virtual void handelEvent() = 0;
+            virtual Scenes handelEvent() = 0;
 
             virtual void draw() = 0;
 

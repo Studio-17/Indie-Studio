@@ -5,13 +5,20 @@
 ** MainMenuScene
 */
 
-#include "Button.hpp"
 #include "MainMenuScene.hpp"
+#include <functional>
+
+#include <iostream>
+void Scene::MainMenuScene::testFunction()
+{
+    std::cout << "in test function" << std::endl;
+}
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
- _isRunning(true), _button("../Save/button.png", 3, Position(400, 300, 0))
+ _isRunning(true), _scenes(Scene::Scenes::MAIN_MENU),_button("../Save/button.png", 3, "../Save/assets_sound_Click.ogg", Position(700, 300, 0)),
+ _button2("../Save/button.png", 3, "../Save/assets_sound_Click.ogg", Position(700, 500, 0)),
+ _button3("../Save/button.png", 3, "../Save/assets_sound_Click.ogg", Position(700, 800, 0))
 {
-    // _button = 
 }
 
 Scene::MainMenuScene::~MainMenuScene()
@@ -31,19 +38,30 @@ void Scene::MainMenuScene::fadeBlack()
 
 }
 
-void Scene::MainMenuScene::handelEvent()
+Scene::Scenes Scene::MainMenuScene::handelEvent()
 {
+    _button.checkHover(GetMousePosition());
+    _button2.checkHover(GetMousePosition());
+    _button3.checkHover(GetMousePosition());
 
+    // for (auto it : _buttons) {
+        // it.second.checkHover(GetMousePosition());
+    // }
+
+    return Scene::Scenes::MAIN_MENU;
 }
 
 #include <raylib.h>
 #include <iostream>
 void Scene::MainMenuScene::draw()
 {
-    DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
     // for (auto &iterator : _objects) {
         // std::cout << "in the row" << std::endl;
     // }
-    _button.checkHover(GetMousePosition());
-        _button.draw();
+    _button.draw();
+    _button2.draw();
+    _button3.draw();
+    // for (auto it : _buttons) {
+        // it.second.draw();
+    // }
 }

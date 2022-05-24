@@ -23,14 +23,13 @@ class Settings {
         ~Settings();
 
         std::shared_ptr<RayLib::Window> getWindow();
-        // std::shared_ptr<RayLib::Audio> getAudio();
+        std::shared_ptr<RayLib::Audio> getAudio();
         std::shared_ptr<RayLib::CinematicCamera> getCamera();
 
     protected:
     private:
         std::shared_ptr<RayLib::Window> _window;
-        // RayLib::Audio _audio;
-        // std::shared_ptr<RayLib::Audio> _audio;
+        std::shared_ptr<RayLib::Audio> _audio;
         std::shared_ptr<RayLib::CinematicCamera> _camera;
         enum class Action {
             MoveLeft,

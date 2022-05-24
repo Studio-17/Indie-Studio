@@ -30,6 +30,21 @@ bool RayLib::Window::isWindowReady() const
     return (IsWindowReady());
 }
 
+void RayLib::Window::startDrawing() const
+{
+    BeginDrawing();
+}
+
+void RayLib::Window::endDrawing() const
+{
+    EndDrawing();
+}
+
+void RayLib::Window::clearBackground(Color color) const 
+{
+    ClearBackground(color);
+}
+
 bool RayLib::Window::isWindowFullscreen() const
 {
     return (IsWindowFullscreen());
