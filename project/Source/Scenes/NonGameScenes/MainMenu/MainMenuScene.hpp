@@ -9,11 +9,12 @@
     #define MAINMENUSCENE_HPP_
 
     #include "IMenuScene.hpp"
+    #include "Button.hpp"
 
 namespace Scene {
-    class MainMenuScene : public IMenuScene {
+    class MainMenuScene : public AScene {
         public:
-            MainMenuScene();
+            MainMenuScene(std::shared_ptr<Settings> settings);
             ~MainMenuScene();
 
             Scenes run() override;
@@ -24,6 +25,7 @@ namespace Scene {
         protected:
         private:
             bool _isRunning;
+            Object::Button _button;
     };
 }
 

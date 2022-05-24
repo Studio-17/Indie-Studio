@@ -6,19 +6,17 @@
 */
 
 #ifndef IMENUSCENE_HPP_
-#define IMENUSCENE_HPP_
+    #define IMENUSCENE_HPP_
 
-#include "Scenes/AScene.hpp"
+    #include "AScene.hpp"
 
 /**
  * @brief Interface to all the menu scenes
- * 
  */
 namespace Scene {
     class IMenuScene : public AScene {
         public:
-            IMenuScene();
-            ~IMenuScene();
+            virtual ~IMenuScene() = default;
 
         protected:
         private:
