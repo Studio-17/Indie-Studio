@@ -8,14 +8,14 @@
 #ifndef KEYBOARD_HPP_
     #define KEYBOARD_HPP_
 
-#include "raylib.h"
-#include <utility>
-#include <map>
+    #include "raylib.h"
+    #include <utility>
+    #include <map>
 
 class Keyboard {
     public:
-        Keyboard();
-        ~Keyboard();
+        Keyboard() {};
+        ~Keyboard() {};
 
         bool hasBeenPressed(int key);
         bool isBeingPressed(int key);
@@ -28,7 +28,6 @@ class Keyboard {
 
     protected:
     private:
-        int _key;
 };
 
 #endif /* !KEYBOARD_HPP_ */
