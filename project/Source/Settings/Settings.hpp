@@ -6,26 +6,40 @@
 */
 
 #ifndef SETTINGS_HPP_
-#define SETTINGS_HPP_
+    #define SETTINGS_HPP_
 
-#include <memory>
+    #include <memory>
+    #include <map>
+    #include <utility>
 
-#include "SettingsModules/Audio/Audio.hpp"
-
-#include "SettingsModules/Camera/Camera.hpp"
-
-#include "SettingsModules/Window/Window.hpp"
+    #include "Audio.hpp"
+    #include "Camera.hpp"
+    #include "Window.hpp"
+    #include "SettingsParams.hpp"
 
 class Settings {
     public:
-        Settings();
+        Settings(SettingsParams const &params);
         ~Settings();
+
+        std::shared_ptr<RayLib::Window> getWindow();
+        // std::shared_ptr<RayLib::Audio> getAudio();
+        std::shared_ptr<RayLib::CinematicCamera> getCamera();
 
     protected:
     private:
-        std::unique_ptr<RayLib::Audio> _audio;
-        std::unique_ptr<RayLib::CinematicCamera> _camera;
-        std::unique_ptr<RayLib::Window> _window;
+        std::shared_ptr<RayLib::Window> _window;
+        // RayLib::Audio _audio;
+        // std::shared_ptr<RayLib::Audio> _audio;
+        std::shared_ptr<RayLib::CinematicCamera> _camera;
+        enum class Action {
+            MoveLeft,
+            MoveRight,
+            MoveUp,
+            MoveDown,
+            Drop
+        };
+        std::map<Action, std::pair<int, bool>> _actionMap;
 };
 
 #endif /* !SETTINGS_HPP_ */

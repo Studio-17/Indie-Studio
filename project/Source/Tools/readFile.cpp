@@ -16,7 +16,7 @@ std::string readFile(std::string const &filename, std::string const &sep)
     bool first = true;
 
     if (!f.is_open())
-        throw Error::FileError(std::cerr, "File " + filename + " failed to open");
+        throw Error::FileError("File " + filename + " failed to open");
     while (std::getline(f, tmp)) {
         if (tmp[0] == '#')
             continue;
