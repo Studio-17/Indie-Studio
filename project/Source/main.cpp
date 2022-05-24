@@ -21,7 +21,7 @@ int main(void)
     const int screenWidth = 1280;
     const int screenHeight = 720;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - 3d camera free");
+    InitWindow(screenWidth, screenHeight, "Indie Studio");
 
     // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
@@ -34,7 +34,7 @@ int main(void)
     SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
     Map map;
-    std::vector<std::string> gameMap = map.load("map.txt");
+    std::vector<std::string> gameMap = map.load("Assets/Maps/map.txt");
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------

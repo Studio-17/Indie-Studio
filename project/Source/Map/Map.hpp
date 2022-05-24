@@ -33,8 +33,8 @@ class Map {
         std::vector<std::string> _map;
         std::map<int, std::string> _mapObjects;
 
-        Texture2D _texture;
-        Model _model;
+        std::map<std::size_t, Model> _model;
+        std::map<std::size_t, Texture2D> _texture;
 
         float _size;
 };
