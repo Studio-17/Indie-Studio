@@ -1,17 +1,16 @@
 /*
 ** EPITECH PROJECT, 2022
-** B-EPI-000-PAR-0-0-projectname-user.email
+** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
 ** main
 */
 
-#include "raylib.h"
 #include "Core.hpp"
 
 int main(void)
 {
     Core core;
-
+  
     core.loop();
     return 0;
 }

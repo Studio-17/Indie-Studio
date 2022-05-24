@@ -40,6 +40,8 @@ file(GLOB SOURCES
     Source/Settings/SettingsModules/Camera/*.cpp
     Source/Settings/SettingsModules/Window/*.cpp
     Source/Tools/*.cpp
+    Source/Inputs/Keyboard/*.cpp
+    Source/Inputs/Gamepad/*.cpp
 )
 
 # specify the headers
@@ -70,6 +72,8 @@ include_directories(
     Source/Settings/SettingsModules/Camera/
     Source/Settings/SettingsModules/Window/
     Source/Tools/
+    Source/Inputs/Keyboard/
+    Source/Inputs/Gamepad/
 )
 
 add_executable(IndieStudio ${SOURCES})
