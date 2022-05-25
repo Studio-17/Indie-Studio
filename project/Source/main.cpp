@@ -12,6 +12,8 @@
 #include "Keyboard.hpp"
 #include <iostream>
 
+#include "Objects/3DObject/MapObject/Map/Map.hpp"
+
 int main(void)
 {
     // Initialization
@@ -23,13 +25,16 @@ int main(void)
 
     // Define the camera to look into our 3d world
     Camera3D camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 300.0f, 0.0f };
+    camera.position = (Vector3){ 90.0f, 100.0f, 90.0f };
     camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
     camera.up = (Vector3){ 0.0f, 0.0f, 90.0f };
     camera.fovy = 45.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
     SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
+
+    Object::Map map("Assets/Maps/map.txt");
+    map.process();
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -51,6 +56,8 @@ int main(void)
                 DrawLine3D((Vector3){-100, 0, 0}, (Vector3){100, 0, 0}, GREEN);     // X
                 DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
                 DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
+
+                map.draw();
 
             EndMode3D();
 

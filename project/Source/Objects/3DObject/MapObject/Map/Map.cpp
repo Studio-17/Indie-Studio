@@ -23,8 +23,10 @@ Object::Map::~Map()
 
 void Object::Map::draw()
 {
-    for (auto &mapObject : _mapObjects)
-        mapObject.draw();
+    // for (auto &mapObject : _mapObjects)
+    //     mapObject.draw();
+    // DrawSphere(Vector3{0,0,0}, 1, RED);
+    _mapObjects.at(0).draw();
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)
@@ -46,24 +48,8 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
 void Object::Map::process()
 {
     std::vector<std::string> mapLayout = load(_pathToMap);
-    static const std::map<int, Object::MAP_OBJECTS> keyMap = {
-        {'x', WALL_MIDDLE},
-        {'A', GROUND},
-        {'X', WALL_SIDE},
-        {'O', BOX}
-    };
 
-    Vector3 tilePosition = {0, 0, 0};
+    Object::Block block("Assets/models/dirt/box.obj", "Assets/models/dirt/box.png", _mapPosition);
 
-    for (auto &line : mapLayout) {
-        tilePosition.x = 10.0f;
-        for (size_t col = 0; col < line.size(); col++) {
-            if (keyMap.find(line[col]) != keyMap.end()) {
-                _mapObjects.emplace_back(keyMap.at(line[col]), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, 0.5f);
-            }
-            _mapObjects.emplace_back(Object::MAP_OBJECTS::GROUND, (Position){tilePosition.x, tilePosition.y - (10.0f - 1), tilePosition.z}, 0.5f);
-            tilePosition.x += 10.0f;
-        }
-        tilePosition.z += 10.0f;
-    }
+    _mapObjects.push_back(block);
 }

@@ -14,47 +14,34 @@
 
 #include <map>
 
-#include "IThreeDimensionObject.hpp"
+#include "Objects/3DObject/IThreeDimensionObject.hpp"
 
 namespace Object
 {
-    enum MAP_OBJECTS {
-        GROUND = 0,
-        WALL_MIDDLE,
-        WALL_SIDE,
-        BOX,
-        BONUS
-    };
-
     class Block : public IThreeDimensionObject
     {
         public:
-            Block(std::string const &pathToModel, std::string const &pathToTexture);
             Block(std::string const &pathToModel, std::string const &pathToTexture, Position const &position);
-            Block(std::string const &pathToModel, std::string const &pathToTexture, Position const &position, float scale);
-            Block(MAP_OBJECTS const &type);
-            Block(MAP_OBJECTS const &type, Position const &position);
-            Block(MAP_OBJECTS const &type, Position const &position, float scale);
 
             ~Block() override;
 
             void draw() override;
 
-            void setPosition(Position const &position) override { _blockPosition = position; };
-            void setPosition(float x, float y) override { _blockPosition.setX(x); _blockPosition.setY(y); };
-            void setPosition(float x, float y, float z) override { _blockPosition = {x, y ,z}; };
+            void setPosition(Position const &position) override { _position = position; };
+            void setPosition(float x, float y) override { _position.setX(x); _position.setY(y); };
+            void setPosition(float x, float y, float z) override { _position = {x, y ,z}; };
 
         protected:
         private:
-            Position _blockPosition;
-            Position _blockDimensions;
+            std::string _type = "block";
 
-            Model _model;
             Texture2D _texture;
+            Model _model;
+
+            Position _position;
+            Position _dimensions;
 
             float _scale;
-
-            std::map<MAP_OBJECTS, std::pair<std::string, std::string>> _obj;
     };
 }
 
