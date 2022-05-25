@@ -27,20 +27,28 @@ void Scene::MainMenuScene::newGameScene(void)
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
+    // BUTTON HANDLING
     _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::newGameScene, this), "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
     _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::exitScene, this),"Save/assets_sound_Click.ogg", Position(700, 500, 0)));
     _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::settingsScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::MAIN_MENU;
 
     // MUSIC HANDLING
-    // _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
-    // _mainMusic->play();
-    // _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
+    _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
+    _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
+    _mainMusic->play();
+
+    // BACKGROUND HANDLING
+    _imageBackground = std::make_unique<Object::Image>("Ressources/Assets/models/background.png");
+    _imageBackground->setScale(1.5f);
+    _imageBackground->setPosition(200, 100);
+
+
 }
 
 Scene::MainMenuScene::~MainMenuScene()
 {
-    // _mainMusic->stop();
+    _mainMusic->stop();
 }
 
 void Scene::MainMenuScene::fadeBlack()
@@ -58,6 +66,7 @@ Scene::Scenes Scene::MainMenuScene::handelEvent()
 
 void Scene::MainMenuScene::draw()
 {
+    _imageBackground->draw();
     for (auto &[type, button] : _buttons)
         button->draw();
 }

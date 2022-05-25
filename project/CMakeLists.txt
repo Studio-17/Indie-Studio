@@ -36,6 +36,7 @@ file(GLOB SOURCES
     Source/Objects/2DObject/*.cpp
     Source/Objects/2DObject/Button/*.cpp
     Source/Objects/2DObject/Text/*.cpp
+    Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
     Source/Objects/3DObject/MapObject/*.cpp
@@ -84,6 +85,7 @@ include_directories(
     Source/Objects/2DObject/
     Source/Objects/2DObject/Button/
     Source/Objects/2DObject/Text/
+    Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
     Source/Objects/3DObject/BonusObject/
     Source/Objects/3DObject/MapObject/

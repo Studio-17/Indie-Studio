@@ -17,6 +17,7 @@
     #include "Settings.hpp"
     #include "Button.hpp"
     #include "Music.hpp"
+    #include "Image.hpp"
 
 
 namespace Scene
@@ -49,6 +50,7 @@ namespace Scene
 
             std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
             std::unique_ptr<MyMusic> _mainMusic;
+            std::unique_ptr<Object::Image> _imageBackground;
 
         private:
     };
