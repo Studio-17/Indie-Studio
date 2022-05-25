@@ -7,12 +7,11 @@
 
 #include "Map.hpp"
 
-Object::Map::Map(std::string const &pathToFile) : _mapPosition(0, 0, 0)
+Object::Map::Map() : _mapPosition(0, 0, 0)
 {
-    _pathToMap = pathToFile;
 }
 
-Object::Map::Map(std::string const &pathToFile, Position const &position) : Map(pathToFile)
+Object::Map::Map(Position const &position) : Map()
 {
     _mapPosition = position;
 }
@@ -69,8 +68,9 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
     return (map);
 }
 
-void Object::Map::process()
+void Object::Map::process(std::string const &pathToFile)
 {
+    _pathToMap = pathToFile;
     std::vector<std::string> mapLayout = load(_pathToMap);
     static const std::map<int, Object::MAP_OBJECTS> keyMap = {
         {'x', WALL_MIDDLE},
