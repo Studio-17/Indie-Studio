@@ -50,6 +50,7 @@ void Scene::MainMenuScene::fadeBlack()
 
 Scene::Scenes Scene::MainMenuScene::handelEvent()
 {
+    _nextScene = Scene::Scenes::MAIN_MENU;
     for (auto &[type, button] : _buttons)
         button->checkHover(GetMousePosition());
     return _nextScene;

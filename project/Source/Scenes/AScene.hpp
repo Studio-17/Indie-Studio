@@ -26,7 +26,8 @@ namespace Scene
         NEWGAME,
         LOADGAME,
         EXIT,
-        SETTINGS
+        SETTINGS,
+        MAIN_MENU
     };
 
     /**

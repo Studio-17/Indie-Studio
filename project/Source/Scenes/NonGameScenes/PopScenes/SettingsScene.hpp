@@ -27,6 +27,7 @@ namespace Scene {
             void exitScene();
             void settingsScene();
             void newGameScene();
+            void mainMenuScene();
             void draw();
 
         protected:
