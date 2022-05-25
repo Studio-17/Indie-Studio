@@ -49,10 +49,8 @@ void Core::loop()
 
             // _settings->getCamera()->endMode3D();
         _activeScene = _menuScenes.at(_activeScene)->handelEvent();
+        _menuScenes.at(_activeScene)->draw();
 
-                map.draw();
-
-            _settings->getCamera()->endMode3D();
 
         _settings->getWindow()->endDrawing();
     }
