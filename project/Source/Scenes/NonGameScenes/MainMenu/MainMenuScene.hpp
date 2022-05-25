@@ -14,6 +14,7 @@
 
     #include "AScene.hpp"
     #include "Button.hpp"
+    #include "Music.hpp"
 
 namespace Scene {
 
@@ -31,7 +32,7 @@ namespace Scene {
             Scenes run() override;
             void fadeBlack() override;
             Scenes handelEvent() override;
-            void testFunction();
+            // void testFunction();
             void draw();
 
         protected:
@@ -40,6 +41,7 @@ namespace Scene {
             Scene::Scenes _scenes;
 
             std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            std::unique_ptr<MyMusic> _mainMusic;
 
 
 
