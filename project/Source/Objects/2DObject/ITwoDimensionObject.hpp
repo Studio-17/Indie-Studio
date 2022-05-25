@@ -2,25 +2,29 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** IUIObject
+** ITwoDimensionObject
 */
 
-#ifndef IUIOBJECT_HPP_
-    #define IUIOBJECT_HPP_
+#ifndef ITWODIMENSIONOBJECT_HPP_
+#define ITWODIMENSIONOBJECT_HPP_
 
-    #include "IObject.hpp"
+#include "IObject.hpp"
 
-namespace Object {
-    class IUIObject {
+namespace Object
+{
+    class ITwoDimensionObject : public IObject  {
         public:
-            virtual ~IUIObject() = default;
+            virtual ~ITwoDimensionObject() = default;
 
             virtual void draw() = 0;
 
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;
+
+        protected:
+        private:
     };
 }
 
-#endif /* !IUIOBJECT_HPP_ */
+#endif /* !ITWODIMENSIONOBJECT_HPP_ */

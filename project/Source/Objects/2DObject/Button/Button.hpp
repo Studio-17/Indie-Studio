@@ -14,10 +14,10 @@
     #include <functional>
 
     #include "MySound.hpp"
-    #include "IUIObject.hpp"
+    #include "ITwoDimensionObject.hpp"
 
 namespace Object {
-    class Button : public IUIObject {
+    class Button : public ITwoDimensionObject {
         public:
             Button(std::string const &buttonPath, int nbFrame, Position const &position = {0, 0});
             Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position = {0, 0});
