@@ -12,14 +12,13 @@ Object::Button::Button(std::string const &buttonPath, int nbFrame, Position cons
 {
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
     _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
-    // Sound fxButton = LoadSound("resources/buttonfx.wav");   // Load button sound
 }
 
 Object::Button::Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position) :
-    _nbFrame(nbFrame), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _isAudio(true)
+    _nbFrame(nbFrame), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _audio(audioPath), _isAudio(true)
 {
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
-    _buttonRect = { _position.getX(),  _position.getX(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
+    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
 
 }
 
@@ -31,9 +30,7 @@ Object::Button::~Button()
 void Object::Button::draw()
 {
     _sourceRec.y = _state * _frameHeight;
-    BeginDrawing();
-        DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
-    EndDrawing();
+    DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
 }
 
 void Object::Button::setPosition(Position const &position)
@@ -73,7 +70,11 @@ void Object::Button::checkHover(Vector2 const &mousePosition)
         else
                 _state = Hover;
 
-        // if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+        if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            if (_isAudio)
+                _audio.play();
+            // _callBack();
+        }
     }
     else
         _state = Default;

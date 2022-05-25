@@ -8,12 +8,14 @@
 #ifndef WINDOWERROR_HPP_
     #define WINDOWERROR_HPP_
 
-    #include "../../Errors.hpp"
+    #include "Errors.hpp"
 
-class WindowError : public Errors {
-    public:
-        WindowError(std::ostream &os, std::string const &message) throw();
-        virtual ~WindowError() throw();
-};
+namespace Error {
+    class WindowError : public Errors {
+        public:
+            WindowError(std::string const &message) throw();
+            virtual ~WindowError() throw();
+    };
+}
 
 #endif /* !WINDOWERROR_HPP_ */

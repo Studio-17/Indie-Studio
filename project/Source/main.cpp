@@ -5,12 +5,7 @@
 ** main
 */
 
-#include <iostream>
-#include <vector>
-
-#include "raylib.h"
-#include "Keyboard.hpp"
-#include <iostream>
+#include "Core.hpp"
 
 #include "Map.hpp"
 

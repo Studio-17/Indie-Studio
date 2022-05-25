@@ -11,12 +11,10 @@
     #include "Errors.hpp"
 
 namespace Error {
-    class PositionError : public Errors {
+    class FileError : public Errors {
         public:
-            PositionError(std::string const &message) throw();
-            virtual ~PositionError() throw();
-        protected:
-        private:
+            FileError(std::string const &message) throw();
+            virtual ~FileError() throw();
     };
 }
 

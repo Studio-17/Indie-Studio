@@ -7,17 +7,20 @@
 
 #include "Text.hpp"
 
-Object::Text::Text(std::string const &filename, std::string const &text, Position const &position = {0, 0}) : _font(LoadFont(filename.c_str())), _text(text), _position(position)
+Object::Text::Text(std::string const &filename, std::string const &text, Position const &position) :
+ _position(position), _font(LoadFont(filename.c_str())), _text(text)
 {
 
 }
 
-Object::Text::Text(std::string const &filename, std::string const &text, Color const &color, Position const &position = {0, 0}) : _font(LoadFont(filename.c_str())), _text(text), _color(color), _position(position)
+Object::Text::Text(std::string const &filename, std::string const &text, Color const &color, Position const &position) :
+ _position(position), _font(LoadFont(filename.c_str())), _color(color), _text(text)
 {
 
 }
 
-Object::Text::Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position = {0, 0}) : _font(LoadFont(filename.c_str())), _text(text), _fontSize(fontSize), _color(color), _position(position)
+Object::Text::Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position) :
+ _position(position), _font(LoadFont(filename.c_str())), _color(color), _text(text), _fontSize(fontSize)
 {
 
 }

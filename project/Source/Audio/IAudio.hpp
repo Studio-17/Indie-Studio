@@ -6,7 +6,7 @@
 */
 
 #ifndef IAUDIO_HPP_
-#define IAUDIO_HPP_
+    #define IAUDIO_HPP_
 
 class IAudio {
     public:

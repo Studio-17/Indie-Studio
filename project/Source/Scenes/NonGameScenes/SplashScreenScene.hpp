@@ -6,18 +6,18 @@
 */
 
 #ifndef SPLASHSCREENSCENE_HPP_
-#define SPLASHSCREENSCENE_HPP_
+    #define SPLASHSCREENSCENE_HPP_
 
-#include "Scenes/NonGameScenes/IMenuScene.hpp"
+#include "IMenuScene.hpp"
 
 /**
  * @brief The splash screen scene of the game
  * 
  */
 namespace Scene {
-    class SplashScreenScene : public IMenuScene {
+    class SplashScreenScene : public AScene {
         public:
-            SplashScreenScene();
+            SplashScreenScene(std::shared_ptr<Settings> settings);
             ~SplashScreenScene();
 
         protected:

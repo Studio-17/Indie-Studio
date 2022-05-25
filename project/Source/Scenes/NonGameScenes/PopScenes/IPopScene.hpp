@@ -6,9 +6,9 @@
 */
 
 #ifndef IPOPSCENE_HPP_
-#define IPOPSCENE_HPP_
+    #define IPOPSCENE_HPP_
 
-#include "Scenes/NonGameScenes/IMenuScene.hpp"
+#include "IMenuScene.hpp"
 
 /**
  * @brief Interface to all the pop scene of the game
