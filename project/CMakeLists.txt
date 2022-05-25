@@ -13,79 +13,95 @@ include(cmake-modules/Findraylib.cmake)
 # specify the sources
 file(GLOB SOURCES
     Source/*.cpp
+
     Source/Audio/*.cpp
     Source/Audio/Music/*.cpp
     Source/Audio/Sound/*.cpp
+
     Source/Core/*.cpp
+
     Source/Datas/*.cpp
+
     Source/Errors/*.cpp
-    Source/Errors/ErrorsModules/*.cpp
     Source/Errors/ErrorsModules/Audio/*.cpp
     Source/Errors/ErrorsModules/File/*.cpp
     Source/Errors/ErrorsModules/Position/*.cpp
     Source/Errors/ErrorsModules/Window/*.cpp
+
+    Source/Inputs/*.cpp
+    Source/Inputs/Gamepad/*.cpp
+    Source/Inputs/Keyboard/*.cpp
+
     Source/Objects/*.cpp
-    Source/Objects/UIObject/*.cpp
-    Source/Objects/UIObject/Button/*.cpp
-    Source/Objects/UIObject/Text/*.cpp
-    Source/Objects/MapObject/Map/*.cpp
-    Source/Objects/MapObject/Block/*.cpp
+    Source/Objects/2DObject/*.cpp
+    Source/Objects/2DObject/Button/*.cpp
+    Source/Objects/2DObject/Text/*.cpp
+    Source/Objects/3DObject/*.cpp
+    Source/Objects/3DObject/BonusObject/*.cpp
+    Source/Objects/3DObject/MapObject/*.cpp
+    Source/Objects/3DObject/MapObject/Block/*.cpp
+    Source/Objects/3DObject/MapObject/Map/*.cpp
+
     Source/Scenes/*.cpp
     Source/Scenes/GameScenes/*.cpp
     Source/Scenes/NonGameScenes/*.cpp
     Source/Scenes/NonGameScenes/MainMenu/*.cpp
     Source/Scenes/NonGameScenes/PopScenes/*.cpp
+
     Source/Settings/*.cpp
+    Source/Settings/SettingsModules/*.cpp
     Source/Settings/SettingsModules/Audio/*.cpp
     Source/Settings/SettingsModules/Camera/*.cpp
     Source/Settings/SettingsModules/Window/*.cpp
+
     Source/Tools/*.cpp
-    Source/Inputs/Keyboard/*.cpp
-    Source/Inputs/Gamepad/*.cpp
-    Source/Map/*.cpp
 )
 
 # specify the headers
 include_directories(
     Source/
-    Source/Errors/
-    Source/Errors/ErrorsModules/
-    Source/Objects/
-    Source/Objects/UIOject/
-    Source/Objects/UIOject/Button/
-    Source/Objects/UIOject/Text/
-    Source/Scenes/
+
     Source/Audio/
     Source/Audio/Music/
     Source/Audio/Sound/
+
     Source/Core/
+
     Source/Datas/
+
     Source/Errors/
-    Source/Errors/ErrorsModules/
     Source/Errors/ErrorsModules/Audio/
     Source/Errors/ErrorsModules/File/
     Source/Errors/ErrorsModules/Position/
     Source/Errors/ErrorsModules/Window/
+
+    Source/Inputs/
+    Source/Inputs/Gamepad/
+    Source/Inputs/Keyboard/
+
     Source/Objects/
-    Source/Objects/UIObject/
-    Source/Objects/UIObject/Button/
-    Source/Objects/UIObject/Text/
-    Source/Objects/MapObject/Map/
-    Source/Objects/MapObject/
-    Source/Objects/MapObject/Block/
+    Source/Objects/2DObject/
+    Source/Objects/2DObject/Button/
+    Source/Objects/2DObject/Text/
+    Source/Objects/3DObject/
+    Source/Objects/3DObject/BonusObject/
+    Source/Objects/3DObject/MapObject/
+    Source/Objects/3DObject/MapObject/Block/
+    Source/Objects/3DObject/MapObject/Map/
+
     Source/Scenes/
     Source/Scenes/GameScenes/
     Source/Scenes/NonGameScenes/
     Source/Scenes/NonGameScenes/MainMenu/
     Source/Scenes/NonGameScenes/PopScenes/
+
     Source/Settings/
+    Source/Settings/SettingsModules/
     Source/Settings/SettingsModules/Audio/
     Source/Settings/SettingsModules/Camera/
     Source/Settings/SettingsModules/Window/
+
     Source/Tools/
-    Source/Inputs/Keyboard/
-    Source/Inputs/Gamepad/
-    Source/Map/
 )
 
 include(FetchContent)

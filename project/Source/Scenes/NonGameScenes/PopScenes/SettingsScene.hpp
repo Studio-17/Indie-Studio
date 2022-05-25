@@ -8,20 +8,35 @@
 #ifndef SETTINGSSCENE_HPP_
     #define SETTINGSSCENE_HPP_
 
-#include "IPopScene.hpp"
-
+    #include <vector>
+    #include <map>
+    #include "AScene.hpp"
+    #include "Music.hpp"
 /**
  * @brief The settings scene of the game
  * 
  */
 namespace Scene {
-    class SettingsScene : public IPopScene {
+    class SettingsScene : public AScene {
         public:
-            SettingsScene();
+            SettingsScene(std::shared_ptr<Settings> settings);
             ~SettingsScene();
+
+            void fadeBlack() override;
+            Scenes handelEvent() override;
+            void exitScene();
+            void settingsScene();
+            void newGameScene();
+            void mainMenuScene();
+            void draw();
 
         protected:
         private:
+            // bool _isRunning;
+            // Scene::Scenes _nextScene;
+
+            // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            // std::unique_ptr<MyMusic> _mainMusic;
     };
 }
 

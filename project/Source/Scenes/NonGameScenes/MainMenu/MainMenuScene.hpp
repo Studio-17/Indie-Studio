@@ -13,33 +13,29 @@
     #include <map>
 
     #include "AScene.hpp"
-    #include "Button.hpp"
+    #include "Music.hpp"
 
 namespace Scene {
 
-    enum class BUTTONSNAME {
-        NEWGAME,
-        LOADGAME,
-        EXIT,
-        SETTINGS
-    };
     class MainMenuScene : public AScene {
         public:
             MainMenuScene(std::shared_ptr<Settings> settings);
             ~MainMenuScene();
 
-            Scenes run() override;
             void fadeBlack() override;
             Scenes handelEvent() override;
-            void testFunction();
+            void exitScene();
+            void settingsScene();
+            void newGameScene();
             void draw();
 
         protected:
         private:
-            bool _isRunning;
-            Scene::Scenes _scenes;
+            // bool _isRunning;
+            // Scene::Scenes _nextScene;
 
-            std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            // std::unique_ptr<MyMusic> _mainMusic;
 
 
 

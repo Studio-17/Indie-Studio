@@ -9,30 +9,38 @@
 #include <functional>
 
 #include <iostream>
-void Scene::MainMenuScene::testFunction()
+
+void Scene::MainMenuScene::exitScene(void)
 {
-    std::cout << "in test function" << std::endl;
+    _nextScene = Scene::Scenes::QUIT;
 }
 
-Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
- _isRunning(true), _scenes(Scene::Scenes::MAIN_MENU)
+void Scene::MainMenuScene::settingsScene(void)
 {
-    _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
-    _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 500, 0)));
-    _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 800, 0)));
+    _nextScene = Scene::Scenes::SETTINGS;
+}
+
+void Scene::MainMenuScene::newGameScene(void)
+{
+    _nextScene = Scene::Scenes::GAME;
+}
+
+Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
+{
+    _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::newGameScene, this), "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
+    _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::exitScene, this),"Save/assets_sound_Click.ogg", Position(700, 500, 0)));
+    _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::settingsScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
+    _nextScene = Scene::Scenes::MAIN_MENU;
+
+    // MUSIC HANDLING
+    // _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
+    // _mainMusic->play();
+    // _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
 }
 
 Scene::MainMenuScene::~MainMenuScene()
 {
-}
-
-Scene::Scenes Scene::MainMenuScene::run()
-{
-    while (_isRunning) {
-        handelEvent();
-        draw();
-    }
-    return Scene::Scenes::MAIN_MENU;
+    // _mainMusic->stop();
 }
 
 void Scene::MainMenuScene::fadeBlack()
@@ -42,9 +50,10 @@ void Scene::MainMenuScene::fadeBlack()
 
 Scene::Scenes Scene::MainMenuScene::handelEvent()
 {
+    _nextScene = Scene::Scenes::MAIN_MENU;
     for (auto &[type, button] : _buttons)
         button->checkHover(GetMousePosition());
-    return Scene::Scenes::MAIN_MENU;
+    return _nextScene;
 }
 
 void Scene::MainMenuScene::draw()

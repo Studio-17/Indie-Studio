@@ -40,7 +40,7 @@ void RayLib::Window::endDrawing() const
     EndDrawing();
 }
 
-void RayLib::Window::clearBackground(Color color) const 
+void RayLib::Window::clearBackground(Color color) const
 {
     ClearBackground(color);
 }

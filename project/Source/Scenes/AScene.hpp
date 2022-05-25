@@ -15,9 +15,21 @@
     #include "IObject.hpp"
     // #include "IAudio.hpp"
     #include "Settings.hpp"
+    #include "Button.hpp"
+    #include "Music.hpp"
+
 
 namespace Scene
 {
+
+    enum class BUTTONSNAME {
+        NEWGAME,
+        LOADGAME,
+        EXIT,
+        SETTINGS,
+        MAIN_MENU
+    };
+
     /**
      * @brief Abstract class of the scenes of the game
      */
@@ -26,7 +38,6 @@ namespace Scene
             AScene(std::shared_ptr<Settings> settings);
             virtual ~AScene() = default;
 
-            virtual Scenes run() = 0;
             virtual void fadeBlack() = 0;
             virtual Scenes handelEvent() = 0;
 
@@ -34,6 +45,10 @@ namespace Scene
             std::shared_ptr<Settings> _settings;
             std::vector<std::shared_ptr<Object::IObject>> _objects; //< A vector of every object of the scene
             // std::vector<std::shared_ptr<IAudio>> _audios; //< A vector of every audio of the game
+            Scene::Scenes _nextScene;
+
+            std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            std::unique_ptr<MyMusic> _mainMusic;
 
         private:
     };
