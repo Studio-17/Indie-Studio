@@ -7,60 +7,70 @@
 
 #include "Window.hpp"
 
-RayLib::Window::Window()
+RayLib::Window::Window(int width, int height, std::string const &title)
 {
+    InitWindow(width, height, title.c_str());
+    if (!IsWindowReady())
+        throw Error::WindowError("window failed to open");
+
 }
 
 RayLib::Window::~Window()
 {
+    CloseWindow();
 }
 
-void RayLib::Window::initWindow(int width, int height, std::string const &title)
-{
-    InitWindow(width, height, title.c_str());
-}
-
-bool RayLib::Window::windowShouldClose(void)
+bool RayLib::Window::windowShouldClose() const
 {
     return (WindowShouldClose());
 }
 
-void RayLib::Window::closeWindow(void)
-{
-    CloseWindow();
-}
-
-bool RayLib::Window::isWindowReady(void)
+bool RayLib::Window::isWindowReady() const
 {
     return (IsWindowReady());
 }
 
-bool RayLib::Window::isWindowFullscreen(void)
+void RayLib::Window::startDrawing() const
+{
+    BeginDrawing();
+}
+
+void RayLib::Window::endDrawing() const
+{
+    EndDrawing();
+}
+
+void RayLib::Window::clearBackground(Color color) const 
+{
+    ClearBackground(color);
+}
+
+bool RayLib::Window::isWindowFullscreen() const
 {
     return (IsWindowFullscreen());
 }
 
-bool RayLib::Window::isWindowHidden(void)
+bool RayLib::Window::isWindowHidden() const
 {
     return (IsWindowHidden());
 }
 
-bool RayLib::Window::isWindowMinimized(void)
+bool RayLib::Window::isWindowMinimized() const
 {
     return (IsWindowMinimized());
 }
 
-bool RayLib::Window::isWindowMaximized(void)
+bool RayLib::Window::isWindowMaximized() const
 {
     return (IsWindowMaximized());
 }
 
-bool RayLib::Window::isWindowFocused(void)
+bool RayLib::Window::isWindowFocused() const
 {
     return (IsWindowFocused());
 }
 
-bool RayLib::Window::isWindowState(unsigned int flag)
+bool RayLib::Window::isWindowState(unsigned int flag) const
 {
     return (IsWindowState(flag));
 }
@@ -75,7 +85,7 @@ void RayLib::Window::clearWindowState(unsigned int flags)
     ClearWindowState(flags);
 }
 
-void RayLib::Window::toggleFullscreen(void)
+void RayLib::Window::toggleFullscreen()
 {
     ToggleFullscreen();
 }
@@ -100,42 +110,42 @@ void RayLib::Window::setWindowSize(int width, int height)
     SetWindowSize(width, height);
 }
 
-int RayLib::Window::getScreenWidth(void)
+int RayLib::Window::getScreenWidth() const
 {
     return (GetScreenWidth());
 }
 
-int RayLib::Window::getScreenHeight(void)
+int RayLib::Window::getScreenHeight() const
 {
     return (GetScreenHeight());
 }
 
-void RayLib::Window::showCursor(void)
+void RayLib::Window::showCursor()
 {
     ShowCursor();
 }
 
-void RayLib::Window::hideCursor(void)
+void RayLib::Window::hideCursor()
 {
     HideCursor();
 }
 
-bool RayLib::Window::isCursorHidden(void)
+bool RayLib::Window::isCursorHidden() const
 {
     return (IsCursorHidden());
 }
 
-void RayLib::Window::enableCursor(void)
+void RayLib::Window::enableCursor()
 {
     EnableCursor();
 }
 
-void RayLib::Window::disableCursor(void)
+void RayLib::Window::disableCursor()
 {
     DisableCursor();
 }
 
-bool RayLib::Window::isCursorOnScreen(void)
+bool RayLib::Window::isCursorOnScreen() const
 {
     return (IsCursorOnScreen());
 }
@@ -145,17 +155,17 @@ void RayLib::Window::setTargetFPS(int fps)
     SetTargetFPS(fps);
 }
 
-int RayLib::Window::getFPS(void)
+int RayLib::Window::getFPS() const
 {
     return (GetFPS());
 }
 
-float RayLib::Window::getFrameTime(void)
+float RayLib::Window::getFrameTime() const
 {
     return (GetFrameTime());
 }
 
-double RayLib::Window::getTime(void)
+double RayLib::Window::getTime(void) const
 {
     return (GetTime());
 }

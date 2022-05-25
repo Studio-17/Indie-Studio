@@ -6,14 +6,15 @@
 */
 
 #ifndef CAMERA_HPP_
-#define CAMERA_HPP_
+    #define CAMERA_HPP_
 
-#include <string>
-#include <any>
+    #include <raylib.h>
 
-#include <utility>
+    #include <string>
+    #include <any>
+    #include <utility>
 
-#include "raylib.h"
+    #include "Position.hpp"
 
 namespace RayLib
 {
@@ -21,13 +22,16 @@ namespace RayLib
     class CinematicCamera
     {
         public:
-            CinematicCamera();
+            CinematicCamera(Position position, Position target, CameraMode cameraMode, CameraProjection projection);
             ~CinematicCamera();
 
             void updateCamera();
 
             void setPosition(float x, float y, float z);
             void setTarget(float x, float y, float z);
+
+            void setPosition(Position position);
+            void setTarget(Position target);
 
             void movePosition(float x, float y, float z);
             void moveTarget(float x, float y, float z);

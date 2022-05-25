@@ -5,14 +5,13 @@
 ** Sound
 */
 
-#include "Errors/ErrorsModules/ErrorsSettings.hpp"
-
-#include "Sound.hpp"
+#include "AudioError.hpp"
+#include "MySound.hpp"
 
 MySound::MySound(std::string const &filename) : _sound(LoadSound(filename.c_str()))
 {
     if (_sound.frameCount == 0)
-        throw Error::ErrorsSettings(std::cerr, "MySound initialization failed");
+        throw Error::AudioError("MySound initialization failed");
 }
 
 MySound::~MySound()

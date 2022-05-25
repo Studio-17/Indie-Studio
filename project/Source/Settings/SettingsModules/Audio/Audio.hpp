@@ -6,37 +6,35 @@
 */
 
 #ifndef AUDIO_HPP_
-#define AUDIO_HPP_
+    #define AUDIO_HPP_
 
-#include <string>
-#include <any>
+    #include <raylib.h>
 
-#include <utility>
+    #include <string>
+    #include <any>
+    #include <utility>
 
-#include "raylib.h"
+    #include "AudioError.hpp"
 
 namespace RayLib
 {
     class Audio
     {
         public:
-            Audio();
+            Audio(float audioVolume, float soundVolume);
             ~Audio();
 
             // Audio management functions
-            void initAudioDevice(void);                                         // Initialize audio device and context
-            void closeAudioDevice(void);                                        // Close the audio device and context
-
-            bool isAudioDeviceReady(void);                                      // Check if audio device has been initialized successfully
+            bool isAudioDeviceReady() const;                                      // Check if audio device has been initialized successfully
 
             void setMasterVolume(float volume);                                 // Set master volume (listener)
 
             // Game Audio management functions
             void setAudioVolume(float volume);                                  // Set audio volume
-            float getAudioVolume(void);                                         // Get audio volume
+            float getAudioVolume() const;                                         // Get audio volume
 
             void setSoundVolume(float volume);                                  // Set sound volume
-            float getSoundVolume(void);                                         // Get sound volume
+            float getSoundVolume() const;                                         // Get sound volume
 
         protected:
         private:

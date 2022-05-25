@@ -7,25 +7,19 @@
 
 #include "Audio.hpp"
 
-RayLib::Audio::Audio()
+RayLib::Audio::Audio(float audioVolume, float soundVolume) : _audioVolume(audioVolume), _soundVolume(soundVolume)
 {
+    InitAudioDevice();
+    if (!isAudioDeviceReady())
+        throw Error::AudioError("audio failed to initialize");
 }
 
 RayLib::Audio::~Audio()
 {
-}
-
-void RayLib::Audio::initAudioDevice()
-{
-    InitAudioDevice();
-}
-
-void RayLib::Audio::closeAudioDevice()
-{
     CloseAudioDevice();
 }
 
-bool RayLib::Audio::isAudioDeviceReady()
+bool RayLib::Audio::isAudioDeviceReady() const
 {
     return (IsAudioDeviceReady());
 }
@@ -40,7 +34,7 @@ void RayLib::Audio::setAudioVolume(float volume)
     _audioVolume = volume;
 }
 
-float RayLib::Audio::getAudioVolume(void)
+float RayLib::Audio::getAudioVolume() const
 {
     return (_audioVolume);
 }
@@ -50,7 +44,7 @@ void RayLib::Audio::setSoundVolume(float volume)
     _soundVolume = volume;
 }
 
-float RayLib::Audio::getSoundVolume(void)
+float RayLib::Audio::getSoundVolume() const
 {
     return (_soundVolume);
 }

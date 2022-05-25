@@ -6,7 +6,7 @@
 */
 
 #ifndef MUSIC_HPP_
-#define MUSIC_HPP_
+    #define MUSIC_HPP_
 
 #include <string>
 #include <any>

@@ -33,6 +33,7 @@ Position &Position::operator =(Position const &position)
     _x = position._x;
     _y = position._y;
     _z = position._z;
+    return *this;
 }
 
 Position &Position::operator =(float pos)
@@ -40,6 +41,7 @@ Position &Position::operator =(float pos)
     _x = pos;
     _y = pos;
     _z = pos;
+    return *this;
 }
 
 Position &Position::operator +=(Position const &position)
@@ -93,7 +95,7 @@ Position &Position::operator *=(float number)
 Position &Position::operator /=(Position const &position)
 {
     if (position._x == 0 || position._y == 0 || position._z == 0)
-        throw Error::PositionError(std::cerr, "can't divide by 0");
+        throw Error::PositionError("can't divide by 0");
     _x /= position._x;
     _y /= position._y;
     _z /= position._z;
@@ -103,7 +105,7 @@ Position &Position::operator /=(Position const &position)
 Position &Position::operator /=(float number)
 {
     if (number == 0)
-        throw Error::PositionError(std::cerr, "can't divide by 0");
+        throw Error::PositionError("can't divide by 0");
     _x /= number;
     _y /= number;
     _z /= number;
