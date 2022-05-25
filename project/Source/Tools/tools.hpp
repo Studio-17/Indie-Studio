@@ -11,11 +11,13 @@
     #include <string>
     #include <vector>
 
+    #include <nlohmann/json.hpp>
+
     #include "SettingsParams.hpp"
 
 std::string readFile(std::string const &filename, std::string const &sep);
 std::vector<std::string> strToWordArr(std::string const &_line, char delim);
 
-SettingsParams loadSettings(std::string const &filepath);
+nlohmann::json getJsonData(std::string const &filepath);
 
 #endif /* !TOOLS_HPP_ */

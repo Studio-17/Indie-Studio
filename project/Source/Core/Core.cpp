@@ -12,9 +12,13 @@
 #include "Core.hpp"
 #include "Map.hpp"
 
-Core::Core() : _settings(std::make_shared<Settings>(loadSettings("Conf/settings.conf"))), _isRunning(true),
+Core::Core() : _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU)
 {
+    SettingsParams settingsParams;
+
+    settingsParams.loadFromData("Conf/settings.json");
+    _settings = std::make_shared<Settings>(settingsParams),
     loadMenuScenes();
 }
 
@@ -37,7 +41,6 @@ void Core::loop()
     map.process("Ressources/Maps/Basics/random.map");
 
     while (!_settings->getWindow()->windowShouldClose()) {
-
         _settings->getWindow()->startDrawing();
             _settings->getWindow()->clearBackground(DARKGRAY);
 

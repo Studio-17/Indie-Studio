@@ -32,6 +32,11 @@ class Position {
          */
         Position(Position const &position);
         /**
+         * @brief Construct a new Position object from default values
+         */
+        Position();
+
+        /**
          * @brief Destroy the Position object
          */
         ~Position();

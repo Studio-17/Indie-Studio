@@ -1,0 +1,10 @@
+{
+    "title": "Indie Studio",
+    "windowSize": [1920, 1080],
+    "audioVolume": 10,
+    "musicVolume": 100,
+    "cameraPosition": [0, 0, 0],
+    "cameraTarget": [0, 0, 0],
+    "cameraMode": 0,
+    "cameraProjection": 0
+}
