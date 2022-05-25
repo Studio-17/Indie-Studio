@@ -14,34 +14,21 @@
 
 #include <map>
 
-#include "Objects/3DObject/IThreeDimensionObject.hpp"
+#include "Objects/3DObject/AThreeDimensionObject.hpp"
 
 namespace Object
 {
-    class Block : public IThreeDimensionObject
+    class Block : public AThreeDimensionObject
     {
         public:
-            Block(std::string const &pathToModel, std::string const &pathToTexture, Position const &position);
-
+            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
             ~Block() override;
 
             void draw() override;
 
-            void setPosition(Position const &position) override { _position = position; };
-            void setPosition(float x, float y) override { _position.setX(x); _position.setY(y); };
-            void setPosition(float x, float y, float z) override { _position = {x, y ,z}; };
-
         protected:
         private:
             std::string _type = "block";
-
-            Texture2D _texture;
-            Model _model;
-
-            Position _position;
-            Position _dimensions;
-
-            float _scale;
     };
 }
 

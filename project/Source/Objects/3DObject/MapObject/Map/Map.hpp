@@ -22,6 +22,14 @@
 
 namespace Object
 {
+    enum class MAP_OBJECTS {
+        GROUND = 0,
+        WALL_MIDDLE,
+        WALL_SIDE,
+        BOX,
+        BONUS
+    };
+
     class Map : public IObject
     {
         public:
