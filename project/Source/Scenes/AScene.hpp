@@ -16,6 +16,8 @@
     // #include "IAudio.hpp"
     #include "Settings.hpp"
     #include "Button.hpp"
+    #include "Music.hpp"
+
 
 namespace Scene
 {
@@ -42,6 +44,10 @@ namespace Scene
             std::shared_ptr<Settings> _settings;
             std::vector<std::shared_ptr<Object::IObject>> _objects; //< A vector of every object of the scene
             // std::vector<std::shared_ptr<IAudio>> _audios; //< A vector of every audio of the game
+            Scene::Scenes _nextScene;
+
+            std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            std::unique_ptr<MyMusic> _mainMusic;
 
         private:
     };
