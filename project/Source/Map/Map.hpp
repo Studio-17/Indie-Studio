@@ -30,9 +30,10 @@ class Map {
         Map();
         ~Map();
         std::vector<std::string> load(const std::string &filename); // Open the file & return the content in a vector
-        void generate(const std::string &filename, std::size_t x, std::size_t y); // Create a file of x & y dimensions with the map
+        void generate(const std::string &filename, std::size_t width, std::size_t height); // Create a file of x & y dimensions with the map
         void render(std::vector<std::string> map); // Render the map
         Vector3 getCenteredPosition(std::vector<std::string> map);
+        void createFile(const std::string &filename); //create a file
 
         float getSize() { return (_size); };
         void setSize(float value) { _size = value ;};
@@ -44,6 +45,8 @@ class Map {
 
         std::map<std::size_t, Model> _model;
         std::map<std::size_t, Texture2D> _texture;
+
+        std::ofstream _file;
 
         float _size;
 };
