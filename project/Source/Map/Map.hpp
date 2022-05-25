@@ -17,6 +17,14 @@
     #include <iostream>
     #include <fstream>
 
+enum MAP_OBJECTS {
+    GROUND = 0,
+    WALL_MIDDLE,
+    WALL_SIDE,
+    BOX,
+    BONUS
+};
+
 class Map {
     public:
         Map();
@@ -24,6 +32,7 @@ class Map {
         std::vector<std::string> load(const std::string &filename); // Open the file & return the content in a vector
         void generate(const std::string &filename, std::size_t x, std::size_t y); // Create a file of x & y dimensions with the map
         void render(std::vector<std::string> map); // Render the map
+        Vector3 getCenteredPosition(std::vector<std::string> map);
 
         float getSize() { return (_size); };
         void setSize(float value) { _size = value ;};
@@ -31,7 +40,7 @@ class Map {
     protected:
     private:
         std::vector<std::string> _map;
-        std::map<int, std::string> _mapObjects;
+        std::map<int, MAP_OBJECTS> _mapObjects;
 
         std::map<std::size_t, Model> _model;
         std::map<std::size_t, Texture2D> _texture;
