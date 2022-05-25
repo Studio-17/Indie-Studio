@@ -32,8 +32,11 @@ void Core::loadMenuScenes()
 
 void Core::loop()
 {
-    while (!_settings->getWindow()->windowShouldClose() && _activeScene != Scene::Scenes::QUIT) {
-        // _menuScenes.at(_activeScene)->run();
+    Object::Map map;
+    // map.generate("Ressources/Maps/Basics/random.map", 11, 11);
+    map.process("Ressources/Maps/Basics/random.map");
+
+    while (!_settings->getWindow()->windowShouldClose()) {
 
         _settings->getWindow()->startDrawing();
             _settings->getWindow()->clearBackground(DARKGRAY);
@@ -47,7 +50,9 @@ void Core::loop()
             // _settings->getCamera()->endMode3D();
         _activeScene = _menuScenes.at(_activeScene)->handelEvent();
 
-        _menuScenes.at(_activeScene)->draw();
+                map.draw();
+
+            _settings->getCamera()->endMode3D();
 
         _settings->getWindow()->endDrawing();
     }

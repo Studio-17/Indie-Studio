@@ -23,11 +23,10 @@
 namespace Object
 {
     enum class MAP_OBJECTS {
-        GROUND = 0,
-        WALL_MIDDLE,
-        WALL_SIDE,
-        BOX,
-        BONUS
+        GROUND = 'A',
+        WALL_MIDDLE = 'x',
+        WALL_SIDE = 'X',
+        BOX = 'O',
     };
 
     class Map : public IObject

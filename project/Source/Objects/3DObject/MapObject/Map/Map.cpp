@@ -73,23 +73,35 @@ void Object::Map::process(std::string const &pathToFile)
     _pathToMap = pathToFile;
     std::vector<std::string> mapLayout = load(_pathToMap);
 
-    static const std::map<int, std::pair<std::string, std::string>> keyMap = {
-        {'x', {"Assets/models/stone/box.obj", "Assets/models/stone/box.png"}},
-        {'A', {"Assets/models/dirt/wall_side.obj", "Assets/models/dirt/wall_side.png"}},
-        {'X', {"Assets/models/stone/wall_side.obj", "Assets/models/stone/wall_side.png"}},
-        {'O', {"Assets/models/dirt/box.obj", "Assets/models/dirt/box.png"}}
+    static const std::map<Object::MAP_OBJECTS, std::pair<std::string, std::string>> keyMap = {
+        {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/Assets/models/stone/box.obj", "Ressources/Assets/models/stone/box.png"}},
+        {MAP_OBJECTS::GROUND, {"Ressources/Assets/models/dirt/wall_side.obj", "Ressources/Assets/models/dirt/wall_side.png"}},
+        {MAP_OBJECTS::WALL_SIDE, {"Ressources/Assets/models/stone/wall_side.obj", "Ressources/Assets/models/stone/wall_side.png"}},
+        {MAP_OBJECTS::BOX, {"Ressources/Assets/models/dirt/box.obj", "Ressources/Assets/models/dirt/box.png"}}
     };
+
+    static const float blockSize = 10.0f;
 
     Vector3 tilePosition = {0, 0, 0};
 
     for (auto &line : mapLayout) {
-        tilePosition.x = 10.0f;
-        for (size_t col = 0; col < line.size(); col++) {
-            if (keyMap.find(line[col]) != keyMap.end())
-                _mapObjects.emplace_back(keyMap.at(line[col]), (Position){tilePosition.x, tilePosition.y, tilePosition.z});
-            _mapObjects.emplace_back(std::make_pair("Assets/models/dirt/wall_side.obj", "Assets/models/dirt/wall_side.png"), (Position){tilePosition.x, tilePosition.y - (10.0f - 1), tilePosition.z});
-            tilePosition.x += 10.0f;
+        tilePosition.x = blockSize;
+        for (std::size_t col = 0; col < line.size(); col++) {
+            if (line[col] == 'X')
+                _mapObjects.emplace_back(
+                    keyMap.at(MAP_OBJECTS::WALL_SIDE),
+                    (Position){tilePosition.x, tilePosition.y - 10, tilePosition.z});
+            else
+                _mapObjects.emplace_back(
+                    keyMap.at(MAP_OBJECTS::GROUND),
+                    (Position){tilePosition.x, tilePosition.y - (blockSize - 1), tilePosition.z});
+
+            if (keyMap.find(static_cast<MAP_OBJECTS>(line[col])) != keyMap.end())
+                _mapObjects.emplace_back(
+                    keyMap.at(static_cast<MAP_OBJECTS>(line[col])),
+                    (Position){tilePosition.x, tilePosition.y, tilePosition.z});
+            tilePosition.x += blockSize;
         }
-        tilePosition.z += 10.0f;
+        tilePosition.z += blockSize;
     }
 }
