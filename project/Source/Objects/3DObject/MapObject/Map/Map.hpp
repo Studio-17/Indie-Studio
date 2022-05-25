@@ -33,8 +33,8 @@ namespace Object
     class Map : public IObject
     {
         public:
-            Map(std::string const &pathToFile);
-            Map(std::string const &pathToFile, Position const &position);
+            Map();
+            Map(Position const &position);
 
             ~Map();
 
@@ -45,9 +45,11 @@ namespace Object
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
 
             std::vector<std::string> load(std::string const &pathToFile);
-            void process();
+            void process(std::string const &pathToFile);
 
-            void generate() {};
+            void generate(const std::string &filename, std::size_t width, std::size_t height);
+
+            void createFile(const std::string &filename);
 
         protected:
         private:
@@ -55,6 +57,7 @@ namespace Object
             Position _mapPosition = {0, 0, 0};
 
             std::string _pathToMap;
+            std::ofstream _file;
     };
 }
 

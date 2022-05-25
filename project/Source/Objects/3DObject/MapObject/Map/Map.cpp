@@ -7,18 +7,43 @@
 
 #include "Map.hpp"
 
-Object::Map::Map(std::string const &pathToFile) : _mapPosition(0, 0, 0)
+Object::Map::Map() : _mapPosition(0, 0, 0)
 {
-    _pathToMap = pathToFile;
 }
 
-Object::Map::Map(std::string const &pathToFile, Position const &position) : Map(pathToFile)
+Object::Map::Map(Position const &position) : Map()
 {
     _mapPosition = position;
 }
 
 Object::Map::~Map()
 {
+}
+
+void Object::Map::createFile(const std::string &filename)
+{
+    _file.open(filename, std::ios::out);
+    if (!_file) {
+        _file.close();
+        throw Error::FileError("file failed to open");
+    }
+}
+
+void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
+{
+    if ((width % 2) == 0 && (height % 2) == 0)
+        throw Error::FileError("Height and Width are not compatible !");
+    createFile(filename);
+    for (size_t x = 0; x < height; x++) {
+        for (size_t y = 0; y < width; y++) {
+            if (x % 2 && y % 2)
+                _file << "x";
+            else
+                _file << " ";
+        }
+        _file << std::endl;
+    }
+
 }
 
 void Object::Map::draw()
@@ -43,8 +68,9 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
     return (map);
 }
 
-void Object::Map::process()
+void Object::Map::process(std::string const &pathToFile)
 {
+    _pathToMap = pathToFile;
     std::vector<std::string> mapLayout = load(_pathToMap);
 
     static const std::map<int, std::pair<std::string, std::string>> keyMap = {
