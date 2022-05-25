@@ -17,6 +17,11 @@ Position::Position(Position const &position) :
 {
 }
 
+Position::Position() :
+ _x(0), _y(0), _z(0)
+{
+}
+
 Position::~Position()
 {
 }
