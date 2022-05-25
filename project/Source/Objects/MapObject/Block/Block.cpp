@@ -34,10 +34,10 @@ Object::Block::Block(MAP_OBJECTS const &type) :
     _blockDimensions(0, 0, 0)
 {
     _obj = {
-        {GROUND, {"Assets/models/dirt/wall_side.obj", "Assets/models/dirt/wall_side.png"}},
-        {WALL_MIDDLE, {"Assets/models/stone/box.obj", "Assets/models/stone/box.png"}},
-        {WALL_SIDE, {"Assets/models/stone/wall_side.obj", "Assets/models/stone/wall_side.png"}},
-        {BOX, {"Assets/models/dirt/box.obj", "Assets/models/dirt/box.png"}}
+        {GROUND, {"Ressources/Assets/models/dirt/wall_side.obj", "Ressources/Assets/models/dirt/wall_side.png"}},
+        {WALL_MIDDLE, {"Ressources/Assets/models/stone/box.obj", "Ressources/Assets/models/stone/box.png"}},
+        {WALL_SIDE, {"Ressources/Assets/models/stone/wall_side.obj", "Ressources/Assets/models/stone/wall_side.png"}},
+        {BOX, {"Ressources/Assets/models/dirt/box.obj", "Ressources/Assets/models/dirt/box.png"}}
     };
 
     _model = LoadModel(_obj[type].first.c_str());

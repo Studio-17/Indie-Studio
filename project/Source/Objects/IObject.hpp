@@ -10,8 +10,7 @@
 
     #include "Position.hpp"
 namespace Object {
-    class IObject
-    {
+    class IObject {
         public:
             virtual ~IObject() = default;
 
@@ -20,6 +19,9 @@ namespace Object {
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;
+
+        protected:
+        private:
     };
 }
 

@@ -10,6 +10,7 @@
 #include "MainMenuScene.hpp"
 #include "tools.hpp"
 #include "Core.hpp"
+#include "Map.hpp"
 
 Core::Core() : _settings(std::make_shared<Settings>(loadSettings("Conf/settings.conf"))), _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU)
@@ -33,13 +34,17 @@ void Core::loop()
 {
     while (!_settings->getWindow()->windowShouldClose() && _activeScene != Scene::Scenes::QUIT) {
         // _menuScenes.at(_activeScene)->run();
+
         _settings->getWindow()->startDrawing();
-            _activeScene = _menuScenes.at(_activeScene)->handelEvent();
+            _settings->getWindow()->clearBackground(DARKGRAY);
 
-            _settings->getWindow()->clearBackground(BLACK);
-            _menuScenes.at(_activeScene)->draw();
+            _settings->getCamera()->startMode3D();
 
-            // DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+                DrawLine3D((Vector3){-100, 0, 0}, (Vector3){100, 0, 0}, GREEN);     // X
+                DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
+                DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
+
+            _settings->getCamera()->endMode3D();
 
         _settings->getWindow()->endDrawing();
     }

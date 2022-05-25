@@ -33,14 +33,14 @@ Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene
     _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::settingsScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
 
     // MUSIC HANDLING
-    _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
-    _mainMusic->play();
-    _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
+    // _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
+    // _mainMusic->play();
+    // _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
 }
 
 Scene::MainMenuScene::~MainMenuScene()
 {
-    _mainMusic->stop();
+    // _mainMusic->stop();
 }
 
 void Scene::MainMenuScene::fadeBlack()

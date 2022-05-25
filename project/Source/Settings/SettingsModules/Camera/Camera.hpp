@@ -22,25 +22,13 @@ namespace RayLib
     class CinematicCamera
     {
         public:
-            CinematicCamera(Position position, Position target, CameraMode cameraMode, CameraProjection projection);
+            CinematicCamera();
             ~CinematicCamera();
 
             void updateCamera();
 
-            void setPosition(float x, float y, float z);
-            void setTarget(float x, float y, float z);
-
-            void setPosition(Position position);
-            void setTarget(Position target);
-
-            void movePosition(float x, float y, float z);
-            void moveTarget(float x, float y, float z);
-
-            void setUp(float x, float y, float z);
-            void setFieldOfView(float fov);
-
-            void setMode(CameraMode mode);
-            void setProjection(CameraProjection projection);
+            void startMode3D();
+            void endMode3D();
 
         protected:
         private:
