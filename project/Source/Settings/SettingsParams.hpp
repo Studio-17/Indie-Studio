@@ -20,6 +20,8 @@ class SettingsParams {
         SettingsParams();
         ~SettingsParams();
 
+        void loadFromData(std::string const &filepath);
+
         std::string _title;
         std::pair<float, float> _windowSize;
         float _audioVolume;

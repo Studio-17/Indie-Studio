@@ -11,9 +11,13 @@
 #include "tools.hpp"
 #include "Core.hpp"
 
-Core::Core() : _settings(std::make_shared<Settings>(loadSettings("Conf/settings.conf"))), _isRunning(true),
+Core::Core() : _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU)
 {
+    SettingsParams settingsParams;
+
+    settingsParams.loadFromData("Conf/settings.json");
+    _settings = std::make_shared<Settings>(settingsParams),
     loadMenuScenes();
 }
 
@@ -32,15 +36,11 @@ void Core::loadMenuScenes()
 void Core::loop()
 {
     while (!_settings->getWindow()->windowShouldClose()) {
-        // _menuScenes.at(_activeScene)->run();
         _settings->getWindow()->startDrawing();
             _activeScene = _menuScenes.at(_activeScene)->handelEvent();
 
             _settings->getWindow()->clearBackground(BLACK);
             _menuScenes.at(_activeScene)->draw();
-
-            // DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
         _settings->getWindow()->endDrawing();
     }
 }

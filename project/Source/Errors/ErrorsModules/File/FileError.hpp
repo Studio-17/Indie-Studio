@@ -2,14 +2,13 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** PositionError
+** FileError
 */
 
-#ifndef POSITIONERROR_HPP_
-    #define POSITIONERROR_HPP_
+#ifndef FILEERROR_HPP_
+    #define FILEERROR_HPP_
 
     #include "Errors.hpp"
-
 namespace Error {
     class FileError : public Errors {
         public:
@@ -18,4 +17,4 @@ namespace Error {
     };
 }
 
-#endif /* !POSITIONERROR_HPP_ */
+#endif /* !FILEERROR_HPP_ */

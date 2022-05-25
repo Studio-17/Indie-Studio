@@ -70,8 +70,8 @@ include_directories(
     Source/Objects/UIObject/
     Source/Objects/UIObject/Button/
     Source/Objects/UIObject/Text/
-    Source/Objects/MapObject/Ma    Source/Objects/MapObject/
-    p/
+    Source/Objects/MapObject/Map/
+    Source/Objects/MapObject/
     Source/Objects/MapObject/Block/
     Source/Scenes/
     Source/Scenes/GameScenes/
@@ -88,7 +88,14 @@ include_directories(
     Source/Map/
 )
 
+include(FetchContent)
+
+FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 add_executable(IndieStudio ${SOURCES})
+target_link_libraries(IndieStudio nlohmann_json::nlohmann_json)
+
 
 target_link_libraries(IndieStudio raylib)
 

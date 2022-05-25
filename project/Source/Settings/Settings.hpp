@@ -20,6 +20,7 @@
 class Settings {
     public:
         Settings(SettingsParams const &params);
+        Settings(std::string const &confpath);
         ~Settings();
 
         std::shared_ptr<RayLib::Window> getWindow();

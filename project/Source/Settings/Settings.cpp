@@ -16,6 +16,13 @@ Settings::Settings(SettingsParams const &params):
 {
 }
 
+Settings::Settings(std::string const &confpath)
+{
+    SettingsParams params;
+
+    params.loadFromData(confpath);
+}
+
 Settings::~Settings()
 {
 }
