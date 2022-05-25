@@ -14,7 +14,7 @@
 
 #include <map>
 
-#include "IObject.hpp"
+#include "IThreeDimensionObject.hpp"
 
 namespace Object
 {
@@ -26,7 +26,7 @@ namespace Object
         BONUS
     };
 
-    class Block : public IObject
+    class Block : public IThreeDimensionObject
     {
         public:
             Block(std::string const &pathToModel, std::string const &pathToTexture);

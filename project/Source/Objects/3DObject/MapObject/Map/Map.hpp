@@ -19,11 +19,11 @@
 #include "Block.hpp"
 
 
-#include "IObject.hpp"
+#include "IThreeDimensionObject.hpp"
 
 namespace Object
 {
-    class Map : public IObject
+    class Map : public IThreeDimensionObject
     {
         public:
             Map(std::string const &pathToFile);

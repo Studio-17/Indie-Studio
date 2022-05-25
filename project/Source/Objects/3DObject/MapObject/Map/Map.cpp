@@ -67,5 +67,3 @@ void Object::Map::process()
         tilePosition.z += 10.0f;
     }
 }
-
-// find(keyMap.at(line[col])) != _mapObjects.end()
