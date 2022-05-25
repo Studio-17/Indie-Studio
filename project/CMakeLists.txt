@@ -4,10 +4,8 @@ cmake_minimum_required(VERSION 3.17)
 project(IndieStudio VERSION 0.1.0)
 
 # specify the C++ standard
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-
-set(CMAKE_CXX_FLAGS "-W -Wall -Wextra")
 
 # include raylib into build
 include(cmake-modules/Findraylib.cmake)
@@ -30,6 +28,8 @@ file(GLOB SOURCES
     Source/Objects/UIObject/*.cpp
     Source/Objects/UIObject/Button/*.cpp
     Source/Objects/UIObject/Text/*.cpp
+    Source/Objects/MapObject/Map/*.cpp
+    Source/Objects/MapObject/Block/*.cpp
     Source/Scenes/*.cpp
     Source/Scenes/GameScenes/*.cpp
     Source/Scenes/NonGameScenes/*.cpp
@@ -42,11 +42,19 @@ file(GLOB SOURCES
     Source/Tools/*.cpp
     Source/Inputs/Keyboard/*.cpp
     Source/Inputs/Gamepad/*.cpp
+    Source/Map/*.cpp
 )
 
 # specify the headers
 include_directories(
     Source/
+    Source/Errors/
+    Source/Errors/ErrorsModules/
+    Source/Objects/
+    Source/Objects/UIOject/
+    Source/Objects/UIOject/Button/
+    Source/Objects/UIOject/Text/
+    Source/Scenes/
     Source/Audio/
     Source/Audio/Music/
     Source/Audio/Sound/
@@ -62,6 +70,9 @@ include_directories(
     Source/Objects/UIObject/
     Source/Objects/UIObject/Button/
     Source/Objects/UIObject/Text/
+    Source/Objects/MapObject/Ma    Source/Objects/MapObject/
+    p/
+    Source/Objects/MapObject/Block/
     Source/Scenes/
     Source/Scenes/GameScenes/
     Source/Scenes/NonGameScenes/
@@ -74,6 +85,7 @@ include_directories(
     Source/Tools/
     Source/Inputs/Keyboard/
     Source/Inputs/Gamepad/
+    Source/Map/
 )
 
 add_executable(IndieStudio ${SOURCES})

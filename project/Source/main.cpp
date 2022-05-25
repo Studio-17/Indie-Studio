@@ -6,11 +6,12 @@
 */
 
 #include "Core.hpp"
+#include "Core.hpp"
 
 int main(void)
 {
     Core core;
-  
+
     core.loop();
     return 0;
 }
