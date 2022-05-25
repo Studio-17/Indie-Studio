@@ -25,12 +25,12 @@ void Scene::MainMenuScene::newGameScene(void)
     _nextScene = Scene::Scenes::GAME;
 }
 
-Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
- _isRunning(true), _nextScene(Scene::Scenes::MAIN_MENU)
+Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
     _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::newGameScene, this), "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
     _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::exitScene, this),"Save/assets_sound_Click.ogg", Position(700, 500, 0)));
     _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::settingsScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
+    _nextScene = Scene::Scenes::MAIN_MENU;
 
     // MUSIC HANDLING
     // _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");

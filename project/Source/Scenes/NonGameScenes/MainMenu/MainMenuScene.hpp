@@ -31,11 +31,11 @@ namespace Scene {
 
         protected:
         private:
-            bool _isRunning;
-            Scene::Scenes _nextScene;
+            // bool _isRunning;
+            // Scene::Scenes _nextScene;
 
-            std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
-            std::unique_ptr<MyMusic> _mainMusic;
+            // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
+            // std::unique_ptr<MyMusic> _mainMusic;
 
 
 
