@@ -32,10 +32,15 @@ void Object::Map::createFile(const std::string &filename)
 
 void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
 {
+    if ((width % 2) == 0 && (height % 2) == 0)
+        throw Error::FileError("Height and Width are not compatible !");
     createFile(filename);
     for (size_t x = 0; x < height; x++) {
         for (size_t y = 0; y < width; y++) {
-            _file << "X";
+            if (x % 2 && y % 2)
+                _file << "x";
+            else
+                _file << " ";
         }
         _file << std::endl;
     }

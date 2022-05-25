@@ -70,8 +70,7 @@ include_directories(
     Source/Objects/UIObject/
     Source/Objects/UIObject/Button/
     Source/Objects/UIObject/Text/
-    Source/Objects/MapObject/Ma    Source/Objects/MapObject/
-    p/
+    Source/Objects/MapObject/Map/
     Source/Objects/MapObject/Block/
     Source/Scenes/
     Source/Scenes/GameScenes/

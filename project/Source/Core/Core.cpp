@@ -10,6 +10,7 @@
 #include "MainMenuScene.hpp"
 #include "tools.hpp"
 #include "Core.hpp"
+#include "Map.hpp"
 
 Core::Core() : _settings(std::make_shared<Settings>(loadSettings("Conf/settings.conf"))), _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU)
@@ -31,8 +32,11 @@ void Core::loadMenuScenes()
 
 void Core::loop()
 {
+    // Object::Map map("Ressources/Maps/Basics/13x9.map");
+    // map.generate("Ressources/Maps/Basics/random.map", 11, 11);
     while (!_settings->getWindow()->windowShouldClose()) {
         // _menuScenes.at(_activeScene)->run();
+
         _settings->getWindow()->startDrawing();
             _activeScene = _menuScenes.at(_activeScene)->handelEvent();
 
