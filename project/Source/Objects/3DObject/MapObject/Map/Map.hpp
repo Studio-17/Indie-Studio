@@ -16,37 +16,48 @@
 #include "Errors/Errors.hpp"
 #include "Errors/ErrorsModules/File/FileError.hpp"
 
-#include "Block.hpp"
+#include "Objects/3DObject/MapObject/Block/Block.hpp"
 
-
-#include "IObject.hpp"
+#include "Objects/IObject.hpp"
 
 namespace Object
 {
+    enum class MAP_OBJECTS {
+        GROUND = 0,
+        WALL_MIDDLE,
+        WALL_SIDE,
+        BOX,
+        BONUS
+    };
+
     class Map : public IObject
     {
         public:
-            Map(std::string const &pathToFile);
-            Map(std::string const &pathToFile, Position const &position);
-            ~Map() override;
+            Map();
+            Map(Position const &position);
 
-            void draw() override;
+            ~Map();
+
+            void draw();
 
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
 
             std::vector<std::string> load(std::string const &pathToFile);
-            void process();
+            void process(std::string const &pathToFile);
 
-            void generate();
+            void generate(const std::string &filename, std::size_t width, std::size_t height);
+
+            void createFile(const std::string &filename);
 
         protected:
         private:
-            std::vector<Block> _mapObjects;
+            std::vector<Object::Block> _mapObjects;
             Position _mapPosition = {0, 0, 0};
 
             std::string _pathToMap;
+            std::ofstream _file;
     };
 }
 

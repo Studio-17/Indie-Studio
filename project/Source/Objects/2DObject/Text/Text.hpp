@@ -12,10 +12,10 @@
 
     #include <string>
 
-    #include "IUIObject.hpp"
+    #include "ITwoDimensionObject.hpp"
 
 namespace Object {
-    class Text : public IUIObject {
+    class Text : public ITwoDimensionObject {
         public:
             Text(std::string const &filename, std::string const &text, Position const &position);
             Text(std::string const &filename, std::string const &text, Color const &color, Position const &position = {0, 0});
