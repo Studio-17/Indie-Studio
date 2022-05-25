@@ -29,21 +29,32 @@ void Object::Map::createFile(const std::string &filename)
     }
 }
 
+void Object::Map::printLine(std::size_t height)
+{
+    for (size_t one = 0; one < height + 2; one++) {
+        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
+    }
+    _file << std::endl;
+}
+
 void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
 {
-    if ((width % 2) == 0 && (height % 2) == 0)
-        throw Error::FileError("Height and Width are not compatible !");
+    if ((width % 2) == 0 || (height % 2) == 0)
+        throw Error::Errors("Height and Width are not compatible !");
     createFile(filename);
+    printLine(height);
     for (size_t x = 0; x < height; x++) {
+        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
         for (size_t y = 0; y < width; y++) {
             if (x % 2 && y % 2)
-                _file << "x";
+                _file << static_cast<char>(MAP_OBJECTS::WALL_MIDDLE);
             else
                 _file << " ";
         }
+        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
         _file << std::endl;
     }
-
+    printLine(height);
 }
 
 void Object::Map::draw()
