@@ -27,23 +27,24 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
     // _menuScenes.emplace(Scene::Scenes::SPLASH_SCREEN, std::make_shared<Scene::SplashScreenScene>());
     // _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>());
-    //rajouter toutes les scènes des menus
 }
 
 void Core::loop()
 {
-    // Object::Map map("Ressources/Maps/Basics/13x9.map");
-    // map.generate("Ressources/Maps/Basics/random.map", 11, 11);
+
     while (!_settings->getWindow()->windowShouldClose()) {
         // _menuScenes.at(_activeScene)->run();
 
         _settings->getWindow()->startDrawing();
-            _activeScene = _menuScenes.at(_activeScene)->handelEvent();
+            _settings->getWindow()->clearBackground(DARKGRAY);
 
-            _settings->getWindow()->clearBackground(BLACK);
-            _menuScenes.at(_activeScene)->draw();
+            _settings->getCamera()->startMode3D();
 
-            // DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+                DrawLine3D((Vector3){-100, 0, 0}, (Vector3){100, 0, 0}, GREEN);     // X
+                DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
+                DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
+
+            _settings->getCamera()->endMode3D();
 
         _settings->getWindow()->endDrawing();
     }
