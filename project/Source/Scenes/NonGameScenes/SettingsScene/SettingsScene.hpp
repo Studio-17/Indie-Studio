@@ -12,6 +12,7 @@
     #include <map>
     #include "AScene.hpp"
     #include "Music.hpp"
+    #include "Map.hpp"
 /**
  * @brief The settings scene of the game
  * 
@@ -32,6 +33,8 @@ namespace Scene {
 
         protected:
         private:
+            std::unique_ptr<Object::Map> _gameMap;
+
             // bool _isRunning;
             // Scene::Scenes _nextScene;
 

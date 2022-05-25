@@ -33,6 +33,9 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
 {
     _buttons.emplace(Scene::BUTTONSNAME::MAIN_MENU, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
+    _gameMap = std::make_unique<Object::Map>();
+    _gameMap->generate("Ressources/Maps/Basics/random.map", 11, 11);
+    _gameMap->process("Ressources/Maps/Basics/random.map");
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -54,17 +57,13 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
 
 void Scene::SettingsScene::draw()
 {
-    Object::Map map;
-    map.generate("Ressources/Maps/Basics/random.map", 11, 11);
-    map.process("Ressources/Maps/Basics/random.map");
-
     _settings->getCamera()->startMode3D();
 
         DrawLine3D((Vector3){-100, 0, 0}, (Vector3){100, 0, 0}, GREEN);     // X
         DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
         DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
 
-        map.draw();
+        _gameMap->draw();
 
     _settings->getCamera()->endMode3D();
 
