@@ -15,9 +15,18 @@
     #include "IObject.hpp"
     // #include "IAudio.hpp"
     #include "Settings.hpp"
+    #include "Button.hpp"
 
 namespace Scene
 {
+
+    enum class BUTTONSNAME {
+        NEWGAME,
+        LOADGAME,
+        EXIT,
+        SETTINGS
+    };
+
     /**
      * @brief Abstract class of the scenes of the game
      */
@@ -26,7 +35,6 @@ namespace Scene
             AScene(std::shared_ptr<Settings> settings);
             virtual ~AScene() = default;
 
-            virtual Scenes run() = 0;
             virtual void fadeBlack() = 0;
             virtual Scenes handelEvent() = 0;
 

@@ -38,12 +38,6 @@ namespace Scene
     class IScene {
         public:
             virtual ~IScene() = default;
-            /**
-             * @brief Function to call to make the scene run
-             * 
-             * @return Scenes
-             */
-            virtual Scenes run() = 0;
 
             /**
              * @brief Fade the end of the scene in black
