@@ -44,7 +44,7 @@ std::vector<std::string> Map::load(const std::string &filename)
 
     if (_map.empty()) {
         if (!f.is_open())
-            throw Error::Errors(std::cerr, "File " + filename + " doesn't exist");
+            throw Error::Errors("File " + filename + " doesn't exist");
         while (std::getline(f, tmp))
             _map.push_back(tmp);
         f.close();

@@ -28,6 +28,8 @@ file(GLOB SOURCES
     Source/Objects/UIObject/*.cpp
     Source/Objects/UIObject/Button/*.cpp
     Source/Objects/UIObject/Text/*.cpp
+    Source/Objects/MapObject/Map/*.cpp
+    Source/Objects/MapObject/Block/*.cpp
     Source/Scenes/*.cpp
     Source/Scenes/GameScenes/*.cpp
     Source/Scenes/NonGameScenes/*.cpp
@@ -68,6 +70,9 @@ include_directories(
     Source/Objects/UIObject/
     Source/Objects/UIObject/Button/
     Source/Objects/UIObject/Text/
+    Source/Objects/MapObject/Ma    Source/Objects/MapObject/
+    p/
+    Source/Objects/MapObject/Block/
     Source/Scenes/
     Source/Scenes/GameScenes/
     Source/Scenes/NonGameScenes/

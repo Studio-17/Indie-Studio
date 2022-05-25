@@ -7,7 +7,8 @@
 
 #include "Core.hpp"
 
-#include "Map.hpp"
+#include "Objects/MapObject/Map/Map.hpp"
+#include "Objects/MapObject/Block/Block.hpp"
 
 int main(void)
 {
@@ -28,8 +29,8 @@ int main(void)
 
     SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
 
-    Map map;
-    std::vector<std::string> gameMap = map.load("Assets/Maps/map.txt");
+    Object::Map map("Assets/Maps/map.txt");
+    map.process();
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -52,7 +53,7 @@ int main(void)
                 DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
                 DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
 
-                map.render(gameMap);
+                map.draw();
 
             EndMode3D();
 
