@@ -9,20 +9,27 @@
 #include <functional>
 
 #include <iostream>
-void Scene::MainMenuScene::testFunction()
+static void testFunction(void)
 {
     std::cout << "in test function" << std::endl;
 }
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
- _isRunning(true), _scenes(Scene::Scenes::MAIN_MENU),_button("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 300, 0)),
- _button2("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 500, 0)),
- _button3("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 800, 0))
+ _isRunning(true), _scenes(Scene::Scenes::MAIN_MENU)
 {
+    _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
+    _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 500, 0)));
+    _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, "Save/assets_sound_Click.ogg", Position(700, 800, 0)));
+
+    // MUSIC HANDLING
+    // _mainMusic = std::make_unique<MyMusic>("Save/music.mp3");
+    // _mainMusic->play();
+    // _mainMusic->setVolume(_settings->getAudio()->getAudioVolume());
 }
 
 Scene::MainMenuScene::~MainMenuScene()
 {
+    // _mainMusic->stop();
 }
 
 Scene::Scenes Scene::MainMenuScene::run()
@@ -31,6 +38,7 @@ Scene::Scenes Scene::MainMenuScene::run()
         handelEvent();
         draw();
     }
+    return Scene::Scenes::MAIN_MENU;
 }
 
 void Scene::MainMenuScene::fadeBlack()
@@ -40,28 +48,13 @@ void Scene::MainMenuScene::fadeBlack()
 
 Scene::Scenes Scene::MainMenuScene::handelEvent()
 {
-    _button.checkHover(GetMousePosition());
-    _button2.checkHover(GetMousePosition());
-    _button3.checkHover(GetMousePosition());
-
-    // for (auto it : _buttons) {
-        // it.second.checkHover(GetMousePosition());
-    // }
-
+    for (auto &[type, button] : _buttons)
+        button->checkHover(GetMousePosition());
     return Scene::Scenes::MAIN_MENU;
 }
 
-#include <raylib.h>
-#include <iostream>
 void Scene::MainMenuScene::draw()
 {
-    // for (auto &iterator : _objects) {
-        // std::cout << "in the row" << std::endl;
-    // }
-    _button.draw();
-    _button2.draw();
-    _button3.draw();
-    // for (auto it : _buttons) {
-        // it.second.draw();
-    // }
+    for (auto &[type, button] : _buttons)
+        button->draw();
 }
