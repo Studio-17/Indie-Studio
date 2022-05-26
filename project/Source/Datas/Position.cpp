@@ -178,3 +178,9 @@ float Position::getZ() const
 {
     return _z;
 }
+
+std::ostream &operator<<(std::ostream& os, const Position& position)
+{
+    os << position.getX() << " " << position.getY() << " " << position.getZ();
+    return os;
+}

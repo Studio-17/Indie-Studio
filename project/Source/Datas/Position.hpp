@@ -9,6 +9,7 @@
     #define POSITION_HPP_
 
     #include <vector>
+    #include <ostream>
 
     #include "PositionError.hpp"
 
@@ -198,11 +199,12 @@ class Position {
          */
         float getZ() const;
 
-
     private:
         float _x; ///< position x
         float _y; ///< position y
         float _z; ///< position z
 };
+
+std::ostream &operator<<(std::ostream &, const Position &);
 
 #endif /* !POSITION_HPP_ */
