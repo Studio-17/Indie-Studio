@@ -27,11 +27,11 @@ namespace Object {
 
             void draw() override;
 
-            void handleEvent(std::shared_ptr<Settings> settings) override;
-
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
+
+            void setCallBack(std::function<void(void)> callBack);
 
             bool onClick();
             bool onHover();

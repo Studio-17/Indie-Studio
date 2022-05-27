@@ -18,8 +18,6 @@ namespace Object
 
             virtual void draw() = 0;
 
-            virtual void handleEvent(std::shared_ptr<Settings> settings) = 0;
-
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;

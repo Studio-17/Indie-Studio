@@ -13,6 +13,11 @@ Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources
 
 }
 
+Object::Block::Block(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData), _type("block")
+{
+
+}
+
 Object::Block::~Block()
 {
 }

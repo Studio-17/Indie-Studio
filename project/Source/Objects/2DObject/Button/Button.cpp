@@ -52,11 +52,6 @@ void Object::Button::draw()
     DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
 }
 
-void Object::Button::handleEvent(std::shared_ptr<Settings> settings)
-{
-
-}
-
 void Object::Button::setPosition(Position const &position)
 {
     _position = position;
@@ -70,6 +65,11 @@ void Object::Button::setPosition(float x, float y)
 void Object::Button::setPosition(float x, float y, float z)
 {
     _position.setPosition(x, y, z);
+}
+
+void Object::Button::setCallBack(std::function<void(void)> callBack)
+{
+    _callBack = callBack;
 }
 
 bool Object::Button::onClick()
@@ -97,7 +97,8 @@ void Object::Button::checkHover(Vector2 const &mousePosition)
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
             if (_isAudio)
                 _audio.play();
-            _callBack();
+            if (_callBack)
+                _callBack();
         }
     }
     else

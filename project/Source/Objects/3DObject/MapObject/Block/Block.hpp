@@ -21,6 +21,7 @@ namespace Object
     {
         public:
             Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
+            Block(nlohmann::json const &jsonData);
             ~Block() override;
 
             void draw() override;
