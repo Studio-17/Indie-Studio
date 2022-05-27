@@ -90,27 +90,39 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
         {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/block/box.obj", "Ressources/models/block/dirt/box.png"}}
     };
-
     static const float blockSize = 10.0f;
 
-    Vector3 tilePosition = {0, 0, 0};
+    srand(time(NULL));
 
-    for (auto &line : mapLayout) {
+    _mapDimensions.setX(mapLayout[0].size() * blockSize);
+    _mapDimensions.setY(mapLayout.size() * blockSize);
+
+    Vector3 tilePosition = {0, 0, -65};
+
+    for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
         tilePosition.x = blockSize;
-        for (std::size_t col = 0; col < line.size(); col++) {
-            if (line[col] == 'X')
+        for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
+            if (mapLayout.at(line).at(col) == 'X')
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::WALL_SIDE),
                     (Position){tilePosition.x, tilePosition.y - 10, tilePosition.z});
+            else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
+                if (((rand() % 8) + 1) != 1) {
+                    _mapObjects.emplace_back(
+                        keyMap.at(MAP_OBJECTS::BOX),
+                        (Position){tilePosition.x, tilePosition.y, tilePosition.z});
+                }
+            }
+
+            if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
+                _mapObjects.emplace_back(
+                    keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))),
+                    (Position){tilePosition.x, tilePosition.y, tilePosition.z});
             else
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::GROUND),
                     (Position){tilePosition.x, tilePosition.y - (blockSize - 1), tilePosition.z});
 
-            if (keyMap.find(static_cast<MAP_OBJECTS>(line[col])) != keyMap.end())
-                _mapObjects.emplace_back(
-                    keyMap.at(static_cast<MAP_OBJECTS>(line[col])),
-                    (Position){tilePosition.x, tilePosition.y, tilePosition.z});
             tilePosition.x += blockSize;
         }
         tilePosition.z += blockSize;

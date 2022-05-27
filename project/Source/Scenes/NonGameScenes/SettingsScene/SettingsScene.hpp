@@ -10,9 +10,11 @@
 
     #include <vector>
     #include <map>
+
     #include "AScene.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
+    #include "Player.hpp"
 /**
  * @brief The settings scene of the game
  * 
@@ -34,6 +36,8 @@ namespace Scene {
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;
+            std::unique_ptr<Object::Player> _playerOne;
+            std::unique_ptr<Object::Player> _playerTwo;
 
             // bool _isRunning;
             // Scene::Scenes _nextScene;
