@@ -9,6 +9,7 @@
     #define POSITION_HPP_
 
     #include <vector>
+    #include <array>
 
     #include "PositionError.hpp"
 
@@ -56,6 +57,7 @@ class Position {
          * @param position Position object from where we copy x, y, z value
          * @return Position& himself
          */
+        void setFromArray(std::array<float, 3> const &position);
         Position &operator =(Position const &position);
         /**
          * @brief Set x, y, z from a value

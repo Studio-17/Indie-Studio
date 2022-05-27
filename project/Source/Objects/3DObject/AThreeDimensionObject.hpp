@@ -31,6 +31,8 @@ namespace Object
 
         virtual void draw() = 0;
 
+        void handleEvent(std::shared_ptr<Settings> settings) override {};
+
         void setPosition(Position const &position) override { _position = position; };
         void setPosition(float x, float y) override
         {

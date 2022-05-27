@@ -5,6 +5,7 @@
 ** Text
 */
 
+#include "tools.hpp"
 #include "Text.hpp"
 
 Object::Text::Text(std::string const &filename, std::string const &text, Position const &position) :
@@ -25,6 +26,15 @@ Object::Text::Text(std::string const &filename, std::string const &text, int fon
 
 }
 
+Object::Text::Text(nlohmann::json const &jsonData)
+{
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _font = LoadFont(jsonData.value("font", "default").c_str());
+    _color = createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})));
+    _text = jsonData.value("text", "");
+    _fontSize = jsonData.value("fontSize", 20);
+}
+
 Object::Text::~Text()
 {
     UnloadFont(_font);
@@ -33,6 +43,10 @@ Object::Text::~Text()
 void Object::Text::draw()
 {
     DrawText(_text.c_str(), _position.getX(), _position.getY(), _fontSize, _color);
+}
+
+void Object::Text::handleEvent(std::shared_ptr<Settings> settings)
+{
 }
 
 void Object::Text::setPosition(Position const &position)
