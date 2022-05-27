@@ -34,8 +34,8 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _buttons.emplace(Scene::BUTTONSNAME::MAIN_MENU, std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
-    _gameMap->generate("Ressources/Maps/Basics/random.map", 11, 11);
-    _gameMap->process("Ressources/Maps/Basics/random.map");
+    // _gameMap->generate("Ressources/Maps/Basics/random.map", 11, 11);
+    // _gameMap->process("Ressources/Maps/Basics/random.map");
     _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/blue.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
     _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/red.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
 }

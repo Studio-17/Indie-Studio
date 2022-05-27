@@ -25,7 +25,7 @@ void Object::Map::createFile(const std::string &filename)
     _file.open(filename, std::ios::out);
     if (!_file) {
         _file.close();
-        throw Error::FileError("file failed to open");
+        throw Error::FileError("file failed to open " + filename);
     }
 }
 
