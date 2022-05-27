@@ -39,19 +39,19 @@ jobs:
 
 
   # This workflow contains a single job called "VisualStudio2022"
-  VisualStudio2022:
+  # VisualStudio2022:
     # The type of runner that the job will run on
-    runs-on: windows-2022
+    # runs-on: windows-2022
 
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    # steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      # - uses: actions/checkout@v3
 
     # Runs a bash file that builds the projet using CMake
-      - name: Build under VS2022
-        run: |
-          Get-Help
+      # - name: Build under VS2022
+        # run: |
+          # Get-Help
 
 
   # This workflow contains a job called "EpitechPromo2025"
@@ -59,7 +59,7 @@ jobs:
     # This job requires GithubPrerequisites AND AnsiblePlaybook successful run to push
     needs:
       - DockerEpitech
-      - VisualStudio2022
+      # - VisualStudio2022
 
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
