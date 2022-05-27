@@ -36,10 +36,6 @@ void Core::loadMenuScenes()
 
 void Core::loop()
 {
-    Object::Map map;
-    // map.generate("Ressources/Maps/Basics/random.map", 11, 11);
-    map.process("Ressources/Maps/Basics/random.map");
-
     while (!_settings->getWindow()->windowShouldClose()) {
         _settings->getWindow()->startDrawing();
             _settings->getWindow()->clearBackground(DARKGRAY);
