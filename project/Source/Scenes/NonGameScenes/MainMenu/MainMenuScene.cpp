@@ -72,12 +72,8 @@ Scene::Scenes Scene::MainMenuScene::handelEvent()
 
 void Scene::MainMenuScene::draw()
 {
-<<<<<<< HEAD
-    for (auto button : _objects)
-=======
     _imageBackground->draw();
-    for (auto &[type, button] : _buttons)
->>>>>>> master
+    for (auto button : _objects)
         button->draw();
 
     // for (auto &[type, button] : _buttons)

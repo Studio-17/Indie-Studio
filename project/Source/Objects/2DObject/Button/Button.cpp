@@ -56,7 +56,7 @@ void Object::Button::draw()
 
 void Object::Button::handleEvent(std::shared_ptr<Settings> settings)
 {
-    
+
 }
 
 void Object::Button::setPosition(Position const &position)

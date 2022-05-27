@@ -25,7 +25,7 @@ void Object::Map::createFile(const std::string &filename)
     _file.open(filename, std::ios::out);
     if (!_file) {
         _file.close();
-        throw Error::FileError("file failed to open");
+        throw Error::FileError("file failed to open " + filename);
     }
 }
 
@@ -88,7 +88,7 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/models/block/stone/box.obj", "Ressources/models/block/stone/box.png"}},
         {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
-        {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/block/box.obj", "Ressources/models/block/dirt/box.png"}}
+        {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}}
     };
     static const float blockSize = 10.0f;
 
