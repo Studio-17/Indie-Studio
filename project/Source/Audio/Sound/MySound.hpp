@@ -23,6 +23,7 @@ class MySound : public IAudio {
         MySound() {};
         ~MySound();
         // Sound management functions
+        MySound &operator =(std::string const &filename);
         void play() override;                       // Play a sound
         void stop() override;                       // Stop playing a sound
         void pause() override;                      // Pause a sound

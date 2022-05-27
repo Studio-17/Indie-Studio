@@ -20,13 +20,14 @@ namespace Object {
             Text(std::string const &filename, std::string const &text, Position const &position);
             Text(std::string const &filename, std::string const &text, Color const &color, Position const &position = {0, 0});
             Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position = {0, 0});
+            Text(nlohmann::json const &jsonData);
 
             ~Text();
 
-            void loadFont(std::string const &filename);
-
             void draw() override;
             void drawFramePerSeconds(Position const &position);
+
+            void handleEvent(std::shared_ptr<Settings> settings) override;
 
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;

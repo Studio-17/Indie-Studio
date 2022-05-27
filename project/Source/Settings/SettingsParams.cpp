@@ -29,7 +29,7 @@ void SettingsParams::loadFromData(std::string const &filepath)
         std::cerr << e.what() << std::endl;
         return;
     }
-
+    std::cout << "settings: "<< jsonData << std::endl;
     _title = jsonData.value("title", "Raylib project");
     _windowSize = jsonData.value("windowSize", std::pair<float, float>(1920, 1080));
     _audioVolume = jsonData.value("audioVolume", 100);

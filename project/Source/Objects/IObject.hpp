@@ -8,7 +8,13 @@
 #ifndef IOBJECT_HPP_
     #define IOBJECT_HPP_
 
+    #include <memory>
+
+    #include <nlohmann/json.hpp>
+
+    #include "Settings.hpp"
     #include "Position.hpp"
+
 namespace Object {
     class IObject {
         public:
@@ -19,6 +25,8 @@ namespace Object {
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;
+
+            virtual void handleEvent(std::shared_ptr<Settings> settings) = 0;
 
         protected:
         private:

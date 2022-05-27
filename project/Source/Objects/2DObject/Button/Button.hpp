@@ -22,9 +22,12 @@ namespace Object {
             Button(std::string const &buttonPath, int nbFrame, Position const &position = {0, 0});
             // Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position = {0, 0});
             Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position = {0, 0});
+            Button(nlohmann::json const &jsonData);
             ~Button() override;
 
             void draw() override;
+
+            void handleEvent(std::shared_ptr<Settings> settings) override;
 
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
