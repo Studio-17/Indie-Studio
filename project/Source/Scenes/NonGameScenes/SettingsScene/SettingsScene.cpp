@@ -36,6 +36,8 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap = std::make_unique<Object::Map>();
     _gameMap->generate("Ressources/Maps/Basics/random.map", 11, 11);
     _gameMap->process("Ressources/Maps/Basics/random.map");
+    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/blue.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
+    _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/red.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -52,6 +54,14 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &[type, button] : _buttons)
         button->checkHover(GetMousePosition());
+    if (IsKeyDown(KEY_UP))
+        _playerOne->moveUp();
+    if (IsKeyDown(KEY_DOWN))
+        _playerOne->moveDown();
+    if (IsKeyDown(KEY_LEFT))
+        _playerOne->moveLeft();
+    if (IsKeyDown(KEY_RIGHT))
+        _playerOne->moveRight();
     return _nextScene;
 }
 
@@ -64,6 +74,12 @@ void Scene::SettingsScene::draw()
         DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
 
         _gameMap->draw();
+        _playerOne->setScale(8.0f);
+        _playerOne->draw();
+
+        _playerTwo->setScale(8.0f);
+        _playerTwo->setPosition(10, 0, 0);
+        _playerTwo->draw();
 
     _settings->getCamera()->endMode3D();
 
