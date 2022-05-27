@@ -6,15 +6,14 @@
 */
 
 #ifndef BLOCK_HPP_
-#define BLOCK_HPP_
+    #define BLOCK_HPP_
 
-#include "raylib.h"
+    #include <raylib.h>
 
-#include <memory>
+    #include <memory>
+    #include <map>
 
-#include <map>
-
-#include "Objects/3DObject/AThreeDimensionObject.hpp"
+    #include "AThreeDimensionObject.hpp"
 
 namespace Object
 {

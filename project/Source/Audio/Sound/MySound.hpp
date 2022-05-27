@@ -8,28 +8,26 @@
 #ifndef MYSOUND_HPP_
     #define MYSOUND_HPP_
 
+    #include <raylib.h>
+
     #include <string>
-    #include <any>
-    #include <utility>
-
-
-    #include "raylib.h"
 
     #include "IAudio.hpp"
 
 class MySound : public IAudio {
     public:
         MySound(std::string const &filename);
-        MySound() {};
+        MySound();
         ~MySound();
-        // Sound management functions
+
         MySound &operator =(std::string const &filename);
-        void play() override;                       // Play a sound
-        void stop() override;                       // Stop playing a sound
-        void pause() override;                      // Pause a sound
-        void resume() override;                     // Resume a paused sound
-        bool isPlaying() override;                  // Check if a sound is currently playing
-        void setVolume(float volume) override;      // Set volume for a sound (1.0 is max level)
+
+        void play() override;
+        void stop() override;
+        void pause() override;
+        void resume() override;
+        bool isPlaying() const override;
+        void setVolume(float volume) override;
     protected:
     private:
         Sound _sound;

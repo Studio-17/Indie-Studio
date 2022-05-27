@@ -11,6 +11,7 @@
 
 #include "Button.hpp"
 #include "Text.hpp"
+#include "Image.hpp"
 
 #include "tools.hpp"
 #include "FileError.hpp"
@@ -29,6 +30,7 @@ std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &file
     std::map<std::string, std::shared_ptr<Object::IObject> (*)(nlohmann::json const &jsonData)> allConstruct {
         {"button", takeComponent<Object::Button>},
         {"text", takeComponent<Object::Text>},
+        {"image", takeComponent<Object::Image>}
     };
 
     try {
@@ -39,6 +41,7 @@ std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &file
     }
     std::cout << jsonData.size() << std::endl;
     for (auto oneData : jsonData) {
+        std::cout << oneData << std::endl;
         std::string type = oneData.value("type", "default");
         std::function<std::shared_ptr<Object::IObject>(nlohmann::json const &jsonData)> func;
 
@@ -51,5 +54,6 @@ std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &file
         }
         objects.emplace_back(func(oneData));
     }
+    std::cout << objects.size() << std::endl;
     return objects;
 }

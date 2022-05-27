@@ -6,39 +6,33 @@
 */
 
 #ifndef ATHREEDIMENSIONOBJECT_HPP_
-#define ATHREEDIMENSIONOBJECT_HPP_
+    #define ATHREEDIMENSIONOBJECT_HPP_
 
-#include "raylib.h"
+    #include <raylib.h>
 
-#include "IThreeDimensionObject.hpp"
+    #include "IThreeDimensionObject.hpp"
 
 namespace Object
 {
     class AThreeDimensionObject : public IThreeDimensionObject
     {
     public:
-        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : _position(position)
+        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : _position(position),
+            _model(LoadModel(pathToRessources.first.c_str())),
+            _texture(LoadTexture(pathToRessources.second.c_str())),
+            _isAnimated(false), _scale(0.5f)
         {
-            _model = LoadModel(pathToRessources.first.c_str());
-            _texture = LoadTexture(pathToRessources.second.c_str());
-
             _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
-
-            _isAnimated = false;
-            _scale = 0.5f;
         };
 
-        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position)
+        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position),
+            _model(LoadModel(pathToRessources.first.c_str())),
+            _texture(LoadTexture(pathToRessources.second.c_str())),
+            _animsCount(nbAnimation),
+            _anims(LoadModelAnimations(pathToAnimation.c_str(), &_animsCount)),
+            _isAnimated(true)
         {
-            _model = LoadModel(pathToRessources.first.c_str());
-            _texture = LoadTexture(pathToRessources.second.c_str());
-
             SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
-
-            _animsCount = nbAnimation;
-            _anims = LoadModelAnimations(pathToAnimation.c_str(), &_animsCount);
-
-            _isAnimated = true;
         };
 
         virtual ~AThreeDimensionObject() = default;

@@ -10,42 +10,40 @@
 #include "Button.hpp"
 
 Object::Button::Button(std::string const &buttonPath, int nbFrame, Position const &position) :
-    _nbFrame(nbFrame), _state(Default), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _isAudio(false)
+    _nbFrame(nbFrame), _state(Default), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _isAudio(false),
+    _sourceRec({ 0, 0, (float)_buttonTexture.width, _frameHeight }),
+    _buttonRect({ _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame})
 {
-    _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
-    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
 }
 
 Object::Button::Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position) :
-    _nbFrame(nbFrame), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _audio(audioPath), _isAudio(true), _callBack(callBack)
+    _nbFrame(nbFrame), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _audio(audioPath), _isAudio(true), _callBack(callBack),
+    _sourceRec({ 0, 0, (float)_buttonTexture.width, _frameHeight }),
+    _buttonRect({ _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame})
 {
-    _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
-    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
-
 }
 
-Object::Button::Button(nlohmann::json const &jsonData)
+Object::Button::Button(nlohmann::json const &jsonData) :
+    _nbFrame(jsonData.value("nbFrame", 1)),
+    _state(Default),
+    _buttonTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
+    _frameHeight(_buttonTexture.height / _nbFrame),
+    _isAudio(false)
 {
-    _nbFrame = jsonData.value("nbFrame", 1);
-    _state = Default;
     _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
-    _buttonTexture = LoadTexture(jsonData.value("texture", "default").c_str());
-    _frameHeight = _buttonTexture.height / _nbFrame;
+    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, _frameHeight};
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
-    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
-
-    _isAudio = true;
     try {
         _audio = jsonData.value("audio", "default");
+        _isAudio = true;
     } catch (Error::AudioError const &) {
         _isAudio = false;
     }
-    // std::function<void(void)> _callBack;
 }
 
 Object::Button::~Button()
 {
-    UnloadTexture(_buttonTexture);  // Unload button texture
+    UnloadTexture(_buttonTexture);
 }
 
 void Object::Button::draw()

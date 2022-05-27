@@ -7,52 +7,61 @@
 
 #include "Gamepad.hpp"
 
-bool Gamepad::isAvailable(int gamepad)
+Gamepad::Gamepad()
+{
+}
+
+Gamepad::~Gamepad()
+{
+}
+
+
+bool Gamepad::isAvailable(int gamepad) const
 {
     return IsGamepadAvailable(gamepad);
 }
 
-std::string Gamepad::getName(int gamepad)
+std::string Gamepad::getName(int gamepad) const
 {
     return GetGamepadName(gamepad);
 }
 
-bool Gamepad::isButtonPressed(int gamepad, int button)
+bool Gamepad::isButtonPressed(int gamepad, int button) const
 {
     return IsGamepadButtonPressed(gamepad, button);
 }
 
-bool Gamepad::isButtonDown(int gamepad, int button)
+bool Gamepad::isButtonDown(int gamepad, int button) const
 {
     return IsGamepadButtonDown(gamepad, button);
 }
 
-bool Gamepad::isButtonReleased(int gamepad, int button)
+bool Gamepad::isButtonReleased(int gamepad, int button) const
 {
     return IsGamepadButtonReleased(gamepad, button);
 }
 
-bool Gamepad::isButtonUp(int gamepad, int button)
+bool Gamepad::isButtonUp(int gamepad, int button) const
 {
     return IsGamepadButtonUp(gamepad, button);
 }
 
-int Gamepad::getButtonPressed(void)
+int Gamepad::getButtonPressed() const
 {
     return GetGamepadButtonPressed();
 }
 
-int Gamepad::getAxisCount(int gamepad)
+int Gamepad::getAxisCount(int gamepad) const
 {
     return GetGamepadAxisCount(gamepad);
 }
 
-float getAxisMovement(int gamepad, int axis)
+float Gamepad::getAxisMovement(int gamepad, int axis) const
 {
     return GetGamepadAxisMovement(gamepad, axis);
 }
 
-int setMappings(const char *mappings)
+int Gamepad::setMappings(const char *mappings)
 {
     return SetGamepadMappings(mappings);
 }

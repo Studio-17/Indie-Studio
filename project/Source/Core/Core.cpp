@@ -5,12 +5,12 @@
 ** Core
 */
 
-#include "SettingsScene.hpp"
-#include "SplashScreenScene.hpp"
 #include "MainMenuScene.hpp"
+#include "SettingsScene.hpp"
+
 #include "tools.hpp"
-#include "Core.hpp"
 #include "Map.hpp"
+#include "Core.hpp"
 
 Core::Core() : _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU)
@@ -29,8 +29,7 @@ Core::~Core()
 void Core::loadMenuScenes()
 {
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
-    // _menuScenes.emplace(Scene::Scenes::SPLASH_SCREEN, std::make_shared<Scene::SplashScreenScene>());
-    _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
+    // _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
     //rajouter toutes les scènes des menus
 }
 
@@ -38,7 +37,7 @@ void Core::loop()
 {
     while (!_settings->getWindow()->windowShouldClose()) {
         _settings->getWindow()->startDrawing();
-            _settings->getWindow()->clearBackground(DARKGRAY);
+        _settings->getWindow()->clearBackground(DARKGRAY);
 
         _activeScene = _menuScenes.at(_activeScene)->handelEvent();
         _menuScenes.at(_activeScene)->draw();

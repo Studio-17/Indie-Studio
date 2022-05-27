@@ -8,22 +8,30 @@
 #include "Keyboard.hpp"
 #include <iostream>
 
-bool Keyboard::hasBeenPressed(int key)
+Keyboard::Keyboard()
+{
+}
+
+Keyboard::~Keyboard()
+{
+}
+
+bool Keyboard::hasBeenPressed(int key) const
 {
     return IsKeyPressed(key);
 }
 
-bool Keyboard::isBeingPressed(int key)
+bool Keyboard::isBeingPressed(int key) const
 {
     return IsKeyDown(key);
 }
 
-bool Keyboard::hasbeenReleased(int key)
+bool Keyboard::hasbeenReleased(int key) const
 {
     return IsKeyReleased(key);
 }
 
-bool Keyboard::isNotBeingPressed(int key)
+bool Keyboard::isNotBeingPressed(int key) const
 {
     return IsKeyUp(key);
 }
@@ -33,21 +41,21 @@ void Keyboard::setExitKey(int key)
     SetExitKey(key);
 }
 
-int Keyboard::getPressedKeycode(void)
+int Keyboard::getPressedKeycode() const
 {
     int key = GetKeyPressed();
 
     return key;
 }
 
-int Keyboard::getPressedCharcode(void)
+int Keyboard::getPressedCharcode() const
 {
     int key = GetCharPressed();
 
     return key;
 }
 
-std::map<int, std::pair<int, bool>> Keyboard::getKeysPressed(std::map<int, std::pair<int, bool>> map)
+std::map<int, std::pair<int, bool>> Keyboard::getKeysPressed(std::map<int, std::pair<int, bool>> map) const
 {
     for (auto &index : map)
         index.second.second = isBeingPressed(index.second.first);

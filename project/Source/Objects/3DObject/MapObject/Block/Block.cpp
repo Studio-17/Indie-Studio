@@ -7,7 +7,8 @@
 
 #include "Block.hpp"
 
-Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : AThreeDimensionObject(pathToRessources, position)
+Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : AThreeDimensionObject(pathToRessources, position),
+    _type("block")
 {
 
 }
