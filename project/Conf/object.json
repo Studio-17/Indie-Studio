@@ -1,11 +1,15 @@
 {
+    "background": {
+        "type": "image",
+        "texture": "Ressources/sprites/background.png",
+        "scale": 1.5,
+        "position": [200, 100, 0]
+    },
     "first": {
         "type": "button",
         "nbFrame": 3,
         "position": [700, 300, 0],
         "texture": "Ressources/buttons/button.png",
-        "buttonRect": [0, 0, 0, 0],
-        "sourceRect": [0, 0, 0, 0],
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "second": {
@@ -13,8 +17,6 @@
         "nbFrame": 3,
         "position": [700, 500, 0],
         "texture": "Ressources/buttons/button.png",
-        "buttonRect": [0, 0, 0, 0],
-        "sourceRect": [0, 0, 0, 0],
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "third": {
@@ -22,8 +24,6 @@
         "nbFrame": 3,
         "position": [700, 800, 0],
         "texture": "Ressources/buttons/button.png",
-        "buttonRect": [0, 0, 0, 0],
-        "sourceRect": [0, 0, 0, 0],
         "audio": "Ressources/buttons/click_sound.ogg"
 
     }

@@ -8,10 +8,10 @@
 #ifndef TOOLS_HPP_
     #define TOOLS_HPP_
 
+    #include <nlohmann/json.hpp>
+
     #include <string>
     #include <vector>
-
-    #include <nlohmann/json.hpp>
 
     #include "IObject.hpp"
     #include "SettingsParams.hpp"

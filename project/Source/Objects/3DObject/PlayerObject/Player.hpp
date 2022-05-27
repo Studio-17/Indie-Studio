@@ -6,9 +6,9 @@
 */
 
 #ifndef PLAYER_HPP_
-#define PLAYER_HPP_
+    #define PLAYER_HPP_
 
-#include "Objects/3DObject/AThreeDimensionObject.hpp"
+    #include "AThreeDimensionObject.hpp"
 
 namespace Object {
     class Player : public AThreeDimensionObject {

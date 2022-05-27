@@ -33,7 +33,6 @@ namespace Scene
 
     /**
      * @brief An interface of every scene of the game
-     *
      */
     class IScene {
         public:
@@ -41,13 +40,11 @@ namespace Scene
 
             /**
              * @brief Fade the end of the scene in black
-             * 
              */
             virtual void fadeBlack() = 0;
 
             /**
              * @brief To handle every event in the scene
-             * 
              */
             virtual Scenes handelEvent() = 0;
 

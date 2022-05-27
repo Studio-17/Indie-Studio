@@ -6,9 +6,9 @@
 */
 
 #ifndef ITHREEDIMENSIONOBJECT_HPP_
-#define ITHREEDIMENSIONOBJECT_HPP_
+    #define ITHREEDIMENSIONOBJECT_HPP_
 
-#include "IObject.hpp"
+    #include "IObject.hpp"
 
 namespace Object
 {

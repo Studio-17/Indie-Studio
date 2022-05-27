@@ -9,6 +9,7 @@
     #define BUTTON_HPP_
 
     #include <raylib.h>
+    #include <nlohmann/json.hpp>
 
     #include <string>
     #include <functional>
@@ -20,7 +21,6 @@ namespace Object {
     class Button : public ITwoDimensionObject {
         public:
             Button(std::string const &buttonPath, int nbFrame, Position const &position = {0, 0});
-            // Button(std::string const &buttonPath, int nbFrame, std::string const &audioPath, Position const &position = {0, 0});
             Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position = {0, 0});
             Button(nlohmann::json const &jsonData);
             ~Button() override;
@@ -43,8 +43,6 @@ namespace Object {
                 Hover = 1,
                 Click = 2
             };
-            // float _width;
-            // float _height;
             int _nbFrame;
             State _state;
             Position _position;
@@ -59,11 +57,6 @@ namespace Object {
             bool _isAudio;
 
             std::function<void(void)> _callBack;
-
-
-            //Audio
-            //Mouse Input
-            // Texture
     };
 }
 
