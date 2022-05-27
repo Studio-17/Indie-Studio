@@ -54,11 +54,16 @@ namespace Object
 
         protected:
         private:
+
+            void printLine(std::size_t height);
+
             std::vector<Object::Block> _mapObjects;
             Position _mapPosition = {0, 0, 0};
 
             std::string _pathToMap;
             std::ofstream _file;
+
+            Position _mapDimensions = { 0, 0, 0};
     };
 }
 

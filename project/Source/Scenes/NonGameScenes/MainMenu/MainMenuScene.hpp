@@ -14,6 +14,7 @@
 
     #include "AScene.hpp"
     #include "Music.hpp"
+    #include "Image.hpp"
 
 namespace Scene {
 

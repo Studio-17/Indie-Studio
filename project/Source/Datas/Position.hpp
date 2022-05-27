@@ -10,6 +10,7 @@
 
     #include <vector>
     #include <array>
+    #include <ostream>
 
     #include "PositionError.hpp"
 
@@ -52,12 +53,17 @@ class Position {
         bool operator ==(Position const &position);
 
         /**
+         * @brief Set x, y, z from other float array
+         *
+         * @param position array from where we copy x, y, z value
+         */
+        void setFromArray(std::array<float, 3> const &position);
+        /**
          * @brief Set x, y, z from other Postition object
          *
          * @param position Position object from where we copy x, y, z value
          * @return Position& himself
          */
-        void setFromArray(std::array<float, 3> const &position);
         Position &operator =(Position const &position);
         /**
          * @brief Set x, y, z from a value
@@ -200,11 +206,12 @@ class Position {
          */
         float getZ() const;
 
-
     private:
         float _x; ///< position x
         float _y; ///< position y
         float _z; ///< position z
 };
+
+std::ostream &operator<<(std::ostream &, const Position &);
 
 #endif /* !POSITION_HPP_ */

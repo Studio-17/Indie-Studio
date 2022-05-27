@@ -10,6 +10,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # include raylib into build
 include(cmake-modules/Findraylib.cmake)
 
+# include json into build
+include(cmake-modules/Findjson.cmake)
+
 # specify the sources
 file(GLOB SOURCES
     Source/*.cpp
@@ -36,16 +39,19 @@ file(GLOB SOURCES
     Source/Objects/2DObject/*.cpp
     Source/Objects/2DObject/Button/*.cpp
     Source/Objects/2DObject/Text/*.cpp
+    Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
     Source/Objects/3DObject/MapObject/*.cpp
     Source/Objects/3DObject/MapObject/Block/*.cpp
     Source/Objects/3DObject/MapObject/Map/*.cpp
+    Source/Objects/3DObject/PlayerObject/*.cpp
 
     Source/Scenes/*.cpp
     Source/Scenes/GameScenes/*.cpp
     Source/Scenes/NonGameScenes/*.cpp
     Source/Scenes/NonGameScenes/MainMenu/*.cpp
+    Source/Scenes/NonGameScenes/SettingsScene/*.cpp
     Source/Scenes/NonGameScenes/PopScenes/*.cpp
 
     Source/Settings/*.cpp
@@ -83,16 +89,19 @@ include_directories(
     Source/Objects/2DObject/
     Source/Objects/2DObject/Button/
     Source/Objects/2DObject/Text/
+    Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
     Source/Objects/3DObject/BonusObject/
     Source/Objects/3DObject/MapObject/
     Source/Objects/3DObject/MapObject/Block/
     Source/Objects/3DObject/MapObject/Map/
+    Source/Objects/3DObject/PlayerObject
 
     Source/Scenes/
     Source/Scenes/GameScenes/
     Source/Scenes/NonGameScenes/
     Source/Scenes/NonGameScenes/MainMenu/
+    Source/Scenes/NonGameScenes/SettingsScene/
     Source/Scenes/NonGameScenes/PopScenes/
 
     Source/Settings/
@@ -104,15 +113,9 @@ include_directories(
     Source/Tools/
 )
 
-include(FetchContent)
-
-FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.10.5/json.tar.xz)
-FetchContent_MakeAvailable(json)
-
 add_executable(IndieStudio ${SOURCES})
+
 target_link_libraries(IndieStudio nlohmann_json::nlohmann_json)
-
-
 target_link_libraries(IndieStudio raylib)
 
 # Web Configurations
