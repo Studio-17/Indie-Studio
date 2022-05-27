@@ -36,8 +36,8 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap = std::make_unique<Object::Map>();
     _gameMap->generate("Save/Maps/random.map", 11, 11);
     _gameMap->process("Save/Maps/random.map");
-    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/blue.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
-    _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/Assets/models/players/player.iqm", "Ressources/Assets/models/players/red.png"), "Ressources/Assets/models/players/player.iqm", 1, Position(0, 0, 0));
+    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
+    _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
 }
 
 Scene::SettingsScene::~SettingsScene()
