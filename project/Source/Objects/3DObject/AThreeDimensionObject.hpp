@@ -9,6 +9,7 @@
     #define ATHREEDIMENSIONOBJECT_HPP_
 
     #include <raylib.h>
+    #include <nlohmann/json.hpp>
 
     #include "IThreeDimensionObject.hpp"
 
@@ -19,6 +20,7 @@ namespace Object
     public:
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
+        AThreeDimensionObject(nlohmann::json const &jsonData);
         virtual ~AThreeDimensionObject() = default;
 
         virtual void draw() = 0;

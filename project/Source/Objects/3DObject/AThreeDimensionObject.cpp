@@ -25,6 +25,24 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
 
+Object::AThreeDimensionObject::AThreeDimensionObject(nlohmann::json const &jsonData) :
+    _texture(LoadTexture(jsonData.value("texture", "").c_str())),
+    _model(LoadModel(jsonData.value("model", "default").c_str())),
+    _animsCount(jsonData.value("nbAnims", 0)),
+    _animFrameCounter(0),
+    _anims(LoadModelAnimations(jsonData.value("anims", "default").c_str(), &_animsCount)),
+    _isAnimated(false), _scale(jsonData.value("scale", 0.5))
+
+{
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _dimensions.setFromArray(jsonData.value("dimensions", std::array<float, 3>({0, 0, 0})));
+    if (_animsCount) {
+        _anims = LoadModelAnimations(jsonData.value("anims", "default").c_str(), &_animsCount);
+        _isAnimated = true;
+    }
+    SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
+}
+
 void Object::AThreeDimensionObject::setPosition(Position const &position)
 {
     _position = position;
