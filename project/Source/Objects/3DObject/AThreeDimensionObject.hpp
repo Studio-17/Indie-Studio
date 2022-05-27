@@ -73,7 +73,7 @@ namespace Object
         int _animFrameCounter = 0;
         ModelAnimation *_anims;
 
-        float _scale = 1;
+        float _scale = 0.5f;
     private:
     };
 }
