@@ -60,6 +60,8 @@ namespace Object
 
             std::string _pathToMap;
             std::ofstream _file;
+
+            Position _mapDimensions = { 0, 0, 0};
     };
 }
 
