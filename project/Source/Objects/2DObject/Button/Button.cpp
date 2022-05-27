@@ -5,6 +5,8 @@
 ** Button
 */
 
+#include "AudioError.hpp"
+#include "tools.hpp"
 #include "Button.hpp"
 
 Object::Button::Button(std::string const &buttonPath, int nbFrame, Position const &position) :
@@ -22,6 +24,25 @@ Object::Button::Button(std::string const &buttonPath, int nbFrame, std::function
 
 }
 
+Object::Button::Button(nlohmann::json const &jsonData)
+{
+    _nbFrame = jsonData.value("nbFrame", 1);
+    _state = Default;
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _buttonTexture = LoadTexture(jsonData.value("texture", "default").c_str());
+    _frameHeight = _buttonTexture.height / _nbFrame;
+    _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
+    _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame};
+
+    _isAudio = true;
+    try {
+        _audio = jsonData.value("audio", "default");
+    } catch (Error::AudioError const &) {
+        _isAudio = false;
+    }
+    // std::function<void(void)> _callBack;
+}
+
 Object::Button::~Button()
 {
     UnloadTexture(_buttonTexture);  // Unload button texture
@@ -31,6 +52,11 @@ void Object::Button::draw()
 {
     _sourceRec.y = _state * _frameHeight;
     DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
+}
+
+void Object::Button::handleEvent(std::shared_ptr<Settings> settings)
+{
+
 }
 
 void Object::Button::setPosition(Position const &position)

@@ -22,6 +22,8 @@ namespace Object
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;
 
+            virtual void handleEvent(std::shared_ptr<Settings> settings) = 0;
+
         protected:
         private:
     };

@@ -1,0 +1,30 @@
+{
+    "first": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [700, 300, 0],
+        "texture": "Ressources/buttons/button.png",
+        "buttonRect": [0, 0, 0, 0],
+        "sourceRect": [0, 0, 0, 0],
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "second": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [700, 500, 0],
+        "texture": "Ressources/buttons/button.png",
+        "buttonRect": [0, 0, 0, 0],
+        "sourceRect": [0, 0, 0, 0],
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "third": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [700, 800, 0],
+        "texture": "Ressources/buttons/button.png",
+        "buttonRect": [0, 0, 0, 0],
+        "sourceRect": [0, 0, 0, 0],
+        "audio": "Ressources/buttons/click_sound.ogg"
+
+    }
+}

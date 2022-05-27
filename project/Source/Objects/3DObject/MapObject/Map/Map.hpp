@@ -39,6 +39,8 @@ namespace Object
 
             void draw();
 
+            void handleEvent(std::shared_ptr<Settings> settings) override {};
+
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };

@@ -34,7 +34,7 @@ namespace Scene {
         private:
             // bool _isRunning;
             // Scene::Scenes _nextScene;
-
+            std::vector<std::shared_ptr<Object::IObject>> _objects;
             // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
             // std::unique_ptr<MyMusic> _mainMusic;
 
