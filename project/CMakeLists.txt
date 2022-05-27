@@ -45,6 +45,7 @@ file(GLOB SOURCES
     Source/Objects/3DObject/MapObject/*.cpp
     Source/Objects/3DObject/MapObject/Block/*.cpp
     Source/Objects/3DObject/MapObject/Map/*.cpp
+    Source/Objects/3DObject/PlayerObject/*.cpp
 
     Source/Scenes/*.cpp
     Source/Scenes/GameScenes/*.cpp
@@ -94,6 +95,7 @@ include_directories(
     Source/Objects/3DObject/MapObject/
     Source/Objects/3DObject/MapObject/Block/
     Source/Objects/3DObject/MapObject/Map/
+    Source/Objects/3DObject/PlayerObject
 
     Source/Scenes/
     Source/Scenes/GameScenes/

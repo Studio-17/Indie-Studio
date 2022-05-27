@@ -24,9 +24,8 @@ namespace Object
 
             _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
 
-            _scale = 0.5f;
-
             _isAnimated = false;
+            _scale = 0.5f;
         };
 
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position)
@@ -34,13 +33,10 @@ namespace Object
             _model = LoadModel(pathToRessources.first.c_str());
             _texture = LoadTexture(pathToRessources.second.c_str());
 
-            _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
+            SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 
             _animsCount = nbAnimation;
             _anims = LoadModelAnimations(pathToAnimation.c_str(), &_animsCount);
-
-            _scale = 0.5f;
-
 
             _isAnimated = true;
         };
@@ -63,8 +59,9 @@ namespace Object
         Position getDimensions() const { return _dimensions; };
         float getScale() const { return _scale; };
 
+        void setScale(float scale) {_scale = scale;};
+
     protected:
-    private:
         Texture2D _texture;
         Model _model;
 
@@ -76,7 +73,8 @@ namespace Object
         int _animFrameCounter = 0;
         ModelAnimation *_anims;
 
-        float _scale;
+        float _scale = 1;
+    private:
     };
 }
 
