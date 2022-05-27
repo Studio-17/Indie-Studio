@@ -30,11 +30,6 @@ void Object::Image::draw()
     DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 1.0f, _imageScale, WHITE);
 }
 
-void Object::Image::handleEvent(std::shared_ptr<Settings> settings)
-{
-
-}
-
 void Object::Image::setPosition(Position const &position)
 {
     _imagePosition = position;

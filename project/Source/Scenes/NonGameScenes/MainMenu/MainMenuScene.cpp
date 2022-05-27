@@ -10,6 +10,9 @@
 #include "tools.hpp"
 #include "MainMenuScene.hpp"
 
+#include "FileError.hpp"
+
+
 void Scene::MainMenuScene::exitScene(void)
 {
     _nextScene = Scene::Scenes::QUIT;
@@ -27,12 +30,14 @@ void Scene::MainMenuScene::newGameScene(void)
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
-    _objects = loadObject("Conf/object.json");
-    // _buttons.emplace(Scene::BUTTONSNAME::NEWGAME, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::newGameScene, this), "Save/assets_sound_Click.ogg", Position(700, 300, 0)));
-    // _buttons.emplace(Scene::BUTTONSNAME::EXIT, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::exitScene, this),"Save/assets_sound_Click.ogg", Position(700, 500, 0)));
-    // _buttons.emplace(Scene::BUTTONSNAME::SETTINGS, std::make_unique<Object::Button>("Save/button.png", 3, std::bind(&Scene::MainMenuScene::settingsScene, this),"Save/assets_sound_Click.ogg", Position(700, 800, 0)));
-    _nextScene = Scene::Scenes::MAIN_MENU;
+    std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::newGameScene, this), std::bind(&Scene::MainMenuScene::settingsScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
 
+    _objects = loadGenericObjects("Conf/Scenes/MainMenu/object.json");
+    _buttons = loadObjects<Object::Button>("Conf/Scenes/MainMenu/button.json");
+    for (std::size_t index = 0; index !=_buttons.size(); index++) {
+        _buttons.at(index)->setCallBack(callBacks.at(index));
+    }
+    _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
 Scene::MainMenuScene::~MainMenuScene()
@@ -46,15 +51,15 @@ void Scene::MainMenuScene::fadeBlack()
 
 Scene::Scenes Scene::MainMenuScene::handelEvent()
 {
-    _nextScene = Scene::Scenes::MAIN_MENU;
-    for (auto button : _objects)
-        button->handleEvent(_settings);
-
+    for (auto &button : _buttons)
+        button->checkHover(GetMousePosition());
     return _nextScene;
 }
 
 void Scene::MainMenuScene::draw()
 {
-    for (auto &button : _objects)
+    for (auto &object : _objects)
+        object->draw();
+    for (auto &button : _buttons)
         button->draw();
 }

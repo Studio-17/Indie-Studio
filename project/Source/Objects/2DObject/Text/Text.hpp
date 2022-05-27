@@ -27,8 +27,6 @@ namespace Object {
             void draw() override;
             void drawFramePerSeconds(Position const &position);
 
-            void handleEvent(std::shared_ptr<Settings> settings) override;
-
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;

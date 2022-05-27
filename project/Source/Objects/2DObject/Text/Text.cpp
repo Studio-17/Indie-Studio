@@ -45,10 +45,6 @@ void Object::Text::draw()
     DrawText(_text.c_str(), _position.getX(), _position.getY(), _fontSize, _color);
 }
 
-void Object::Text::handleEvent(std::shared_ptr<Settings> settings)
-{
-}
-
 void Object::Text::setPosition(Position const &position)
 {
     _position = position;

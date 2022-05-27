@@ -25,11 +25,6 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
 
-void Object::AThreeDimensionObject::handleEvent(std::shared_ptr<Settings> settings)
-{
-
-}
-
 void Object::AThreeDimensionObject::setPosition(Position const &position)
 {
     _position = position;
