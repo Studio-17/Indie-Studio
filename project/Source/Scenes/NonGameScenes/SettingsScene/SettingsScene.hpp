@@ -33,13 +33,18 @@ namespace Scene {
             void mainMenuScene();
             void draw();
 
-            bool collideMap();
+            bool collideUp();
+            bool collideDown();
+            bool collideRight();
+            bool collideLeft();
 
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::unique_ptr<Object::Player> _playerOne;
             std::unique_ptr<Object::Player> _playerTwo;
+
+            float _margin = 0.3f;
 
             // bool _isRunning;
             // Scene::Scenes _nextScene;

@@ -54,28 +54,68 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-bool Scene::SettingsScene::collideMap()
+bool Scene::SettingsScene::collideUp()
 {
-    float nb = 8;
+    float tileSpace = 10 - 2;
 
     for (auto &object : _gameMap->getMapObjects()) {
-        if (object.getMapObject() != Object::MAP_OBJECTS::GROUND && object.getPosition().getY() == 0) {
-            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - nb) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + nb)) &&
-            (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - nb) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + nb))) {
-                // if (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - nb))
-                //     _playerOne->setPosition({_playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.1f});
-                // else if (_playerOne->getPosition().getZ() <= (object.getPosition().getZ() + nb))
-                //     _playerOne->setPosition({_playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.1f});
-                // else if (_playerOne->getPosition().getX() >= (object.getPosition().getX() - nb))
-                //     _playerOne->setPosition({_playerOne->getPosition().getX() - 0.1f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-                // else if (_playerOne->getPosition().getX() <= (object.getPosition().getX() + nb))
-                //     _playerOne->setPosition({_playerOne->getPosition().getX() + 0.1f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-                std::cout << "in collision" << std::endl;
-                return true;
+        if (object.getPosition().getY() == 0) {
+            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + tileSpace))
+            && (_playerOne->getPosition().getZ() - _margin >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() - _margin <= (object.getPosition().getZ() + tileSpace))) {
+                    std::cout << "in collision" << std::endl;
+                    return (true);
             }
         }
     }
-    return false;
+    return (false);
+}
+
+bool Scene::SettingsScene::collideDown()
+{
+    float tileSpace = 10 - 2;
+
+    for (auto &object : _gameMap->getMapObjects()) {
+        if (object.getPosition().getY() == 0) {
+            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + tileSpace))
+            && (_playerOne->getPosition().getZ() + _margin >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() + _margin <= (object.getPosition().getZ() + tileSpace))) {
+                    std::cout << "in collision" << std::endl;
+                    return (true);
+            }
+        }
+    }
+    return (false);
+}
+
+bool Scene::SettingsScene::collideRight()
+{
+    float tileSpace = 10 - 2;
+
+    for (auto &object : _gameMap->getMapObjects()) {
+        if (object.getPosition().getY() == 0) {
+            if ((_playerOne->getPosition().getX() + _margin >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() + _margin <= (object.getPosition().getX() + tileSpace))
+            && (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + tileSpace))) {
+                    std::cout << "in collision" << std::endl;
+                    return (true);
+            }
+        }
+    }
+    return (false);
+}
+
+bool Scene::SettingsScene::collideLeft()
+{
+    float tileSpace = 10 - 2;
+
+    for (auto &object : _gameMap->getMapObjects()) {
+        if (object.getPosition().getY() == 0) {
+            if ((_playerOne->getPosition().getX() - _margin >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() - _margin <= (object.getPosition().getX() + tileSpace))
+            && (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + tileSpace))) {
+                    std::cout << "in collision" << std::endl;
+                    return (true);
+            }
+        }
+    }
+    return (false);
 }
 
 Scene::Scenes Scene::SettingsScene::handelEvent()
@@ -83,13 +123,13 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &[type, button] : _buttons)
         button->checkHover(GetMousePosition());
-    if (IsKeyDown(KEY_UP) && !collideMap())
+    if (IsKeyDown(KEY_UP) && !collideUp())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
-    if (IsKeyDown(KEY_DOWN)  && !collideMap())
+    if (IsKeyDown(KEY_DOWN) && !collideDown())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.2f});
-    if (IsKeyDown(KEY_LEFT)  && !collideMap())
+    if (IsKeyDown(KEY_LEFT) && !collideLeft())
         _playerOne->move((Position){ _playerOne->getPosition().getX() - 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-    if (IsKeyDown(KEY_RIGHT)  && !collideMap())
+    if (IsKeyDown(KEY_RIGHT) && !collideRight())
         _playerOne->move((Position){ _playerOne->getPosition().getX() + 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
     return _nextScene;
 }
@@ -98,9 +138,9 @@ void Scene::SettingsScene::draw()
 {
     _settings->getCamera()->startMode3D();
 
-        DrawLine3D((Vector3){-100, 0, 0}, (Vector3){100, 0, 0}, GREEN);     // X
-        DrawLine3D((Vector3){0, -100, 0}, (Vector3){0, 100, 0}, RED);       // Y
-        DrawLine3D((Vector3){0, 0, -100}, (Vector3){0, 0, 100}, DARKBLUE);  // Z
+        DrawLine3D((Vector3){-1000, 0, 0}, (Vector3){1000, 0, 0}, GREEN);     // X
+        DrawLine3D((Vector3){0, -1000, 0}, (Vector3){0, 1000, 0}, RED);       // Y
+        DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
 
         _gameMap->draw();
         _playerOne->setScale(5.0f);
