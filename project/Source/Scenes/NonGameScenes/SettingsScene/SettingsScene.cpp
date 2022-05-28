@@ -32,8 +32,11 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _buttons.emplace_back(std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
-    // _gameMap->generate("Save/Maps/random.map", 11, 11);
-    _gameMap->process("Save/Maps/random.map");
+    _mapFile = "Save/Maps/random.map";
+    _margin = 0.3f;
+    _playerSpeed = 0.15f;
+    _gameMap->generate(_mapFile, 11, 11);
+    _gameMap->process(_mapFile);
     _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10));
     // _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
 
@@ -52,88 +55,63 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-bool Scene::SettingsScene::collideUp()
+bool Scene::SettingsScene::isColliding(Position margin)
 {
     float tileSpace = 10 - 2;
+    Position playerPos = _playerOne->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
-        if (object.getPosition().getY() == 0) {
-            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + tileSpace))
-            && (_playerOne->getPosition().getZ() - _margin >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() - _margin <= (object.getPosition().getZ() + tileSpace))) {
-                    std::cout << "in collision" << std::endl;
-                    return (true);
-            }
-        }
+        Position block = object.getPosition();
+
+        if (object.getPosition().getY() == 0 &&
+        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
+        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace))))
+            return true;
     }
-    return (false);
+    return false;
 }
 
-bool Scene::SettingsScene::collideDown()
+int Scene::SettingsScene::getMovingKeys()
 {
-    float tileSpace = 10 - 2;
-
-    for (auto &object : _gameMap->getMapObjects()) {
-        if (object.getPosition().getY() == 0) {
-            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + tileSpace))
-            && (_playerOne->getPosition().getZ() + _margin >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() + _margin <= (object.getPosition().getZ() + tileSpace))) {
-                    std::cout << "in collision" << std::endl;
-                    return (true);
-            }
-        }
-    }
-    return (false);
-}
-
-bool Scene::SettingsScene::collideRight()
-{
-    float tileSpace = 10 - 2;
-
-    for (auto &object : _gameMap->getMapObjects()) {
-        if (object.getPosition().getY() == 0) {
-            if ((_playerOne->getPosition().getX() + _margin >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() + _margin <= (object.getPosition().getX() + tileSpace))
-            && (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + tileSpace))) {
-                    std::cout << "in collision" << std::endl;
-                    return (true);
-            }
-        }
-    }
-    return (false);
-}
-
-bool Scene::SettingsScene::collideLeft()
-{
-    float tileSpace = 10 - 2;
-
-    for (auto &object : _gameMap->getMapObjects()) {
-        if (object.getPosition().getY() == 0) {
-            if ((_playerOne->getPosition().getX() - _margin >= (object.getPosition().getX() - tileSpace) && _playerOne->getPosition().getX() - _margin <= (object.getPosition().getX() + tileSpace))
-            && (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - tileSpace) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + tileSpace))) {
-                    std::cout << "in collision" << std::endl;
-                    return (true);
-            }
-        }
-    }
-    return (false);
+    if (IsKeyDown(KEY_UP))
+        return (KEY_UP);
+    if (IsKeyDown(KEY_DOWN))
+        return (KEY_DOWN);
+    if (IsKeyDown(KEY_LEFT))
+        return (KEY_LEFT);
+    if (IsKeyDown(KEY_RIGHT))
+        return (KEY_RIGHT);
+    return 0;
 }
 
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
-    _nextScene = Scene::Scenes::SETTINGS;
+    int key = getMovingKeys();
+    Position playerPos = _playerOne->getPosition();
 
+    _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
-
-    if (IsKeyDown(KEY_UP) && !collideUp())
-        _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
-    else if (IsKeyDown(KEY_DOWN) && !collideDown())
-        _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.2f});
-    else if (IsKeyDown(KEY_LEFT) && !collideLeft())
-        _playerOne->move((Position){ _playerOne->getPosition().getX() - 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-    else if (IsKeyDown(KEY_RIGHT) && !collideRight())
-        _playerOne->move((Position){ _playerOne->getPosition().getX() + 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-    else
-        _playerOne->resetAnimation();
-
+    switch (key) {
+        case KEY_UP:
+            if (!isColliding((Position){0, 0, -_margin}))
+                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed});
+            break;
+        case KEY_DOWN:
+            if (!isColliding((Position){0, 0, _margin}))
+                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed});
+            break;
+        case KEY_LEFT:
+            if (!isColliding((Position){-_margin, 0, 0}))
+                _playerOne->move((Position){ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()});
+            break;
+        case KEY_RIGHT:
+            if (!isColliding((Position){_margin, 0, 0}))
+                _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()});
+            break;
+        default:
+            _playerOne->resetAnimation();
+    }
     return _nextScene;
 }
 

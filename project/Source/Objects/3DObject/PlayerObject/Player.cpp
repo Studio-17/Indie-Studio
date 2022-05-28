@@ -47,5 +47,5 @@ void Object::Player::draw()
     };
 
     DrawModelEx(_model, modelPosition, (Vector3){ 1.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1*_scale, 1*_scale, 1*_scale }, WHITE);
-    DrawModelWires(_model, modelPosition, 5, GREEN);
+    // DrawModelWires(_model, modelPosition, 5, GREEN);
 }

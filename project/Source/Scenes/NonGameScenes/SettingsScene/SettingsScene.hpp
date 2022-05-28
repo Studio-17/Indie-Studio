@@ -32,10 +32,8 @@ namespace Scene {
             void mainMenuScene();
             void draw();
 
-            bool collideUp();
-            bool collideDown();
-            bool collideRight();
-            bool collideLeft();
+            int getMovingKeys();
+            bool isColliding(Position margin);
 
         protected:
         private:
@@ -43,7 +41,10 @@ namespace Scene {
             std::unique_ptr<Object::Player> _playerOne;
             std::unique_ptr<Object::Player> _playerTwo;
 
-            float _margin = 0.3f;
+            std::string _mapFile;
+
+            float _margin;
+            float _playerSpeed;
 
             // bool _isRunning;
             // Scene::Scenes _nextScene;
