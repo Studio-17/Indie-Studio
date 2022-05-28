@@ -13,7 +13,7 @@
 #include "Map.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::MAIN_MENU)
+    _activeScene(Scene::Scenes::SETTINGS)
 {
     SettingsParams settingsParams;
 

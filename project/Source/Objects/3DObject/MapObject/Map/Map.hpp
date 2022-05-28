@@ -22,13 +22,6 @@
 
 namespace Object
 {
-    enum class MAP_OBJECTS {
-        GROUND = 'A',
-        WALL_MIDDLE = 'x',
-        WALL_SIDE = 'X',
-        BOX = 'O',
-    };
-
     class Map : public IObject
     {
         public:
@@ -51,6 +44,8 @@ namespace Object
             void generate(const std::string &filename, std::size_t width, std::size_t height);
 
             void createFile(const std::string &filename);
+
+            std::vector<Object::Block> getMapObjects() { return _mapObjects; };
 
         protected:
         private:

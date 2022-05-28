@@ -33,6 +33,8 @@ namespace Scene {
             void mainMenuScene();
             void draw();
 
+            bool collideMap();
+
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;

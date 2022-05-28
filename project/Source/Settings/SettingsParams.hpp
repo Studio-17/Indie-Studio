@@ -28,6 +28,8 @@ class SettingsParams {
         float _musicVolume;
         Position _cameraPosition;
         Position _cameraTarget;
+        Position _cameraUp;
+        float _cameraFovy;
         CameraMode _cameraMode;
         CameraProjection _cameraProjection;
 };

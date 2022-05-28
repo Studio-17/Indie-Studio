@@ -17,10 +17,13 @@ namespace Object {
             ~Player() override;
 
             void draw() override;
+            void move(Position const &position);
+
             void moveUp();
             void moveDown();
             void moveRight();
             void moveLeft();
+
             void dropBomb();
 
         private:

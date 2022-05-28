@@ -18,16 +18,25 @@
 
 namespace Object
 {
+    enum class MAP_OBJECTS {
+        GROUND = 'A',
+        WALL_MIDDLE = 'x',
+        WALL_SIDE = 'X',
+        BOX = 'O',
+    };
+
     class Block : public AThreeDimensionObject
     {
         public:
-            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
+            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject);
             ~Block() override;
 
             void draw() override;
 
+            Object::MAP_OBJECTS getMapObject() const;
         protected:
         private:
+            Object::MAP_OBJECTS _mapObject;
             std::string _type = "block";
     };
 }
