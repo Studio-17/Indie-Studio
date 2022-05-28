@@ -95,19 +95,19 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     switch (key) {
         case KEY_UP:
             if (!isColliding((Position){0, 0, -_margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed});
+                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, (Position){0, 90, 0});
             break;
         case KEY_DOWN:
             if (!isColliding((Position){0, 0, _margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed});
+                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, (Position){0, -90, 0});
             break;
         case KEY_LEFT:
             if (!isColliding((Position){-_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()});
+                _playerOne->move((Position){ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 0, 0});
             break;
         case KEY_RIGHT:
             if (!isColliding((Position){_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()});
+                _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 180, 0});
             break;
         default:
             _playerOne->resetAnimation();
