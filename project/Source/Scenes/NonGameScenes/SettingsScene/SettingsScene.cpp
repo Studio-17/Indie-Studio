@@ -43,8 +43,6 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
 
-
-
 Scene::SettingsScene::~SettingsScene()
 {
 }
