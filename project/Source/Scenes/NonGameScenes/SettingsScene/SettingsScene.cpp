@@ -119,16 +119,21 @@ bool Scene::SettingsScene::collideLeft()
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
     _nextScene = Scene::Scenes::SETTINGS;
+
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
+
     if (IsKeyDown(KEY_UP) && !collideUp())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
-    if (IsKeyDown(KEY_DOWN) && !collideDown())
+    else if (IsKeyDown(KEY_DOWN) && !collideDown())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.2f});
-    if (IsKeyDown(KEY_LEFT) && !collideLeft())
+    else if (IsKeyDown(KEY_LEFT) && !collideLeft())
         _playerOne->move((Position){ _playerOne->getPosition().getX() - 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-    if (IsKeyDown(KEY_RIGHT) && !collideRight())
+    else if (IsKeyDown(KEY_RIGHT) && !collideRight())
         _playerOne->move((Position){ _playerOne->getPosition().getX() + 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
+    else
+        _playerOne->resetAnimation();
+
     return _nextScene;
 }
 
@@ -143,10 +148,6 @@ void Scene::SettingsScene::draw()
         _gameMap->draw();
         _playerOne->setScale(5.0f);
         _playerOne->draw();
-
-        // _playerTwo->setScale(5.0f);
-        // _playerTwo->setPosition(10, 0, 0);
-        // _playerTwo->draw();
 
     _settings->getCamera()->endMode3D();
 

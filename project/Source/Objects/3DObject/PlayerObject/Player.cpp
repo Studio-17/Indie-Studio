@@ -26,10 +26,16 @@ void Object::Player::move(Position const &position)
 {
     _animFrameCounter++;
     UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
-    if (_animFrameCounter >= _anims[0].frameCount) _animFrameCounter = 0;
+    if (_animFrameCounter >= _anims[0].frameCount)
+        _animFrameCounter = 0;
 
-    // Position newPosition(position.getX(), position.getY(), position.getZ());
     setPosition((Position){ position.getX(), position.getY(), position.getZ() });
+}
+
+void Object::Player::resetAnimation()
+{
+    _animFrameCounter = 22;
+    UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
 }
 
 void Object::Player::draw()

@@ -20,10 +20,7 @@ namespace Object {
             void draw() override;
             void move(Position const &position);
 
-            void moveUp();
-            void moveDown();
-            void moveRight();
-            void moveLeft();
+            void resetAnimation();
 
             void dropBomb();
 
