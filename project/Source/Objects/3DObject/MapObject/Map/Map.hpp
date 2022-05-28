@@ -46,6 +46,7 @@ namespace Object
             void createFile(const std::string &filename);
 
             std::vector<Object::Block> getMapObjects() { return _mapObjects; };
+            Position getDimensions() { return _mapDimensions; };
 
         protected:
         private:

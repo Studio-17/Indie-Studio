@@ -40,7 +40,7 @@ void SettingsParams::loadFromData(std::string const &filepath)
     std::array<float, 3> tmpTarget = jsonData.value("cameraTarget", std::array<float, 3>({0,0,0}));
     _cameraTarget.setPosition(tmpTarget.at(0), tmpTarget.at(1), tmpTarget.at(2));
     _cameraUp.setPosition((Position){0, 100, 0});
-    _cameraFovy = 90.0f;
+    _cameraFovy = 45.0f;
     _cameraMode = jsonData.value("cameraMode", CAMERA_FREE);
     _cameraProjection = jsonData.value("cameraProjection", CAMERA_PERSPECTIVE);
 }

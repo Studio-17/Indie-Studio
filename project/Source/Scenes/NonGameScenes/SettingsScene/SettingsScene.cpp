@@ -36,6 +36,11 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap->process("Save/Maps/random.map");
     _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 0));
     // _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
+
+    std::cout << "camera target: " << _gameMap->getDimensions() << std::endl;
+
+    _settings->getCamera()->setTarget((Position){_gameMap->getDimensions()});
+    _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
 
 

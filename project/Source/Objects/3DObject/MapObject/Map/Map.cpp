@@ -94,8 +94,9 @@ void Object::Map::process(std::string const &pathToFile)
 
     srand(time(NULL));
 
-    _mapDimensions.setX(mapLayout.size() * blockSize);
-    _mapDimensions.setY(mapLayout[0].size() * blockSize);
+    _mapDimensions.setX((mapLayout.size() * blockSize) / 2);
+    _mapDimensions.setY(0);
+    _mapDimensions.setZ((mapLayout[0].size() * blockSize) / 2);
 
     Vector3 tilePosition = {0, 0, 0};
 
