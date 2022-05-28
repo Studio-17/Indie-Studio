@@ -43,8 +43,6 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
 
-
-
 Scene::SettingsScene::~SettingsScene()
 {
 }
@@ -121,7 +119,7 @@ bool Scene::SettingsScene::collideLeft()
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
     _nextScene = Scene::Scenes::SETTINGS;
-    for (auto &[type, button] : _buttons)
+    for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
     if (IsKeyDown(KEY_UP) && !collideUp())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
@@ -152,6 +150,6 @@ void Scene::SettingsScene::draw()
 
     _settings->getCamera()->endMode3D();
 
-    for (auto &[type, button] : _buttons)
+    for (auto &button : _buttons)
         button->draw();
 }

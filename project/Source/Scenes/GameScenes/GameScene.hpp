@@ -12,7 +12,6 @@
 
 /**
  * @brief Represents the main game scene
- * 
  */
 namespace Scene {
     class GameScene : public AScene {

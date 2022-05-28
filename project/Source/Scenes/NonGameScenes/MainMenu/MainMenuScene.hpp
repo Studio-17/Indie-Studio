@@ -8,10 +8,6 @@
 #ifndef MAINMENUSCENE_HPP_
     #define MAINMENUSCENE_HPP_
 
-
-    #include <vector>
-    #include <map>
-
     #include "AScene.hpp"
     #include "Music.hpp"
     #include "Image.hpp"
@@ -25,21 +21,13 @@ namespace Scene {
 
             void fadeBlack() override;
             Scenes handelEvent() override;
+            void draw() override;
+
+        protected:
             void exitScene();
             void settingsScene();
             void newGameScene();
-            void draw();
-
-        protected:
         private:
-            // bool _isRunning;
-            // Scene::Scenes _nextScene;
-            std::vector<std::shared_ptr<Object::IObject>> _objects;
-            // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
-            // std::unique_ptr<MyMusic> _mainMusic;
-
-
-
     };
 }
 

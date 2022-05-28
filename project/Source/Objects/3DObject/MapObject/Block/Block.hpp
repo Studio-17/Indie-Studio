@@ -6,15 +6,14 @@
 */
 
 #ifndef BLOCK_HPP_
-#define BLOCK_HPP_
+    #define BLOCK_HPP_
 
-#include "raylib.h"
+    #include <raylib.h>
 
-#include <memory>
+    #include <memory>
+    #include <map>
 
-#include <map>
-
-#include "Objects/3DObject/AThreeDimensionObject.hpp"
+    #include "AThreeDimensionObject.hpp"
 
 namespace Object
 {
@@ -29,6 +28,9 @@ namespace Object
     {
         public:
             Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject);
+            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
+            Block(nlohmann::json const &jsonData);
+  
             ~Block() override;
 
             void draw() override;

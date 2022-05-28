@@ -6,6 +6,7 @@
 */
 
 #include <fstream>
+
 #include "FileError.hpp"
 
 std::string readFile(std::string const &filename, std::string const &sep)

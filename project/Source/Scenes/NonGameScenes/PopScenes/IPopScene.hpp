@@ -12,7 +12,6 @@
 
 /**
  * @brief Interface to all the pop scene of the game
- * 
  */
 namespace Scene {
     class IPopScene : public IMenuScene {

@@ -5,9 +5,9 @@
 ** createColor
 */
 
-#include <array>
-
 #include <raylib.h>
+
+#include <array>
 
 Color createColor(std::array<float, 4> const &array)
 {

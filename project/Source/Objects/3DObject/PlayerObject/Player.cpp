@@ -11,6 +11,10 @@ Object::Player::Player(std::pair<std::string, std::string> const &pathToRessourc
 {
 }
 
+Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData)
+{
+}
+
 Object::Player::~Player()
 {
     // UnloadTexture(_texture);
