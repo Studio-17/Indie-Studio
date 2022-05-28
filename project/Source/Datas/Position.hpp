@@ -8,7 +8,6 @@
 #ifndef POSITION_HPP_
     #define POSITION_HPP_
 
-    #include <vector>
     #include <array>
     #include <ostream>
 
@@ -182,11 +181,11 @@ class Position {
         void reset();
 
         /**
-         * @brief Get x, y, z position in a vector
+         * @brief Get x, y, z position in an array
          *
-         * @return std::vector<float> vector of x, y, z
+         * @return std::array<float, 3> array of x, y, z
          */
-        std::vector<float> getPosition() const;
+        std::array<float, 3> getPosition() const;
         /**
          * @brief get x value
          *
@@ -212,6 +211,11 @@ class Position {
         float _z; ///< position z
 };
 
+/**
+ * @brief overload of << function to print x, y, z values
+ *
+ * @return std::ostream& output redirect
+ */
 std::ostream &operator<<(std::ostream &, const Position &);
 
 #endif /* !POSITION_HPP_ */

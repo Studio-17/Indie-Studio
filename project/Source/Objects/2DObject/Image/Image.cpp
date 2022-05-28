@@ -5,11 +5,19 @@
 ** Image
 */
 
+#include "tools.hpp"
 #include "Image.hpp"
 
-Object::Image::Image(std::string const &imagePath, Position const &position) : _imagePosition(position)
+Object::Image::Image(std::string const &imagePath, Position const &position) : _imagePosition(position),
+    _imageTexture(LoadTexture(imagePath.c_str()))
 {
-    _imageTexture = LoadTexture(imagePath.c_str());
+}
+
+Object::Image::Image(nlohmann::json const &jsonData)
+{
+    _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _imageTexture = LoadTexture(jsonData.value("texture", "default").c_str());
+    _imageScale = jsonData.value("scale", 1.0);
 }
 
 Object::Image::~Image()
@@ -20,11 +28,6 @@ Object::Image::~Image()
 void Object::Image::draw()
 {
     DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 1.0f, _imageScale, WHITE);
-}
-
-void Object::Image::handleEvent(std::shared_ptr<Settings> settings)
-{
-
 }
 
 void Object::Image::setPosition(Position const &position)

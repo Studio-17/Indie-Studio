@@ -8,25 +8,25 @@
 #ifndef GAMEPAD_HPP_
     #define GAMEPAD_HPP_
 
-    #include "raylib.h"
+    #include <raylib.h>
+
     #include <string>
 
 class Gamepad {
     public:
-        Gamepad() {};
-        ~Gamepad() {};
+        Gamepad();
+        ~Gamepad();
 
-        bool isAvailable(int gamepad);
-        std::string getName(int gamepad);
-        bool isButtonPressed(int gamepad, int button);
-        bool isButtonDown(int gamepad, int button);
-        bool isButtonReleased(int gamepad, int button);
-        bool isButtonUp(int gamepad, int button);
-        int getButtonPressed(void);
-        int getAxisCount(int gamepad);
-        float getAxisMovement(int gamepad, int axis);
+        bool isAvailable(int gamepad) const;
+        std::string getName(int gamepad) const;
+        bool isButtonPressed(int gamepad, int button) const;
+        bool isButtonDown(int gamepad, int button) const;
+        bool isButtonReleased(int gamepad, int button) const;
+        bool isButtonUp(int gamepad, int button) const;
+        int getButtonPressed() const;
+        int getAxisCount(int gamepad) const;
+        float getAxisMovement(int gamepad, int axis) const;
         int setMappings(const char *mappings);
-
 
     protected:
     private:

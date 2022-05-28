@@ -5,10 +5,10 @@
 ** getJsonData
 */
 
+#include <nlohmann/json.hpp>
+
 #include <string>
 #include <fstream>
-
-#include <nlohmann/json.hpp>
 
 #include "FileError.hpp"
 

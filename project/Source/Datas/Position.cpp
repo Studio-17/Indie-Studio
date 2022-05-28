@@ -166,7 +166,7 @@ void Position::reset()
     _z = 0;
 }
 
-std::vector<float> Position::getPosition() const
+std::array<float, 3> Position::getPosition() const
 {
     return {_x, _y, _z};
 }

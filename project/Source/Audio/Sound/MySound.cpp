@@ -14,6 +14,10 @@ MySound::MySound(std::string const &filename) : _sound(LoadSound(filename.c_str(
         throw Error::AudioError("MySound initialization failed");
 }
 
+MySound::MySound()
+{
+}
+
 MySound::~MySound()
 {
     UnloadSound(_sound);
@@ -24,6 +28,7 @@ MySound &MySound::operator =(std::string const &filename)
     _sound = LoadSound(filename.c_str());
     if (_sound.frameCount == 0)
         throw Error::AudioError("MySound initialization failed");
+    return *this;
 }
 
 void MySound::play()
@@ -46,7 +51,7 @@ void MySound::resume()
     ResumeSound(_sound);
 }
 
-bool MySound::isPlaying()
+bool MySound::isPlaying() const
 {
     return (IsSoundPlaying(_sound));
 }

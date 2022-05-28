@@ -14,9 +14,21 @@ MyMusic::MyMusic(std::string const &filename) : _music(LoadMusicStream(filename.
         throw Error::AudioError("MyMusic initialization failed");
 }
 
+MyMusic::MyMusic()
+{
+}
+
 MyMusic::~MyMusic()
 {
     UnloadMusicStream(_music);
+}
+
+MyMusic &MyMusic::operator =(std::string const &filename)
+{
+    _music = LoadMusicStream(filename.c_str());
+    if (!_music.ctxData)
+        throw Error::AudioError("MyMusic initialization failed");
+    return *this;
 }
 
 void MyMusic::play()
@@ -39,7 +51,7 @@ void MyMusic::resume()
     ResumeMusicStream(_music);
 }
 
-bool MyMusic::isPlaying()
+bool MyMusic::isPlaying() const
 {
     return (IsMusicStreamPlaying(_music));
 }

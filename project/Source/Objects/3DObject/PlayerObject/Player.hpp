@@ -6,14 +6,15 @@
 */
 
 #ifndef PLAYER_HPP_
-#define PLAYER_HPP_
+    #define PLAYER_HPP_
 
-#include "Objects/3DObject/AThreeDimensionObject.hpp"
+    #include "AThreeDimensionObject.hpp"
 
 namespace Object {
     class Player : public AThreeDimensionObject {
         public:
             Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position);
+            Player(nlohmann::json const &jsonData);
             ~Player() override;
 
             void draw() override;

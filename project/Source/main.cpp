@@ -6,7 +6,6 @@
 */
 
 #include "Core.hpp"
-#include "Core.hpp"
 
 int main(void)
 {

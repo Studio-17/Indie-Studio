@@ -17,7 +17,6 @@
     #include "Player.hpp"
 /**
  * @brief The settings scene of the game
- * 
  */
 namespace Scene {
     class SettingsScene : public AScene {

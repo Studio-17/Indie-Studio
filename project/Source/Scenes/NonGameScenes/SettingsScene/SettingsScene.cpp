@@ -29,7 +29,7 @@ void Scene::SettingsScene::mainMenuScene(void)
 
 Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
-    _buttons.emplace(Scene::BUTTONSNAME::MAIN_MENU, std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(1600, 900, 0)));
+    _buttons.emplace_back(std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
     // _gameMap->generate("Save/Maps/random.map", 11, 11);
@@ -121,7 +121,7 @@ bool Scene::SettingsScene::collideLeft()
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
     _nextScene = Scene::Scenes::SETTINGS;
-    for (auto &[type, button] : _buttons)
+    for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
     if (IsKeyDown(KEY_UP) && !collideUp())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
@@ -152,6 +152,6 @@ void Scene::SettingsScene::draw()
 
     _settings->getCamera()->endMode3D();
 
-    for (auto &[type, button] : _buttons)
+    for (auto &button : _buttons)
         button->draw();
 }

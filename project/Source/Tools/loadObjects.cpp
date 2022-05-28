@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** loadObject
+** loadObjects
 */
 
 #include <string>
@@ -15,22 +15,21 @@
 
 #include "tools.hpp"
 #include "FileError.hpp"
-#include "IObject.hpp"
 
 template <typename T>
-static std::shared_ptr<Object::IObject> takeComponent(nlohmann::json const &jsonData)
+static std::unique_ptr<Object::IObject> takeComponent(nlohmann::json const &jsonData)
 {
-    return std::make_shared<T>(jsonData);
+    return std::make_unique<T>(jsonData);
 }
 
-std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &filepath)
+std::vector<std::unique_ptr<Object::IObject>> loadGenericObjects(std::string const &filepath)
 {
     nlohmann::json jsonData;
-    std::vector<std::shared_ptr<Object::IObject>> objects;
-    std::map<std::string, std::shared_ptr<Object::IObject> (*)(nlohmann::json const &jsonData)> allConstruct {
+    std::vector<std::unique_ptr<Object::IObject>> objects;
+    std::map<std::string, std::unique_ptr<Object::IObject> (*)(nlohmann::json const &jsonData)> allConstruct {
         {"button", takeComponent<Object::Button>},
         {"text", takeComponent<Object::Text>},
-        {"image", takeComponent<Object::Image>}
+        {"image", takeComponent<Object::Image>},
     };
 
     try {
@@ -41,9 +40,8 @@ std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &file
     }
     std::cout << jsonData.size() << std::endl;
     for (auto oneData : jsonData) {
-        std::cout << oneData << std::endl;
         std::string type = oneData.value("type", "default");
-        std::function<std::shared_ptr<Object::IObject>(nlohmann::json const &jsonData)> func;
+        std::function<std::unique_ptr<Object::IObject>(nlohmann::json const &jsonData)> func;
 
         if (type == "default")
             throw Error::FileError("undefined type in " + filepath + " configuration file");
@@ -54,6 +52,5 @@ std::vector<std::shared_ptr<Object::IObject>> loadObject(std::string const &file
         }
         objects.emplace_back(func(oneData));
     }
-    std::cout << objects.size() << std::endl;
     return objects;
 }

@@ -6,19 +6,13 @@
 */
 
 #ifndef MAP_HPP_
-#define MAP_HPP_
+    #define MAP_HPP_
 
-#include <memory>
+    #include <memory>
+    #include <fstream>
 
-#include <fstream>
-
-
-#include "Errors/Errors.hpp"
-#include "Errors/ErrorsModules/File/FileError.hpp"
-
-#include "Objects/3DObject/MapObject/Block/Block.hpp"
-
-#include "Objects/IObject.hpp"
+    #include "FileError.hpp"
+    #include "Block.hpp"
 
 namespace Object
 {
@@ -31,8 +25,6 @@ namespace Object
             ~Map();
 
             void draw();
-
-            void handleEvent(std::shared_ptr<Settings> settings) override {};
 
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
@@ -50,16 +42,15 @@ namespace Object
 
         protected:
         private:
-
             void printLine(std::size_t height);
 
             std::vector<Object::Block> _mapObjects;
-            Position _mapPosition = {0, 0, 0};
+            Position _mapPosition;
 
             std::string _pathToMap;
             std::ofstream _file;
 
-            Position _mapDimensions = { 0, 0, 0};
+            Position _mapDimensions;
     };
 }
 

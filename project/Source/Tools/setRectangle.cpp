@@ -5,9 +5,9 @@
 ** setRectangle
 */
 
-#include <array>
-
 #include <raylib.h>
+
+#include <array>
 
 Rectangle setRectangle(std::array<float, 4> const &array)
 {

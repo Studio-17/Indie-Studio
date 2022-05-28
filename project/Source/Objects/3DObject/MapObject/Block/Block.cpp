@@ -7,10 +7,9 @@
 
 #include "Block.hpp"
 
-Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) : AThreeDimensionObject(pathToRessources, position),
-    _mapObject(mapObject)
+Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) :
+    AThreeDimensionObject(pathToRessources, position), _mapObject(mapObject)
 {
-
 }
 
 Object::Block::~Block()

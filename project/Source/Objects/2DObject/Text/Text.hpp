@@ -9,6 +9,7 @@
     #define TEXT_HPP_
 
     #include <raylib.h>
+    #include <nlohmann/json.hpp>
 
     #include <string>
 
@@ -21,13 +22,10 @@ namespace Object {
             Text(std::string const &filename, std::string const &text, Color const &color, Position const &position = {0, 0});
             Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position = {0, 0});
             Text(nlohmann::json const &jsonData);
-
             ~Text();
 
             void draw() override;
             void drawFramePerSeconds(Position const &position);
-
-            void handleEvent(std::shared_ptr<Settings> settings) override;
 
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
@@ -35,7 +33,6 @@ namespace Object {
 
             void setColor(Color const &color);
             void setFontSize(int fontSize);
-
 
         protected:
         private:

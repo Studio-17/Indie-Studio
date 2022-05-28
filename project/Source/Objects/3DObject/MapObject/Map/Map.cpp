@@ -7,11 +7,11 @@
 
 #include "Map.hpp"
 
-Object::Map::Map() : _mapPosition(0, 0, 0)
+Object::Map::Map()
 {
 }
 
-Object::Map::Map(Position const &position) : Map()
+Object::Map::Map(Position const &position)
 {
     _mapPosition = position;
 }

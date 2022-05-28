@@ -17,7 +17,7 @@ class IAudio {
         virtual void pause() = 0;
         virtual void resume() = 0;
 
-        virtual bool isPlaying() = 0;
+        virtual bool isPlaying() const = 0;
         virtual void setVolume(float volume) = 0;
 
     protected:

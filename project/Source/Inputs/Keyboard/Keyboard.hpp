@@ -8,23 +8,24 @@
 #ifndef KEYBOARD_HPP_
     #define KEYBOARD_HPP_
 
-    #include "raylib.h"
+    #include <raylib.h>
+
     #include <utility>
     #include <map>
 
 class Keyboard {
     public:
-        Keyboard() {};
-        ~Keyboard() {};
+        Keyboard();
+        ~Keyboard();
 
-        bool hasBeenPressed(int key);
-        bool isBeingPressed(int key);
-        bool hasbeenReleased(int key);
-        bool isNotBeingPressed(int key);
+        bool hasBeenPressed(int key) const;
+        bool isBeingPressed(int key) const;
+        bool hasbeenReleased(int key) const;
+        bool isNotBeingPressed(int key) const;
         void setExitKey(int key);
-        int getPressedKeycode(void);
-        int getPressedCharcode(void);
-        std::map<int, std::pair<int, bool>> getKeysPressed(std::map<int, std::pair<int, bool>> map);
+        int getPressedKeycode() const;
+        int getPressedCharcode() const;
+        std::map<int, std::pair<int, bool>> getKeysPressed(std::map<int, std::pair<int, bool>> map) const;
 
     protected:
     private:
