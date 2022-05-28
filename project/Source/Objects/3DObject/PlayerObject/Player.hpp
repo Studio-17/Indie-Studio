@@ -9,6 +9,7 @@
     #define PLAYER_HPP_
 
     #include "AThreeDimensionObject.hpp"
+    #include "raymath.h"
 
 namespace Object {
     class Player : public AThreeDimensionObject {
@@ -18,10 +19,10 @@ namespace Object {
             ~Player() override;
 
             void draw() override;
-            void moveUp();
-            void moveDown();
-            void moveRight();
-            void moveLeft();
+            void move(Position const &position, Position const &direction);
+
+            void resetAnimation();
+
             void dropBomb();
 
         private:

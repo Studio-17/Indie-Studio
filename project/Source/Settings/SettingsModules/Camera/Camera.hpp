@@ -30,6 +30,9 @@ namespace RayLib
             void startMode3D();
             void endMode3D();
 
+            void setPosition(Position const &position);
+            void setTarget(Position const &position);
+
         protected:
         private:
             Camera _camera;

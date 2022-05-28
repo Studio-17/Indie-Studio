@@ -32,11 +32,19 @@ namespace Scene {
             void mainMenuScene();
             void draw();
 
+            int getMovingKeys();
+            bool isColliding(Position margin);
+
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::unique_ptr<Object::Player> _playerOne;
             std::unique_ptr<Object::Player> _playerTwo;
+
+            std::string _mapFile;
+
+            float _margin;
+            float _playerSpeed;
 
             // bool _isRunning;
             // Scene::Scenes _nextScene;

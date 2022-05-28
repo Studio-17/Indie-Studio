@@ -7,15 +7,9 @@
 
 #include "Block.hpp"
 
-Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : AThreeDimensionObject(pathToRessources, position),
-    _type("block")
+Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) :
+    AThreeDimensionObject(pathToRessources, position), _mapObject(mapObject)
 {
-
-}
-
-Object::Block::Block(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData), _type("block")
-{
-
 }
 
 Object::Block::~Block()
@@ -30,5 +24,10 @@ void Object::Block::draw()
         getPosition().getZ()
     };
 
-    DrawModel(getModel(), modelPosition, getScale(), WHITE);
+    DrawModel(getModel(), modelPosition, 0.5f, WHITE);
+}
+
+Object::MAP_OBJECTS Object::Block::getMapObject() const
+{
+    return _mapObject;
 }

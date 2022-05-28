@@ -11,7 +11,7 @@
 
 SettingsParams::SettingsParams() :
     _title("Raylib project"), _windowSize({1920, 1080}), _audioVolume(100), _musicVolume(100),
-    _cameraMode(CAMERA_CUSTOM), _cameraProjection(CAMERA_PERSPECTIVE)
+    _cameraMode(CAMERA_FREE), _cameraProjection(CAMERA_PERSPECTIVE)
 {
 }
 
@@ -39,6 +39,8 @@ void SettingsParams::loadFromData(std::string const &filepath)
 
     std::array<float, 3> tmpTarget = jsonData.value("cameraTarget", std::array<float, 3>({0,0,0}));
     _cameraTarget.setPosition(tmpTarget.at(0), tmpTarget.at(1), tmpTarget.at(2));
-    _cameraMode = jsonData.value("cameraMode", CAMERA_CUSTOM);
+    _cameraUp.setPosition((Position){0, 100, 0});
+    _cameraFovy = 45.0f;
+    _cameraMode = jsonData.value("cameraMode", CAMERA_FREE);
     _cameraProjection = jsonData.value("cameraProjection", CAMERA_PERSPECTIVE);
 }

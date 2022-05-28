@@ -94,37 +94,38 @@ void Object::Map::process(std::string const &pathToFile)
 
     srand(time(NULL));
 
-    _mapDimensions.setX(mapLayout[0].size() * blockSize);
-    _mapDimensions.setY(mapLayout.size() * blockSize);
+    _mapDimensions.setX((mapLayout.size() * blockSize) / 2);
+    _mapDimensions.setY(0);
+    _mapDimensions.setZ((mapLayout[0].size() * blockSize) / 2);
 
-    Vector3 tilePosition = {0, 0, -65};
+    Vector3 tilePosition = {0, 0, 0};
 
     for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
-        tilePosition.x = blockSize;
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
             if (mapLayout.at(line).at(col) == 'X')
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::WALL_SIDE),
-                    (Position){tilePosition.x, tilePosition.y - 10, tilePosition.z});
+                    (Position){tilePosition.x, tilePosition.y - blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE);
             else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
                 if (((rand() % 8) + 1) != 1) {
                     _mapObjects.emplace_back(
                         keyMap.at(MAP_OBJECTS::BOX),
-                        (Position){tilePosition.x, tilePosition.y, tilePosition.z});
+                        (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX);
                 }
             }
 
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
                 _mapObjects.emplace_back(
                     keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))),
-                    (Position){tilePosition.x, tilePosition.y, tilePosition.z});
+                    (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col)));
             else
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::GROUND),
-                    (Position){tilePosition.x, tilePosition.y - (blockSize - 1), tilePosition.z});
+                    (Position){tilePosition.x, tilePosition.y - (blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND);
 
             tilePosition.x += blockSize;
         }
         tilePosition.z += blockSize;
+        tilePosition.x = 0;
     }
 }
