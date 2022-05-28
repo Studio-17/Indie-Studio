@@ -29,12 +29,12 @@ void Scene::SettingsScene::mainMenuScene(void)
 
 Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
-    _buttons.emplace(Scene::BUTTONSNAME::MAIN_MENU, std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(700, 800, 0)));
+    _buttons.emplace(Scene::BUTTONSNAME::MAIN_MENU, std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(1600, 900, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
     // _gameMap->generate("Save/Maps/random.map", 11, 11);
     _gameMap->process("Save/Maps/random.map");
-    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 0));
+    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10));
     // _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
 
     std::cout << "camera target: " << _gameMap->getDimensions() << std::endl;
@@ -56,21 +56,26 @@ void Scene::SettingsScene::fadeBlack()
 
 bool Scene::SettingsScene::collideMap()
 {
+    float nb = 8;
+
     for (auto &object : _gameMap->getMapObjects()) {
-    //     if (object.getMapObject() != Object::MAP_OBJECTS::GROUND && object.getPosition().getY() == 0) {
-            // if (_playerOne->getPosition().getX() == object.getPosition().getX() && _playerOne->getPosition().getZ() ==  object.getPosition().getZ())
-            //     return (true);
-            // if (_playerOne->getPosition().getX() > object.getPosition().getX() && _playerOne->getPosition().getX() <= (object.getPosition().getX() + 10)) {
-        std::cout << "  position of the player and map" << _playerOne->getPosition() << "  "  << object.getPosition() << std::endl;
-            //     return true;
-            // }
-        //     std::cout << "cube is at -> " << object.getPosition() << std::endl;
-    //     }
-        // _playerOne->getPosition().getZ() >= object.getPosition().getZ() && _playerOne->getPosition().getZ() <= object.getPosition().getZ() + 10
+        if (object.getMapObject() != Object::MAP_OBJECTS::GROUND && object.getPosition().getY() == 0) {
+            if ((_playerOne->getPosition().getX() >= (object.getPosition().getX() - nb) && _playerOne->getPosition().getX() <= (object.getPosition().getX() + nb)) &&
+            (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - nb) && _playerOne->getPosition().getZ() <= (object.getPosition().getZ() + nb))) {
+                // if (_playerOne->getPosition().getZ() >= (object.getPosition().getZ() - nb))
+                //     _playerOne->setPosition({_playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.1f});
+                // else if (_playerOne->getPosition().getZ() <= (object.getPosition().getZ() + nb))
+                //     _playerOne->setPosition({_playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.1f});
+                // else if (_playerOne->getPosition().getX() >= (object.getPosition().getX() - nb))
+                //     _playerOne->setPosition({_playerOne->getPosition().getX() - 0.1f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
+                // else if (_playerOne->getPosition().getX() <= (object.getPosition().getX() + nb))
+                //     _playerOne->setPosition({_playerOne->getPosition().getX() + 0.1f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
+                std::cout << "in collision" << std::endl;
+                return true;
+            }
+        }
     }
     return false;
-    // if (_playerOne->getPosition().getX() ==  object.getPosition().getX() && object.getPosition().getY() == 0)
-    //     return ()
 }
 
 Scene::Scenes Scene::SettingsScene::handelEvent()
@@ -79,13 +84,13 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     for (auto &[type, button] : _buttons)
         button->checkHover(GetMousePosition());
     if (IsKeyDown(KEY_UP) && !collideMap())
-        _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.2f});
-    if (IsKeyDown(KEY_DOWN)  && !collideMap())
         _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() - 0.2f});
+    if (IsKeyDown(KEY_DOWN)  && !collideMap())
+        _playerOne->move((Position){ _playerOne->getPosition().getX(), _playerOne->getPosition().getY(), _playerOne->getPosition().getZ() + 0.2f});
     if (IsKeyDown(KEY_LEFT)  && !collideMap())
-        _playerOne->move((Position){ _playerOne->getPosition().getX() + 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
-    if (IsKeyDown(KEY_RIGHT)  && !collideMap())
         _playerOne->move((Position){ _playerOne->getPosition().getX() - 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
+    if (IsKeyDown(KEY_RIGHT)  && !collideMap())
+        _playerOne->move((Position){ _playerOne->getPosition().getX() + 0.2f, _playerOne->getPosition().getY(), _playerOne->getPosition().getZ()});
     return _nextScene;
 }
 
