@@ -13,7 +13,7 @@
 #include "Core.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::SETTINGS)
+    _activeScene(Scene::Scenes::MAIN_MENU)
 {
     SettingsParams settingsParams;
 

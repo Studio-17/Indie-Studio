@@ -20,14 +20,16 @@ namespace Object
 
             void draw() override;
 
-            bool checkIfShouldExplose();
-            void explose();
+            bool checkIfShouldExplode();
+            void animation();
+            void explode();
 
 
         protected:
         private:
             Clock _bombClock{};
             float _lifeTime;
+            std::size_t _range;
     };
 }
 

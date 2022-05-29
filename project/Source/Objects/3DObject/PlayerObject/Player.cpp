@@ -9,6 +9,7 @@
 
 Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position) : AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position)
 {
+    _playerScale = 7.0f;
 }
 
 Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData)
@@ -35,7 +36,7 @@ void Object::Player::move(Position const &position, Position const &direction)
 
 void Object::Player::resetAnimation()
 {
-    _animFrameCounter = 19;
+    _animFrameCounter = 20;
     UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
 }
 
@@ -46,7 +47,11 @@ void Object::Player::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-
-    DrawModelEx(_model, modelPosition, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1 * _scale, 1 * _scale, 1 * _scale }, WHITE);
+    DrawModel(_model, modelPosition, _playerScale, WHITE);
     // DrawModelWires(_model, modelPosition, 5, GREEN);
+}
+
+void Object::Player::dropBomb()
+{
+
 }

@@ -26,6 +26,7 @@ namespace Object {
             void dropBomb();
 
         private:
+            float _playerScale;
 
     };
 }
