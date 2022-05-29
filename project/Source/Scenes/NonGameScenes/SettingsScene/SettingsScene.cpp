@@ -33,7 +33,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
     _mapFile = "Save/Maps/random.map";
-    _margin = 0.3f;
+    _margin = 1.9f;
     _playerSpeed = 0.15f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
@@ -74,13 +74,15 @@ bool Scene::SettingsScene::isColliding(Position margin)
 int Scene::SettingsScene::getMovingKeys()
 {
     if (IsKeyDown(KEY_UP))
-        return (KEY_UP);
+        return KEY_UP;
     if (IsKeyDown(KEY_DOWN))
-        return (KEY_DOWN);
+        return KEY_DOWN;
     if (IsKeyDown(KEY_LEFT))
-        return (KEY_LEFT);
+        return KEY_LEFT;
     if (IsKeyDown(KEY_RIGHT))
-        return (KEY_RIGHT);
+        return KEY_RIGHT;
+    if (IsKeyDown(KEY_SPACE))
+        return KEY_SPACE;
     return 0;
 }
 
@@ -108,6 +110,9 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         case KEY_RIGHT:
             if (!isColliding((Position){_margin, 0, 0}))
                 _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 180, 0});
+            break;
+        case KEY_SPACE:
+            _playerOne->dropBomb();
             break;
         default:
             _playerOne->resetAnimation();
