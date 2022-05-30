@@ -52,10 +52,35 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-bool Scene::SettingsScene::isColliding(Position margin)
+// je recupere la position de la bombe par rapport a la position du perso
+// je dit tant qu'il est dans cette box y a pas collisions avec la bombe
+// dès qu'il sort de cette box, alors je set le boolean a true
+
+bool Scene::SettingsScene::isCollidingBomb(Position margin, std::unique_ptr<Object::Player> &player)
 {
-    float tileSpace = _gameMap->getBlockSize() - 2;
-    Position playerPos = _playerOne->getPosition();
+    float tileSpace = _gameMap->getBlockSize() - (_margin + 0.5f);
+    Position playerPos = player->getPosition();
+
+    for (auto &object : _bombs) {
+        Position block = object->getPosition();
+
+        if (object->getPosition().getY() == 0 &&
+        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
+        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
+            if (!object->getCollide())
+                return (false);
+            return true;
+        }
+        else
+            object->setCollide(true);
+    }
+    return false;
+}
+
+bool Scene::SettingsScene::isCollidingBlock(Position margin, std::unique_ptr<Object::Player> &player)
+{
+    float tileSpace = _gameMap->getBlockSize() - _margin;
+    Position playerPos = player->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
         Position block = object.getPosition();
@@ -93,23 +118,23 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         button->checkHover(GetMousePosition());
     switch (key) {
         case KEY_UP:
-            if (!isColliding({0, 0, -_margin}))
+            if (!isCollidingBlock({0, 0, -_margin}, _playerOne) && !isCollidingBomb({0, 0, -_margin}, _playerOne))
                 _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, {0, 90, 0});
             break;
         case KEY_DOWN:
-            if (!isColliding({0, 0, _margin}))
+            if (!isCollidingBlock({0, 0, _margin}, _playerOne) && !isCollidingBomb({0, 0, _margin}, _playerOne))
                 _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, {0, -90, 0});
             break;
         case KEY_LEFT:
-            if (!isColliding({-_margin, 0, 0}))
+            if (!isCollidingBlock({-_margin, 0, 0}, _playerOne) && !isCollidingBomb({-_margin, 0, 0}, _playerOne))
                 _playerOne->move({ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 0, 0});
             break;
         case KEY_RIGHT:
-            if (!isColliding({_margin, 0, 0}))
+            if (!isCollidingBlock({_margin, 0, 0}, _playerOne) && !isCollidingBomb({_margin, 0, 0}, _playerOne))
                 _playerOne->move({ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 180, 0});
             break;
         case KEY_SPACE:
-            placeBomb(playerPos, 5, 1);
+            placeBomb(playerPos, 5, 1, Object::PLAYER_ORDER::PLAYER1);
             break;
         default:
             _playerOne->resetAnimation();
@@ -133,7 +158,7 @@ int Scene::SettingsScene::roundUp(int nb, int multiple)
         return nb + multiple - remainder;
 }
 
-void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range)
+void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER player)
 {
     bool blockTooked = false;
     int nb = roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
@@ -148,7 +173,7 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
                 blockTooked = true;
         }
         if (!blockTooked)
-            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), "", 1, newPos, lifetime, range));
+            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, Object::PLAYER_ORDER::PLAYER1, 3, 1));
     }
 }
 
@@ -162,6 +187,13 @@ void Scene::SettingsScene::draw()
 
         _gameMap->draw();
         _playerOne->draw();
+
+        if (!_bombs.empty()) {
+            for(std::size_t i = 0; i < _bombs.size(); i++) {
+                if (_bombs.at(i)->checkIfShouldExplode())
+                    _bombs.erase(_bombs.begin() + i);
+            }
+        }
 
         for (auto &bomb : _bombs)
             bomb->draw();
