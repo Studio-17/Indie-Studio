@@ -71,52 +71,35 @@ bool Scene::SettingsScene::isColliding(Position margin)
     return false;
 }
 
-int Scene::SettingsScene::getMovingKeys()
-{
-    if (IsKeyDown(KEY_UP))
-        return KEY_UP;
-    if (IsKeyDown(KEY_DOWN))
-        return KEY_DOWN;
-    if (IsKeyDown(KEY_LEFT))
-        return KEY_LEFT;
-    if (IsKeyDown(KEY_RIGHT))
-        return KEY_RIGHT;
-    if (IsKeyDown(KEY_SPACE))
-        return KEY_SPACE;
-    return 0;
-}
-
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
-    int key = getMovingKeys();
-    Position playerPos = _playerOne->getPosition();
+    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {{PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
+        {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
+        {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
+        {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
+        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}};
+    std::map<PlayerAction, Position> collisionCondition = {{PlayerAction::MoveLeft, {-_margin, 0, 0}},
+        {PlayerAction::MoveRight, {_margin, 0, 0}},
+        {PlayerAction::MoveUp, {0, 0, -_margin}},
+        {PlayerAction::MoveDown, {0, 0, _margin}},
+        {PlayerAction::Drop, {0, 0, 0}}};
+    bool moving = false;
 
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
-    switch (key) {
-        case KEY_UP:
-            if (!isColliding((Position){0, 0, -_margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, (Position){0, 90, 0});
-            break;
-        case KEY_DOWN:
-            if (!isColliding((Position){0, 0, _margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, (Position){0, -90, 0});
-            break;
-        case KEY_LEFT:
-            if (!isColliding((Position){-_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 0, 0});
-            break;
-        case KEY_RIGHT:
-            if (!isColliding((Position){_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 180, 0});
-            break;
-        case KEY_SPACE:
-            _playerOne->dropBomb();
-            break;
-        default:
-            _playerOne->resetAnimation();
+    for (auto &[action, isPressed] : _settings->getPlayerActionPressed()) {
+        if (isPressed) {
+            if (action == PlayerAction::Drop)
+                _playerOne->dropBomb();
+            else if (!isColliding(collisionCondition.at(action))) {
+                _playerOne->move(actionMap.at(action).first, actionMap.at(action).second);
+                moving = true;
+            }
+        }
     }
+    if (!moving)
+        _playerOne->resetAnimation();
     return _nextScene;
 }
 

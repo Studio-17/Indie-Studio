@@ -17,29 +17,46 @@
     #include "Window.hpp"
     #include "SettingsParams.hpp"
 
+enum class Action {
+    Next,
+    Previous,
+    Right,
+    Left,
+    Up,
+    Down
+};
+enum class PlayerAction {
+    MoveLeft,
+    MoveRight,
+    MoveUp,
+    MoveDown,
+    Drop
+};
 class Settings {
     public:
         Settings(SettingsParams const &params);
         Settings(std::string const &confpath);
         ~Settings();
 
-        std::shared_ptr<RayLib::Window> getWindow();
-        std::shared_ptr<RayLib::Audio> getAudio();
-        std::shared_ptr<RayLib::CinematicCamera> getCamera();
+        std::shared_ptr<RayLib::Window> getWindow() const;
+        std::shared_ptr<RayLib::Audio> getAudio() const;
+        std::shared_ptr<RayLib::CinematicCamera> getCamera() const;
+        void setActionPressed(std::map<Action, bool> const &actionPressed);
+        // void setPlayerActionPressed(std::array<std::map<PlayerAction, bool>, 4> const &playerAction);
+        void setPlayerActionPressed(std::map<PlayerAction, bool> const &playerAction);
+        std::map<Action, bool> getActionPressed() const;
+        std::map<PlayerAction, bool> getPlayerActionPressed() const;
+        // std::array<std::map<PlayerAction, bool>, 4> getPlayerActionPressed() const;
 
     protected:
     private:
         std::shared_ptr<RayLib::Window> _window;
         std::shared_ptr<RayLib::Audio> _audio;
         std::shared_ptr<RayLib::CinematicCamera> _camera;
-        enum class Action {
-            MoveLeft,
-            MoveRight,
-            MoveUp,
-            MoveDown,
-            Drop
-        };
-        std::map<Action, std::pair<int, bool>> _actionMap;
+
+        std::map<Action, bool> _actionPressed;
+        // std::array<std::map<PlayerAction, bool>, 4> _playerAction;
+        std::map<PlayerAction, bool> _playerAction;
 };
 
 #endif /* !SETTINGS_HPP_ */

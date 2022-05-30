@@ -6,7 +6,6 @@
 */
 
 #include "Keyboard.hpp"
-#include <iostream>
 
 Keyboard::Keyboard()
 {
@@ -53,11 +52,4 @@ int Keyboard::getPressedCharcode() const
     int key = GetCharPressed();
 
     return key;
-}
-
-std::map<int, std::pair<int, bool>> Keyboard::getKeysPressed(std::map<int, std::pair<int, bool>> map) const
-{
-    for (auto &index : map)
-        index.second.second = isBeingPressed(index.second.first);
-    return map;
 }

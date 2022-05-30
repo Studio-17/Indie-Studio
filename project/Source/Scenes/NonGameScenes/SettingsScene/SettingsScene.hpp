@@ -32,7 +32,6 @@ namespace Scene {
             void mainMenuScene();
             void draw();
 
-            int getMovingKeys();
             bool isColliding(Position margin);
 
         protected:

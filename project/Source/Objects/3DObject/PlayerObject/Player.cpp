@@ -31,7 +31,7 @@ void Object::Player::move(Position const &position, Position const &direction)
         _animFrameCounter = 0;
 
     _model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * direction.getX(), DEG2RAD * direction.getY(), DEG2RAD * direction.getZ()});
-    setPosition((Position){ position.getX(), position.getY(), position.getZ() });
+    _position += position;
 }
 
 void Object::Player::resetAnimation()
