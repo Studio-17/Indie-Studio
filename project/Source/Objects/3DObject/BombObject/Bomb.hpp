@@ -15,7 +15,7 @@ namespace Object
 {
     class Bomb : public AThreeDimensionObject {
         public:
-            Bomb(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, float lifeTime);
+            Bomb(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, float lifeTime, std::size_t range);
             ~Bomb() override;
 
             void draw() override;
@@ -30,6 +30,7 @@ namespace Object
             Clock _bombClock{};
             float _lifeTime;
             std::size_t _range;
+            float _bombScale;
     };
 }
 

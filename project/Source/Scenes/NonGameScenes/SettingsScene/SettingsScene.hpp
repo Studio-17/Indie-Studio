@@ -15,6 +15,7 @@
     #include "Music.hpp"
     #include "Map.hpp"
     #include "Player.hpp"
+    #include "Bomb.hpp"
 /**
  * @brief The settings scene of the game
  */
@@ -35,11 +36,15 @@ namespace Scene {
             int getMovingKeys();
             bool isColliding(Position margin);
 
+            int roundUp(int nb, int multiple);
+            void placeBomb(Position pos, float lifetime, std::size_t range);
+
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::unique_ptr<Object::Player> _playerOne;
             std::unique_ptr<Object::Player> _playerTwo;
+            std::vector<std::unique_ptr<Object::Bomb>> _bombs;
 
             std::string _mapFile;
 

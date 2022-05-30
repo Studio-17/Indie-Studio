@@ -14,6 +14,7 @@ Object::Map::Map()
 Object::Map::Map(Position const &position)
 {
     _mapPosition = position;
+    _blockSize = 10.0f;
 }
 
 Object::Map::~Map()
@@ -83,29 +84,27 @@ void Object::Map::process(std::string const &pathToFile)
 {
     _pathToMap = pathToFile;
     std::vector<std::string> mapLayout = load(_pathToMap);
-
     static const std::map<Object::MAP_OBJECTS, std::pair<std::string, std::string>> keyMap = {
         {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/models/block/stone/box.obj", "Ressources/models/block/stone/box.png"}},
         {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
         {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}}
     };
-    static const float blockSize = 10.0f;
-
     srand(time(NULL));
 
-    _mapDimensions.setX((mapLayout.size() * blockSize) / 2);
+    _blockSize = 10.0f;
+    _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
     _mapDimensions.setY(0);
-    _mapDimensions.setZ((mapLayout[0].size() * blockSize) / 2);
+    _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
 
     Vector3 tilePosition = {0, 0, 0};
 
     for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
-            if (mapLayout.at(line).at(col) == 'X')
+            if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::WALL_SIDE),
-                    (Position){tilePosition.x, tilePosition.y - blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE);
+                    (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE);
             else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
                 if (((rand() % 8) + 1) != 1) {
                     _mapObjects.emplace_back(
@@ -121,11 +120,11 @@ void Object::Map::process(std::string const &pathToFile)
             else
                 _mapObjects.emplace_back(
                     keyMap.at(MAP_OBJECTS::GROUND),
-                    (Position){tilePosition.x, tilePosition.y - (blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND);
+                    (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND);
 
-            tilePosition.x += blockSize;
+            tilePosition.x += _blockSize;
         }
-        tilePosition.z += blockSize;
+        tilePosition.z += _blockSize;
         tilePosition.x = 0;
     }
 }

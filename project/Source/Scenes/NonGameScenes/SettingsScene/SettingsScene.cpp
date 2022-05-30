@@ -6,6 +6,7 @@
 */
 
 #include "SettingsScene.hpp"
+#include <tgmath.h>
 
 void Scene::SettingsScene::exitScene(void)
 {
@@ -34,15 +35,11 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap = std::make_unique<Object::Map>();
     _mapFile = "Save/Maps/random.map";
     _margin = 1.9f;
-    _playerSpeed = 0.15f;
+    _playerSpeed = 0.2f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
     _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10));
-    // _playerTwo = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, Position(0, 0, 0));
-
-    std::cout << "camera target: " << _gameMap->getDimensions() << std::endl;
-
-    _settings->getCamera()->setTarget((Position){_gameMap->getDimensions()});
+    _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
 
@@ -57,7 +54,7 @@ void Scene::SettingsScene::fadeBlack()
 
 bool Scene::SettingsScene::isColliding(Position margin)
 {
-    float tileSpace = 10 - 2;
+    float tileSpace = _gameMap->getBlockSize() - 2;
     Position playerPos = _playerOne->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
@@ -96,28 +93,63 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         button->checkHover(GetMousePosition());
     switch (key) {
         case KEY_UP:
-            if (!isColliding((Position){0, 0, -_margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, (Position){0, 90, 0});
+            if (!isColliding({0, 0, -_margin}))
+                _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, {0, 90, 0});
             break;
         case KEY_DOWN:
-            if (!isColliding((Position){0, 0, _margin}))
-                _playerOne->move((Position){ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, (Position){0, -90, 0});
+            if (!isColliding({0, 0, _margin}))
+                _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, {0, -90, 0});
             break;
         case KEY_LEFT:
-            if (!isColliding((Position){-_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 0, 0});
+            if (!isColliding({-_margin, 0, 0}))
+                _playerOne->move({ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 0, 0});
             break;
         case KEY_RIGHT:
-            if (!isColliding((Position){_margin, 0, 0}))
-                _playerOne->move((Position){ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, (Position){0, 180, 0});
+            if (!isColliding({_margin, 0, 0}))
+                _playerOne->move({ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 180, 0});
             break;
         case KEY_SPACE:
-            _playerOne->dropBomb();
+            placeBomb(playerPos, 5, 1);
             break;
         default:
             _playerOne->resetAnimation();
     }
     return _nextScene;
+}
+
+int Scene::SettingsScene::roundUp(int nb, int multiple)
+{
+    if (multiple == 0)
+        return nb;
+
+    int remainder = abs(nb) % multiple;
+
+    if (remainder == 0)
+        return nb;
+
+    if (nb < 0)
+        return -(abs(nb) - remainder);
+    else
+        return nb + multiple - remainder;
+}
+
+void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range)
+{
+    bool blockTooked = false;
+    int nb = roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
+    if (nb % 10 == 5)
+        nb -= 5;
+
+    Position newPos = {static_cast<float>(roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
+
+    if (static_cast<int>(newPos.getX()) % 10 == 0) {
+        for (auto &bomb : _bombs) {
+            if (bomb->getPosition() == newPos)
+                blockTooked = true;
+        }
+        if (!blockTooked)
+            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), "", 1, newPos, lifetime, range));
+    }
 }
 
 void Scene::SettingsScene::draw()
@@ -129,8 +161,10 @@ void Scene::SettingsScene::draw()
         DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
 
         _gameMap->draw();
-        _playerOne->setScale(5.0f);
         _playerOne->draw();
+
+        for (auto &bomb : _bombs)
+            bomb->draw();
 
     _settings->getCamera()->endMode3D();
 

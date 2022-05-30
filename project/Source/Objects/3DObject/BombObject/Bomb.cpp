@@ -7,13 +7,12 @@
 
 #include "Bomb.hpp"
 
-Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, float lifeTime) : AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position)
+Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, float lifeTime, std::size_t range) : AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position)
 {
     _bombClock.start();
+    _bombScale = 2.0f;
     _lifeTime = lifeTime;
-    _range = 0; // Portabilité de la bombe
-    // Ressources/models/bomb/bomb.obj (Path to '.obj')
-    // Ressources/models/bomb/bomb.png (Path to '.png')
+    _range = range;
 }
 
 Object::Bomb::~Bomb()
@@ -27,7 +26,7 @@ void Object::Bomb::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-    DrawModelEx(_model, modelPosition, (Vector3){ 0.0f, 0.0f, 0.0f }, 0.0f, (Vector3){ 1 * _scale, 1 * _scale, 1 * _scale }, WHITE);
+    DrawModel(_model, modelPosition, _bombScale, WHITE);
 }
 
 bool Object::Bomb::checkIfShouldExplode()
