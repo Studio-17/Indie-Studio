@@ -14,7 +14,7 @@
 namespace Object {
 
     enum class PLAYER_ORDER {
-        PLAYER1 = 1,
+        PLAYER1 = 0,
         PLAYER2,
         PLAYER3,
         PLAYER4

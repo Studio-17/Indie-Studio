@@ -35,15 +35,15 @@ namespace Scene {
 
             int getMovingKeys();
             bool isCollidingBlock(Position margin, std::unique_ptr<Object::Player> &player);
-            bool isCollidingBomb(Position margin, std::unique_ptr<Object::Player> &player);
+            bool isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb);
 
             int roundUp(int nb, int multiple);
-            void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER player);
+            void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
 
         protected:
         private:
             std::unique_ptr<Object::Map> _gameMap;
-            std::unique_ptr<Object::Player> _playerOne;
+            std::vector<std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
 
             std::string _mapFile;
