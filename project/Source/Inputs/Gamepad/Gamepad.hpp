@@ -11,6 +11,8 @@
     #include <raylib.h>
 
     #include <string>
+    #include <map>
+        #include <iostream>
 
 class Gamepad {
     public:
@@ -27,7 +29,36 @@ class Gamepad {
         int getAxisCount(int gamepad) const;
         float getAxisMovement(int gamepad, int axis) const;
         int setMappings(const char *mappings);
+        template<typename ENUM>
+        std::map<ENUM, bool> getKeysPressed(std::map<ENUM, int> map, int gamepad) const
+        {
+            std::map<ENUM, bool> actionPressed;
+            for (auto &[action, key] : map)
+                actionPressed.emplace(action, isButtonDown(gamepad, key));
+            return actionPressed;
+        };
+        template<typename ENUM>
+        std::map<ENUM, bool> getMovement(std::map<ENUM, int> map, int gamepad, std::pair<ENUM, int> const &drop) const
+        {
+            std::map<ENUM, bool> actionPressed;
+            int index = 0;
 
+            for (auto &[action, axis] : map) {
+                bool isMoving = false;
+                float value = getAxisMovement(gamepad, axis);
+                if (index % 2 == 0) {
+                    if (value < 0)
+                        isMoving = true;
+                } else {
+                    if (value > 0)
+                        isMoving = true;
+                }
+                actionPressed.emplace(action, isMoving);
+                index++;
+            }
+            actionPressed.emplace(drop.first, isButtonDown(gamepad, drop.second));
+            return actionPressed;
+        };
     protected:
     private:
 };
