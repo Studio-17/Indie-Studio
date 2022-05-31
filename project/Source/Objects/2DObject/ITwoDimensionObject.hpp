@@ -21,6 +21,7 @@ namespace Object
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;
+            virtual Position getPosition() const = 0;
 
         protected:
         private:

@@ -61,7 +61,7 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 void Object::Map::draw()
 {
     for (auto &mapObject : _mapObjects)
-        mapObject.draw();
+        mapObject->draw();
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)
@@ -78,6 +78,13 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
         file.close();
     }
     return (map);
+}
+
+bool Object::Map::removeBlock(std::size_t index)
+{
+    if (_mapObjects.at(index)->getMapObject() == MAP_OBJECTS::BOX)
+        _mapObjects.erase(_mapObjects.begin() + index);
+    return true;
 }
 
 void Object::Map::process(std::string const &pathToFile)
@@ -102,25 +109,24 @@ void Object::Map::process(std::string const &pathToFile)
     for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
             if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
-                _mapObjects.emplace_back(
-                    keyMap.at(MAP_OBJECTS::WALL_SIDE),
-                    (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE);
+                _mapObjects.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE),
+                    (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
             else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
                 if (((rand() % 8) + 1) != 1) {
-                    _mapObjects.emplace_back(
+                    _mapObjects.emplace_back(std::make_shared<Object::Block>(
                         keyMap.at(MAP_OBJECTS::BOX),
-                        (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX);
+                        (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
                 }
             }
 
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
-                _mapObjects.emplace_back(
+                _mapObjects.emplace_back(std::make_shared<Object::Block>(
                     keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))),
-                    (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col)));
+                    (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
             else
-                _mapObjects.emplace_back(
+                _mapObjects.emplace_back(std::make_shared<Object::Block>(
                     keyMap.at(MAP_OBJECTS::GROUND),
-                    (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND);
+                    (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
 
             tilePosition.x += _blockSize;
         }

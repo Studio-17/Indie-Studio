@@ -20,6 +20,13 @@
  * @brief The settings scene of the game
  */
 namespace Scene {
+    enum ORIENTATION {
+        UP,
+        DOWN,
+        RIGHT,
+        LEFT
+    };
+
     class SettingsScene : public AScene {
         public:
             SettingsScene(std::shared_ptr<Settings> settings);
@@ -39,6 +46,7 @@ namespace Scene {
 
             int roundUp(int nb, int multiple);
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
+            void explodeBomb(std::size_t bombPos);
 
         protected:
         private:

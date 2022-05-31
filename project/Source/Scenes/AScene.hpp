@@ -17,6 +17,7 @@
     #include "Button.hpp"
     #include "Music.hpp"
     #include "Image.hpp"
+    #include "Text.hpp"
 
 
 namespace Scene
@@ -49,7 +50,8 @@ namespace Scene
 
             std::vector<std::unique_ptr<Object::Button>> _buttons;
             std::unique_ptr<MyMusic> _mainMusic;
-            std::unique_ptr<Object::Image> _imageBackground;
+            std::vector<std::unique_ptr<Object::Image>> _images;
+            std::vector<std::unique_ptr<Object::Text>> _texts;
 
         private:
     };

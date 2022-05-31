@@ -9,6 +9,7 @@
 
 #include "MainMenuScene.hpp"
 #include "SettingsScene.hpp"
+#include "SelectGameMenuScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -79,6 +80,7 @@ void Core::loadMenuScenes()
 {
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::SelectGameMenuScene>(_settings));
     //rajouter toutes les scènes des menus
 }
 
