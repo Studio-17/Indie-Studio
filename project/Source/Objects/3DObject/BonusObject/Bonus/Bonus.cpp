@@ -6,11 +6,11 @@
 */
 
 #include "Bonus.hpp"
+#include "raymath.h"
 
-Object::Bonus::Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS mapObject) :
-    AThreeDimensionObject(pathToRessources, position), _bonusObject(mapObject)
+Object::Bonus::Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS mapObject) : AThreeDimensionObject(pathToRessources, position), _bonusObject(mapObject)
 {
-    _bonusScale = 10;
+    _bonusScale = 8;
 }
 
 Object::Bonus::~Bonus()
@@ -19,12 +19,14 @@ Object::Bonus::~Bonus()
 
 void Object::Bonus::draw()
 {
+    Position direction = {40, 180, 0};
+
     Vector3 modelPosition = {
         getPosition().getX(),
-        getPosition().getY(),
+        (getPosition().getY() + 5),
         getPosition().getZ()
     };
-
+    _model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * direction.getX(), DEG2RAD * direction.getY(), DEG2RAD * direction.getZ()});
     DrawModel(getModel(), modelPosition, _bonusScale, WHITE);
 }
 
