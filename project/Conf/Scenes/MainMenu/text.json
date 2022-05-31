@@ -1,0 +1,9 @@
+{
+    "title": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "MENU PRINCIPAL",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [100, 100, 0]
+    }
+}

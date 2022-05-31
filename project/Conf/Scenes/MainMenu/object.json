@@ -1,8 +1,0 @@
-{
-    "background": {
-        "type": "image",
-        "texture": "Ressources/sprites/background.png",
-        "scale": 1.5,
-        "position": [200, 100, 0]
-    }
-}

@@ -1,0 +1,57 @@
+{
+    "background-1.1": {
+        "texture": "Ressources/sprites/parallax_background.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "background-1.2": {
+        "texture": "Ressources/sprites/parallax_background.png",
+        "scale": 1,
+        "position": [1929, 0, 0]
+    },
+    "background-2.1": {
+        "texture": "Ressources/sprites/parallax_cloud.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "background-2.2": {
+        "texture": "Ressources/sprites/parallax_cloud.png",
+        "scale": 1,
+        "position": [1929, 0, 0]
+    },
+    "background-3.1": {
+        "texture": "Ressources/sprites/parallax_ground.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "background-3.2": {
+        "texture": "Ressources/sprites/parallax_ground.png",
+        "scale": 1,
+        "position": [1929, 0, 0]
+    },
+    "background-4.1": {
+        "texture": "Ressources/sprites/parallax_mountain.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "background-4.2": {
+        "texture": "Ressources/sprites/parallax_mountain.png",
+        "scale": 1,
+        "position": [1929, 0, 0]
+    },
+    "background-5.1": {
+        "texture": "Ressources/sprites/parallax_tree.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "background-5.2": {
+        "texture": "Ressources/sprites/parallax_tree.png",
+        "scale": 1,
+        "position": [1929, 0, 0]
+    },
+    "logo-top-corner-left": {
+        "texture": "Ressources/sprites/icon.png",
+        "scale": 1,
+        "position": [25, 90, 0]
+    }
+}
