@@ -38,7 +38,10 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerSpeed = 0.2f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
@@ -102,6 +105,7 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         {PlayerAction::MoveDown, {0, 0, _margin}},
         {PlayerAction::Drop, {0, 0, 0}}};
     bool moving = false;
+    int index = 0;
 
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
@@ -110,13 +114,14 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         for (auto &[action, isPressed] : playerAc) {
             if (isPressed) {
                 if (action == PlayerAction::Drop)
-                    placeBomb(_players.at(0)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
-                else if (!isCollidingBlock(collisionCondition.at(action), _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(collisionCondition.at(action), _players, Object::PLAYER_ORDER::PLAYER1)) {
-                    _players.at(0)->move(actionMap.at(action).first, actionMap.at(action).second);
+                    placeBomb(_players.at(index)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
+                else if (!isCollidingBlock(collisionCondition.at(action), _players.at(index)) && !isCollidingBomb(collisionCondition.at(action), _players, static_cast<Object::PLAYER_ORDER>(index))) {
+                    _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
             }
         }
+        index++;
     }
     if (!moving)
         _players.at(0)->resetAnimation();
@@ -167,7 +172,8 @@ void Scene::SettingsScene::draw()
         DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
 
         _gameMap->draw();
-        _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
+        for (auto &player : _players)
+            player->draw();
 
         if (!_bombs.empty()) {
             for(std::size_t i = 0; i < _bombs.size(); i++) {
