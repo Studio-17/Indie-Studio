@@ -33,7 +33,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
     _mapFile = "Save/Maps/random.map";
-    _margin = 1.9f;
+    _margin = 2.0f;
     _playerSpeed = 0.2f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
@@ -56,7 +56,7 @@ void Scene::SettingsScene::fadeBlack()
 
 bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb)
 {
-    float tileSpace = _gameMap->getBlockSize() - (_margin + 0.5f);
+    float tileSpace = _gameMap->getBlockSize() - (_margin + 0.4f);
     Position playerPos = players.at(static_cast<char>(playerNb))->getPosition();
 
     for (auto &object : _bombs) {
@@ -66,18 +66,18 @@ bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::uni
         ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
         (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
             if (!object->getCollide())
-                return (false);
-            return (true);
+                return false;
+            return true;
         }
         else
             object->setCollide(true);
     }
-    return (false);
+    return false;
 }
 
 bool Scene::SettingsScene::isCollidingBlock(Position margin, std::unique_ptr<Object::Player> &player)
 {
-    float tileSpace = _gameMap->getBlockSize() - _margin;
+    float tileSpace = _gameMap->getBlockSize() - (_margin - 0.4f);
     Position playerPosition = player->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
@@ -86,9 +86,9 @@ bool Scene::SettingsScene::isCollidingBlock(Position margin, std::unique_ptr<Obj
         if (object->getPosition().getY() == 0 &&
         ((playerPosition.getX() + margin.getX() >= (blockPosition.getX() - tileSpace) && playerPosition.getX() + margin.getX() <= (blockPosition.getX() + tileSpace)) &&
         (playerPosition.getZ() + margin.getZ() >= (blockPosition.getZ() - tileSpace) && playerPosition.getZ() + margin.getZ() <= (blockPosition.getZ() + tileSpace))))
-            return (true);
+            return true;
     }
-    return (false);
+    return false;
 }
 
 Scene::Scenes Scene::SettingsScene::handelEvent()
@@ -98,15 +98,15 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
         {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
         {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
-        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}};
-
+        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}
+    };
     std::map<PlayerAction, Position> collisionCondition = {
         {PlayerAction::MoveLeft, {-_margin, 0, 0}},
         {PlayerAction::MoveRight, {_margin, 0, 0}},
         {PlayerAction::MoveUp, {0, 0, -_margin}},
         {PlayerAction::MoveDown, {0, 0, _margin}},
-        {PlayerAction::Drop, {0, 0, 0}}};
-
+        {PlayerAction::Drop, {0, 0, 0}}
+    };
     bool moving = false;
     int index = 0;
 
@@ -127,21 +127,20 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         }
         index++;
     }
-
     if (!moving)
         _players.at(0)->animation(1);
-    return (_nextScene);
+    return _nextScene;
 }
 
 int Scene::SettingsScene::roundUp(int nb, int multiple)
 {
     if (multiple == 0)
-        return (nb);
+        return nb;
 
     int remainder = abs(nb) % multiple;
 
     if (remainder == 0)
-        return (nb);
+        return nb;
 
     if (nb < 0)
         return (-(abs(nb) - remainder));
@@ -171,77 +170,77 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
     }
 }
 
-void Scene::SettingsScene::setBonus(Position const &position)
+void Scene::SettingsScene::setBonus(Position const &position, std::size_t percentageDrop)
 {
-    srand(time(NULL));
-    int randomized = (rand() % 3) + 1;
-
     static std::map<Object::BONUS_OBJECTS, std::pair<std::string, std::string>> bonusMap = {
         {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}},
         {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/fireup.obj", "Ressources/models/bonus/items.png"}},
-        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/items.png"}}};
+        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/items.png"}}
+    };
+    srand(time(NULL));
+    std::size_t randomNumber = 1 + (rand() % 100);
+    std::size_t randomBonus = 1 + (rand() % bonusMap.size());
 
-    std::cout << "Randomized: " << randomized << std::endl;
-    std::cout << "Bonus Size (before): " << _bonus.size() << std::endl;
-
-    _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomized)), position, static_cast<Object::BONUS_OBJECTS>(randomized)));
-
-    std::cout << "Bonus Size (after): " << _bonus.size() << std::endl;
+    if (randomNumber >= 1 && randomNumber <= percentageDrop)
+        _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus)));
 }
 
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
 {
-    float blockSize = 10.0f;
-
-    std::map<ORIENTATION, std::pair<bool, Position>> explosionMap = {
-        {UP, {false, {0, 0, -blockSize}}},
-        {DOWN, {false, {0, 0, blockSize}}},
-        {LEFT, {false, {-blockSize, 0, 0}}},
-        {RIGHT, {false, {blockSize, 0, 0}}}
-    };
-
-    // WARN revoir la range des bombes
+    std::size_t percentageBonusDrop = 30;
+    float blockSize = _gameMap->getBlockSize();
+    std::vector<bool> alreadyDestroyed = { false, false, false, false };
 
     for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
         for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
-            for (auto &[_, bombInfo] : explosionMap) {
-                if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += bombInfo.second) && !bombInfo.first) {
-                    bombInfo.first = _gameMap->removeBlock(index);
-                    setBonus(_bombs.at(bombPos)->getPosition() += bombInfo.second);
-                }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(0) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(1) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(2) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(3) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}, percentageBonusDrop);
             }
         }
-        blockSize += 10.0f;
+        blockSize += _gameMap->getBlockSize();
     }
 }
 
 void Scene::SettingsScene::draw()
 {
     _settings->getCamera()->startMode3D();
+    _gameMap->draw();
+    for (auto &player : _players)
+        player->draw();
 
-        _gameMap->draw();
-        for (auto &player : _players)
-            player->draw();
-
-        if (!_bombs.empty()) {
-            for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
-                if (_bombs.at(bombPos)->checkIfShouldExplode()) {
-                    explodeBomb(bombPos);
-                    _bombs.erase(_bombs.begin() + bombPos);
-                }
+    if (!_bombs.empty()) {
+        for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+            if (_bombs.at(bombPos)->checkIfShouldExplode()) {
+                explodeBomb(bombPos);
+                _bombs.erase(_bombs.begin() + bombPos);
             }
         }
+    }
+    _gameMap->draw();
 
-        _gameMap->draw();
+    for (auto &bonus : _bonus)
+        bonus->draw();
 
-        for (auto &bonus : _bonus)
-            bonus->draw();
-
-        for (auto &bomb : _bombs)
-            bomb->draw();
-
+    for (auto &bomb : _bombs)
+        bomb->draw();
     _settings->getCamera()->endMode3D();
-
     for (auto &button : _buttons)
         button->draw();
 }

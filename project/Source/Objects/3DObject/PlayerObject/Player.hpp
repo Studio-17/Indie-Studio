@@ -9,7 +9,6 @@
     #define PLAYER_HPP_
 
     #include "AThreeDimensionObject.hpp"
-    #include "raymath.h"
 
 namespace Object {
 
