@@ -29,6 +29,8 @@ namespace Object
             bool getCollide() { return _collide; };
             void setCollide(bool collide) { _collide = collide; };
 
+            std::size_t getRange() { return _range; };
+
         protected:
         private:
             Clock _bombClock{};

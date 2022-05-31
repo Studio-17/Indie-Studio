@@ -41,6 +41,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
+
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -79,9 +80,9 @@ bool Scene::SettingsScene::isCollidingBlock(Position margin, std::unique_ptr<Obj
     Position playerPos = player->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
-        Position block = object.getPosition();
+        Position block = object->getPosition();
 
-        if (object.getPosition().getY() == 0 &&
+        if (object->getPosition().getY() == 0 &&
         ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
         (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace))))
             return true;
@@ -154,7 +155,36 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
                 blockTooked = true;
         }
         if (!blockTooked)
-            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 1));
+            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2));
+    }
+}
+
+void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
+{
+    float blockSize = 10.0f;
+    std::vector<bool> alreadyDestroyed = {
+        false,
+        false,
+        false,
+        false
+    };
+
+    for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
+        for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0))
+                alreadyDestroyed.at(0) = _gameMap->removeBlock(index);
+
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1))
+                alreadyDestroyed.at(1) = _gameMap->removeBlock(index);
+
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2))
+                alreadyDestroyed.at(2) = _gameMap->removeBlock(index);
+
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3))
+                alreadyDestroyed.at(3) = _gameMap->removeBlock(index);
+
+        }
+        blockSize += 10.0f;
     }
 }
 
@@ -166,15 +196,18 @@ void Scene::SettingsScene::draw()
         DrawLine3D((Vector3){0, -1000, 0}, (Vector3){0, 1000, 0}, RED);       // Y
         DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
 
+        if (!_bombs.empty()) {
+            for(std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+                if (_bombs.at(bombPos)->checkIfShouldExplode()) {
+                    explodeBomb(bombPos);
+                    _bombs.erase(_bombs.begin() + bombPos);
+                }
+            }
+        }
+
         _gameMap->draw();
         _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
 
-        if (!_bombs.empty()) {
-            for(std::size_t i = 0; i < _bombs.size(); i++) {
-                if (_bombs.at(i)->checkIfShouldExplode())
-                    _bombs.erase(_bombs.begin() + i);
-            }
-        }
 
         for (auto &bomb : _bombs)
             bomb->draw();

@@ -37,16 +37,19 @@ namespace Object
 
             void createFile(const std::string &filename);
 
-            std::vector<Object::Block> getMapObjects() { return _mapObjects; };
+            std::vector<std::shared_ptr<Object::Block>> getMapObjects() { return _mapObjects; };
+
+            void printLine(std::size_t height);
             Position getDimensions() { return _mapDimensions; };
 
             float getBlockSize() { return _blockSize; };
 
+            bool removeBlock(std::size_t index);
+
         protected:
         private:
-            void printLine(std::size_t height);
+            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
 
-            std::vector<Object::Block> _mapObjects;
             Position _mapPosition;
 
             std::string _pathToMap;
