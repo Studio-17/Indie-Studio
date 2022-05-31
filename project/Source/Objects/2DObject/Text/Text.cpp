@@ -32,7 +32,7 @@ Object::Text::Text(nlohmann::json const &jsonData)
     _font = LoadFont(jsonData.value("font", "default").c_str());
     _color = createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})));
     _text = jsonData.value("text", "");
-    _fontSize = jsonData.value("fontSize", 20);
+    _fontSize = jsonData.value("fontSize", 50);
 }
 
 Object::Text::~Text()
@@ -58,6 +58,11 @@ void Object::Text::setPosition(float x, float y)
 void Object::Text::setPosition(float x, float y, float z)
 {
     _position.setPosition(x, y, z);
+}
+
+Position Object::Text::getPosition() const
+{
+    return _position;
 }
 
 void Object::Text::drawFramePerSeconds(Position const &position)
