@@ -5,6 +5,8 @@
 ** Core
 */
 
+#include <raylib.h>
+
 #include "MainMenuScene.hpp"
 #include "SettingsScene.hpp"
 
@@ -20,6 +22,43 @@ Core::Core() : _isRunning(true),
     settingsParams.loadFromData("Conf/settings.json");
     _settings = std::make_shared<Settings>(settingsParams),
     loadMenuScenes();
+    _actionPressed = {
+    {Action::Next, KEY_ENTER},
+    {Action::Previous, KEY_BACKSPACE},
+    {Action::Right, KEY_D},
+    {Action::Left, KEY_Q},
+    {Action::Up, KEY_Z},
+    {Action::Down, KEY_S}};
+    _playerActions = {
+    {
+    {PlayerAction::MoveLeft, KEY_LEFT},
+    {PlayerAction::MoveRight, KEY_RIGHT},
+    {PlayerAction::MoveUp, KEY_UP},
+    {PlayerAction::MoveDown, KEY_DOWN},
+    {PlayerAction::Drop, KEY_A}
+    },
+    {
+    {PlayerAction::MoveLeft, KEY_Q},
+    {PlayerAction::MoveRight, KEY_D},
+    {PlayerAction::MoveUp, KEY_Z},
+    {PlayerAction::MoveDown, KEY_S},
+    {PlayerAction::Drop, KEY_A}
+    },
+    {
+    {PlayerAction::MoveLeft, KEY_K},
+    {PlayerAction::MoveRight, KEY_M},
+    {PlayerAction::MoveUp, KEY_O},
+    {PlayerAction::MoveDown, KEY_L},
+    {PlayerAction::Drop, KEY_P}
+    },
+ {
+    {PlayerAction::MoveLeft, KEY_Q},
+    {PlayerAction::MoveRight, KEY_D},
+    {PlayerAction::MoveUp, KEY_Z},
+    {PlayerAction::MoveDown, KEY_S},
+    {PlayerAction::Drop, KEY_A}
+    }};
+
 }
 
 Core::~Core()
@@ -39,6 +78,7 @@ void Core::loop()
         _settings->getWindow()->startDrawing();
         _settings->getWindow()->clearBackground(DARKGRAY);
 
+        getEvent();
         _activeScene = _menuScenes.at(_activeScene)->handelEvent();
         if (_activeScene == Scene::Scenes::QUIT)
             continue;
@@ -50,5 +90,15 @@ void Core::loop()
 
 void Core::getEvent()
 {
+    std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
+    std::map<PlayerAction, bool> playerAction;
+    std::vector<std::map<PlayerAction, bool>> playerActions;
+    std::size_t index = 0;
 
+    for (auto &player : _playerActions) {
+        playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(player));
+        index++;
+    }
+    _settings->setActionPressed(actionPressed);
+    _settings->setPlayerActionsPressed(playerActions);
 }
