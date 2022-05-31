@@ -67,6 +67,11 @@ void Object::Button::setPosition(float x, float y, float z)
     _position.setPosition(x, y, z);
 }
 
+Position Object::Button::getPosition() const
+{
+    return _position;
+}
+
 void Object::Button::setCallBack(std::function<void(void)> callBack)
 {
     _callBack = callBack;

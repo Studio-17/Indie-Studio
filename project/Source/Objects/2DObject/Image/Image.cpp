@@ -27,7 +27,7 @@ Object::Image::~Image()
 
 void Object::Image::draw()
 {
-    DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 1.0f, _imageScale, WHITE);
+    DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 0.0f, _imageScale, WHITE);
 }
 
 void Object::Image::setPosition(Position const &position)
@@ -50,5 +50,7 @@ void Object::Image::setScale(float scale)
     _imageScale = scale;
 }
 
-
-
+Position Object::Image::getPosition() const
+{
+    return _imagePosition;
+}

@@ -30,6 +30,7 @@ namespace Object {
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
+            Position getPosition() const override;
 
             void setColor(Color const &color);
             void setFontSize(int fontSize);
