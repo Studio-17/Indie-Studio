@@ -14,6 +14,7 @@
     #include "AScene.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
+    #include "Explosion.hpp"
     #include "Player.hpp"
     #include "Bomb.hpp"
 /**
@@ -49,21 +50,20 @@ namespace Scene {
             void explodeBomb(std::size_t bombPos);
 
         protected:
+            bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
+            bool playerCanMove(Position const &movement) { return (!isCollidingBlock(movement, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(movement, _players, Object::PLAYER_ORDER::PLAYER1)); };
+
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::vector<std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
 
+            std::unique_ptr<Object::Explosion> _explosion;
+
             std::string _mapFile;
 
             float _margin;
             float _playerSpeed;
-
-            // bool _isRunning;
-            // Scene::Scenes _nextScene;
-
-            // std::map<BUTTONSNAME, std::unique_ptr<Object::Button>> _buttons;
-            // std::unique_ptr<MyMusic> _mainMusic;
     };
 }
 

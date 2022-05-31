@@ -40,7 +40,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
-
+    _explosion = std::make_unique<Object::Explosion>("Ressources/models/explosion.glb");
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -65,38 +65,41 @@ bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::uni
         (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
             if (!object->getCollide())
                 return (false);
-            return true;
+            return (true);
         }
         else
             object->setCollide(true);
     }
-    return false;
+    return (false);
 }
 
 bool Scene::SettingsScene::isCollidingBlock(Position margin, std::unique_ptr<Object::Player> &player)
 {
     float tileSpace = _gameMap->getBlockSize() - _margin;
-    Position playerPos = player->getPosition();
+    Position playerPosition = player->getPosition();
 
     for (auto &object : _gameMap->getMapObjects()) {
-        Position block = object->getPosition();
+        Position blockPosition = object->getPosition();
 
         if (object->getPosition().getY() == 0 &&
-        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
-        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace))))
-            return true;
+        ((playerPosition.getX() + margin.getX() >= (blockPosition.getX() - tileSpace) && playerPosition.getX() + margin.getX() <= (blockPosition.getX() + tileSpace)) &&
+        (playerPosition.getZ() + margin.getZ() >= (blockPosition.getZ() - tileSpace) && playerPosition.getZ() + margin.getZ() <= (blockPosition.getZ() + tileSpace))))
+            return (true);
     }
-    return false;
+    return (false);
 }
 
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
-    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {{PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
+    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
+        {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
         {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
         {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
         {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
         {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}};
-    std::map<PlayerAction, Position> collisionCondition = {{PlayerAction::MoveLeft, {-_margin, 0, 0}},
+
+    std::map<PlayerAction, Position> collisionCondition = {
+        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
         {PlayerAction::MoveRight, {_margin, 0, 0}},
         {PlayerAction::MoveUp, {0, 0, -_margin}},
         {PlayerAction::MoveDown, {0, 0, _margin}},
@@ -111,9 +114,9 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     for (auto &playerAc: _settings->getPlayerActionsPressed()) {
         for (auto &[action, isPressed] : playerAc) {
             if (isPressed) {
-                if (action == PlayerAction::Drop)
+                if (playerPressesDrop(action))
                     placeBomb(_players.at(0)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
-                else if (!isCollidingBlock(collisionCondition.at(action), _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(collisionCondition.at(action), _players, Object::PLAYER_ORDER::PLAYER1)) {
+                else if (playerCanMove(collisionCondition.at(action))) {
                     _players.at(0)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
@@ -122,24 +125,24 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     }
 
     if (!moving)
-        _players.at(0)->resetAnimation();
-    return _nextScene;
+        _players.at(0)->animation(1);
+    return (_nextScene);
 }
 
 int Scene::SettingsScene::roundUp(int nb, int multiple)
 {
     if (multiple == 0)
-        return nb;
+        return (nb);
 
     int remainder = abs(nb) % multiple;
 
     if (remainder == 0)
-        return nb;
+        return (nb);
 
     if (nb < 0)
-        return -(abs(nb) - remainder);
+        return (-(abs(nb) - remainder));
     else
-        return nb + multiple - remainder;
+        return (nb + multiple - remainder);
 }
 
 void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
@@ -157,14 +160,16 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
             if (bomb->getPosition() == newPos)
                 blockTooked = true;
         }
-        if (!blockTooked)
+        if (!blockTooked) {
+            _players.at(0)->animation(4);
             _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2));
+        }
     }
 }
 
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
 {
-    float blockSize = _gameMap->getBlockSize();
+    float blockSize = 10.0f;
 
     std::map<ORIENTATION, std::pair<bool, Position>> explosionMap = {
         {UP, {false, {0, 0, -blockSize}}},
@@ -173,14 +178,18 @@ void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
         {RIGHT, {false, {blockSize, 0, 0}}}
     };
 
+    // WARN revoir la range des bombes
+
     for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
         for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
             for (auto &[_, bombInfo] : explosionMap) {
-                if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += bombInfo.second) && !bombInfo.first)
+                if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += bombInfo.second) && !bombInfo.first) {
                     bombInfo.first = _gameMap->removeBlock(index);
+                    // _explosion->setPosistion(_gameMap->getMapObjects().at(index)->getPosition());
+                }
             }
         }
-        blockSize += _gameMap->getBlockSize();
+        blockSize += 10.0f;
     }
 }
 
@@ -198,6 +207,9 @@ void Scene::SettingsScene::draw()
         }
 
         _gameMap->draw();
+
+        _explosion->draw();
+
         _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
 
         for (auto &bomb : _bombs)

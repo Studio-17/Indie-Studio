@@ -27,9 +27,8 @@ namespace Object {
             ~Player() override;
 
             void draw() override;
+            void animation(std::size_t animNb);
             void move(Position const &position, Position const &direction);
-
-            void resetAnimation();
 
             void dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range);
 

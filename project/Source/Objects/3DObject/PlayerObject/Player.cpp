@@ -20,21 +20,20 @@ Object::Player::~Player()
 {
 }
 
-void Object::Player::move(Position const &position, Position const &direction)
+void Object::Player::animation(std::size_t animNb)
 {
     _animFrameCounter++;
-    UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
-    if (_animFrameCounter >= _anims[0].frameCount)
+    UpdateModelAnimation(_model, _anims[animNb], _animFrameCounter);
+    if (_animFrameCounter >= _anims[animNb].frameCount)
         _animFrameCounter = 0;
+}
+
+void Object::Player::move(Position const &position, Position const &direction)
+{
+    animation(0);
 
     _model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * direction.getX(), DEG2RAD * direction.getY(), DEG2RAD * direction.getZ()});
     _position += position;
-}
-
-void Object::Player::resetAnimation()
-{
-    _animFrameCounter = 20;
-    UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
 }
 
 void Object::Player::draw()
