@@ -24,42 +24,52 @@ Core::Core() : _isRunning(true),
     _settings = std::make_shared<Settings>(settingsParams),
     loadMenuScenes();
     _actionPressed = {
-    {Action::Next, KEY_ENTER},
-    {Action::Previous, KEY_BACKSPACE},
-    {Action::Right, KEY_D},
-    {Action::Left, KEY_Q},
-    {Action::Up, KEY_Z},
-    {Action::Down, KEY_S}};
+        {Action::Next, KEY_ENTER},
+        {Action::Previous, KEY_BACKSPACE},
+        {Action::Right, KEY_D},
+        {Action::Left, KEY_Q},
+        {Action::Up, KEY_Z},
+        {Action::Down, KEY_S}};
     _playerActions = {
     {
-    {PlayerAction::MoveLeft, KEY_LEFT},
-    {PlayerAction::MoveRight, KEY_RIGHT},
-    {PlayerAction::MoveUp, KEY_UP},
-    {PlayerAction::MoveDown, KEY_DOWN},
-    {PlayerAction::Drop, KEY_A}
+        {PlayerAction::MoveLeft, KEY_LEFT},
+        {PlayerAction::MoveRight, KEY_RIGHT},
+        {PlayerAction::MoveUp, KEY_UP},
+        {PlayerAction::MoveDown, KEY_DOWN},
+        {PlayerAction::Drop, KEY_SPACE}
     },
     {
-    {PlayerAction::MoveLeft, KEY_Q},
-    {PlayerAction::MoveRight, KEY_D},
-    {PlayerAction::MoveUp, KEY_Z},
-    {PlayerAction::MoveDown, KEY_S},
-    {PlayerAction::Drop, KEY_A}
+        {PlayerAction::MoveLeft, KEY_A},
+        {PlayerAction::MoveRight, KEY_D},
+        {PlayerAction::MoveUp, KEY_W},
+        {PlayerAction::MoveDown, KEY_S},
+        {PlayerAction::Drop, KEY_Q}
     },
     {
-    {PlayerAction::MoveLeft, KEY_K},
-    {PlayerAction::MoveRight, KEY_M},
-    {PlayerAction::MoveUp, KEY_O},
-    {PlayerAction::MoveDown, KEY_L},
-    {PlayerAction::Drop, KEY_P}
+        {PlayerAction::MoveLeft, KEY_K},
+        {PlayerAction::MoveRight, KEY_SEMICOLON},
+        {PlayerAction::MoveUp, KEY_O},
+        {PlayerAction::MoveDown, KEY_L},
+        {PlayerAction::Drop, KEY_I}
     },
- {
-    {PlayerAction::MoveLeft, KEY_Q},
-    {PlayerAction::MoveRight, KEY_D},
-    {PlayerAction::MoveUp, KEY_Z},
-    {PlayerAction::MoveDown, KEY_S},
-    {PlayerAction::Drop, KEY_A}
+    {
+        {PlayerAction::MoveLeft, KEY_F},
+        {PlayerAction::MoveRight, KEY_H},
+        {PlayerAction::MoveUp, KEY_T},
+        {PlayerAction::MoveDown, KEY_G},
+        {PlayerAction::Drop, KEY_R}
     }};
-
+    _gamepadPlayerActions = {
+        {PlayerAction::Drop, GAMEPAD_BUTTON_RIGHT_FACE_DOWN},
+        {PlayerAction::Drop, GAMEPAD_BUTTON_RIGHT_FACE_DOWN},
+        {PlayerAction::Drop, GAMEPAD_BUTTON_RIGHT_FACE_DOWN},
+        {PlayerAction::Drop, GAMEPAD_BUTTON_RIGHT_FACE_DOWN}};
+    _gamepadPlayerMovement = {
+        {PlayerAction::MoveLeft, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveRight, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveUp, GAMEPAD_AXIS_LEFT_Y},
+        {PlayerAction::MoveDown, GAMEPAD_AXIS_LEFT_Y}
+    };
 }
 
 Core::~Core()
@@ -97,9 +107,11 @@ void Core::getEvent()
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;
 
-    for (auto &player : _playerActions) {
-        playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(player));
-        index++;
+    for (std::size_t index = 0; index != 4; index++) {
+        if (_gamepad.isAvailable(index))
+            playerActions.emplace_back(_gamepad.getMovement<PlayerAction>(_gamepadPlayerMovement, index, _gamepadPlayerActions.at(index)));
+        else
+            playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(_playerActions.at(index)));
     }
     _settings->setActionPressed(actionPressed);
     _settings->setPlayerActionsPressed(playerActions);

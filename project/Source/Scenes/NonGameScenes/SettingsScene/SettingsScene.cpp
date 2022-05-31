@@ -37,7 +37,10 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerSpeed = 0.2f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
@@ -105,6 +108,7 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         {PlayerAction::Drop, {0, 0, 0}}};
 
     bool moving = false;
+    int index = 0;
 
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
@@ -121,6 +125,7 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
                 }
             }
         }
+        index++;
     }
 
     if (!moving)
@@ -214,6 +219,10 @@ void Scene::SettingsScene::draw()
 {
     _settings->getCamera()->startMode3D();
 
+        _gameMap->draw();
+        for (auto &player : _players)
+            player->draw();
+
         if (!_bombs.empty()) {
             for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
                 if (_bombs.at(bombPos)->checkIfShouldExplode()) {
@@ -227,8 +236,6 @@ void Scene::SettingsScene::draw()
 
         for (auto &bonus : _bonus)
             bonus->draw();
-
-        _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
 
         for (auto &bomb : _bombs)
             bomb->draw();
