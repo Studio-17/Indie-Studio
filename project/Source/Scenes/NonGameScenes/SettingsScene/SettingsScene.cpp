@@ -40,7 +40,6 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
-    _explosion = std::make_unique<Object::Explosion>("Ressources/models/explosion.glb");
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -167,6 +166,24 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
     }
 }
 
+void Scene::SettingsScene::setBonus(Position const &position)
+{
+    srand(time(NULL));
+    int randomized = (rand() % 3) + 1;
+
+    static std::map<Object::BONUS_OBJECTS, std::pair<std::string, std::string>> bonusMap = {
+        {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}},
+        {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/fireup.obj", "Ressources/models/bonus/items.png"}},
+        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/items.png"}}};
+
+    std::cout << "Randomized: " << randomized << std::endl;
+    std::cout << "Bonus Size (before): " << _bonus.size() << std::endl;
+
+    _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomized)), position, static_cast<Object::BONUS_OBJECTS>(randomized)));
+
+    std::cout << "Bonus Size (after): " << _bonus.size() << std::endl;
+}
+
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
 {
     float blockSize = 10.0f;
@@ -185,7 +202,7 @@ void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
             for (auto &[_, bombInfo] : explosionMap) {
                 if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += bombInfo.second) && !bombInfo.first) {
                     bombInfo.first = _gameMap->removeBlock(index);
-                    // _explosion->setPosistion(_gameMap->getMapObjects().at(index)->getPosition());
+                    setBonus(_bombs.at(bombPos)->getPosition() += bombInfo.second);
                 }
             }
         }
@@ -208,7 +225,8 @@ void Scene::SettingsScene::draw()
 
         _gameMap->draw();
 
-        _explosion->draw();
+        for (auto &bonus : _bonus)
+            bonus->draw();
 
         _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
 
