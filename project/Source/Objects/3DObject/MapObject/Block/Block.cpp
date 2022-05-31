@@ -10,6 +10,7 @@
 Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) :
     AThreeDimensionObject(pathToRessources, position), _mapObject(mapObject)
 {
+    _blockScale = 0.5f;
 }
 
 Object::Block::~Block()
@@ -24,7 +25,7 @@ void Object::Block::draw()
         getPosition().getZ()
     };
 
-    DrawModel(getModel(), modelPosition, 0.5f, WHITE);
+    DrawModel(getModel(), modelPosition, _blockScale, WHITE);
 }
 
 Object::MAP_OBJECTS Object::Block::getMapObject() const

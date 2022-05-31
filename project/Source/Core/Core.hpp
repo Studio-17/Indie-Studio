@@ -13,6 +13,7 @@
 
     #include "IScene.hpp"
     #include "Settings.hpp"
+    #include "Keyboard.hpp"
 
 class Core {
     public:
@@ -30,6 +31,10 @@ class Core {
         bool _isRunning;
         std::unordered_map<Scene::Scenes, std::shared_ptr<Scene::IScene>> _menuScenes;
         Scene::Scenes _activeScene;
+        Keyboard _keyboard;
+
+        std::map<Action, int> _actionPressed;
+        std::vector<std::map<PlayerAction, int>> _playerActions;
 };
 
 #endif /* !CORE_HPP_ */

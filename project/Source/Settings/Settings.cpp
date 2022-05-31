@@ -11,8 +11,8 @@
 Settings::Settings(SettingsParams const &params):
     _window(std::make_shared<RayLib::Window>(params._windowSize.first, params._windowSize.second, params._title)),
     _audio(std::make_shared<RayLib::Audio>(params._audioVolume, params._musicVolume)),
-    _camera(std::make_shared<RayLib::CinematicCamera>()),
-    _actionMap({{Action::MoveLeft, {'q', false}}, {Action::MoveRight, {'d', false}}, {Action::MoveUp, {'z', false}}, {Action::MoveDown, {'s', false}}, {Action::Drop, {'e', false}}})
+    _camera(std::make_shared<RayLib::CinematicCamera>())
+    // _actionMap({{Action::MoveLeft, {'q', false}}, {Action::MoveRight, {'d', false}}, {Action::MoveUp, {'z', false}}, {Action::MoveDown, {'s', false}}, {Action::Drop, {'e', false}}})
 {
 }
 
@@ -27,17 +27,37 @@ Settings::~Settings()
 {
 }
 
-std::shared_ptr<RayLib::Window> Settings::getWindow()
+std::shared_ptr<RayLib::Window> Settings::getWindow() const
 {
     return _window;
 }
 
-std::shared_ptr<RayLib::Audio> Settings::getAudio()
+std::shared_ptr<RayLib::Audio> Settings::getAudio() const
 {
     return _audio;
 }
 
-std::shared_ptr<RayLib::CinematicCamera> Settings::getCamera()
+std::shared_ptr<RayLib::CinematicCamera> Settings::getCamera() const
 {
     return _camera;
+}
+
+void Settings::setActionPressed(std::map<Action, bool> const &actionPressed)
+{
+    _actionPressed = actionPressed;
+}
+
+void Settings::setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction)
+{
+    _playerActions = playerAction;
+}
+
+std::map<Action, bool> Settings::getActionPressed() const
+{
+    return _actionPressed;
+}
+
+std::vector<std::map<PlayerAction, bool>> Settings::getPlayerActionsPressed() const
+{
+    return _playerActions;
 }

@@ -9,13 +9,14 @@
 #define BOMB_HPP_
 
     #include "AThreeDimensionObject.hpp"
+    #include "Player.hpp"
     #include "clock.hpp"
 
 namespace Object
 {
     class Bomb : public AThreeDimensionObject {
         public:
-            Bomb(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, float lifeTime);
+            Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range);
             ~Bomb() override;
 
             void draw() override;
@@ -24,12 +25,18 @@ namespace Object
             void animation();
             void explode();
 
+            Object::PLAYER_ORDER getPlayer() { return _player; };
+            bool getCollide() { return _collide; };
+            void setCollide(bool collide) { _collide = collide; };
 
         protected:
         private:
             Clock _bombClock{};
             float _lifeTime;
             std::size_t _range;
+            float _bombScale;
+            bool _collide;
+            Object::PLAYER_ORDER _player;
     };
 }
 

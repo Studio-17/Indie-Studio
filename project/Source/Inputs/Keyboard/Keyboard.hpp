@@ -25,8 +25,14 @@ class Keyboard {
         void setExitKey(int key);
         int getPressedKeycode() const;
         int getPressedCharcode() const;
-        std::map<int, std::pair<int, bool>> getKeysPressed(std::map<int, std::pair<int, bool>> map) const;
-
+        template<typename ENUM>
+        std::map<ENUM, bool> getKeysPressed(std::map<ENUM, int> map) const
+        {
+            std::map<ENUM, bool> actionPressed;
+            for (auto &[action, key] : map)
+                actionPressed.emplace(action, isBeingPressed(key));
+            return actionPressed;
+        };
     protected:
     private:
 };
