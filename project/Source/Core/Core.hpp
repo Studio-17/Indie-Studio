@@ -34,9 +34,7 @@ class Core {
         Keyboard _keyboard;
 
         std::map<Action, int> _actionPressed;
-        // std::array<std::map<PlayerAction, int>, 4> _playerAction;
-        std::map<PlayerAction, int> _playerAction;
-
+        std::vector<std::map<PlayerAction, int>> _playerActions;
 };
 
 #endif /* !CORE_HPP_ */

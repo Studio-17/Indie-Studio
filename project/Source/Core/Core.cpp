@@ -29,38 +29,35 @@ Core::Core() : _isRunning(true),
     {Action::Left, KEY_Q},
     {Action::Up, KEY_Z},
     {Action::Down, KEY_S}};
-    _playerAction = 
+    _playerActions = {
+    {
+    {PlayerAction::MoveLeft, KEY_LEFT},
+    {PlayerAction::MoveRight, KEY_RIGHT},
+    {PlayerAction::MoveUp, KEY_UP},
+    {PlayerAction::MoveDown, KEY_DOWN},
+    {PlayerAction::Drop, KEY_A}
+    },
     {
     {PlayerAction::MoveLeft, KEY_Q},
     {PlayerAction::MoveRight, KEY_D},
     {PlayerAction::MoveUp, KEY_Z},
     {PlayerAction::MoveDown, KEY_S},
     {PlayerAction::Drop, KEY_A}
-    };
-    // _playerAction.at(1) = 
-    // {
-    // {PlayerAction::MoveLeft, KEY_Q},
-    // {PlayerAction::MoveRight, KEY_D},
-    // {PlayerAction::MoveUp, KEY_Z},
-    // {PlayerAction::MoveDown, KEY_S},
-    // {PlayerAction::Drop, KEY_A}
-    // };
-    // _playerAction.at(2) = 
-    // {
-    // {PlayerAction::MoveLeft, KEY_Q},
-    // {PlayerAction::MoveRight, KEY_D},
-    // {PlayerAction::MoveUp, KEY_Z},
-    // {PlayerAction::MoveDown, KEY_S},
-    // {PlayerAction::Drop, KEY_A}
-    // };
-    // _playerAction.at(3) = 
-//  {
-    // {PlayerAction::MoveLeft, KEY_Q},
-    // {PlayerAction::MoveRight, KEY_D},
-    // {PlayerAction::MoveUp, KEY_Z},
-    // {PlayerAction::MoveDown, KEY_S},
-    // {PlayerAction::Drop, KEY_A}
-    // };
+    },
+    {
+    {PlayerAction::MoveLeft, KEY_K},
+    {PlayerAction::MoveRight, KEY_M},
+    {PlayerAction::MoveUp, KEY_O},
+    {PlayerAction::MoveDown, KEY_L},
+    {PlayerAction::Drop, KEY_P}
+    },
+ {
+    {PlayerAction::MoveLeft, KEY_Q},
+    {PlayerAction::MoveRight, KEY_D},
+    {PlayerAction::MoveUp, KEY_Z},
+    {PlayerAction::MoveDown, KEY_S},
+    {PlayerAction::Drop, KEY_A}
+    }};
 
 }
 
@@ -95,17 +92,13 @@ void Core::getEvent()
 {
     std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
     std::map<PlayerAction, bool> playerAction;
-    // std::array<std::map<PlayerAction, bool>, 4> playerAction;
-    // std::size_t index = 0;
+    std::vector<std::map<PlayerAction, bool>> playerActions;
+    std::size_t index = 0;
 
-    playerAction = _keyboard.getKeysPressed<PlayerAction>(_playerAction);
-    // for (auto &player : _playerAction) {
-        // // std::cout << index << " index " << player.size() << std::endl;
-        // playerAction.at(index) = _keyboard.getKeysPressed<PlayerAction>(player);
-        // index++;
-    // }
-    // std::cout << "ve" << playerAction.at(0).size() << std::endl;
-    // std::cout << "getEvevnt" << std::endl;
+    for (auto &player : _playerActions) {
+        playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(player));
+        index++;
+    }
     _settings->setActionPressed(actionPressed);
-    _settings->setPlayerActionPressed(playerAction);
+    _settings->setPlayerActionsPressed(playerActions);
 }

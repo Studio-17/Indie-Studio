@@ -11,6 +11,7 @@
     #include <memory>
     #include <map>
     #include <utility>
+    #include <vector>
 
     #include "Audio.hpp"
     #include "Camera.hpp"
@@ -42,11 +43,9 @@ class Settings {
         std::shared_ptr<RayLib::Audio> getAudio() const;
         std::shared_ptr<RayLib::CinematicCamera> getCamera() const;
         void setActionPressed(std::map<Action, bool> const &actionPressed);
-        // void setPlayerActionPressed(std::array<std::map<PlayerAction, bool>, 4> const &playerAction);
-        void setPlayerActionPressed(std::map<PlayerAction, bool> const &playerAction);
+        void setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction);
         std::map<Action, bool> getActionPressed() const;
-        std::map<PlayerAction, bool> getPlayerActionPressed() const;
-        // std::array<std::map<PlayerAction, bool>, 4> getPlayerActionPressed() const;
+        std::vector<std::map<PlayerAction, bool>> getPlayerActionsPressed() const;
 
     protected:
     private:
@@ -55,7 +54,7 @@ class Settings {
         std::shared_ptr<RayLib::CinematicCamera> _camera;
 
         std::map<Action, bool> _actionPressed;
-        // std::array<std::map<PlayerAction, bool>, 4> _playerAction;
+        std::vector<std::map<PlayerAction, bool>> _playerActions;
         std::map<PlayerAction, bool> _playerAction;
 };
 

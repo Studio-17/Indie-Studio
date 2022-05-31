@@ -47,10 +47,9 @@ void Settings::setActionPressed(std::map<Action, bool> const &actionPressed)
     _actionPressed = actionPressed;
 }
 
-// void Settings::setPlayerActionPressed(std::array<std::map<PlayerAction, bool>, 4> const &playerAction)
-void Settings::setPlayerActionPressed(std::map<PlayerAction, bool> const &playerAction)
+void Settings::setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction)
 {
-    _playerAction = playerAction;
+    _playerActions = playerAction;
 }
 
 std::map<Action, bool> Settings::getActionPressed() const
@@ -58,9 +57,7 @@ std::map<Action, bool> Settings::getActionPressed() const
     return _actionPressed;
 }
 
-// std::array<std::map<PlayerAction, bool>, 4> Settings::getPlayerActionPressed() const
-std::map<PlayerAction, bool> Settings::getPlayerActionPressed() const
+std::vector<std::map<PlayerAction, bool>> Settings::getPlayerActionsPressed() const
 {
-    return _playerAction;
+    return _playerActions;
 }
-

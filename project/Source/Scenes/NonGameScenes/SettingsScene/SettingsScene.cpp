@@ -88,13 +88,15 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
-    for (auto &[action, isPressed] : _settings->getPlayerActionPressed()) {
-        if (isPressed) {
-            if (action == PlayerAction::Drop)
-                _playerOne->dropBomb();
-            else if (!isColliding(collisionCondition.at(action))) {
-                _playerOne->move(actionMap.at(action).first, actionMap.at(action).second);
-                moving = true;
+    for (auto &playerAc: _settings->getPlayerActionsPressed()) {
+        for (auto &[action, isPressed] : playerAc) {
+            if (isPressed) {
+                if (action == PlayerAction::Drop)
+                    _playerOne->dropBomb();
+                else if (!isColliding(collisionCondition.at(action))) {
+                    _playerOne->move(actionMap.at(action).first, actionMap.at(action).second);
+                    moving = true;
+                }
             }
         }
     }
