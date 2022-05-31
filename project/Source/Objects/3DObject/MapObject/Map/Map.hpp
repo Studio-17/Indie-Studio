@@ -40,6 +40,8 @@ namespace Object
             std::vector<Object::Block> getMapObjects() { return _mapObjects; };
             Position getDimensions() { return _mapDimensions; };
 
+            float getBlockSize() { return _blockSize; };
+
         protected:
         private:
             void printLine(std::size_t height);
@@ -51,6 +53,8 @@ namespace Object
             std::ofstream _file;
 
             Position _mapDimensions;
+
+            float _blockSize;
     };
 }
 

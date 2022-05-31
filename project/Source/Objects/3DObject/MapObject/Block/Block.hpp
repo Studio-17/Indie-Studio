@@ -22,6 +22,7 @@ namespace Object
         WALL_MIDDLE = 'x',
         WALL_SIDE = 'X',
         BOX = 'O',
+        EMPTY = ' '
     };
 
     class Block : public AThreeDimensionObject
@@ -33,10 +34,15 @@ namespace Object
             void draw() override;
 
             Object::MAP_OBJECTS getMapObject() const;
+
+            void setBlockScale(float blockScale) { _blockScale = blockScale; };
+
+            float getBlockScale() { return _blockScale; };
         protected:
         private:
             Object::MAP_OBJECTS _mapObject;
             std::string _type = "block";
+            float _blockScale;
     };
 }
 
