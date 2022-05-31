@@ -50,7 +50,7 @@ namespace Scene {
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void explodeBomb(std::size_t bombPos);
 
-            void setBonus(Position const &position);
+            void setBonus(Position const &position, std::size_t percentageDrop);
 
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };

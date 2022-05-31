@@ -80,11 +80,10 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
     return (map);
 }
 
-bool Object::Map::removeBlock(std::size_t index)
+void Object::Map::removeBlock(std::size_t index)
 {
     if (_mapObjects.at(index)->getMapObject() == MAP_OBJECTS::BOX)
         _mapObjects.erase(_mapObjects.begin() + index);
-    return true;
 }
 
 void Object::Map::process(std::string const &pathToFile)

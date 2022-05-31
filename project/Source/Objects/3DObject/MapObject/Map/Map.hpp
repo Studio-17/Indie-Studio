@@ -44,7 +44,7 @@ namespace Object
 
             float getBlockSize() { return _blockSize; };
 
-            bool removeBlock(std::size_t index);
+            void removeBlock(std::size_t index);
 
         protected:
         private:
