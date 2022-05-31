@@ -31,7 +31,7 @@ namespace Object {
 
             void resetAnimation();
 
-            void dropBomb();
+            void dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range);
 
         private:
             float _playerScale;

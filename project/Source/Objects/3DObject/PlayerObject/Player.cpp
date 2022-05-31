@@ -18,9 +18,6 @@ Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(j
 
 Object::Player::~Player()
 {
-    // UnloadTexture(_texture);
-    // UnloadModel(_model);
-    // for (unsigned int i = 0; i < _animsCount; i++) UnloadModelAnimation(_anims[i]);
 }
 
 void Object::Player::move(Position const &position, Position const &direction)
@@ -48,10 +45,23 @@ void Object::Player::draw()
         getPosition().getZ()
     };
     DrawModel(_model, modelPosition, _playerScale, WHITE);
-    // DrawModelWires(_model, modelPosition, 5, GREEN);
 }
 
-void Object::Player::dropBomb()
+void Object::Player::dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range)
 {
+    // bool blockTooked = false;
+    // int nb = roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
+    // if (nb % 10 == (_gameMap->getBlockSize() / 2))
+    //     nb -= _gameMap->getBlockSize() / 2;
 
+    // Position newPos = {static_cast<float>(roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
+
+    // if (static_cast<int>(newPos.getX()) % 10 == 0) {
+    //     for (auto &bomb : _bombs) {
+    //         if (bomb->getPosition() == newPos)
+    //             blockTooked = true;
+    //     }
+    //     if (!blockTooked)
+    //         _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2));
+    // }
 }

@@ -30,7 +30,6 @@ void Scene::SettingsScene::mainMenuScene(void)
 
 Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
-    _buttons.emplace_back(std::make_unique<Object::Button>("Ressources/buttons/button.png", 3, std::bind(&Scene::SettingsScene::mainMenuScene, this),"Ressources/buttons/click_sound.ogg", Position(700, 800, 0)));
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
     _mapFile = "Save/Maps/random.map";
@@ -102,11 +101,13 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         {PlayerAction::MoveUp, {0, 0, -_margin}},
         {PlayerAction::MoveDown, {0, 0, _margin}},
         {PlayerAction::Drop, {0, 0, 0}}};
+
     bool moving = false;
 
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
+
     for (auto &playerAc: _settings->getPlayerActionsPressed()) {
         for (auto &[action, isPressed] : playerAc) {
             if (isPressed) {
@@ -119,6 +120,7 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
             }
         }
     }
+
     if (!moving)
         _players.at(0)->resetAnimation();
     return _nextScene;
@@ -144,6 +146,7 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
 {
     bool blockTooked = false;
     int nb = roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
+
     if (nb % 10 == (_gameMap->getBlockSize() / 2))
         nb -= _gameMap->getBlockSize() / 2;
 
@@ -161,30 +164,23 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
 
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
 {
-    float blockSize = 10.0f;
-    std::vector<bool> alreadyDestroyed = {
-        false,
-        false,
-        false,
-        false
+    float blockSize = _gameMap->getBlockSize();
+
+    std::map<ORIENTATION, std::pair<bool, Position>> explosionMap = {
+        {UP, {false, {0, 0, -blockSize}}},
+        {DOWN, {false, {0, 0, blockSize}}},
+        {LEFT, {false, {-blockSize, 0, 0}}},
+        {RIGHT, {false, {blockSize, 0, 0}}}
     };
 
     for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
         for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0))
-                alreadyDestroyed.at(0) = _gameMap->removeBlock(index);
-
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1))
-                alreadyDestroyed.at(1) = _gameMap->removeBlock(index);
-
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2))
-                alreadyDestroyed.at(2) = _gameMap->removeBlock(index);
-
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3))
-                alreadyDestroyed.at(3) = _gameMap->removeBlock(index);
-
+            for (auto &[_, bombInfo] : explosionMap) {
+                if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += bombInfo.second) && !bombInfo.first)
+                    bombInfo.first = _gameMap->removeBlock(index);
+            }
         }
-        blockSize += 10.0f;
+        blockSize += _gameMap->getBlockSize();
     }
 }
 
@@ -192,12 +188,8 @@ void Scene::SettingsScene::draw()
 {
     _settings->getCamera()->startMode3D();
 
-        DrawLine3D((Vector3){-1000, 0, 0}, (Vector3){1000, 0, 0}, GREEN);     // X
-        DrawLine3D((Vector3){0, -1000, 0}, (Vector3){0, 1000, 0}, RED);       // Y
-        DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
-
         if (!_bombs.empty()) {
-            for(std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+            for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
                 if (_bombs.at(bombPos)->checkIfShouldExplode()) {
                     explodeBomb(bombPos);
                     _bombs.erase(_bombs.begin() + bombPos);
@@ -207,7 +199,6 @@ void Scene::SettingsScene::draw()
 
         _gameMap->draw();
         _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
-
 
         for (auto &bomb : _bombs)
             bomb->draw();
