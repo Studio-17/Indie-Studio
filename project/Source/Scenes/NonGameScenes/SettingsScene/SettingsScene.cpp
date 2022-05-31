@@ -38,7 +38,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerSpeed = 0.2f;
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
-    _playerOne = std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(100, 0, 10)));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
@@ -52,14 +52,10 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-// je recupere la position de la bombe par rapport a la position du perso
-// je dit tant qu'il est dans cette box y a pas collisions avec la bombe
-// dès qu'il sort de cette box, alors je set le boolean a true
-
-bool Scene::SettingsScene::isCollidingBomb(Position margin, std::unique_ptr<Object::Player> &player)
+bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb)
 {
     float tileSpace = _gameMap->getBlockSize() - (_margin + 0.5f);
-    Position playerPos = player->getPosition();
+    Position playerPos = players.at(static_cast<char>(playerNb))->getPosition();
 
     for (auto &object : _bombs) {
         Position block = object->getPosition();
@@ -111,33 +107,33 @@ int Scene::SettingsScene::getMovingKeys()
 Scene::Scenes Scene::SettingsScene::handelEvent()
 {
     int key = getMovingKeys();
-    Position playerPos = _playerOne->getPosition();
+    Position playerPos = _players.at(0)->getPosition();
 
     _nextScene = Scene::Scenes::SETTINGS;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
     switch (key) {
         case KEY_UP:
-            if (!isCollidingBlock({0, 0, -_margin}, _playerOne) && !isCollidingBomb({0, 0, -_margin}, _playerOne))
-                _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, {0, 90, 0});
+            if (!isCollidingBlock({0, 0, -_margin}, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb({0, 0, -_margin}, _players, Object::PLAYER_ORDER::PLAYER1))
+                _players.at(0)->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() - _playerSpeed}, {0, 90, 0});
             break;
         case KEY_DOWN:
-            if (!isCollidingBlock({0, 0, _margin}, _playerOne) && !isCollidingBomb({0, 0, _margin}, _playerOne))
-                _playerOne->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, {0, -90, 0});
+            if (!isCollidingBlock({0, 0, _margin}, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb({0, 0, _margin}, _players, Object::PLAYER_ORDER::PLAYER1))
+                _players.at(0)->move({ playerPos.getX(), playerPos.getY(), playerPos.getZ() + _playerSpeed}, {0, -90, 0});
             break;
         case KEY_LEFT:
-            if (!isCollidingBlock({-_margin, 0, 0}, _playerOne) && !isCollidingBomb({-_margin, 0, 0}, _playerOne))
-                _playerOne->move({ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 0, 0});
+            if (!isCollidingBlock({-_margin, 0, 0}, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb({-_margin, 0, 0}, _players, Object::PLAYER_ORDER::PLAYER1))
+                _players.at(0)->move({ playerPos.getX() - _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 0, 0});
             break;
         case KEY_RIGHT:
-            if (!isCollidingBlock({_margin, 0, 0}, _playerOne) && !isCollidingBomb({_margin, 0, 0}, _playerOne))
-                _playerOne->move({ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 180, 0});
+            if (!isCollidingBlock({_margin, 0, 0}, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb({_margin, 0, 0}, _players, Object::PLAYER_ORDER::PLAYER1))
+                _players.at(0)->move({ playerPos.getX() + _playerSpeed, playerPos.getY(), playerPos.getZ()}, {0, 180, 0});
             break;
         case KEY_SPACE:
             placeBomb(playerPos, 5, 1, Object::PLAYER_ORDER::PLAYER1);
             break;
         default:
-            _playerOne->resetAnimation();
+            _players.at(0)->resetAnimation();
     }
     return _nextScene;
 }
@@ -158,12 +154,12 @@ int Scene::SettingsScene::roundUp(int nb, int multiple)
         return nb + multiple - remainder;
 }
 
-void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER player)
+void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
 {
     bool blockTooked = false;
     int nb = roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
-    if (nb % 10 == 5)
-        nb -= 5;
+    if (nb % 10 == (_gameMap->getBlockSize() / 2))
+        nb -= _gameMap->getBlockSize() / 2;
 
     Position newPos = {static_cast<float>(roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
 
@@ -173,7 +169,7 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
                 blockTooked = true;
         }
         if (!blockTooked)
-            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, Object::PLAYER_ORDER::PLAYER1, 3, 1));
+            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 1));
     }
 }
 
@@ -186,7 +182,7 @@ void Scene::SettingsScene::draw()
         DrawLine3D((Vector3){0, 0, -1000}, (Vector3){0, 0, 1000}, DARKBLUE);  // Z
 
         _gameMap->draw();
-        _playerOne->draw();
+        _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->draw();
 
         if (!_bombs.empty()) {
             for(std::size_t i = 0; i < _bombs.size(); i++) {
