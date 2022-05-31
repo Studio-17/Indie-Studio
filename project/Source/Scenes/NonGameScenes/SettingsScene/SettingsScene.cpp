@@ -110,16 +110,16 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         for (auto &[action, isPressed] : playerAc) {
             if (isPressed) {
                 if (action == PlayerAction::Drop)
-                    _playerOne->dropBomb(_players.at(0)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
+                    placeBomb(_players.at(0)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
                 else if (!isCollidingBlock(collisionCondition.at(action), _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(collisionCondition.at(action), _players, Object::PLAYER_ORDER::PLAYER1)) {
-                    _playerOne->move(actionMap.at(action).first, actionMap.at(action).second);
+                    _players.at(0)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
             }
         }
     }
     if (!moving)
-        _playerOne->resetAnimation();
+        _players.at(0)->resetAnimation();
     return _nextScene;
 }
 
