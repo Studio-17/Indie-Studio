@@ -8,6 +8,8 @@
 #ifndef POSITION_HPP_
     #define POSITION_HPP_
 
+    #include <raylib.h>
+
     #include <array>
     #include <ostream>
 
@@ -56,7 +58,7 @@ class Position {
          *
          * @param position array from where we copy x, y, z value
          */
-        void setFromArray(std::array<float, 3> const &position);
+        Position &setFromArray(std::array<float, 3> const &position);
         /**
          * @brief Set x, y, z from other Postition object
          *
@@ -205,6 +207,18 @@ class Position {
          */
         float getZ() const;
 
+        /**
+         * @brief Get the Vector3 object from Position values
+         *
+         * @return Vector3 object with x, y, z corresponding of x, y, z of Position object
+         */
+        Vector3 getVector3() const;
+        /**
+         * @brief Get the Vector2 object from Position values
+         *
+         * @return Vector2 object with x, y corresponding of x, y of Position object
+         */
+        Vector2 getVector2() const;
     private:
         float _x; ///< position x
         float _y; ///< position y

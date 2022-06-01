@@ -7,19 +7,16 @@
 
 #include "Camera.hpp"
 
-RayLib::CinematicCamera::CinematicCamera()
+RayLib::CinematicCamera::CinematicCamera(int mode)
 {
     // Define the camera to look into our 3d world
-    Camera3D camera = { 0 };
-    camera.position = (Vector3){ 0.0f, 100.0f, 10.0f };
-    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
-    camera.fovy = 45.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
+    _camera.position = {0, 100, 10};
+    _camera.target = {0, 0, 0};
+    _camera.up = {0, 1, 0};
+    _camera.fovy = 45;
+    _camera.projection = CAMERA_PERSPECTIVE;
 
-    SetCameraMode(camera, CAMERA_FREE); // Set a free camera mode
-
-    _camera = camera;
+    SetCameraMode(_camera, mode);
 }
 
 RayLib::CinematicCamera::~CinematicCamera()
@@ -43,10 +40,25 @@ void RayLib::CinematicCamera::endMode3D()
 
 void RayLib::CinematicCamera::setPosition(Position const &position)
 {
-    _camera.position = (Vector3){ position.getX(), position.getY() + 200, position.getZ() + 35 };
+    _camera.position = position.getVector3();
 }
 
-void RayLib::CinematicCamera::setTarget(Position const &position)
+void RayLib::CinematicCamera::setTarget(Position const &target)
 {
-    _camera.target = (Vector3){ position.getX(), position.getY(), position.getZ() };
+    _camera.target = target.getVector3();
+}
+
+void RayLib::CinematicCamera::setUp(Position const &up)
+{
+    _camera.up = up.getVector3();
+}
+
+void RayLib::CinematicCamera::setFovy(float fovy)
+{
+    _camera.fovy = fovy;
+}
+
+void RayLib::CinematicCamera::setProjection(int projection)
+{
+    _camera.projection = projection;
 }

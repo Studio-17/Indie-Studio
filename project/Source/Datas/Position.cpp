@@ -33,11 +33,12 @@ bool Position::operator ==(Position const &position)
     return false;
 }
 
-void Position::setFromArray(std::array<float, 3> const &position)
+Position &Position::setFromArray(std::array<float, 3> const &position)
 {
     _x = position.at(0);
     _y = position.at(1);
     _z = position.at(2);
+    return *this;
 }
 
 Position &Position::operator =(Position const &position)
@@ -185,6 +186,17 @@ float Position::getZ() const
 {
     return _z;
 }
+
+Vector3 Position::getVector3() const
+{
+    return {_x, _y, _z};
+}
+
+Vector2 Position::getVector2() const
+{
+    return {_x, _y};
+}
+
 
 std::ostream &operator<<(std::ostream& os, const Position& position)
 {

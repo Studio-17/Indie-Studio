@@ -3,8 +3,11 @@
     "windowSize": [1920, 1080],
     "audioVolume": 10,
     "musicVolume": 100,
-    "cameraPosition": [0, 100, 100],
-    "cameraTarget": [0, 0, 0],
+
+    "cameraPosition": [65, 200, 97],
+    "cameraTarget": [65, 0, 65],
+    "cameraUp": [0, 1, 0],
+    "cameraFovy": 45,
     "cameraMode": 0,
     "cameraProjection": 0
 }

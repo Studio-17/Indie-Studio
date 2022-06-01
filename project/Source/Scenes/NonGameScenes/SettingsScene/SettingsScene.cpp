@@ -42,8 +42,13 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
-    _settings->getCamera()->setTarget({_gameMap->getDimensions()});
-    _settings->getCamera()->setPosition(_gameMap->getDimensions());
+    Position tmpPos = _gameMap->getDimensions();
+    std::cout << "trget" << tmpPos << std::endl;
+    tmpPos.setY(tmpPos.getY() + 200);
+    tmpPos.setZ(tmpPos.getZ() + 32);
+    // _settings->getCamera()->setTarget({_gameMap->getDimensions()});
+    // _settings->getCamera()->setPosition(tmpPos);
+    std::cout << "target" << tmpPos << std::endl;
 
 }
 
@@ -219,6 +224,6 @@ void Scene::SettingsScene::draw()
 
     _settings->getCamera()->endMode3D();
 
-    for (auto &button : _buttons)
-        button->draw();
+    // for (auto &button : _buttons)
+        // button->draw();
 }

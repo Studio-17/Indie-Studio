@@ -15,8 +15,6 @@
 
     #include "FileError.hpp"
     #include "IObject.hpp"
-    #include "SettingsParams.hpp"
-
 
 std::string readFile(std::string const &filename, std::string const &sep);
 std::vector<std::string> strToWordArr(std::string const &_line, char delim);

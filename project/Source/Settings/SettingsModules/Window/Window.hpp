@@ -21,7 +21,8 @@ namespace RayLib
     class Window
     {
         public:
-            Window(int width, int height, std::string const &title);
+            Window(float width, float height, std::string const &title);
+            Window(std::pair<float, float> const &size, std::string const &title);
             ~Window();
 
             // Window-related functions
