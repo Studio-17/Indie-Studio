@@ -13,6 +13,11 @@ Object::Player::Player(std::pair<std::string, std::string> const &pathToRessourc
     _playerScale = 7.0f;
 }
 
+Object::Player::Player(std::string const &pathToIQM, Object::Render::MyTexture &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : AThreeDimensionObject(pathToIQM, pathToRessources, pathToAnimation, nbAnimation, position)
+{
+    _playerScale = 7.0f;
+}
+
 Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData)
 {
 }

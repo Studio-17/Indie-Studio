@@ -18,6 +18,8 @@
     #include "Player.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
+    #include "IRenderding.hpp"
+    #include "Rendering/Texture.hpp"
 /**
  * @brief The settings scene of the game
  */
@@ -52,6 +54,8 @@ namespace Scene {
 
             void setBonus(Position const &position, std::size_t percentageDrop);
 
+            void loadSceneAssets();
+
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
             bool playerCanMove(Position const &movement) { return (!isCollidingBlock(movement, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(movement, _players, Object::PLAYER_ORDER::PLAYER1)); };
@@ -62,6 +66,10 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
 
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
+
+            // std::unique_ptr<Object::Explosion> _explosion;
+
+            std::vector<Object::Render::MyTexture> _textures;
 
             std::string _mapFile;
 

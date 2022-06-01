@@ -11,6 +11,11 @@
     #include <raylib.h>
     #include <nlohmann/json.hpp>
 
+    #include "IRenderding.hpp"
+    #include "Rendering/Animation.hpp"
+    #include "Rendering/Model.hpp"
+    #include "Rendering/Texture.hpp"
+
     #include "IThreeDimensionObject.hpp"
 
 namespace Object
@@ -18,9 +23,17 @@ namespace Object
     class AThreeDimensionObject : public IThreeDimensionObject
     {
     public:
+        // Non Animated
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
+        AThreeDimensionObject(std::pair<Object::Render::MyModel, Object::Render::MyTexture> ressources, Position const &position);
+
+        // Animated
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
+        AThreeDimensionObject(std::string const &pathToIQM, Object::Render::MyTexture &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
+
+        // Via JSON
         AThreeDimensionObject(nlohmann::json const &jsonData);
+
         virtual ~AThreeDimensionObject() = default;
 
         virtual void draw() = 0;
