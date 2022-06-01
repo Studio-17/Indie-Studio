@@ -17,7 +17,7 @@ namespace Object {
     namespace Render {
         class MyAnimation {
             public:
-                MyAnimation(std::string const &pathToModel, unsigned int *numberOfAnimations) { _animation = LoadModelAnimations(pathToModel.c_str(), numberOfAnimations); };
+                MyAnimation(std::string const &pathToModel, unsigned int numberOfAnimations) { _animation = LoadModelAnimations(pathToModel.c_str(), &numberOfAnimations); };
                 ~MyAnimation() { /* UnloadModel(_model) */ };
 
                 ModelAnimation *getAnimation() { return _animation; };

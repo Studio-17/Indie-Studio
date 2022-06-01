@@ -33,11 +33,11 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
 
-Object::AThreeDimensionObject::AThreeDimensionObject(std::string const &pathToIQM, Object::Render::MyTexture &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position),
-    _model(LoadModel(pathToIQM.c_str())),
+Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position) : _position(position),
+    _model(pathToModel.getModel()),
     _texture(pathToRessources.getTexture()),
-    _animsCount(nbAnimation),
-    _anims(LoadModelAnimations(pathToAnimation.c_str(), &_animsCount)),
+    _animsCount(numberOfAnimations),
+    _anims(pathToAnimation.getAnimation()),
     _isAnimated(true)
 {
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);

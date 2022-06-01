@@ -69,6 +69,8 @@ namespace Scene {
 
             // std::unique_ptr<Object::Explosion> _explosion;
 
+            std::vector<Object::Render::MyAnimation> _animations;
+            std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
 
             std::string _mapFile;

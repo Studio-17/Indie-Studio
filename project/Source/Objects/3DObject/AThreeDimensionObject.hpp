@@ -29,7 +29,7 @@ namespace Object
 
         // Animated
         AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
-        AThreeDimensionObject(std::string const &pathToIQM, Object::Render::MyTexture &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
+        AThreeDimensionObject(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position);
 
         // Via JSON
         AThreeDimensionObject(nlohmann::json const &jsonData);

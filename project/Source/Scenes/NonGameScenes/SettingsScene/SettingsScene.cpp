@@ -42,10 +42,10 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
 
-    _players.emplace_back(std::make_unique<Object::Player>("Ressources/models/player/player.iqm", _textures.at(0), "Ressources/models/player/player.iqm", 1, Position(110, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>("Ressources/models/player/player.iqm", _textures.at(0), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>("Ressources/models/player/player.iqm", _textures.at(0), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
-    _players.emplace_back(std::make_unique<Object::Player>("Ressources/models/player/player.iqm", _textures.at(0), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(110, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(10, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(10, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(110, 0, 110)));
 
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
@@ -62,7 +62,16 @@ void Scene::SettingsScene::fadeBlack()
 
 void Scene::SettingsScene::loadSceneAssets()
 {
+    _animations.emplace_back("Ressources/models/player/player.iqm", 0);
+
+    _models.emplace_back("Ressources/models/player/player.iqm");
+
     _textures.emplace_back("Ressources/models/player/blue.png");
+    _textures.emplace_back("Ressources/models/player/cyan.png");
+    _textures.emplace_back("Ressources/models/player/green.png");
+    _textures.emplace_back("Ressources/models/player/purple.png");
+    _textures.emplace_back("Ressources/models/player/red.png");
+    _textures.emplace_back("Ressources/models/player/yellow.png");
 }
 
 bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb)
