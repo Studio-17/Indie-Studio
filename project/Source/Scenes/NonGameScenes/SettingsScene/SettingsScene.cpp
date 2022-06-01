@@ -32,15 +32,17 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
 {
     _nextScene = Scene::Scenes::SETTINGS;
     _gameMap = std::make_unique<Object::Map>();
+    _mapSize = {11, 11};
     _mapFile = "Save/Maps/random.map";
     _margin = 2.0f;
     _playerSpeed = 0.2f;
-    _gameMap->generate(_mapFile, 11, 11);
+    _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
+    _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y);
     _gameMap->process(_mapFile);
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/cyan.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2))));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/green.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3))));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4))));
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
 }
@@ -163,10 +165,8 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
             if (bomb->getPosition() == newPos)
                 blockTooked = true;
         }
-        if (!blockTooked) {
-            _players.at(0)->animation(4);
+        if (!blockTooked)
             _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2));
-        }
     }
 }
 
