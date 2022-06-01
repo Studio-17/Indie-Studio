@@ -80,23 +80,25 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
     return (map);
 }
 
-bool Object::Map::removeBlock(std::size_t index)
+void Object::Map::removeBlock(std::size_t index)
 {
     if (_mapObjects.at(index)->getMapObject() == MAP_OBJECTS::BOX)
         _mapObjects.erase(_mapObjects.begin() + index);
-    return true;
 }
 
 void Object::Map::process(std::string const &pathToFile)
 {
     _pathToMap = pathToFile;
+
     std::vector<std::string> mapLayout = load(_pathToMap);
+
     static const std::map<Object::MAP_OBJECTS, std::pair<std::string, std::string>> keyMap = {
         {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/models/block/stone/box.obj", "Ressources/models/block/stone/box.png"}},
         {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
         {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}}
     };
+
     srand(time(NULL));
 
     _blockSize = 10.0f;

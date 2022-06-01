@@ -36,8 +36,8 @@ namespace Object
             Object::MAP_OBJECTS getMapObject() const;
 
             void setBlockScale(float blockScale) { _blockScale = blockScale; };
-
             float getBlockScale() { return _blockScale; };
+
         protected:
         private:
             Object::MAP_OBJECTS _mapObject;
