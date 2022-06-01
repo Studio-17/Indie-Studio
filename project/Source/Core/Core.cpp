@@ -16,12 +16,9 @@
 #include "Core.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::MAIN_MENU)
+    _activeScene(Scene::Scenes::MAIN_MENU),
+    _settings(std::make_shared<Settings>(getJsonData("Conf/settings.json")))
 {
-    SettingsParams settingsParams;
-
-    settingsParams.loadFromData("Conf/settings.json");
-    _settings = std::make_shared<Settings>(settingsParams),
     loadMenuScenes();
     _actionPressed = {
         {Action::Next, KEY_ENTER},
