@@ -33,19 +33,20 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     loadSceneAssets();
 
     _nextScene = Scene::Scenes::SETTINGS;
-    _gameMap = std::make_unique<Object::Map>();
 
+    _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapFile = "Save/Maps/random.map";
-    _margin = 2.0f;
+
+    _margin = 1.9f;
     _playerSpeed = 0.2f;
 
     _gameMap->generate(_mapFile, 11, 11);
     _gameMap->process(_mapFile);
 
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(110, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(10, 0, 10)));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(10, 0, 110)));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(0), _animations.at(0), 1, Position(110, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, Position(110, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, Position(10, 0, 10)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, Position(10, 0, 110)));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, Position(110, 0, 110)));
 
     _settings->getCamera()->setTarget({_gameMap->getDimensions()});
     _settings->getCamera()->setPosition(_gameMap->getDimensions());
@@ -62,8 +63,12 @@ void Scene::SettingsScene::fadeBlack()
 
 void Scene::SettingsScene::loadSceneAssets()
 {
+    // CHARACTERS
     _animations.emplace_back("Ressources/models/player/player.iqm", 0);
 
+    _models.emplace_back("Ressources/models/player/player.iqm");
+    _models.emplace_back("Ressources/models/player/player.iqm");
+    _models.emplace_back("Ressources/models/player/player.iqm");
     _models.emplace_back("Ressources/models/player/player.iqm");
 
     _textures.emplace_back("Ressources/models/player/blue.png");
@@ -72,6 +77,19 @@ void Scene::SettingsScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/player/purple.png");
     _textures.emplace_back("Ressources/models/player/red.png");
     _textures.emplace_back("Ressources/models/player/yellow.png");
+
+    // BLOCKS
+    _models.emplace_back("Ressources/models/block/stone/box.obj");
+    _models.emplace_back("Ressources/models/block/dirt/wall_side.obj");
+    _models.emplace_back("Ressources/models/block/stone/wall_side.obj");
+    _models.emplace_back("Ressources/models/block/dirt/box.obj");
+
+    _textures.emplace_back("Ressources/models/block/stone/box.png");
+    _textures.emplace_back("Ressources/models/block/dirt/wall_side.png");
+    _textures.emplace_back("Ressources/models/block/stone/wall_side.png");
+    _textures.emplace_back("Ressources/models/block/dirt/box.png");
+
+    // BOMB
 }
 
 bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb)

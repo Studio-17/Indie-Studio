@@ -24,7 +24,7 @@
  * @brief The settings scene of the game
  */
 namespace Scene {
-    enum ORIENTATION {
+    enum class ORIENTATION {
         UP,
         DOWN,
         RIGHT,
