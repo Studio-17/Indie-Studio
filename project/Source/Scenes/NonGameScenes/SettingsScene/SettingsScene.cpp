@@ -172,9 +172,25 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
 void Scene::SettingsScene::setBonus(Position const &position, std::size_t percentageDrop)
 {
     static std::map<Object::BONUS_OBJECTS, std::pair<std::string, std::string>> bonusMap = {
-        {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}},
-        {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/fireup.obj", "Ressources/models/bonus/items.png"}},
-        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/items.png"}}
+        {Object::BONUS_OBJECTS::BOMB_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_down.png"}},
+        {Object::BONUS_OBJECTS::BOMB_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_move.png"}},
+        {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_up.png"}},
+        {Object::BONUS_OBJECTS::BOX_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/box_move.png"}},
+        {Object::BONUS_OBJECTS::DEATH_HEAD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/death_head.png"}},
+        {Object::BONUS_OBJECTS::EMPTY, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/empty.png"}},
+        {Object::BONUS_OBJECTS::FIRE_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_down.png"}},
+        {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_up.png"}},
+        {Object::BONUS_OBJECTS::HEARTH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/hearth.png"}},
+        {Object::BONUS_OBJECTS::ICE_GLOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/ice_glove.png"}},
+        {Object::BONUS_OBJECTS::KICK, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/kick.png"}},
+        {Object::BONUS_OBJECTS::P_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/p_bomb.png"}},
+        {Object::BONUS_OBJECTS::PEAKY_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/peaky_bomb.png"}},
+        {Object::BONUS_OBJECTS::PUNCH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/punch.png"}},
+        {Object::BONUS_OBJECTS::RISE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/rise_up.png"}},
+        {Object::BONUS_OBJECTS::SPEED_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_down.png"}},
+        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_up.png"}},
+        {Object::BONUS_OBJECTS::WATER_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/water_bomb.png"}},
+        {Object::BONUS_OBJECTS::WIZARD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/wizard.png"}}
     };
     srand(time(NULL));
     std::size_t randomNumber = 1 + (rand() % 100);
@@ -186,7 +202,7 @@ void Scene::SettingsScene::setBonus(Position const &position, std::size_t percen
 
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
 {
-    std::size_t percentageBonusDrop = 30;
+    std::size_t percentageBonusDrop = 100;
     float blockSize = _gameMap->getBlockSize();
     std::vector<bool> alreadyDestroyed = { false, false, false, false };
 
