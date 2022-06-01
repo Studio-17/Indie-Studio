@@ -57,6 +57,30 @@ Position &Position::operator =(float pos)
     return *this;
 }
 
+Position &Position::operator +(Position const &position)
+{
+    Position tempPos = *this;
+
+    tempPos += position;
+    return tempPos;
+}
+
+Position &Position::operator -(Position const &position)
+{
+    Position tempPos = *this;
+
+    tempPos -= position;
+    return tempPos;
+}
+
+Position &Position::operator *(Position const &position)
+{
+    Position tempPos = *this;
+
+    tempPos *= position;
+    return tempPos;
+}
+
 Position &Position::operator +=(Position const &position)
 {
     _x += position._x;
