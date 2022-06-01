@@ -12,6 +12,17 @@
 
 namespace Object
 {
+    enum class MAP_OBJECTS {
+        GROUND = 'A',
+        WALL_MIDDLE = 'x',
+        WALL_SIDE = 'X',
+        BOX = 'O',
+        EMPTY = ' ',
+        BOMB = 'B',
+        BONUS = 'b',
+        PLAYER = 'P'
+    };
+
     class IThreeDimensionObject : public IObject {
         public:
             virtual ~IThreeDimensionObject() = default;

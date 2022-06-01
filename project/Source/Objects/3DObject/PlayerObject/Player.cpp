@@ -8,7 +8,7 @@
 #include "Player.hpp"
 #include "raymath.h"
 
-Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position) : AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position)
+Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type) : AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position, type)
 {
     _playerScale = 7.0f;
 }

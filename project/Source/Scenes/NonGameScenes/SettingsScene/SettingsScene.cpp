@@ -39,10 +39,10 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y);
     _gameMap->process(_mapFile);
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/cyan.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2))));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/green.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3))));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4))));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/cyan.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/green.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -120,7 +120,8 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
             if (isPressed) {
                 if (playerPressesDrop(action))
                     placeBomb(_players.at(index)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
-                else if (playerCanMove(collisionCondition.at(action), index)) {
+                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
+                    std::cout << "im movingggg" << std::endl;
                     _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
@@ -165,7 +166,7 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
                 blockTooked = true;
         }
         if (!blockTooked)
-            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2));
+            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2, Object::MAP_OBJECTS::BOMB));
     }
 }
 
@@ -181,7 +182,7 @@ void Scene::SettingsScene::setBonus(Position const &position, std::size_t percen
     std::size_t randomBonus = 1 + (rand() % bonusMap.size());
 
     if (randomNumber >= 1 && randomNumber <= percentageDrop)
-        _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus)));
+        _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
 }
 
 void Scene::SettingsScene::explodeBomb(std::size_t bombPos)

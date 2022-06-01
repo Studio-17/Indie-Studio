@@ -18,8 +18,8 @@ namespace Object
     class AThreeDimensionObject : public IThreeDimensionObject
     {
     public:
-        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position);
-        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position);
+        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type);
+        AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type);
         AThreeDimensionObject(nlohmann::json const &jsonData);
         virtual ~AThreeDimensionObject() = default;
 
@@ -37,6 +37,8 @@ namespace Object
 
         void setScale(float scale);
 
+        Object::MAP_OBJECTS getType() const { return _type; };
+
     protected:
         Texture2D _texture;
         Model _model;
@@ -48,6 +50,7 @@ namespace Object
         unsigned int _animsCount = 0;
         int _animFrameCounter = 0;
         ModelAnimation *_anims;
+        Object::MAP_OBJECTS _type;
 
         float _scale = 0.5f;
     private:

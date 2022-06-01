@@ -72,8 +72,20 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 
 void Object::Map::draw()
 {
-    for (auto &mapObject : _mapObjects)
-        mapObject->draw();
+    // for (auto &mapObject : _mapObjects)
+    //     mapObject->draw();
+    for (int index = 0; index < _mapPositionsObjects.size(); index++) {
+        for (int idx = 0; idx < _mapPositionsObjects[index].size(); idx++) {
+            _mapPositionsObjects[index][idx]->draw();
+
+        }
+    }
+    for (int index = 0; index < _groundMap.size(); index++) {
+        for (int idx = 0; idx < _groundMap[index].size(); idx++) {
+            _groundMap[index][idx]->draw();
+
+        }
+    }
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)
@@ -94,7 +106,7 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
 
 void Object::Map::removeBlock(std::size_t index)
 {
-    if (_mapObjects.at(index)->getMapObject() == MAP_OBJECTS::BOX)
+    if (_mapObjects.at(index)->getType() == MAP_OBJECTS::BOX)
         _mapObjects.erase(_mapObjects.begin() + index);
 }
 
@@ -108,7 +120,10 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/models/block/stone/box.obj", "Ressources/models/block/stone/box.png"}},
         {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
-        {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}}
+        {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}},
+        {MAP_OBJECTS::EMPTY, {"", ""}},
+        {MAP_OBJECTS::BOMB, {"Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"}},
+        {MAP_OBJECTS::BONUS, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}}
     };
 
     srand(time(NULL));
@@ -122,30 +137,56 @@ void Object::Map::process(std::string const &pathToFile)
     Vector3 tilePosition = {0, 0, 0};
 
     for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
+        std::vector<std::shared_ptr<AThreeDimensionObject>> tempVector;
+        std::vector<std::shared_ptr<AThreeDimensionObject>> tempGrass;
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
             if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE),
-                    (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE), (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
             else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
-                if (((rand() % 8) + 1) != 1) {
-                    _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                        keyMap.at(MAP_OBJECTS::BOX),
-                        (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
-                }
+                if (((rand() % 8) + 1) != 1)
+                    tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
             }
-
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                    keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))),
-                    (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
-            else
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                    keyMap.at(MAP_OBJECTS::GROUND),
-                    (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
-
+                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
+            if (mapLayout.at(line).at(col) != static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::GROUND), (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
             tilePosition.x += _blockSize;
         }
+        _mapPositionsObjects.emplace_back(tempVector);
+        _groundMap.emplace_back(tempGrass);
         tilePosition.z += _blockSize;
         tilePosition.x = 0;
     }
+}
+
+int Object::Map::roundUp(int nb, int multiple)
+{
+    if (multiple == 0)
+        return nb;
+
+    int remainder = abs(nb) % multiple;
+
+    if (remainder == 0)
+        return nb;
+
+    if (nb < 0)
+        return (-(abs(nb) - remainder));
+    else
+        return (nb + multiple - remainder);
+}
+
+Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
+{
+    Position newPos = {
+        playerPosition.getX() + direction.getX(),
+        playerPosition.getY() + direction.getY(),
+        playerPosition.getZ() + direction.getZ()
+    };
+    int nb = roundUp(newPos.getZ(), _blockSize / 2);
+
+    if (nb % 10 == (_blockSize / 2))
+        nb -= _blockSize / 2;
+    Position nextPos = {static_cast<float>((roundUp(newPos.getX(), _blockSize / 2)) / 10), newPos.getY(), static_cast<float>(nb / 10)};
+    std::cout << "position: " << static_cast<int>(_mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType()) << "!" << std::endl;
+    return _mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType();
 }

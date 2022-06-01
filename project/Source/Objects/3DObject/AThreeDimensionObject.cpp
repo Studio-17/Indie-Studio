@@ -7,7 +7,7 @@
 
 #include "AThreeDimensionObject.hpp"
 
-Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position) : _position(position),
+Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type) : _position(position), _type(type),
     _model(LoadModel(pathToRessources.first.c_str())),
     _texture(LoadTexture(pathToRessources.second.c_str())),
     _isAnimated(false), _scale(0.5f)
@@ -15,7 +15,7 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
 }
 
-Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position),
+Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type) : _position(position), _type(type),
     _model(LoadModel(pathToRessources.first.c_str())),
     _texture(LoadTexture(pathToRessources.second.c_str())),
     _animsCount(nbAnimation),

@@ -21,7 +21,7 @@ namespace Object {
 
     class Player : public AThreeDimensionObject {
         public:
-            Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position);
+            Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type);
             Player(nlohmann::json const &jsonData);
             ~Player() override;
 

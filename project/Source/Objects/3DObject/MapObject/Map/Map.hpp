@@ -46,10 +46,16 @@ namespace Object
             float getBlockSize() { return _blockSize; };
 
             void removeBlock(std::size_t index);
+            // void placeBomb(Position const &position, Object::PLAYER_ORDER const &player);
+            Object::MAP_OBJECTS isColliding(Position &direction, Position playerPosition);
+            int roundUp(int nb, int multiple);
 
         protected:
         private:
             std::vector<std::shared_ptr<Object::Block>> _mapObjects;
+
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap;
 
             Position _mapPosition;
 

@@ -7,8 +7,8 @@
 
 #include "Block.hpp"
 
-Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) :
-    AThreeDimensionObject(pathToRessources, position), _mapObject(mapObject)
+Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToRessources, position, type)
 {
     _blockScale = 0.5f;
 }
@@ -26,9 +26,4 @@ void Object::Block::draw()
     };
 
     DrawModel(getModel(), modelPosition, _blockScale, WHITE);
-}
-
-Object::MAP_OBJECTS Object::Block::getMapObject() const
-{
-    return _mapObject;
 }

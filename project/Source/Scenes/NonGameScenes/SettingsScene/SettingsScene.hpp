@@ -56,6 +56,7 @@ namespace Scene {
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
             bool playerCanMove(Position const &movement, int playerIndex) { return (!isCollidingBlock(movement, _players.at(playerIndex)) && !isCollidingBomb(movement, _players, playerIndex)); };
 
+
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::vector<std::unique_ptr<Object::Player>> _players;
