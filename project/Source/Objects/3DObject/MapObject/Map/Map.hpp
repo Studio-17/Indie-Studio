@@ -33,6 +33,7 @@ namespace Object
             std::vector<std::string> load(std::string const &pathToFile);
             void process(std::string const &pathToFile);
 
+            std::vector<Position> getMapCorners(std::size_t width, std::size_t height);
             void generate(const std::string &filename, std::size_t width, std::size_t height);
 
             void createFile(const std::string &filename);

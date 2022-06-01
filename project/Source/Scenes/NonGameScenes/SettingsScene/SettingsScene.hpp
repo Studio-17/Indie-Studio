@@ -60,8 +60,10 @@ namespace Scene {
             std::unique_ptr<Object::Map> _gameMap;
             std::vector<std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
+
+            std::vector<Position> _playerPositions;
+            Vector2 _mapSize;
 
             std::string _mapFile;
 
