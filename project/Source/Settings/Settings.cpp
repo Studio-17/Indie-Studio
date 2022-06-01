@@ -8,19 +8,18 @@
 #include "Position.hpp"
 #include "Settings.hpp"
 
-Settings::Settings(SettingsParams const &params):
-    _window(std::make_shared<RayLib::Window>(params._windowSize.first, params._windowSize.second, params._title)),
-    _audio(std::make_shared<RayLib::Audio>(params._audioVolume, params._musicVolume)),
-    _camera(std::make_shared<RayLib::CinematicCamera>())
-    // _actionMap({{Action::MoveLeft, {'q', false}}, {Action::MoveRight, {'d', false}}, {Action::MoveUp, {'z', false}}, {Action::MoveDown, {'s', false}}, {Action::Drop, {'e', false}}})
+Settings::Settings(nlohmann::json const &jsonData) :
+    _window(std::make_shared<RayLib::Window>(jsonData.value("windowSize", std::pair<float, float>(1920, 1080)), jsonData.value("title", "Raylib project"))),
+    _audio(std::make_shared<RayLib::Audio>(jsonData.value("audioVolume", 100), jsonData.value("musicVolume", 100))),
+    _camera(std::make_shared<RayLib::CinematicCamera>(jsonData.value("cameraMode", CAMERA_FREE)))
 {
-}
+    Position tmpPos;
 
-Settings::Settings(std::string const &confpath)
-{
-    SettingsParams params;
-
-    params.loadFromData(confpath);
+    _camera->setPosition(tmpPos.setFromArray(jsonData.value("cameraPosition", std::array<float, 3>({65, 200, 100}))));
+    _camera->setTarget(tmpPos.setFromArray(jsonData.value("cameraTarget", std::array<float, 3>({65, 0, 65}))));
+    _camera->setUp(tmpPos.setFromArray(jsonData.value("cameraUp", std::array<float, 3>({0, 1, 0}))));
+    _camera->setFovy(jsonData.value("cameraFovy", 45.0));
+    _camera->setProjection(jsonData.value("cameraProjection", CAMERA_PERSPECTIVE));
 }
 
 Settings::~Settings()

@@ -41,8 +41,10 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 10)));
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(10, 0, 110)));
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, Position(110, 0, 110)));
-    _settings->getCamera()->setTarget({_gameMap->getDimensions()});
-    _settings->getCamera()->setPosition(_gameMap->getDimensions());
+    Position tmpPos = _gameMap->getDimensions();
+    tmpPos.setY(tmpPos.getY() + 200);
+    tmpPos.setZ(tmpPos.getZ() + 32);
+
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -54,10 +56,10 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb)
+bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb)
 {
     float tileSpace = _gameMap->getBlockSize() - (_margin + 0.4f);
-    Position playerPos = players.at(static_cast<char>(playerNb))->getPosition();
+    Position playerPos = players.at(playerNb)->getPosition();
 
     for (auto &object : _bombs) {
         Position block = object->getPosition();
@@ -115,20 +117,21 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
         button->checkHover(GetMousePosition());
 
     for (auto &playerAc: _settings->getPlayerActionsPressed()) {
+        moving = false;
         for (auto &[action, isPressed] : playerAc) {
             if (isPressed) {
                 if (playerPressesDrop(action))
-                    placeBomb(_players.at(0)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
-                else if (playerCanMove(collisionCondition.at(action))) {
-                    _players.at(0)->move(actionMap.at(action).first, actionMap.at(action).second);
+                    placeBomb(_players.at(index)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
+                else if (playerCanMove(collisionCondition.at(action), index)) {
+                    _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
             }
         }
+        if (!moving)
+            _players.at(index)->animation(1);
         index++;
     }
-    if (!moving)
-        _players.at(0)->animation(1);
     return _nextScene;
 }
 
@@ -241,6 +244,7 @@ void Scene::SettingsScene::draw()
     for (auto &bomb : _bombs)
         bomb->draw();
     _settings->getCamera()->endMode3D();
-    for (auto &button : _buttons)
-        button->draw();
+
+    // for (auto &button : _buttons)
+        // button->draw();
 }

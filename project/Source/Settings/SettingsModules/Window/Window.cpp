@@ -7,12 +7,18 @@
 
 #include "Window.hpp"
 
-RayLib::Window::Window(int width, int height, std::string const &title)
+RayLib::Window::Window(float width, float height, std::string const &title)
 {
     InitWindow(width, height, title.c_str());
     if (!IsWindowReady())
         throw Error::WindowError("window failed to open");
 
+}
+RayLib::Window::Window(std::pair<float, float> const &size, std::string const &title)
+{
+    InitWindow(size.first, size.second, title.c_str());
+    if (!IsWindowReady())
+        throw Error::WindowError("window failed to open");
 }
 
 RayLib::Window::~Window()
