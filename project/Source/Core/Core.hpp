@@ -27,6 +27,7 @@ class Core {
 
         void getEvent();
 
+        void loadKeyBinding(nlohmann::json const &jsonData);
     protected:
     private:
         std::shared_ptr<Settings> _settings;
