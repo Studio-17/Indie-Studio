@@ -74,6 +74,12 @@ class Position {
          */
         Position &operator =(float pos);
 
+        Position &operator +(Position const &position);
+
+        Position &operator -(Position const &position);
+
+        Position &operator *(Position const &position);
+
         /**
          * @brief Add to x, y, z respectively the x, y, z of the Position object sent as parameter
          *
