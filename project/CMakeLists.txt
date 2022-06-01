@@ -24,6 +24,8 @@ file(GLOB SOURCES
     Source/Core/*.cpp
 
     Source/Datas/*.cpp
+    Source/Datas/Position/*.cpp
+    Source/Datas/Rendering/*.cpp
 
     Source/Errors/*.cpp
     Source/Errors/ErrorsModules/Audio/*.cpp
@@ -80,6 +82,8 @@ include_directories(
     Source/Core/
 
     Source/Datas/
+    Source/Datas/Position/
+    Source/Datas/Rendering/
 
     Source/Errors/
     Source/Errors/ErrorsModules/Audio/
