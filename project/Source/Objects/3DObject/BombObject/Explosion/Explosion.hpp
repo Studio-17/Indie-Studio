@@ -10,39 +10,42 @@
 
 #include "raylib.h"
 
-#include "Datas/Position.hpp"
+#include "Datas/Position/Position.hpp"
+#include "AThreeDimensionObject.hpp"
 
 namespace Object {
-    class Explosion {
+    class Explosion : public AThreeDimensionObject {
         public:
-            Explosion(std::string const &pathToRessources) {
-                _model = LoadModel(pathToRessources.c_str());
-                _texture = LoadTexture("Ressources/models/explosion.png");
+            Explosion(std::string const &pathToRessources) : AThreeDimensionObject(std::make_pair(pathToRessources, "Ressources/Fire_baseColor.png"), "Ressources/explosionAnim.iqm", 1, Position(0, 20, 0)) {
+                // _model = LoadModel(pathToRessources.c_str());
+                // _texture = LoadTexture("Ressources/Fire_baseColor.png");
 
-                SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
+                // SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
+                // LoadModelAnimations()
 
-                _position = {0, 20, 0};
+                // _position = {0, 20, 0};
             };
 
-            ~Explosion() { UnloadTexture(_texture); };
-
-            void setPosistion(Position const &position) {
-                _position = position;
-            };
+            ~Explosion() { };
 
             void draw() {
+                // _animFrameCounter++;
+                // UpdateModelAnimation(_model, _anims[0], _animFrameCounter);
+                // if (_animFrameCounter >= _anims[0].frameCount)
+                //     _animFrameCounter = 0;
+
                 DrawModel(_model, (Vector3){_position.getX(), _position.getY(), _position.getZ()}, 10, WHITE);
             };
 
         protected:
         private:
-            Model _model;
-            Position _position;
-            Texture2D _texture;
+            // Model _model;
+            // Position _position;
+            // Texture2D _texture;
 
-            Rectangle _frame;
+            // Rectangle _frame;
 
-            bool status = false;
+            // bool status = false;
     };
 }
 
