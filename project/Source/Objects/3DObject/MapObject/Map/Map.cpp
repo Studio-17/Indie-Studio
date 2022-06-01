@@ -40,6 +40,18 @@ void Object::Map::printLine(std::size_t height)
     _file << std::endl;
 }
 
+std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t height)
+{
+    std::vector<Position> corners;
+
+    width * _blockSize;
+    corners.push_back({10.0f, 0.0f, 10.0f});
+    corners.push_back({static_cast<float>(width * 10), 0.0f, 10.0f});
+    corners.push_back({10.0f, 0.0f, static_cast<float>(height * 10)});
+    corners.push_back({static_cast<float>(width * 10), 0.0f, static_cast<float>(height * 10)});
+    return corners;
+}
+
 void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
 {
     if ((width % 2) == 0 || (height % 2) == 0)
@@ -110,6 +122,7 @@ void Object::Map::process(std::string const &pathToFile)
     _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
     _mapDimensions.setY(0);
     _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
+    std::cout <<_mapDimensions<<std::endl;
 
     Vector3 tilePosition = {0, 0, 0};
 

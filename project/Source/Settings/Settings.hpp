@@ -8,6 +8,8 @@
 #ifndef SETTINGS_HPP_
     #define SETTINGS_HPP_
 
+    #include <nlohmann/json.hpp>
+
     #include <memory>
     #include <map>
     #include <utility>
@@ -16,7 +18,6 @@
     #include "Audio.hpp"
     #include "Camera.hpp"
     #include "Window.hpp"
-    #include "SettingsParams.hpp"
 
 enum class Action {
     Next,
@@ -35,8 +36,9 @@ enum class PlayerAction {
 };
 class Settings {
     public:
-        Settings(SettingsParams const &params);
-        Settings(std::string const &confpath);
+        // Settings(SettingsParams const &params);
+        // Settings(std::string const &confpath);
+        Settings(nlohmann::json const &jsonData);
         ~Settings();
 
         std::shared_ptr<RayLib::Window> getWindow() const;

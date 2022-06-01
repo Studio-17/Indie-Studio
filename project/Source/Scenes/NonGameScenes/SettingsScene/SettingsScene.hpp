@@ -46,7 +46,7 @@ namespace Scene {
 
             int getMovingKeys();
             bool isCollidingBlock(Position margin, std::unique_ptr<Object::Player> &player);
-            bool isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, Object::PLAYER_ORDER playerNb);
+            bool isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb);
 
             int roundUp(int nb, int multiple);
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
@@ -58,13 +58,12 @@ namespace Scene {
 
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
-            bool playerCanMove(Position const &movement) { return (!isCollidingBlock(movement, _players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))) && !isCollidingBomb(movement, _players, Object::PLAYER_ORDER::PLAYER1)); };
+            bool playerCanMove(Position const &movement, int playerIndex) { return (!isCollidingBlock(movement, _players.at(playerIndex)) && !isCollidingBomb(movement, _players, playerIndex)); };
 
         private:
             std::unique_ptr<Object::Map> _gameMap;
             std::vector<std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
             // std::unique_ptr<Object::Explosion> _explosion;
@@ -72,6 +71,8 @@ namespace Scene {
             std::vector<Object::Render::MyAnimation> _animations;
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
+            std::vector<Position> _playerPositions;
+            Vector2 _mapSize;
 
             std::string _mapFile;
 
