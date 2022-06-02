@@ -26,10 +26,14 @@ namespace Object
 
             void draw();
 
+            void enable() override { _isEnable = true; };
+            void disable() override { _isEnable = false; };
+            bool isEnable() const override { return _isEnable; };
+
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
-
+            Position getPosition() const override { return _mapPosition; };
 
             std::vector<std::string> load(std::string const &pathToFile);
             void process(std::string const &pathToFile);
@@ -49,6 +53,7 @@ namespace Object
 
         protected:
         private:
+            bool _isEnable;
             std::string _pathToMap;
             std::ofstream _file;
 

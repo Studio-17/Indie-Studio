@@ -15,7 +15,8 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
 }
 
-Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position) : _position(position),
+Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position) :
+    _isEnable(true), _position(position),
     _model(pathToModel.getModel()),
     _texture(pathToTexture.getTexture()),
     _isAnimated(false), _scale(0.5f)
@@ -23,7 +24,8 @@ Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel pat
     _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
 }
 
-Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position),
+Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) :
+    _isEnable(true), _position(position),
     _model(LoadModel(pathToRessources.first.c_str())),
     _texture(LoadTexture(pathToRessources.second.c_str())),
     _animsCount(nbAnimation),
@@ -33,7 +35,8 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
 
-Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position) : _position(position),
+Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position) :
+    _isEnable(true), _position(position),
     _model(pathToModel.getModel()),
     _texture(pathToRessources.getTexture()),
     _animsCount(numberOfAnimations),
@@ -44,6 +47,7 @@ Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel &pa
 }
 
 Object::AThreeDimensionObject::AThreeDimensionObject(nlohmann::json const &jsonData) :
+    _isEnable(jsonData.value("isEnable", true)),
     _texture(LoadTexture(jsonData.value("texture", "").c_str())),
     _model(LoadModel(jsonData.value("model", "default").c_str())),
     _animsCount(jsonData.value("nbAnims", 0)),
@@ -60,6 +64,22 @@ Object::AThreeDimensionObject::AThreeDimensionObject(nlohmann::json const &jsonD
     }
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
+
+void Object::AThreeDimensionObject::enable()
+{
+    _isEnable = true;
+}
+
+void Object::AThreeDimensionObject::disable()
+{
+    _isEnable = false;
+}
+
+bool Object::AThreeDimensionObject::isEnable() const
+{
+    return _isEnable;
+}
+
 
 void Object::AThreeDimensionObject::setPosition(Position const &position)
 {

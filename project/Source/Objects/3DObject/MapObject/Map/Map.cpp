@@ -7,13 +7,13 @@
 
 #include "Map.hpp"
 
-Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture)
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture) : _isEnable(true)
 {
     _mapTextures = texture;
     _mapModels = models;
 }
 
-Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position)
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position) : _isEnable(true)
 {
     _mapPosition = position;
     _blockSize = 10.0f;
@@ -74,8 +74,9 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 
 void Object::Map::draw()
 {
-    for (auto &mapObject : _mapObjects)
-        mapObject->draw();
+    if (_isEnable)
+        for (auto &mapObject : _mapObjects)
+            mapObject->draw();
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)

@@ -9,14 +9,14 @@
 #include "tools.hpp"
 #include "Button.hpp"
 
-Object::Button::Button(std::string const &buttonPath, int nbFrame, Position const &position) :
+Object::Button::Button(std::string const &buttonPath, int nbFrame, Position const &position) : _isEnable(true),
     _nbFrame(nbFrame), _state(Default), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _isAudio(false),
     _sourceRec({ 0, 0, (float)_buttonTexture.width, _frameHeight }),
     _buttonRect({ _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame})
 {
 }
 
-Object::Button::Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position) :
+Object::Button::Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position) : _isEnable(true),
     _nbFrame(nbFrame), _position(position), _buttonTexture(LoadTexture(buttonPath.c_str())), _frameHeight((float)_buttonTexture.height/_nbFrame), _audio(audioPath), _isAudio(true), _callBack(callBack),
     _sourceRec({ 0, 0, (float)_buttonTexture.width, _frameHeight }),
     _buttonRect({ _position.getX(),  _position.getY(), (float)_buttonTexture.width, (float)_buttonTexture.height / _nbFrame})
@@ -24,6 +24,7 @@ Object::Button::Button(std::string const &buttonPath, int nbFrame, std::function
 }
 
 Object::Button::Button(nlohmann::json const &jsonData) :
+    _isEnable(jsonData.value("isEnable", true)),
     _nbFrame(jsonData.value("nbFrame", 1)),
     _state(Default),
     _buttonTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
@@ -49,7 +50,23 @@ Object::Button::~Button()
 void Object::Button::draw()
 {
     _sourceRec.y = _state * _frameHeight;
-    DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
+    if (_isEnable)
+        DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
+}
+
+void Object::Button::enable()
+{
+    _isEnable = true;
+}
+
+void Object::Button::disable()
+{
+    _isEnable = false;
+}
+
+bool Object::Button::isEnable() const
+{
+    return _isEnable;
 }
 
 void Object::Button::setPosition(Position const &position)
