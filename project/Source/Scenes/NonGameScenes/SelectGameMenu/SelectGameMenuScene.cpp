@@ -24,7 +24,7 @@ void Scene::SelectGameMenuScene::loadGameScene()
 
 void Scene::SelectGameMenuScene::newGameScene(void)
 {
-    _nextScene = Scene::Scenes::NEW_GAME;
+    _nextScene = Scene::Scenes::OPTION_GAME;
 }
 
 Scene::SelectGameMenuScene::SelectGameMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
@@ -64,7 +64,7 @@ void Scene::SelectGameMenuScene::draw()
 
     for (std::int8_t i = 0; i < 10; i++) {
         if (i % 2 == 0)
-            speed += 0.15;
+            speed += 0.1;
 
         _images.at(i)->setPosition(_images.at(i)->getPosition().getX() - speed, _images.at(i)->getPosition().getY());
 
