@@ -50,8 +50,11 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
     return corners;
 }
 
-void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
+void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height, std::size_t percentageDrop)
 {
+    srand(time(NULL));
+    std::size_t randomNumber = 1 + (rand() % 100);
+
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");
     createFile(filename);
@@ -61,8 +64,13 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
         for (size_t y = 0; y < width; y++) {
             if (x % 2 && y % 2)
                 _file << static_cast<char>(MAP_OBJECTS::WALL_MIDDLE);
-            else
-                _file << " ";
+            else {
+                randomNumber = 1 + (rand() % 100);
+                if (randomNumber > percentageDrop || (x <= 1 || x >= height - 2) && (y <= 1 || y >= width - 2))
+                    _file << static_cast<char>(MAP_OBJECTS::EMPTY);
+                else
+                    _file << static_cast<char>(MAP_OBJECTS::BOX);
+            }
         }
         _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
         _file << std::endl;
@@ -72,8 +80,6 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 
 void Object::Map::draw()
 {
-    // for (auto &mapObject : _mapObjects)
-    //     mapObject->draw();
     for (int index = 0; index < _mapPositionsObjects.size(); index++) {
         for (int idx = 0; idx < _mapPositionsObjects[index].size(); idx++) {
             _mapPositionsObjects[index][idx]->draw();
@@ -121,9 +127,7 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
         {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
         {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}},
-        {MAP_OBJECTS::EMPTY, {"", ""}},
-        {MAP_OBJECTS::BOMB, {"Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"}},
-        {MAP_OBJECTS::BONUS, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}}
+        {MAP_OBJECTS::EMPTY, {"", ""}}
     };
 
     srand(time(NULL));
@@ -142,15 +146,6 @@ void Object::Map::process(std::string const &pathToFile)
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
             if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
                 tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE), (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
-            else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
-                if (((rand() % 8) + 1) != 1)
-                    tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
-                else
-                    tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::EMPTY), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::EMPTY));
-
-            }
-            else
-                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::EMPTY), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::EMPTY));
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
                 tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
             if (mapLayout.at(line).at(col) != static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
@@ -184,15 +179,17 @@ int Object::Map::roundUp(int nb, int multiple)
 Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
 {
     Position newPos = {
-        (playerPosition.getX() + direction.getX() + 5) / 10,
-        playerPosition.getY() + direction.getY(),
-        (playerPosition.getZ() + direction.getZ() + 5) / 10
+        playerPosition.getX() + direction.getX(),
+        playerPosition.getY(),
+        playerPosition.getZ() + direction.getZ()
     };
-    // int nb = roundUp(newPos.getZ(), _blockSize / 2);
+    int x = roundUp(static_cast<int>(playerPosition.getX() + direction.getX()), (_blockSize / 2));
+    int z = roundUp(static_cast<int>(playerPosition.getZ() + direction.getZ()), (_blockSize / 2));
 
-    // if (nb % 10 == (_blockSize / 2))
-    //     nb -= _blockSize / 2;
-    // Position nextPos = {static_cast<float>((roundUp(newPos.getX(), _blockSize / 2)) / 10), newPos.getY(), static_cast<float>(nb / 10)};
-    // std::cout << "position: " << static_cast<int>(_mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType()) << "!" << std::endl;
-    return _mapPositionsObjects[static_cast<int>(newPos.getX())][static_cast<int>(newPos.getZ())]->getType();
+    if (x % 10 == (_blockSize / 2))
+        x -= 5;
+    if (z % 10 == (_blockSize / 2))
+        z -= 5;
+
+    return _mapPositionsObjects[x / 10][z / 10]->getType();
 }

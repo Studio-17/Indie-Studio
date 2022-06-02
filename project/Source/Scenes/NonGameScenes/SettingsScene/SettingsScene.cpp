@@ -37,7 +37,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _margin = 2.0f;
     _playerSpeed = 0.2f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
-    _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y);
+    _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/cyan.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
