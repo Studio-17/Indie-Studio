@@ -38,6 +38,10 @@ namespace Object
 
         virtual void draw() = 0;
 
+        virtual void enable() override;
+        virtual void disable() override;
+        virtual bool isEnable() const override;
+
         void setPosition(Position const &position) override;
         void setPosition(float x, float y) override;
         void setPosition(float x, float y, float z) override;
@@ -51,6 +55,7 @@ namespace Object
         void setScale(float scale);
 
     protected:
+        bool _isEnable;
         Texture2D _texture;
         Model _model;
 

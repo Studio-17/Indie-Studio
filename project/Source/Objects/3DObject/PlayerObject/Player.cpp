@@ -51,7 +51,8 @@ void Object::Player::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-    DrawModel(_model, modelPosition, _playerScale, WHITE);
+    if (_isEnable)
+        DrawModel(_model, modelPosition, _playerScale, WHITE);
 }
 
 void Object::Player::dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range)

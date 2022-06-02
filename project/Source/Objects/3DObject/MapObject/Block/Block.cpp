@@ -31,7 +31,8 @@ void Object::Block::draw()
         getPosition().getZ()
     };
 
-    DrawModel(getModel(), modelPosition, _blockScale, WHITE);
+    if (_isEnable)
+        DrawModel(getModel(), modelPosition, _blockScale, WHITE);
 }
 
 Object::MAP_OBJECTS Object::Block::getMapObject() const
