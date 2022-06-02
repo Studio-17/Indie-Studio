@@ -145,7 +145,12 @@ void Object::Map::process(std::string const &pathToFile)
             else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
                 if (((rand() % 8) + 1) != 1)
                     tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
+                else
+                    tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::EMPTY), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::EMPTY));
+
             }
+            else
+                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::EMPTY), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::EMPTY));
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
                 tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
             if (mapLayout.at(line).at(col) != static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
@@ -156,6 +161,7 @@ void Object::Map::process(std::string const &pathToFile)
         _groundMap.emplace_back(tempGrass);
         tilePosition.z += _blockSize;
         tilePosition.x = 0;
+                    tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX), (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
     }
 }
 
@@ -178,15 +184,15 @@ int Object::Map::roundUp(int nb, int multiple)
 Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
 {
     Position newPos = {
-        playerPosition.getX() + direction.getX(),
+        (playerPosition.getX() + direction.getX() + 5) / 10,
         playerPosition.getY() + direction.getY(),
-        playerPosition.getZ() + direction.getZ()
+        (playerPosition.getZ() + direction.getZ() + 5) / 10
     };
-    int nb = roundUp(newPos.getZ(), _blockSize / 2);
+    // int nb = roundUp(newPos.getZ(), _blockSize / 2);
 
-    if (nb % 10 == (_blockSize / 2))
-        nb -= _blockSize / 2;
-    Position nextPos = {static_cast<float>((roundUp(newPos.getX(), _blockSize / 2)) / 10), newPos.getY(), static_cast<float>(nb / 10)};
-    std::cout << "position: " << static_cast<int>(_mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType()) << "!" << std::endl;
-    return _mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType();
+    // if (nb % 10 == (_blockSize / 2))
+    //     nb -= _blockSize / 2;
+    // Position nextPos = {static_cast<float>((roundUp(newPos.getX(), _blockSize / 2)) / 10), newPos.getY(), static_cast<float>(nb / 10)};
+    // std::cout << "position: " << static_cast<int>(_mapPositionsObjects[nextPos.getX()][nextPos.getZ()]->getType()) << "!" << std::endl;
+    return _mapPositionsObjects[static_cast<int>(newPos.getX())][static_cast<int>(newPos.getZ())]->getType();
 }
