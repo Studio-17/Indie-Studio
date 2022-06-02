@@ -29,6 +29,10 @@ namespace Object
 
             virtual void draw() = 0;
 
+            virtual void enable() = 0;
+            virtual void disable() = 0;
+            virtual bool isEnable() const = 0;
+
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
             virtual void setPosition(float x, float y, float z) = 0;

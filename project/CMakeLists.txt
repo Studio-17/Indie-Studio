@@ -24,6 +24,8 @@ file(GLOB SOURCES
     Source/Core/*.cpp
 
     Source/Datas/*.cpp
+    Source/Datas/Position/*.cpp
+    Source/Datas/Rendering/*.cpp
 
     Source/Errors/*.cpp
     Source/Errors/ErrorsModules/Audio/*.cpp
@@ -59,6 +61,8 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/SettingsScene/*.cpp
     Source/Scenes/NonGameScenes/PopScenes/*.cpp
     Source/Scenes/NonGameScenes/SelectGameMenu/*.cpp
+    Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
+    Source/Scenes/NonGameScenes/BindingScene/*.cpp
 
     Source/Settings/*.cpp
     Source/Settings/SettingsModules/*.cpp
@@ -80,6 +84,8 @@ include_directories(
     Source/Core/
 
     Source/Datas/
+    Source/Datas/Position/
+    Source/Datas/Rendering/
 
     Source/Errors/
     Source/Errors/ErrorsModules/Audio/
@@ -114,6 +120,8 @@ include_directories(
     Source/Scenes/NonGameScenes/SettingsScene/
     Source/Scenes/NonGameScenes/PopScenes/
     Source/Scenes/NonGameScenes/SelectGameMenu/
+    Source/Scenes/NonGameScenes/OptionGameMenuScene/
+    Source/Scenes/NonGameScenes/BindingScene/
 
     Source/Settings/
     Source/Settings/SettingsModules/

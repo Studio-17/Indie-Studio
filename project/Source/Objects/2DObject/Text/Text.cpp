@@ -8,25 +8,25 @@
 #include "tools.hpp"
 #include "Text.hpp"
 
-Object::Text::Text(std::string const &filename, std::string const &text, Position const &position) :
+Object::Text::Text(std::string const &filename, std::string const &text, Position const &position) : _isEnable(true),
  _position(position), _font(LoadFont(filename.c_str())), _text(text)
 {
 
 }
 
-Object::Text::Text(std::string const &filename, std::string const &text, Color const &color, Position const &position) :
+Object::Text::Text(std::string const &filename, std::string const &text, Color const &color, Position const &position) : _isEnable(true),
  _position(position), _font(LoadFont(filename.c_str())), _color(color), _text(text)
 {
 
 }
 
-Object::Text::Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position) :
+Object::Text::Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position) : _isEnable(true),
  _position(position), _font(LoadFont(filename.c_str())), _color(color), _text(text), _fontSize(fontSize)
 {
 
 }
 
-Object::Text::Text(nlohmann::json const &jsonData)
+Object::Text::Text(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true))
 {
     _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
     _font = LoadFont(jsonData.value("font", "default").c_str());
@@ -42,7 +42,23 @@ Object::Text::~Text()
 
 void Object::Text::draw()
 {
-    DrawText(_text.c_str(), _position.getX(), _position.getY(), _fontSize, _color);
+    if (_isEnable)
+        DrawText(_text.c_str(), _position.getX(), _position.getY(), _fontSize, _color);
+}
+
+void Object::Text::enable()
+{
+    _isEnable = true;
+}
+
+void Object::Text::disable()
+{
+    _isEnable = false;
+}
+
+bool Object::Text::isEnable() const
+{
+    return _isEnable;
 }
 
 void Object::Text::setPosition(Position const &position)
@@ -68,6 +84,16 @@ Position Object::Text::getPosition() const
 void Object::Text::drawFramePerSeconds(Position const &position)
 {
     DrawFPS(position.getX(), position.getY());
+}
+
+std::string Object::Text::getText() const
+{
+    return _text;
+}
+
+void Object::Text::setText(std::string const &text)
+{
+    _text = text;
 }
 
 void Object::Text::setColor(Color const &color)

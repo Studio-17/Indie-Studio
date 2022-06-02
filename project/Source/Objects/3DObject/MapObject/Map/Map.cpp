@@ -7,11 +7,13 @@
 
 #include "Map.hpp"
 
-Object::Map::Map()
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture) : _isEnable(true)
 {
+    _mapTextures = texture;
+    _mapModels = models;
 }
 
-Object::Map::Map(Position const &position)
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position) : _isEnable(true)
 {
     _mapPosition = position;
     _blockSize = 10.0f;
@@ -122,12 +124,11 @@ void Object::Map::process(std::string const &pathToFile)
 
     std::vector<std::string> mapLayout = load(_pathToMap);
 
-    static const std::map<Object::MAP_OBJECTS, std::pair<std::string, std::string>> keyMap = {
-        {MAP_OBJECTS::WALL_MIDDLE, {"Ressources/models/block/stone/box.obj", "Ressources/models/block/stone/box.png"}},
-        {MAP_OBJECTS::GROUND, {"Ressources/models/block/dirt/wall_side.obj", "Ressources/models/block/dirt/wall_side.png"}},
-        {MAP_OBJECTS::WALL_SIDE, {"Ressources/models/block/stone/wall_side.obj", "Ressources/models/block/stone/wall_side.png"}},
-        {MAP_OBJECTS::BOX, {"Ressources/models/block/dirt/box.obj", "Ressources/models/block/dirt/box.png"}},
-        {MAP_OBJECTS::EMPTY, {"", ""}}
+    static const std::map<Object::MAP_OBJECTS, std::pair<Object::Render::MyModel, Object::Render::MyTexture>> keyMap = {
+        {MAP_OBJECTS::WALL_MIDDLE, {_mapModels.at(4), _mapTextures.at(6)}},
+        {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(7)}},
+        {MAP_OBJECTS::WALL_SIDE, {_mapModels.at(6), _mapTextures.at(8)}},
+        {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(9)}}
     };
 
     srand(time(NULL));

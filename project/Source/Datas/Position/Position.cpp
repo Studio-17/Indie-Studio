@@ -57,7 +57,7 @@ Position &Position::operator =(float pos)
     return *this;
 }
 
-Position &Position::operator +(Position const &position)
+Position Position::operator +(Position const &position)
 {
     Position tempPos = *this;
 
@@ -65,7 +65,7 @@ Position &Position::operator +(Position const &position)
     return tempPos;
 }
 
-Position &Position::operator -(Position const &position)
+Position Position::operator -(Position const &position)
 {
     Position tempPos = *this;
 
@@ -73,7 +73,7 @@ Position &Position::operator -(Position const &position)
     return tempPos;
 }
 
-Position &Position::operator *(Position const &position)
+Position Position::operator *(Position const &position)
 {
     Position tempPos = *this;
 

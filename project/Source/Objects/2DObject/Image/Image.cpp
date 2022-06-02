@@ -8,12 +8,12 @@
 #include "tools.hpp"
 #include "Image.hpp"
 
-Object::Image::Image(std::string const &imagePath, Position const &position) : _imagePosition(position),
+Object::Image::Image(std::string const &imagePath, Position const &position) :  _isEnable(true), _imagePosition(position),
     _imageTexture(LoadTexture(imagePath.c_str()))
 {
 }
 
-Object::Image::Image(nlohmann::json const &jsonData)
+Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true))
 {
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
     _imageTexture = LoadTexture(jsonData.value("texture", "default").c_str());
@@ -27,7 +27,23 @@ Object::Image::~Image()
 
 void Object::Image::draw()
 {
-    DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 0.0f, _imageScale, WHITE);
+    if (_isEnable)
+        DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 0.0f, _imageScale, WHITE);
+}
+
+void Object::Image::enable()
+{
+    _isEnable = true;
+}
+
+void Object::Image::disable()
+{
+    _isEnable = false;
+}
+
+bool Object::Image::isEnable() const
+{
+    return _isEnable;
 }
 
 void Object::Image::setPosition(Position const &position)

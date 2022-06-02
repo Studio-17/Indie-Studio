@@ -30,8 +30,11 @@ void Scene::SettingsScene::mainMenuScene(void)
 
 Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
+    loadSceneAssets();
+
     _nextScene = Scene::Scenes::SETTINGS;
-    _gameMap = std::make_unique<Object::Map>();
+
+    _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapSize = {11, 11};
     _mapFile = "Save/Maps/random.map";
     _margin = 5.0f;
@@ -39,10 +42,11 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/blue.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/cyan.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/green.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(std::make_pair<std::string, std::string>("Ressources/models/player/player.iqm", "Ressources/models/player/red.png"), "Ressources/models/player/player.iqm", 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+  
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace_back(std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -52,6 +56,37 @@ Scene::SettingsScene::~SettingsScene()
 void Scene::SettingsScene::fadeBlack()
 {
 
+}
+
+void Scene::SettingsScene::loadSceneAssets()
+{
+    // CHARACTERS
+    _animations.emplace_back("Ressources/models/player/player.iqm", 0);
+
+    _models.emplace_back("Ressources/models/player/player.iqm");
+    _models.emplace_back("Ressources/models/player/player.iqm");
+    _models.emplace_back("Ressources/models/player/player.iqm");
+    _models.emplace_back("Ressources/models/player/player.iqm");
+
+    _textures.emplace_back("Ressources/models/player/blue.png");
+    _textures.emplace_back("Ressources/models/player/cyan.png");
+    _textures.emplace_back("Ressources/models/player/green.png");
+    _textures.emplace_back("Ressources/models/player/purple.png");
+    _textures.emplace_back("Ressources/models/player/red.png");
+    _textures.emplace_back("Ressources/models/player/yellow.png");
+
+    // BLOCKS
+    _models.emplace_back("Ressources/models/block/stone/box.obj");
+    _models.emplace_back("Ressources/models/block/dirt/wall_side.obj");
+    _models.emplace_back("Ressources/models/block/stone/wall_side.obj");
+    _models.emplace_back("Ressources/models/block/dirt/box.obj");
+
+    _textures.emplace_back("Ressources/models/block/stone/box.png");
+    _textures.emplace_back("Ressources/models/block/dirt/wall_side.png");
+    _textures.emplace_back("Ressources/models/block/stone/wall_side.png");
+    _textures.emplace_back("Ressources/models/block/dirt/box.png");
+
+    // BOMB
 }
 
 bool Scene::SettingsScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb)
@@ -140,9 +175,25 @@ void Scene::SettingsScene::placeBomb(Position pos, float lifetime, std::size_t r
 void Scene::SettingsScene::setBonus(Position const &position, std::size_t percentageDrop)
 {
     static std::map<Object::BONUS_OBJECTS, std::pair<std::string, std::string>> bonusMap = {
-        {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/bombup.obj", "Ressources/models/bonus/items.png"}},
-        {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/fireup.obj", "Ressources/models/bonus/items.png"}},
-        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/items.png"}}
+        {Object::BONUS_OBJECTS::BOMB_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_down.png"}},
+        {Object::BONUS_OBJECTS::BOMB_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_move.png"}},
+        {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_up.png"}},
+        {Object::BONUS_OBJECTS::BOX_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/box_move.png"}},
+        {Object::BONUS_OBJECTS::DEATH_HEAD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/death_head.png"}},
+        {Object::BONUS_OBJECTS::EMPTY, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/empty.png"}},
+        {Object::BONUS_OBJECTS::FIRE_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_down.png"}},
+        {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_up.png"}},
+        {Object::BONUS_OBJECTS::HEARTH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/hearth.png"}},
+        {Object::BONUS_OBJECTS::ICE_GLOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/ice_glove.png"}},
+        {Object::BONUS_OBJECTS::KICK, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/kick.png"}},
+        {Object::BONUS_OBJECTS::P_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/p_bomb.png"}},
+        {Object::BONUS_OBJECTS::PEAKY_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/peaky_bomb.png"}},
+        {Object::BONUS_OBJECTS::PUNCH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/punch.png"}},
+        {Object::BONUS_OBJECTS::RISE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/rise_up.png"}},
+        {Object::BONUS_OBJECTS::SPEED_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_down.png"}},
+        {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_up.png"}},
+        {Object::BONUS_OBJECTS::WATER_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/water_bomb.png"}},
+        {Object::BONUS_OBJECTS::WIZARD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/wizard.png"}}
     };
     srand(time(NULL));
     std::size_t randomNumber = 1 + (rand() % 100);
@@ -152,38 +203,38 @@ void Scene::SettingsScene::setBonus(Position const &position, std::size_t percen
         _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
 }
 
-// void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
-// {
-//     std::size_t percentageBonusDrop = 30;
-//     float blockSize = _gameMap->getBlockSize();
-//     std::vector<bool> alreadyDestroyed = { false, false, false, false };
+void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
+{
+    std::size_t percentageBonusDrop = 100;
+    float blockSize = _gameMap->getBlockSize();
+    std::vector<bool> alreadyDestroyed = { false, false, false, false };
 
-//     for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
-//         for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
-//             if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0)) {
-//                 _gameMap->removeBlock(index);
-//                 alreadyDestroyed.at(0) = true;
-//                 setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}, percentageBonusDrop);
-//             }
-//             if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1)) {
-//                 _gameMap->removeBlock(index);
-//                 alreadyDestroyed.at(1) = true;
-//                 setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}, percentageBonusDrop);
-//             }
-//             if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2)) {
-//                 _gameMap->removeBlock(index);
-//                 alreadyDestroyed.at(2) = true;
-//                 setBonus(_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}, percentageBonusDrop);
-//             }
-//             if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3)) {
-//                 _gameMap->removeBlock(index);
-//                 alreadyDestroyed.at(3) = true;
-//                 setBonus(_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}, percentageBonusDrop);
-//             }
-//         }
-//         blockSize += _gameMap->getBlockSize();
-//     }
-// }
+    for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
+        for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(0) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(1) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(2) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}, percentageBonusDrop);
+            }
+            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3)) {
+                _gameMap->removeBlock(index);
+                alreadyDestroyed.at(3) = true;
+                setBonus(_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}, percentageBonusDrop);
+            }
+        }
+        blockSize += _gameMap->getBlockSize();
+    }
+}
 
 void Scene::SettingsScene::draw()
 {
@@ -203,6 +254,8 @@ void Scene::SettingsScene::draw()
 
     for (auto &bonus : _bonus)
         bonus->draw();
+
+    // _explosion->draw();
 
     for (auto &bomb : _bombs)
         bomb->draw();

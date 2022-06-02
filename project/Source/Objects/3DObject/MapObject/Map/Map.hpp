@@ -19,16 +19,21 @@ namespace Object
     class Map : public IObject
     {
         public:
-            Map();
-            Map(Position const &position);
+            Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture);
+            Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position);
 
             ~Map();
 
             void draw();
 
+            void enable() override { _isEnable = true; };
+            void disable() override { _isEnable = false; };
+            bool isEnable() const override { return _isEnable; };
+
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
+            Position getPosition() const override { return _mapPosition; };
 
             std::vector<std::string> load(std::string const &pathToFile);
             void process(std::string const &pathToFile);
@@ -46,7 +51,6 @@ namespace Object
             Position getDimensions() { return _mapDimensions; };
 
             float getBlockSize() { return _blockSize; };
-
             void removeBlock(std::size_t index);
             Object::MAP_OBJECTS isColliding(Position &direction, Position playerPosition);
             int roundUp(int nb, int multiple);
@@ -72,12 +76,21 @@ namespace Object
 
             Position _mapPosition;
 
+            bool _isEnable;
             std::string _pathToMap;
             std::ofstream _file;
 
+
+            Position _mapPosition;
             Position _mapDimensions;
 
             float _blockSize;
+
+
+            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
+
+            std::vector<Object::Render::MyModel> _mapModels;
+            std::vector<Object::Render::MyTexture> _mapTextures;
     };
 }
 

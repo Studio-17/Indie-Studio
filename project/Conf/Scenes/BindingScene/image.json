@@ -1,0 +1,12 @@
+{
+    "logo-top-corner-left": {
+        "texture": "Ressources/sprites/icon.png",
+        "scale": 1,
+        "position": [25, 90, 0]
+    },
+    "black Back": {
+        "texture": "Ressources/sprites/black_back.png",
+        "scale": 1,
+        "position": [500, 500, 0]
+    }
+}

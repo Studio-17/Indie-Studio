@@ -27,7 +27,8 @@ void Object::Bonus::draw()
         getPosition().getZ()
     };
     _model.transform = MatrixRotateXYZ((Vector3){ DEG2RAD * direction.getX(), DEG2RAD * direction.getY(), DEG2RAD * direction.getZ()});
-    DrawModel(getModel(), modelPosition, _bonusScale, WHITE);
+    if (_isEnable)
+        DrawModel(getModel(), modelPosition, _bonusScale, WHITE);
 }
 
 Object::BONUS_OBJECTS Object::Bonus::getMapObject() const

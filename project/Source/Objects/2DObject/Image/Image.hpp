@@ -22,15 +22,19 @@ namespace Object {
 
             void draw() override;
 
+            void enable() override;
+            void disable() override;
+            bool isEnable() const override;
+
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
             void setScale(float scale);
-
         protected:
         private:
+            bool _isEnable;
             Position _imagePosition;
             Texture2D _imageTexture;
             float _imageScale = 1.0f;

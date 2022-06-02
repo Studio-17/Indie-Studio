@@ -13,6 +13,12 @@ Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources
     _blockScale = 0.5f;
 }
 
+Object::Block::Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS mapObjects) :
+    AThreeDimensionObject(pathToModel, pathToTexture, position), _mapObject(mapObjects)
+{
+    _blockScale = 0.5f;
+}
+
 Object::Block::~Block()
 {
 }
@@ -25,5 +31,6 @@ void Object::Block::draw()
         getPosition().getZ()
     };
 
-    DrawModel(getModel(), modelPosition, _blockScale, WHITE);
+    if (_isEnable)
+        DrawModel(getModel(), modelPosition, _blockScale, WHITE);
 }

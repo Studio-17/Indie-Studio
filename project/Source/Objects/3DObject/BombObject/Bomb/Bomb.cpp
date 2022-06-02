@@ -29,7 +29,8 @@ void Object::Bomb::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-    DrawModel(_model, modelPosition, _bombScale, WHITE);
+    if (_isEnable)
+        DrawModel(_model, modelPosition, _bombScale, WHITE);
 }
 
 bool Object::Bomb::checkIfShouldExplode()

@@ -18,11 +18,13 @@
     #include "Player.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
+    #include "IRenderding.hpp"
+    #include "Rendering/Texture.hpp"
 /**
  * @brief The settings scene of the game
  */
 namespace Scene {
-    enum ORIENTATION {
+    enum class ORIENTATION {
         UP,
         DOWN,
         RIGHT,
@@ -49,6 +51,8 @@ namespace Scene {
 
             void setBonus(Position const &position, std::size_t percentageDrop);
 
+            void loadSceneAssets();
+
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
 
@@ -59,6 +63,11 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
+            // std::unique_ptr<Object::Explosion> _explosion;
+
+            std::vector<Object::Render::MyAnimation> _animations;
+            std::vector<Object::Render::MyModel> _models;
+            std::vector<Object::Render::MyTexture> _textures;
             std::vector<Position> _playerPositions;
             Vector2 _mapSize;
 
