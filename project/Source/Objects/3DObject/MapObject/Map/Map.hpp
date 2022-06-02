@@ -19,8 +19,8 @@ namespace Object
     class Map : public IObject
     {
         public:
-            Map();
-            Map(Position const &position);
+            Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture);
+            Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position);
 
             ~Map();
 
@@ -29,6 +29,7 @@ namespace Object
             void setPosition(Position const &position) override { _mapPosition = position; };
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
+
 
             std::vector<std::string> load(std::string const &pathToFile);
             void process(std::string const &pathToFile);
@@ -44,21 +45,24 @@ namespace Object
             Position getDimensions() { return _mapDimensions; };
 
             float getBlockSize() { return _blockSize; };
-
             void removeBlock(std::size_t index);
 
         protected:
         private:
-            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
-
-            Position _mapPosition;
-
             std::string _pathToMap;
             std::ofstream _file;
 
+
+            Position _mapPosition;
             Position _mapDimensions;
 
             float _blockSize;
+
+
+            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
+
+            std::vector<Object::Render::MyModel> _mapModels;
+            std::vector<Object::Render::MyTexture> _mapTextures;
     };
 }
 

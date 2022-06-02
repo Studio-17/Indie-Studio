@@ -15,11 +15,29 @@ Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std:
     _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
 }
 
+Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position) : _position(position),
+    _model(pathToModel.getModel()),
+    _texture(pathToTexture.getTexture()),
+    _isAnimated(false), _scale(0.5f)
+{
+    _model.materials[0].maps[MATERIAL_MAP_DIFFUSE].texture = _texture;
+}
+
 Object::AThreeDimensionObject::AThreeDimensionObject(std::pair<std::string, std::string> const &pathToRessources, std::string const &pathToAnimation, unsigned int nbAnimation, Position const &position) : _position(position),
     _model(LoadModel(pathToRessources.first.c_str())),
     _texture(LoadTexture(pathToRessources.second.c_str())),
     _animsCount(nbAnimation),
     _anims(LoadModelAnimations(pathToAnimation.c_str(), &_animsCount)),
+    _isAnimated(true)
+{
+    SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
+}
+
+Object::AThreeDimensionObject::AThreeDimensionObject(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position) : _position(position),
+    _model(pathToModel.getModel()),
+    _texture(pathToRessources.getTexture()),
+    _animsCount(numberOfAnimations),
+    _anims(pathToAnimation.getAnimation()),
     _isAnimated(true)
 {
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);

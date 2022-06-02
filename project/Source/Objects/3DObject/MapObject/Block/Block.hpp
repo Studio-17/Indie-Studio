@@ -29,6 +29,7 @@ namespace Object
     {
         public:
             Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject);
+            Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS mapObjects);
             ~Block() override;
 
             void draw() override;
