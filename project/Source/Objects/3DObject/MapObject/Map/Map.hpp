@@ -39,6 +39,8 @@ namespace Object
             void createFile(const std::string &filename);
 
             std::vector<std::shared_ptr<Object::Block>> getMapObjects() { return _mapObjects; };
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> getMapPositionsObjects() { return _mapPositionsObjects; };
+
 
             void printLine(std::size_t height);
             Position getDimensions() { return _mapDimensions; };
@@ -46,15 +48,26 @@ namespace Object
             float getBlockSize() { return _blockSize; };
 
             void removeBlock(std::size_t index);
-            // void placeBomb(Position const &position, Object::PLAYER_ORDER const &player);
             Object::MAP_OBJECTS isColliding(Position &direction, Position playerPosition);
             int roundUp(int nb, int multiple);
+
+            template<typename T>
+            void placeObjectInMap(Position &position, std::shared_ptr<T> objectToPlace)
+            {
+                std::pair<int, int> tempPair = transposeFrom3Dto2D(position);
+                _mapPositionsObjects[tempPair.second][tempPair.first] = objectToPlace;
+            }
+
+            std::pair<int, int> transposeFrom3Dto2D(Position &position);
+
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
+
+            void exploseBomb(Position const &bombPosition, int radius);
 
         protected:
         private:
             std::vector<std::shared_ptr<Object::Block>> _mapObjects;
 
-            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap;
 
             Position _mapPosition;

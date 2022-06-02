@@ -178,13 +178,26 @@ int Object::Map::roundUp(int nb, int multiple)
 
 Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
 {
-    int x = roundUp(static_cast<int>(playerPosition.getX() + direction.getX()), (_blockSize / 2));
-    int z = roundUp(static_cast<int>(playerPosition.getZ() + direction.getZ()), (_blockSize / 2));
+    Position temppos = playerPosition;
+    temppos +=  direction;
+
+    std::pair<int, int> position = transposeFrom3Dto2D(temppos);
+    return (_mapPositionsObjects.at(position.second).at(position.first)->getType());
+}
+
+std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position &position)
+{
+    std::cout << position << std::endl;
+    int x = roundUp(static_cast<int>(position.getX()), (_blockSize / 2));
+    int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 
     if (x % 10 == (_blockSize / 2))
         x -= 5;
     if (z % 10 == (_blockSize / 2))
         z -= 5;
+    return {x / 10, z / 10};
+}
 
-    return _mapPositionsObjects[z / 10][x / 10]->getType();
+void Object::Map::exploseBomb(Position const &position, int radius)
+{
 }
