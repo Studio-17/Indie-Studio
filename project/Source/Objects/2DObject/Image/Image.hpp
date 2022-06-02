@@ -29,11 +29,16 @@ namespace Object {
 
             void setScale(float scale);
 
+            void enable();
+            void disable();
+            bool isEnable() const;
+
         protected:
         private:
             Position _imagePosition;
             Texture2D _imageTexture;
             float _imageScale = 1.0f;
+            bool _isEnable;
     };
 }
 

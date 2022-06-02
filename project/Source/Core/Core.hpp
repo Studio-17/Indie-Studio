@@ -10,10 +10,12 @@
 
     #include <unordered_map>
     #include <memory>
+    #include <utility>
 
     #include "IScene.hpp"
     #include "Settings.hpp"
     #include "Keyboard.hpp"
+    #include "Gamepad.hpp"
 
 class Core {
     public:
@@ -24,7 +26,9 @@ class Core {
         void loop();
 
         void getEvent();
+        void bindKey(int player, int action, int Key);
 
+        void loadKeyBinding(nlohmann::json const &jsonData);
     protected:
     private:
         std::shared_ptr<Settings> _settings;
@@ -32,9 +36,12 @@ class Core {
         std::unordered_map<Scene::Scenes, std::shared_ptr<Scene::IScene>> _menuScenes;
         Scene::Scenes _activeScene;
         Keyboard _keyboard;
+        Gamepad _gamepad;
 
         std::map<Action, int> _actionPressed;
         std::vector<std::map<PlayerAction, int>> _playerActions;
+        std::vector<std::pair<PlayerAction, int>> _gamepadPlayerActions;
+        std::map<PlayerAction, int> _gamepadPlayerMovement;
 };
 
 #endif /* !CORE_HPP_ */

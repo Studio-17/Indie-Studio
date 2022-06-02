@@ -11,56 +11,24 @@
 #include "SettingsScene.hpp"
 #include "SelectGameMenuScene.hpp"
 #include "OptionGameMenuScene.hpp"
+#include "BindingScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
 #include "Core.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::MAIN_MENU)
+    _activeScene(Scene::Scenes::MAIN_MENU),
+    _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json")))
 {
-    SettingsParams settingsParams;
-
-    settingsParams.loadFromData("Conf/settings.json");
-    _settings = std::make_shared<Settings>(settingsParams),
+    loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
+    _gamepadPlayerMovement = {
+        {PlayerAction::MoveLeft, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveRight, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveUp, GAMEPAD_AXIS_LEFT_Y},
+        {PlayerAction::MoveDown, GAMEPAD_AXIS_LEFT_Y}
+    };
     loadMenuScenes();
-    _actionPressed = {
-    {Action::Next, KEY_ENTER},
-    {Action::Previous, KEY_BACKSPACE},
-    {Action::Right, KEY_D},
-    {Action::Left, KEY_Q},
-    {Action::Up, KEY_Z},
-    {Action::Down, KEY_S}};
-    _playerActions = {
-    {
-    {PlayerAction::MoveLeft, KEY_LEFT},
-    {PlayerAction::MoveRight, KEY_RIGHT},
-    {PlayerAction::MoveUp, KEY_UP},
-    {PlayerAction::MoveDown, KEY_DOWN},
-    {PlayerAction::Drop, KEY_A}
-    },
-    {
-    {PlayerAction::MoveLeft, KEY_Q},
-    {PlayerAction::MoveRight, KEY_D},
-    {PlayerAction::MoveUp, KEY_Z},
-    {PlayerAction::MoveDown, KEY_S},
-    {PlayerAction::Drop, KEY_A}
-    },
-    {
-    {PlayerAction::MoveLeft, KEY_K},
-    {PlayerAction::MoveRight, KEY_M},
-    {PlayerAction::MoveUp, KEY_O},
-    {PlayerAction::MoveDown, KEY_L},
-    {PlayerAction::Drop, KEY_P}
-    },
- {
-    {PlayerAction::MoveLeft, KEY_Q},
-    {PlayerAction::MoveRight, KEY_D},
-    {PlayerAction::MoveUp, KEY_Z},
-    {PlayerAction::MoveDown, KEY_S},
-    {PlayerAction::Drop, KEY_A}
-    }};
-
 }
 
 Core::~Core()
@@ -73,6 +41,7 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::SelectGameMenuScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
     //rajouter toutes les scènes des menus
 }
 
@@ -99,10 +68,40 @@ void Core::getEvent()
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;
 
-    for (auto &player : _playerActions) {
-        playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(player));
-        index++;
+    for (std::size_t index = 0; index != 4; index++) {
+        if (_gamepad.isAvailable(index))
+            playerActions.emplace_back(_gamepad.getMovement<PlayerAction>(_gamepadPlayerMovement, index, _gamepadPlayerActions.at(index)));
+        else
+            playerActions.emplace_back(_keyboard.getKeysPressed<PlayerAction>(_playerActions.at(index)));
     }
     _settings->setActionPressed(actionPressed);
     _settings->setPlayerActionsPressed(playerActions);
+}
+
+void Core::bindKey(int player, int action, int Key)
+{
+    _playerActions.at(player).at(static_cast<PlayerAction>(action)) = Key;
+}
+
+void Core::loadKeyBinding(nlohmann::json const &jsonData)
+{
+    std::vector<std::string> playerConfName = {"playerOne", "playerTwo", "playerThree", "playerFour"};
+    std::map<PlayerAction, int> tmpPLayerAction;
+
+    _actionPressed.emplace(Action::Next, jsonData.at("basicKeyboard").value("next", 1));
+    _actionPressed.emplace(Action::Previous, jsonData.at("basicKeyboard").value("previous", 1));
+    _actionPressed.emplace(Action::Right, jsonData.at("basicKeyboard").value("right", 1));
+    _actionPressed.emplace(Action::Left, jsonData.at("basicKeyboard").value("left", 1));
+    _actionPressed.emplace(Action::Up, jsonData.at("basicKeyboard").value("Up", 1));
+    _actionPressed.emplace(Action::Down, jsonData.at("basicKeyboard").value("down", 1));
+    for (auto &player : playerConfName) {
+        tmpPLayerAction.clear();
+        tmpPLayerAction.emplace(PlayerAction::MoveLeft, jsonData.at(player).value("moveLeft", 263));
+        tmpPLayerAction.emplace(PlayerAction::MoveRight, jsonData.at(player).value("moveRight", 262));
+        tmpPLayerAction.emplace(PlayerAction::MoveUp, jsonData.at(player).value("moveUp", 265));
+        tmpPLayerAction.emplace(PlayerAction::MoveDown, jsonData.at(player).value("moveDown", 264));
+        tmpPLayerAction.emplace(PlayerAction::Drop, jsonData.at(player).value("keyboardDrop", 32));
+        _playerActions.emplace_back(tmpPLayerAction);
+        _gamepadPlayerActions.emplace_back(PlayerAction::Drop, jsonData.at(player).value("gamepadDrop", 7));
+    }
 }

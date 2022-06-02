@@ -24,6 +24,8 @@ file(GLOB SOURCES
     Source/Core/*.cpp
 
     Source/Datas/*.cpp
+    Source/Datas/Position/*.cpp
+    Source/Datas/Rendering/*.cpp
 
     Source/Errors/*.cpp
     Source/Errors/ErrorsModules/Audio/*.cpp
@@ -41,12 +43,15 @@ file(GLOB SOURCES
     Source/Objects/2DObject/Text/*.cpp
     Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
+    Source/Objects/3DObject/BombObject/Bomb/*.cpp
+    Source/Objects/3DObject/BombObject/Explosion/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
+    Source/Objects/3DObject/BonusObject/Bonus/*.cpp
+    Source/Objects/3DObject/BonusObject/Malus/*.cpp
     Source/Objects/3DObject/MapObject/*.cpp
     Source/Objects/3DObject/MapObject/Block/*.cpp
     Source/Objects/3DObject/MapObject/Map/*.cpp
     Source/Objects/3DObject/PlayerObject/*.cpp
-    Source/Objects/3DObject/BombObject/*.cpp
 
 
     Source/Scenes/*.cpp
@@ -57,6 +62,7 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/PopScenes/*.cpp
     Source/Scenes/NonGameScenes/SelectGameMenu/*.cpp
     Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
+    Source/Scenes/NonGameScenes/BindingScene/*.cpp
 
     Source/Settings/*.cpp
     Source/Settings/SettingsModules/*.cpp
@@ -78,6 +84,8 @@ include_directories(
     Source/Core/
 
     Source/Datas/
+    Source/Datas/Position/
+    Source/Datas/Rendering/
 
     Source/Errors/
     Source/Errors/ErrorsModules/Audio/
@@ -95,12 +103,15 @@ include_directories(
     Source/Objects/2DObject/Text/
     Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
+    Source/Objects/3DObject/BombObject/Bomb/
+    Source/Objects/3DObject/BombObject/Explosion/
     Source/Objects/3DObject/BonusObject/
+    Source/Objects/3DObject/BonusObject/Bonus/
+    Source/Objects/3DObject/BonusObject/Malus/
     Source/Objects/3DObject/MapObject/
     Source/Objects/3DObject/MapObject/Block/
     Source/Objects/3DObject/MapObject/Map/
     Source/Objects/3DObject/PlayerObject
-    Source/Objects/3DObject/BombObject
 
     Source/Scenes/
     Source/Scenes/GameScenes/
@@ -110,6 +121,7 @@ include_directories(
     Source/Scenes/NonGameScenes/PopScenes/
     Source/Scenes/NonGameScenes/SelectGameMenu/
     Source/Scenes/NonGameScenes/OptionGameMenuScene/
+    Source/Scenes/NonGameScenes/BindingScene/
 
     Source/Settings/
     Source/Settings/SettingsModules/

@@ -7,7 +7,8 @@
 
 #include "Bomb.hpp"
 
-Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range) : AThreeDimensionObject(pathToRessources, position)
+Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range) :
+    AThreeDimensionObject(pathToRessources, position)
 {
     _bombClock.start();
     _player = player;
@@ -51,5 +52,3 @@ void Object::Bomb::explode()
 {
     // ajouter l'animation des exposions des flammes sur chaques cases (en fonction de la portée de la bombe)
 }
-
-

@@ -22,7 +22,7 @@ namespace RayLib
     class CinematicCamera
     {
         public:
-            CinematicCamera();
+            CinematicCamera(int mode = CAMERA_FREE);
             ~CinematicCamera();
 
             void updateCamera();
@@ -31,7 +31,10 @@ namespace RayLib
             void endMode3D();
 
             void setPosition(Position const &position);
-            void setTarget(Position const &position);
+            void setTarget(Position const &target);
+            void setUp(Position const &up);
+            void setFovy(float fovy);
+            void setProjection(int projection);
 
         protected:
         private:

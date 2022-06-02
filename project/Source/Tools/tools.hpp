@@ -15,8 +15,6 @@
 
     #include "FileError.hpp"
     #include "IObject.hpp"
-    #include "SettingsParams.hpp"
-
 
 std::string readFile(std::string const &filename, std::string const &sep);
 std::vector<std::string> strToWordArr(std::string const &_line, char delim);
@@ -38,7 +36,7 @@ std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath)
         std::cerr << e.what() << std::endl;
         return {};
     }
-    for (auto oneData : jsonData) {
+    for (auto &oneData : jsonData) {
         objects.emplace_back(std::make_unique<Obj>(oneData));
     }
     return objects;

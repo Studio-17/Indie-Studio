@@ -22,12 +22,18 @@ namespace Object
             void draw() override;
 
             bool checkIfShouldExplode();
+
             void animation();
+
             void explode();
 
             Object::PLAYER_ORDER getPlayer() { return _player; };
+
             bool getCollide() { return _collide; };
-            void setCollide(bool collide) { _collide = collide; };
+            void setCollide(bool value) { _collide = value; };
+
+            std::size_t getRange() { return _range; };
+            void setRange(std::size_t value) { _range = value; };
 
         protected:
         private:
