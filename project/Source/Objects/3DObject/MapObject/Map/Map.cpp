@@ -178,11 +178,6 @@ int Object::Map::roundUp(int nb, int multiple)
 
 Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
 {
-    Position newPos = {
-        playerPosition.getX() + direction.getX(),
-        playerPosition.getY(),
-        playerPosition.getZ() + direction.getZ()
-    };
     int x = roundUp(static_cast<int>(playerPosition.getX() + direction.getX()), (_blockSize / 2));
     int z = roundUp(static_cast<int>(playerPosition.getZ() + direction.getZ()), (_blockSize / 2));
 
@@ -191,5 +186,5 @@ Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playe
     if (z % 10 == (_blockSize / 2))
         z -= 5;
 
-    return _mapPositionsObjects[x / 10][z / 10]->getType();
+    return _mapPositionsObjects[z / 10][x / 10]->getType();
 }

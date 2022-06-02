@@ -34,8 +34,8 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _gameMap = std::make_unique<Object::Map>();
     _mapSize = {11, 11};
     _mapFile = "Save/Maps/random.map";
-    _margin = 2.0f;
-    _playerSpeed = 0.2f;
+    _margin = 5.0f;
+    _playerSpeed = 0.6f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
@@ -121,7 +121,6 @@ Scene::Scenes Scene::SettingsScene::handelEvent()
                 if (playerPressesDrop(action))
                     placeBomb(_players.at(index)->getPosition(), 5, 1, Object::PLAYER_ORDER::PLAYER1);
                 else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
-                    std::cout << "im movingggg" << std::endl;
                     _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
