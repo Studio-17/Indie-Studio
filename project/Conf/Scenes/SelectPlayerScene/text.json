@@ -1,0 +1,42 @@
+{
+    "1-title": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "SELECT PLAYER",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [100, 100, 0]
+    },
+    "2-player1": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Joueur 1",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [275, 600, 0]
+    },
+    "3-player2": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Joueur 2",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [675, 600, 0]
+    },
+    "4-player3": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Joueur 3",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [1075, 600, 0]
+    },
+    "5-player4": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Joueur 4",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [1475, 600, 0]
+    }
+}
