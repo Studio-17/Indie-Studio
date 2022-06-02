@@ -32,6 +32,7 @@ namespace Object {
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
+            std::string getText() const;
             void setText(std::string const &text = "");
             void setColor(Color const &color);
             void setFontSize(int fontSize);
