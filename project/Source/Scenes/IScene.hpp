@@ -21,7 +21,8 @@ namespace Scene
         SAVE,
         SPLASH_SCREEN,
         END,
-        NEW_GAME
+        OPTION_GAME,
+        SELECT_MAP
     };
 
     enum SOUNDS {
