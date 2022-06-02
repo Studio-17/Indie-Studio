@@ -20,6 +20,14 @@ void Scene::OptionGameMenuScene::selectGameMenuScene()
 void Scene::OptionGameMenuScene::selectMapScene()
 {
     _nextScene = Scene::Scenes::SELECT_MAP;
+
+    _settings->setNbPlayers((std::size_t) std::stoi(_options.at(0).second.at(_options.at(0).first)->getText()));
+    _settings->setNbSets((std::size_t) std::stoi(_options.at(1).second.at(_options.at(1).first)->getText()));
+    _settings->setGameTime((std::float_t) std::stoi(_options.at(2).second.at(_options.at(2).first)->getText()));
+    if (_options.at(3).second.at(_options.at(2).first)->getText() == "Oui")
+        _settings->setEnableBonus(true);
+    else
+        _settings->setEnableBonus(false);
 }
 
 void Scene::OptionGameMenuScene::leftClick(std::uint8_t index)
@@ -60,6 +68,7 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/OptionGameMenuScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/text.json");
+    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
     _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/player.json"));
     _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/sets.json"));
@@ -79,6 +88,19 @@ void Scene::OptionGameMenuScene::fadeBlack()
 
 Scene::Scenes Scene::OptionGameMenuScene::handelEvent()
 {
+    std::float_t speed = 0.0;
+    int index = 0;
+
+    for (auto &parallax : _parallax) {
+        if (index % 2 == 0)
+            speed += 0.15;
+
+        parallax->setPosition(parallax->getPosition().getX() - speed, parallax->getPosition().getY());
+        if (parallax->getPosition().getX() <= -1930)
+            parallax->setPosition(1928, parallax->getPosition().getY());
+        index++;
+    }
+
     _nextScene = Scene::Scenes::OPTION_GAME;
 
     for (auto &button : _buttons)
@@ -88,18 +110,8 @@ Scene::Scenes Scene::OptionGameMenuScene::handelEvent()
 
 void Scene::OptionGameMenuScene::draw()
 {
-    std::float_t speed = 0.0;
-
-    for (std::int8_t i = 0; i < 10; i++) {
-        if (i % 2 == 0)
-            speed += 0.1;
-
-        _images.at(i)->setPosition(_images.at(i)->getPosition().getX() - speed, _images.at(i)->getPosition().getY());
-
-        if (_images.at(i)->getPosition().getX() <= -1930)
-            _images.at(i)->setPosition(1928, _images.at(i)->getPosition().getY());
-    }
-
+    for (auto &parallax : _parallax)
+        parallax->draw();
     for (auto &image : _images)
         image->draw();
     for (auto &[id, option] : _options)

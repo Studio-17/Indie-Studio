@@ -37,6 +37,8 @@ namespace Scene {
 
         private:
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options;
+
+            std::vector<std::unique_ptr<Object::Image>> _parallax;
     };
 }
 
