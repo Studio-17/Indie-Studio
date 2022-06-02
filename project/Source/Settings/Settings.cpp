@@ -60,3 +60,28 @@ std::vector<std::map<PlayerAction, bool>> Settings::getPlayerActionsPressed() co
 {
     return _playerActions;
 }
+
+void Settings::setNbPlayers(std::size_t const &nbPlayers)
+{
+    _nbPlayers = nbPlayers;
+}
+
+void Settings::setNbSets(std::size_t const &nbSets)
+{
+    _nbSets = nbSets;
+}
+
+std::size_t Settings::getNbPlayers() const
+{
+    return _nbPlayers;
+}
+
+void Settings::setGameTime(std::float_t const &gameTime)
+{
+    _gameTime = gameTime;
+}
+
+void Settings::setEnableBonus(bool const &enableBonus)
+{
+    _enableBonus = enableBonus;
+}
