@@ -36,7 +36,7 @@ std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath)
         std::cerr << e.what() << std::endl;
         return {};
     }
-    for (auto oneData : jsonData) {
+    for (auto &oneData : jsonData) {
         objects.emplace_back(std::make_unique<Obj>(oneData));
     }
     return objects;
