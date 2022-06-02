@@ -22,7 +22,8 @@ namespace Scene
         SPLASH_SCREEN,
         END,
         OPTION_GAME,
-        SELECT_MAP
+        SELECT_MAP,
+        SELECT_PLAYER
     };
 
     enum SOUNDS {
