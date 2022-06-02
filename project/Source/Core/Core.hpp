@@ -26,6 +26,7 @@ class Core {
         void loop();
 
         void getEvent();
+        void bindKey(int player, int action, int Key);
 
         void loadKeyBinding(nlohmann::json const &jsonData);
     protected:

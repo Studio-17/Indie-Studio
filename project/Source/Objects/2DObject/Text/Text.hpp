@@ -32,8 +32,13 @@ namespace Object {
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
+            void setText(std::string const &text = "");
             void setColor(Color const &color);
             void setFontSize(int fontSize);
+
+            void enable();
+            void disable();
+            bool isEnable() const;
 
         protected:
         private:
@@ -43,6 +48,7 @@ namespace Object {
 
             std::string _text;
             int _fontSize = 20;
+            bool _isEnable;
     };
 }
 

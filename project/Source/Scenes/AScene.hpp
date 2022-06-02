@@ -41,6 +41,7 @@ namespace Scene
 
             virtual void fadeBlack() = 0;
             virtual Scenes handelEvent() = 0;
+            virtual void draw() = 0;
 
         protected:
             std::shared_ptr<Settings> _settings;
