@@ -20,7 +20,8 @@ namespace Object
         EMPTY = ' ',
         BOMB = 'B',
         BONUS = 'b',
-        PLAYER = 'P'
+        PLAYER = 'P',
+        // EXPLOSION = 'E,
     };
 
     class IThreeDimensionObject : public IObject {

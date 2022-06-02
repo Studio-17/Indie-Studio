@@ -42,7 +42,7 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
-  
+
     _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace_back(std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace_back(std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
@@ -80,11 +80,13 @@ void Scene::SettingsScene::loadSceneAssets()
     _models.emplace_back("Ressources/models/block/dirt/wall_side.obj");
     _models.emplace_back("Ressources/models/block/stone/wall_side.obj");
     _models.emplace_back("Ressources/models/block/dirt/box.obj");
+    _models.emplace_back("");
 
     _textures.emplace_back("Ressources/models/block/stone/box.png");
     _textures.emplace_back("Ressources/models/block/dirt/wall_side.png");
     _textures.emplace_back("Ressources/models/block/stone/wall_side.png");
     _textures.emplace_back("Ressources/models/block/dirt/box.png");
+    _textures.emplace_back("");
 
     // BOMB
 }
@@ -201,39 +203,6 @@ void Scene::SettingsScene::setBonus(Position const &position, std::size_t percen
 
     if (randomNumber >= 1 && randomNumber <= percentageDrop)
         _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
-}
-
-void Scene::SettingsScene::explodeBomb(std::size_t bombPos)
-{
-    std::size_t percentageBonusDrop = 100;
-    float blockSize = _gameMap->getBlockSize();
-    std::vector<bool> alreadyDestroyed = { false, false, false, false };
-
-    for (std::size_t bombRange = 0; bombRange < _bombs.at(bombPos)->getRange(); bombRange++) {
-        for (std::size_t index = 0; index < _gameMap->getMapObjects().size(); index++) {
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}) && !alreadyDestroyed.at(0)) {
-                _gameMap->removeBlock(index);
-                alreadyDestroyed.at(0) = true;
-                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, -blockSize}, percentageBonusDrop);
-            }
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}) && !alreadyDestroyed.at(1)) {
-                _gameMap->removeBlock(index);
-                alreadyDestroyed.at(1) = true;
-                setBonus(_bombs.at(bombPos)->getPosition() += (Position){0, 0, blockSize}, percentageBonusDrop);
-            }
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}) && !alreadyDestroyed.at(2)) {
-                _gameMap->removeBlock(index);
-                alreadyDestroyed.at(2) = true;
-                setBonus(_bombs.at(bombPos)->getPosition() += (Position){-blockSize, 0, 0}, percentageBonusDrop);
-            }
-            if (_gameMap->getMapObjects().at(index)->getPosition() == (_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}) && !alreadyDestroyed.at(3)) {
-                _gameMap->removeBlock(index);
-                alreadyDestroyed.at(3) = true;
-                setBonus(_bombs.at(bombPos)->getPosition() += (Position){blockSize, 0, 0}, percentageBonusDrop);
-            }
-        }
-        blockSize += _gameMap->getBlockSize();
-    }
 }
 
 void Scene::SettingsScene::draw()

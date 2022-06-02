@@ -13,8 +13,8 @@ Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources
     _blockScale = 0.5f;
 }
 
-Object::Block::Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS mapObjects) :
-    AThreeDimensionObject(pathToModel, pathToTexture, position), _mapObject(mapObjects)
+Object::Block::Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToModel, pathToTexture, position, type), _type(type)
 {
     _blockScale = 0.5f;
 }

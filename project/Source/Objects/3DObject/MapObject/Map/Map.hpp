@@ -74,7 +74,6 @@ namespace Object
 
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap;
 
-            Position _mapPosition;
 
             bool _isEnable;
             std::string _pathToMap;
@@ -87,7 +86,6 @@ namespace Object
             float _blockSize;
 
 
-            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
 
             std::vector<Object::Render::MyModel> _mapModels;
             std::vector<Object::Render::MyTexture> _mapTextures;
