@@ -19,7 +19,7 @@ void Scene::OptionGameMenuScene::selectGameMenuScene()
 
 void Scene::OptionGameMenuScene::selectMapScene()
 {
-    _nextScene = Scene::Scenes::SELECT_MAP;
+    _nextScene = Scene::Scenes::SELECT_PLAYER;
 
     _settings->setNbPlayers((std::size_t) std::stoi(_options.at(0).second.at(_options.at(0).first)->getText()));
     _settings->setNbSets((std::size_t) std::stoi(_options.at(1).second.at(_options.at(1).first)->getText()));
