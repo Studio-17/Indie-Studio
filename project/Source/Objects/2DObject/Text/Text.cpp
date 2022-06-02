@@ -71,6 +71,11 @@ void Object::Text::drawFramePerSeconds(Position const &position)
     DrawFPS(position.getX(), position.getY());
 }
 
+std::string Object::Text::getText() const
+{
+    return _text;
+}
+
 void Object::Text::setText(std::string const &text)
 {
     _text = text;

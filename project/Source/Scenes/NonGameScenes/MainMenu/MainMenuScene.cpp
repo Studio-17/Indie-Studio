@@ -25,7 +25,7 @@ void Scene::MainMenuScene::settingsScene(void)
 
 void Scene::MainMenuScene::newGameScene(void)
 {
-    _nextScene = Scene::Scenes::SAVE;
+    _nextScene = Scene::Scenes::GAME;
 }
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
@@ -65,7 +65,7 @@ void Scene::MainMenuScene::draw()
 
     for (std::int8_t i = 0; i < 10; i++) {
         if (i % 2 == 0)
-            speed += 0.15;
+            speed += 0.1;
 
         _images.at(i)->setPosition(_images.at(i)->getPosition().getX() - speed, _images.at(i)->getPosition().getY());
 

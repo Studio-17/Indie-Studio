@@ -48,6 +48,11 @@ class Settings {
         void setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction);
         std::map<Action, bool> getActionPressed() const;
         std::vector<std::map<PlayerAction, bool>> getPlayerActionsPressed() const;
+        void setNbPlayers(std::size_t const &nbPlayers);
+        std::size_t getNbPlayers() const;
+        void setNbSets(std::size_t const &nbSets);
+        void setGameTime(std::float_t const &gameTime);
+        void setEnableBonus(bool const &enableBonus);
 
     protected:
     private:
@@ -58,6 +63,11 @@ class Settings {
         std::map<Action, bool> _actionPressed;
         std::vector<std::map<PlayerAction, bool>> _playerActions;
         std::map<PlayerAction, bool> _playerAction;
+
+        std::size_t _nbPlayers;
+        std::size_t _nbSets;
+        std::float_t _gameTime;
+        bool _enableBonus;
 };
 
 #endif /* !SETTINGS_HPP_ */
