@@ -8,7 +8,7 @@
 #include "Bonus.hpp"
 #include "raymath.h"
 
-Object::Bonus::Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS mapObject) : AThreeDimensionObject(pathToRessources, position), _bonusObject(mapObject)
+Object::Bonus::Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS mapObject, Object::MAP_OBJECTS type) : AThreeDimensionObject(pathToRessources, position, type), _bonusObject(mapObject)
 {
     _bonusScale = 8;
 }

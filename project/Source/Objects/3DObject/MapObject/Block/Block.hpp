@@ -17,32 +17,21 @@
 
 namespace Object
 {
-    enum class MAP_OBJECTS {
-        GROUND = 'A',
-        WALL_MIDDLE = 'x',
-        WALL_SIDE = 'X',
-        BOX = 'O',
-        EMPTY = ' '
-    };
-
     class Block : public AThreeDimensionObject
     {
         public:
-            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject);
-            Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS mapObjects);
+            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type);
+            Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type);
             ~Block() override;
 
             void draw() override;
-
-            Object::MAP_OBJECTS getMapObject() const;
 
             void setBlockScale(float blockScale) { _blockScale = blockScale; };
             float getBlockScale() { return _blockScale; };
 
         protected:
         private:
-            Object::MAP_OBJECTS _mapObject;
-            std::string _type = "block";
+            Object::MAP_OBJECTS _type;
             float _blockScale;
     };
 }

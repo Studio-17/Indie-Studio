@@ -7,8 +7,8 @@
 
 #include "Bomb.hpp"
 
-Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range) :
-    AThreeDimensionObject(pathToRessources, position)
+Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToRessources, position, type)
 {
     _bombClock.start();
     _player = player;

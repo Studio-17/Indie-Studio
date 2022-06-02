@@ -16,7 +16,7 @@
 namespace Object {
     class Explosion : public AThreeDimensionObject {
         public:
-            Explosion(std::string const &pathToRessources) : AThreeDimensionObject(std::make_pair(pathToRessources, "Ressources/Fire_baseColor.png"), "Ressources/explosionAnim.iqm", 1, Position(0, 20, 0)) {
+            Explosion(std::string const &pathToRessources) : AThreeDimensionObject(std::make_pair(pathToRessources, "Ressources/Fire_baseColor.png"), "Ressources/explosionAnim.iqm", 1, Position(0, 20, 0), Object::MAP_OBJECTS::EMPTY) {
                 // _model = LoadModel(pathToRessources.c_str());
                 // _texture = LoadTexture("Ressources/Fire_baseColor.png");
 
