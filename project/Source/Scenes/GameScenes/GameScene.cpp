@@ -221,8 +221,6 @@ void Scene::GameScene::draw()
     for (auto &bonus : _bonus)
         bonus->draw();
 
-    // _explosion->draw();
-
     for (auto &bomb : _bombs)
         bomb->draw();
     _settings->getCamera()->endMode3D();
