@@ -13,6 +13,7 @@
     #include "Image.hpp"
     #include "Button.hpp"
     #include "Text.hpp"
+    #include "GameSettings.hpp"
 
     #include <vector>
     #include <memory>
@@ -22,7 +23,7 @@ namespace Scene {
 
     class SelectPlayerScene : public AScene {
         public:
-            SelectPlayerScene(std::shared_ptr<Settings> settings);
+            SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~SelectPlayerScene();
 
             void fadeBlack() override;

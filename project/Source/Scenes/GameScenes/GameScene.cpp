@@ -28,7 +28,13 @@ void Scene::GameScene::mainMenuScene(void)
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) :
+    AScene(settings), _gameSettings(gameSettings), _actionMap ({
+                {PlayerAction::MoveLeft, {{-1, 0, 0}, {0, 0, 0}}},
+                {PlayerAction::MoveRight, {{1, 0, 0}, {0, 180, 0}}},
+                {PlayerAction::MoveUp, {{0, 0, -1}, {0, 90, 0}}},
+                {PlayerAction::MoveDown, {{0, 0, 1}, {0, -90, 0}}},
+                {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
 
@@ -36,8 +42,15 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(setting
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapSize = {11, 11};
-    _mapFile = "Save/Maps/random.map";
+    _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
+    _collisionCondition = {
+        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
+        {PlayerAction::MoveRight, {_margin, 0, 0}},
+        {PlayerAction::MoveUp, {0, 0, -_margin}},
+        {PlayerAction::MoveDown, {0, 0, _margin}},
+        {PlayerAction::Drop, {0, 0, 0}}
+    };
     _playerSpeed = 0.6f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
@@ -89,19 +102,19 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("");
 
     // BOMB
+    // ("Ressourhttps://github.com/MyEpitech/B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/pull/77/conflict?name=project%252FSource%252FScenes%252FGameScenes%252FGameScene.cpp&ancestor_oid=715b3cb86f33664af1a888c95d667bbe42000acc&base_oid=fce135dcf841e6ee2401dde0c4ca9302b3b10b7f&head_oid=55133c22d2d9e8f6b81adcb9a9df24f1ef2b74c2ces/models/bomb/bomb.obj");
+    // ("Ressources/models/bomb/bomb.png");
 }
 
-bool Scene::GameScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb)
+bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
 {
-    float tileSpace = _gameMap->getBlockSize() - (_margin + 0.4f);
-    Position playerPos = players.at(playerNb)->getPosition();
+    Position newPlayerPos = playerPosition;
+    newPlayerPos += direction;
+    std::pair<int, int> position = _gameMap->transposeFrom3Dto2D(newPlayerPos);
 
     for (auto &object : _bombs) {
-        Position block = object->getPosition();
-
-        if (object->getPosition().getY() == 0 &&
-        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
-        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
+        std::pair<int, int> block = _gameMap->transposeFrom3Dto2D(object->getPosition());
+        if (position.first == block.first && position.second == block.second && object->getPlayer() == static_cast<Object::PLAYER_ORDER>(playerNb)) {
             if (!object->getCollide())
                 return false;
             return true;
@@ -114,20 +127,6 @@ bool Scene::GameScene::isCollidingBomb(Position margin, std::vector<std::unique_
 
 Scene::Scenes Scene::GameScene::handleEvent()
 {
-    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
-        {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
-        {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
-        {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
-        {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
-        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}
-    };
-    std::map<PlayerAction, Position> collisionCondition = {
-        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
-        {PlayerAction::MoveRight, {_margin, 0, 0}},
-        {PlayerAction::MoveUp, {0, 0, -_margin}},
-        {PlayerAction::MoveDown, {0, 0, _margin}},
-        {PlayerAction::Drop, {0, 0, 0}}
-    };
     bool moving = false;
     int index = 0;
 
@@ -141,8 +140,8 @@ Scene::Scenes Scene::GameScene::handleEvent()
             if (isPressed) {
                 if (playerPressesDrop(action))
                     placeBomb(_players.at(index)->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
-                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at(action), _players, index)) {
-                    _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
+                else if (_gameMap->isColliding(_collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(action), _players.at(index)->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
+                    _players.at(index)->move(_actionMap.at(action).first, _actionMap.at(action).second);
                     moving = true;
                 }
             }
@@ -211,12 +210,9 @@ void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range
 {
     bool blockTooked = false;
     int nb = _gameMap->roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
-
     if (nb % 10 == (_gameMap->getBlockSize() / 2))
         nb -= _gameMap->getBlockSize() / 2;
-
-    Position newPos = {static_cast<float>(_gameMap->roundUp(pos.getZ(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
-
+    Position newPos = {static_cast<float>(_gameMap->roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
     if (static_cast<int>(newPos.getX()) % 10 == 0) {
         for (auto &bomb : _bombs) {
             if (bomb->getPosition() == newPos)
@@ -273,11 +269,8 @@ void Scene::GameScene::draw()
             }
         }
     }
-
     for (auto &bonus : _bonus)
         bonus->draw();
-
-    // _explosion->draw();
 
     for (auto &bomb : _bombs)
         bomb->draw();

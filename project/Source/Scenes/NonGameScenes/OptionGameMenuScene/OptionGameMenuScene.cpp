@@ -14,23 +14,23 @@
 
 void Scene::OptionGameMenuScene::selectGameMenuScene()
 {
-    _nextScene = Scene::Scenes::GAME;
+    _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
 void Scene::OptionGameMenuScene::selectMapScene()
 {
     _nextScene = Scene::Scenes::SELECT_PLAYER;
 
-    _settings->setNbPlayers((std::size_t) std::stoi(_options.at(0).second.at(_options.at(0).first)->getText()));
-    _settings->setNbSets((std::size_t) std::stoi(_options.at(1).second.at(_options.at(1).first)->getText()));
-    _settings->setGameTime((std::float_t) std::stoi(_options.at(2).second.at(_options.at(2).first)->getText()));
-    if (_options.at(3).second.at(_options.at(2).first)->getText() == "Oui")
-        _settings->setEnableBonus(true);
+    _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
+    _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
+    _gameSettings->setGameTime(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
+    if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Oui")
+        _gameSettings->enableBonus();
     else
-        _settings->setEnableBonus(false);
+        _gameSettings->disableBonus();
 }
 
-void Scene::OptionGameMenuScene::leftClick(std::uint8_t index)
+void Scene::OptionGameMenuScene::leftClick(std::size_t index)
 {
     if (_options.at(index).first == 0)
         _options.at(index).first = _options.at(index).second.size() - 1;
@@ -38,7 +38,7 @@ void Scene::OptionGameMenuScene::leftClick(std::uint8_t index)
         _options.at(index).first -= 1;
 }
 
-void Scene::OptionGameMenuScene::rightClick(std::uint8_t index)
+void Scene::OptionGameMenuScene::rightClick(std::size_t index)
 {
     if (_options.at(index).first == (_options.at(index).second.size() - 1))
         _options.at(index).first = 0;
@@ -46,20 +46,20 @@ void Scene::OptionGameMenuScene::rightClick(std::uint8_t index)
         _options.at(index).first += 1;
 }
 
-Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
         std::bind(&Scene::OptionGameMenuScene::selectGameMenuScene, this),
         std::bind(&Scene::OptionGameMenuScene::selectMapScene, this),
-        std::bind(&Scene::OptionGameMenuScene::leftClick, this, 0),
-        std::bind(&Scene::OptionGameMenuScene::rightClick, this, 0),
-        std::bind(&Scene::OptionGameMenuScene::leftClick, this, 1),
-        std::bind(&Scene::OptionGameMenuScene::rightClick, this, 1),
-        std::bind(&Scene::OptionGameMenuScene::leftClick, this, 2),
-        std::bind(&Scene::OptionGameMenuScene::rightClick, this, 2),
-        std::bind(&Scene::OptionGameMenuScene::leftClick, this, 3),
-        std::bind(&Scene::OptionGameMenuScene::rightClick, this, 3)
+        std::bind(&Scene::OptionGameMenuScene::leftClick, this, NBPLAYERS),
+        std::bind(&Scene::OptionGameMenuScene::rightClick, this, NBPLAYERS),
+        std::bind(&Scene::OptionGameMenuScene::leftClick, this, NBSETS),
+        std::bind(&Scene::OptionGameMenuScene::rightClick, this, NBSETS),
+        std::bind(&Scene::OptionGameMenuScene::leftClick, this, GAMETIME),
+        std::bind(&Scene::OptionGameMenuScene::rightClick, this, GAMETIME),
+        std::bind(&Scene::OptionGameMenuScene::leftClick, this, BONUS),
+        std::bind(&Scene::OptionGameMenuScene::rightClick, this, BONUS)
     };
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/OptionGameMenuScene/button.json");
@@ -76,6 +76,7 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
     _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/bonus.json"));
 
     _nextScene = Scene::Scenes::OPTION_GAME;
+    _gameSettings = gameSettings;
 }
 
 Scene::OptionGameMenuScene::~OptionGameMenuScene()

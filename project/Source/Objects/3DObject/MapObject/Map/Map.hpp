@@ -52,7 +52,7 @@ namespace Object
 
             float getBlockSize() { return _blockSize; };
             void removeBlock(std::size_t index);
-            Object::MAP_OBJECTS isColliding(Position &direction, Position playerPosition);
+            Object::MAP_OBJECTS isColliding(Position const &direction, Position const &playerPosition);
             int roundUp(int nb, int multiple);
 
             template<typename T>
@@ -62,7 +62,13 @@ namespace Object
                 _mapPositionsObjects[tempPair.second][tempPair.first] = objectToPlace;
             }
 
-            std::pair<int, int> transposeFrom3Dto2D(Position &position);
+            template<typename T>
+            void placeObjectInMap(std::pair<int, int> const &position, std::shared_ptr<T> objectToPlace)
+            {
+                _mapPositionsObjects[position.second][position.first] = objectToPlace;
+            }
+
+            std::pair<int, int> transposeFrom3Dto2D(Position const &position);
 
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
 

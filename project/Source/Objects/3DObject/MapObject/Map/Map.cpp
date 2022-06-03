@@ -178,7 +178,7 @@ int Object::Map::roundUp(int nb, int multiple)
         return (nb + multiple - remainder);
 }
 
-Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
+Object::MAP_OBJECTS Object::Map::isColliding(Position const &direction, Position const &playerPosition)
 {
     Position temppos = playerPosition;
     temppos +=  direction;
@@ -187,9 +187,8 @@ Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playe
     return (_mapPositionsObjects.at(position.second).at(position.first)->getType());
 }
 
-std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position &position)
+std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
 {
-    std::cout << position << std::endl;
     int x = roundUp(static_cast<int>(position.getX()), (_blockSize / 2));
     int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 
@@ -202,4 +201,52 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position &position)
 
 void Object::Map::exploseBomb(Position const &position, int radius)
 {
+    // std::size_t percentageBonusDrop = 30;
+    std::pair<int, int> blockPosition = transposeFrom3Dto2D(position);
+    float blockSize = _blockSize;
+    std::vector<bool> alreadyDestroyed = { false, false, false, false };
+    Position blockToPlace;
+    std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    std::size_t index = 0;
+
+    for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
+        index = 0;
+        for (auto &[x, y] : target) {
+            if ((blockPosition.second + (y * bombRange)) > 0 && (blockPosition.second + (y * bombRange)) < _mapPositionsObjects.size())
+                if ((blockPosition.first + (x * bombRange)) > 0 && (blockPosition.first + (x * bombRange)) < _mapPositionsObjects.at(blockPosition.second + (y * bombRange)).size()) {
+                    if (_mapPositionsObjects.at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::WALL_MIDDLE)
+                        alreadyDestroyed.at(index) = true;
+                    if (_mapPositionsObjects.at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
+                        blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
+                        placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+                        alreadyDestroyed.at(index) = true;
+                    }
+                }
+            index++;
+        }
+}
+        // if (_mapPositionsObjects.at(blockPosition.second).at(blockPosition.first + 1)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(0) == false) {
+        //     blockToPlace = (Position){static_cast<float>((blockPosition.first +  1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
+        //     placeObjectInMap<Object::Block>({blockPosition.first + 1, blockPosition.second}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+        //     alreadyDestroyed.at(0) = true;
+        // }
+
+        // if (_mapPositionsObjects.at(blockPosition.second).at(blockPosition.first - 1)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(1) == false) {
+        //     blockToPlace = (Position){static_cast<float>((blockPosition.first - 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
+        //     placeObjectInMap<Object::Block>({blockPosition.first - 1, blockPosition.second}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+        //     alreadyDestroyed.at(1) = true;
+        // }
+
+        // if (_mapPositionsObjects.at(blockPosition.second + 1).at(blockPosition.first)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(2) == false) {
+        //     blockToPlace = (Position){static_cast<float>((blockPosition.first + 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
+        //     placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second + 1}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+        //     alreadyDestroyed.at(2) = true;
+        // }
+
+        // if (_mapPositionsObjects.at(blockPosition.second - 1).at(blockPosition.first)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(3) == false) {
+        //     blockToPlace = (Position){static_cast<float>((blockPosition.first - 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
+        //     placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second - 1}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+        //     alreadyDestroyed.at(3) = true;
+        // }
+    // }
 }

@@ -21,7 +21,8 @@
 
 Core::Core() : _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU),
-    _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json")))
+    _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
+    _gameSettings(std::make_shared<GameSettings>())
 {
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
     _gamepadPlayerMovement = {
@@ -40,12 +41,12 @@ Core::~Core()
 void Core::loadMenuScenes()
 {
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::GAME_MENU, std::make_shared<Scene::SelectGameMenuScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
-    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
     //rajouter toutes les scènes des menus
 }
 
