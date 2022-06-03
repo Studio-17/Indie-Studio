@@ -51,7 +51,6 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
         {PlayerAction::MoveDown, {0, 0, _margin}},
         {PlayerAction::Drop, {0, 0, 0}}
     };
-    _playerSpeed = 0.6f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
