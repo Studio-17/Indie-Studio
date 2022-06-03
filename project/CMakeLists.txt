@@ -66,10 +66,13 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/SelectPlayerScene/*.cpp
 
     Source/Settings/*.cpp
+    Source/Settings/GameSetting/*.cpp
     Source/Settings/SettingsModules/*.cpp
     Source/Settings/SettingsModules/Audio/*.cpp
     Source/Settings/SettingsModules/Camera/*.cpp
     Source/Settings/SettingsModules/Window/*.cpp
+    Source/Settings/GameSettings/*.cpp
+
 
     Source/Tools/*.cpp
 )
@@ -125,10 +128,12 @@ include_directories(
     Source/Scenes/NonGameScenes/SelectPlayerScene/
 
     Source/Settings/
+    Source/Settings/GameSetting/
     Source/Settings/SettingsModules/
     Source/Settings/SettingsModules/Audio/
     Source/Settings/SettingsModules/Camera/
     Source/Settings/SettingsModules/Window/
+    Source/Settings/GameSettings/
 
     Source/Tools/
 )
