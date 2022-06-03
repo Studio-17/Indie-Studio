@@ -12,6 +12,7 @@
 #include "SelectGameMenuScene.hpp"
 #include "OptionGameMenuScene.hpp"
 #include "BindingScene.hpp"
+#include "SelectPlayerScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -42,6 +43,7 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::SelectGameMenuScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings));
     //rajouter toutes les scènes des menus
 }
 
