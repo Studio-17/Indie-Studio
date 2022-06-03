@@ -25,7 +25,7 @@ namespace Scene {
 
         protected:
             void exitScene();
-            void settingsScene();
+            void gameScene();
             void newGameScene();
         private:
     };

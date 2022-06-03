@@ -24,13 +24,6 @@
  * @brief The settings scene of the game
  */
 namespace Scene {
-    enum class ORIENTATION {
-        UP,
-        DOWN,
-        RIGHT,
-        LEFT
-    };
-
     class SettingsScene : public AScene {
         public:
             SettingsScene(std::shared_ptr<Settings> settings);
@@ -38,43 +31,28 @@ namespace Scene {
 
             void fadeBlack() override;
             Scenes handelEvent() override;
-            void exitScene();
-            void settingsScene();
-            void newGameScene();
-            void mainMenuScene();
+
             void draw();
 
-            int getMovingKeys();
-            bool isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb);
-
-            void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
-
-            void setBonus(Position const &position, std::size_t percentageDrop);
-
-            void loadSceneAssets();
-
         protected:
-            bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
-
-
         private:
-            std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Player>> _players;
-            std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-            std::vector<std::unique_ptr<Object::Bonus>> _bonus;
+            // std::unique_ptr<Object::Map> _gameMap;
+            // std::vector<std::unique_ptr<Object::Player>> _players;
+            // std::vector<std::unique_ptr<Object::Bomb>> _bombs;
+            // std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
-            // std::unique_ptr<Object::Explosion> _explosion;
+            // // std::unique_ptr<Object::Explosion> _explosion;
 
-            std::vector<Object::Render::MyAnimation> _animations;
-            std::vector<Object::Render::MyModel> _models;
-            std::vector<Object::Render::MyTexture> _textures;
-            std::vector<Position> _playerPositions;
-            Vector2 _mapSize;
+            // std::vector<Object::Render::MyAnimation> _animations;
+            // std::vector<Object::Render::MyModel> _models;
+            // std::vector<Object::Render::MyTexture> _textures;
+            // std::vector<Position> _playerPositions;
+            // Vector2 _mapSize;
 
-            std::string _mapFile;
+            // std::string _mapFile;
 
-            float _margin;
-            float _playerSpeed;
+            // float _margin;
+            // float _playerSpeed;
     };
 }
 

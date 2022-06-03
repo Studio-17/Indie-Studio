@@ -18,9 +18,9 @@ void Scene::MainMenuScene::exitScene(void)
     _nextScene = Scene::Scenes::QUIT;
 }
 
-void Scene::MainMenuScene::settingsScene(void)
+void Scene::MainMenuScene::gameScene(void)
 {
-    _nextScene = Scene::Scenes::SETTINGS;
+    _nextScene = Scene::Scenes::GAME;
 }
 
 void Scene::MainMenuScene::newGameScene(void)
@@ -30,7 +30,7 @@ void Scene::MainMenuScene::newGameScene(void)
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
 {
-    std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::newGameScene, this), std::bind(&Scene::MainMenuScene::settingsScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
+    std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::newGameScene, this), std::bind(&Scene::MainMenuScene::gameScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/MainMenu/button.json");
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
