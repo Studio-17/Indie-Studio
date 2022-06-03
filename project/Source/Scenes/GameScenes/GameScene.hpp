@@ -41,7 +41,7 @@ namespace Scene {
             ~GameScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void exitScene();
             void settingsScene();
             void newGameScene();
@@ -49,7 +49,7 @@ namespace Scene {
             void draw();
 
             int getMovingKeys();
-            bool isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb);
+            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
 

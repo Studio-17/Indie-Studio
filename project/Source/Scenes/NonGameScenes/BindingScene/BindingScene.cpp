@@ -36,7 +36,7 @@ void Scene::BindingScene::fadeBlack()
 
 }
 
-Scene::Scenes Scene::BindingScene::handelEvent()
+Scene::Scenes Scene::BindingScene::handleEvent()
 {
     std::float_t speed = 0.0;
     int index = 0;

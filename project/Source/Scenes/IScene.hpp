@@ -50,7 +50,7 @@ namespace Scene
             /**
              * @brief To handle every event in the scene
              */
-            virtual Scenes handelEvent() = 0;
+            virtual Scenes handleEvent() = 0;
 
             virtual void draw() = 0;
 

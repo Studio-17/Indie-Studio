@@ -59,7 +59,7 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/*.cpp
     Source/Scenes/NonGameScenes/MainMenu/*.cpp
     Source/Scenes/NonGameScenes/SettingsScene/*.cpp
-    Source/Scenes/NonGameScenes/PopScenes/*.cpp
+    # Source/Scenes/NonGameScenes/PopScenes/*.cpp
     Source/Scenes/NonGameScenes/SelectGameMenu/*.cpp
     Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
     Source/Scenes/NonGameScenes/BindingScene/*.cpp
@@ -122,7 +122,6 @@ include_directories(
     Source/Scenes/NonGameScenes/
     Source/Scenes/NonGameScenes/MainMenu/
     Source/Scenes/NonGameScenes/SettingsScene/
-    Source/Scenes/NonGameScenes/PopScenes/
     Source/Scenes/NonGameScenes/SelectGameMenu/
     Source/Scenes/NonGameScenes/OptionGameMenuScene/
     Source/Scenes/NonGameScenes/BindingScene/

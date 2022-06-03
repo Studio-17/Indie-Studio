@@ -27,7 +27,7 @@ namespace Scene {
             ~OptionGameMenuScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void draw() override;
 
         protected:
