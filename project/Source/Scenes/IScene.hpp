@@ -17,6 +17,7 @@ namespace Scene
         QUIT,
         MAIN_MENU,
         GAME,
+        GAME_MENU,
         SETTINGS,
         SAVE,
         SPLASH_SCREEN,
