@@ -13,6 +13,7 @@
     #include "Image.hpp"
     #include "Button.hpp"
     #include "Text.hpp"
+    #include "GameSettings.hpp"
 
     #include <vector>
     #include <memory>
@@ -22,7 +23,7 @@ namespace Scene {
 
     class OptionGameMenuScene : public AScene {
         public:
-            OptionGameMenuScene(std::shared_ptr<Settings> settings);
+            OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~OptionGameMenuScene();
 
             void fadeBlack() override;
@@ -36,6 +37,7 @@ namespace Scene {
             void rightClick(std::uint8_t index);
 
         private:
+            std::shared_ptr<GameSettings> _gameSettings;
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options;
 
             std::vector<std::unique_ptr<Object::Image>> _parallax;

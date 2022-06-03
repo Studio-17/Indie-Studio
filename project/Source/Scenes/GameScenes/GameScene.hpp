@@ -13,6 +13,7 @@
     #include <map>
 
     #include "AScene.hpp"
+    #include "GameSettings.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
     #include "Explosion.hpp"
@@ -36,7 +37,7 @@ namespace Scene {
 
     class GameScene : public AScene {
         public:
-            GameScene(std::shared_ptr<Settings> settings);
+            GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
             void fadeBlack() override;
@@ -58,15 +59,14 @@ namespace Scene {
 
             void loadSceneAssets();
 
-            void checkIfPlayerIsInRange(std::pair<int, int> explosionPos);
+            void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
         protected:
-            bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
-
-
         private:
+            std::shared_ptr<GameSettings> _gameSettings;
+
             std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Player>> _players;
+            std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
@@ -80,6 +80,8 @@ namespace Scene {
 
             float _margin;
             float _playerSpeed;
+            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+            std::map<PlayerAction, Position> _collisionCondition;
     };
 }
 

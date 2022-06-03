@@ -28,7 +28,13 @@ void Scene::GameScene::mainMenuScene(void)
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) :
+    AScene(settings), _gameSettings(gameSettings), _actionMap ({
+                {PlayerAction::MoveLeft, {{-1, 0, 0}, {0, 0, 0}}},
+                {PlayerAction::MoveRight, {{1, 0, 0}, {0, 180, 0}}},
+                {PlayerAction::MoveUp, {{0, 0, -1}, {0, 90, 0}}},
+                {PlayerAction::MoveDown, {{0, 0, 1}, {0, -90, 0}}},
+                {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
 
@@ -36,17 +42,24 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(setting
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapSize = {11, 11};
-    _mapFile = "Save/Maps/random.map";
+    _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
+    _collisionCondition = {
+        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
+        {PlayerAction::MoveRight, {_margin, 0, 0}},
+        {PlayerAction::MoveUp, {0, 0, -_margin}},
+        {PlayerAction::MoveDown, {0, 0, _margin}},
+        {PlayerAction::Drop, {0, 0, 0}}
+    };
     _playerSpeed = 0.6f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
     _gameMap->process(_mapFile);
 
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
-    _players.emplace_back(std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER1), std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
+    _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
 }
 
 Scene::GameScene::~GameScene()
@@ -89,8 +102,6 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("");
 
     // BOMB
-    // ("Ressources/models/bomb/bomb.obj");
-    // ("Ressources/models/bomb/bomb.png");
 }
 
 bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
@@ -101,7 +112,7 @@ bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const
 
     for (auto &object : _bombs) {
         std::pair<int, int> block = _gameMap->transposeFrom3Dto2D(object->getPosition());
-        if (position.first == block.first && position.second == block.second && object->getPlayer() == static_cast<Object::PLAYER_ORDER>(playerNb)) {
+        if (position.first == block.first && position.second == block.second && object->getPlayer() == playerNb) {
             if (!object->getCollide())
                 return false;
             return true;
@@ -126,20 +137,6 @@ void Scene::GameScene::handleBombs()
 
 Scene::Scenes Scene::GameScene::handleEvent()
 {
-    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
-        {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
-        {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
-        {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
-        {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
-        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}
-    };
-    std::map<PlayerAction, Position> collisionCondition = {
-        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
-        {PlayerAction::MoveRight, {_margin, 0, 0}},
-        {PlayerAction::MoveUp, {0, 0, -_margin}},
-        {PlayerAction::MoveDown, {0, 0, _margin}},
-        {PlayerAction::Drop, {0, 0, 0}}
-    };
     bool moving = false;
     int index = 0;
 
@@ -147,20 +144,22 @@ Scene::Scenes Scene::GameScene::handleEvent()
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
 
-    for (auto &playerAc: _settings->getPlayerActionsPressed()) {
+    _settings->getPlayerActionsPressed().at(0);
+    for (auto &[playerIndex, player] : _players) {
         moving = false;
-        for (auto &[action, isPressed] : playerAc) {
+        std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
+        for (auto &[action, isPressed] : tmp) {
             if (isPressed) {
-                if (playerPressesDrop(action))
-                    placeBomb(_players.at(index)->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
-                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at(action), _players.at(index)->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
-                    _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
+                if (action == PlayerAction::Drop)
+                    placeBomb(player->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
+                else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(action), player->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
+                    player->move(_actionMap.at(action).first, _actionMap.at(action).second);
                     moving = true;
                 }
             }
         }
         if (!moving)
-            _players.at(index)->animation(1);
+            player->animation(1);
         index++;
     }
     handleBombs();
@@ -215,14 +214,15 @@ void Scene::GameScene::setBonus(Position const &position, std::size_t percentage
         _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
 }
 
-void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> explosionPos)
+void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos)
 {
     std::pair<int, int> playerPos;
-
-    for (std::size_t player = 0; player < _players.size(); player++) {
-        playerPos = _gameMap->transposeFrom3Dto2D(_players.at(player)->getPosition());
-        // if (playerPos == explosionPos)
-        //     _players.erase(_players.begin() + player);
+    for (auto &[index, player] : _players) {
+        playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
+        if (playerPos == explosionPos) {
+            std::cout << "died" << std::endl;
+            player->die();
+        }
     }
 }
 
@@ -236,6 +236,8 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     std::size_t index = 0;
 
+    checkIfPlayerIsInRange(blockPosition);
+
     for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
         index = 0;
         for (auto &[x, y] : target) {
@@ -243,12 +245,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                 if ((blockPosition.first + (x * bombRange)) > 0 && (blockPosition.first + (x * bombRange)) < _gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).size()) {
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::WALL_MIDDLE)
                         alreadyDestroyed.at(index) = true;
+                    blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
-                        blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
                         _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-                        checkIfPlayerIsInRange({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)});
                         alreadyDestroyed.at(index) = true;
                     }
+                    if (!alreadyDestroyed.at(index))
+                        checkIfPlayerIsInRange(_gameMap->transposeFrom3Dto2D(blockToPlace));
                 }
             index++;
         }
@@ -259,8 +262,10 @@ void Scene::GameScene::draw()
 {
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
-    for (auto &player : _players)
-        player->draw();
+    for (auto &[index, player] : _players) {
+        if (player->isAlive())
+            player->draw();
+    }
 
     for (auto &bonus : _bonus)
         bonus->draw();
