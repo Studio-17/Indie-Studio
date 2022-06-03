@@ -89,19 +89,19 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("");
 
     // BOMB
+    // ("Ressources/models/bomb/bomb.obj");
+    // ("Ressources/models/bomb/bomb.png");
 }
 
-bool Scene::GameScene::isCollidingBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb)
+bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
 {
-    float tileSpace = _gameMap->getBlockSize() - (_margin + 0.4f);
-    Position playerPos = players.at(playerNb)->getPosition();
+    Position newPlayerPos = playerPosition;
+    newPlayerPos += direction;
+    std::pair<int, int> position = _gameMap->transposeFrom3Dto2D(newPlayerPos);
 
     for (auto &object : _bombs) {
-        Position block = object->getPosition();
-
-        if (object->getPosition().getY() == 0 &&
-        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
-        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
+        std::pair<int, int> block = _gameMap->transposeFrom3Dto2D(object->getPosition());
+        if (position.first == block.first && position.second == block.second && object->getPlayer() == static_cast<Object::PLAYER_ORDER>(playerNb)) {
             if (!object->getCollide())
                 return false;
             return true;
@@ -141,7 +141,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
             if (isPressed) {
                 if (playerPressesDrop(action))
                     placeBomb(_players.at(index)->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
-                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at(action), _players, index)) {
+                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at(action), _players.at(index)->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
                     _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
                     moving = true;
                 }
@@ -158,12 +158,9 @@ void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range
 {
     bool blockTooked = false;
     int nb = _gameMap->roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
-
     if (nb % 10 == (_gameMap->getBlockSize() / 2))
         nb -= _gameMap->getBlockSize() / 2;
-
-    Position newPos = {static_cast<float>(_gameMap->roundUp(pos.getZ(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
-
+    Position newPos = {static_cast<float>(_gameMap->roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
     if (static_cast<int>(newPos.getX()) % 10 == 0) {
         for (auto &bomb : _bombs) {
             if (bomb->getPosition() == newPos)

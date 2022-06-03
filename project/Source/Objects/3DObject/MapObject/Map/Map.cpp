@@ -187,9 +187,8 @@ Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playe
     return (_mapPositionsObjects.at(position.second).at(position.first)->getType());
 }
 
-std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position &position)
+std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
 {
-    std::cout << position << std::endl;
     int x = roundUp(static_cast<int>(position.getX()), (_blockSize / 2));
     int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 

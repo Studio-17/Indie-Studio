@@ -62,7 +62,7 @@ namespace Object
                 _mapPositionsObjects[tempPair.second][tempPair.first] = objectToPlace;
             }
 
-            std::pair<int, int> transposeFrom3Dto2D(Position &position);
+            std::pair<int, int> transposeFrom3Dto2D(Position const &position);
 
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
 
