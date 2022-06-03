@@ -151,7 +151,60 @@ Scene::Scenes Scene::GameScene::handleEvent()
             _players.at(index)->animation(1);
         index++;
     }
+    ai();
     return _nextScene;
+}
+
+bool Scene::GameScene::seeBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb)
+{
+    float tileSpace = _gameMap->getBlockSize() - (_margin * 2 + 0.4f);
+    Position playerPos = players.at(playerNb)->getPosition();
+
+    for (auto &object : _bombs) {
+        Position block = object->getPosition();
+
+        if (object->getPosition().getY() == 0 &&
+        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
+        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
+            if (!object->getCollide())
+                return false;
+            return true;
+        }
+    }
+    return false;
+}
+
+void Scene::GameScene::ai()
+{
+    srand(time(NULL));
+    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
+        {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
+        {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
+        {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
+        {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
+        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}
+    };
+    std::map<PlayerAction, Position> collisionCondition = {
+        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
+        {PlayerAction::MoveRight, {_margin, 0, 0}},
+        {PlayerAction::MoveUp, {0, 0, -_margin}},
+        {PlayerAction::MoveDown, {0, 0, _margin}},
+        {PlayerAction::Drop, {0, 0, 0}}
+    };
+    bool moving = false;
+
+    for (int i = 2; i < 4; i++) {
+        int action = rand() % 4;
+
+        if (!seeBomb(collisionCondition.at((PlayerAction) action), _players, i)) {
+            if (_gameMap->isColliding(collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at((PlayerAction) action), _players, i)) {
+                _players.at(i)->move(actionMap.at((PlayerAction) action).first, actionMap.at((PlayerAction) action).second);
+                moving = true;
+            }
+        }
+        if (!moving)
+            _players.at(i)->animation(1);
+    }
 }
 
 void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)

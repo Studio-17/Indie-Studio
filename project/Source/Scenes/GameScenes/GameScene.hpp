@@ -56,6 +56,9 @@ namespace Scene {
 
             void loadSceneAssets();
 
+            void ai();
+            bool seeBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb);
+
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
 
@@ -70,6 +73,7 @@ namespace Scene {
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
             std::vector<Position> _playerPositions;
+
             Vector2 _mapSize;
 
             std::string _mapFile;
