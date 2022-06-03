@@ -112,6 +112,18 @@ bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const
     return false;
 }
 
+void Scene::GameScene::handleBombs()
+{
+    if (!_bombs.empty()) {
+        for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+            if (_bombs.at(bombPos)->checkIfShouldExplode()) {
+                exploseBomb(_bombs.at(bombPos)->getPosition(), _bombs.at(bombPos)->getRange());
+                _bombs.erase(_bombs.begin() + bombPos);
+            }
+        }
+    }
+}
+
 Scene::Scenes Scene::GameScene::handleEvent()
 {
     std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
@@ -151,6 +163,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
             _players.at(index)->animation(1);
         index++;
     }
+    handleBombs();
     return _nextScene;
 }
 
@@ -202,21 +215,52 @@ void Scene::GameScene::setBonus(Position const &position, std::size_t percentage
         _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), position, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
 }
 
+void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> explosionPos)
+{
+    std::pair<int, int> playerPos;
+
+    for (std::size_t player = 0; player < _players.size(); player++) {
+        playerPos = _gameMap->transposeFrom3Dto2D(_players.at(player)->getPosition());
+        // if (playerPos == explosionPos)
+        //     _players.erase(_players.begin() + player);
+    }
+}
+
+void Scene::GameScene::exploseBomb(Position const &position, int radius)
+{
+    // std::size_t percentageBonusDrop = 30;
+    std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(position);
+    float blockSize = _gameMap->getBlockSize();
+    std::vector<bool> alreadyDestroyed = { false, false, false, false };
+    Position blockToPlace;
+    std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    std::size_t index = 0;
+
+    for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
+        index = 0;
+        for (auto &[x, y] : target) {
+            if ((blockPosition.second + (y * bombRange)) > 0 && (blockPosition.second + (y * bombRange)) < _gameMap->getMapPositionsObjects().size())
+                if ((blockPosition.first + (x * bombRange)) > 0 && (blockPosition.first + (x * bombRange)) < _gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).size()) {
+                    if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::WALL_MIDDLE)
+                        alreadyDestroyed.at(index) = true;
+                    if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
+                        blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
+                        checkIfPlayerIsInRange({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)});
+                        alreadyDestroyed.at(index) = true;
+                    }
+                }
+            index++;
+        }
+    }
+}
+
 void Scene::GameScene::draw()
 {
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
     for (auto &player : _players)
         player->draw();
-
-    if (!_bombs.empty()) {
-        for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
-            if (_bombs.at(bombPos)->checkIfShouldExplode()) {
-                _gameMap->exploseBomb(_bombs.at(bombPos)->getPosition(), _bombs.at(bombPos)->getRange());
-                _bombs.erase(_bombs.begin() + bombPos);
-            }
-        }
-    }
 
     for (auto &bonus : _bonus)
         bonus->draw();
