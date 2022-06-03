@@ -20,7 +20,7 @@ void Scene::SelectPlayerScene::exitSelectPlayerScene()
 
 void Scene::SelectPlayerScene::runGame()
 {
-    _nextScene = Scenes::SETTINGS;
+    _nextScene = Scenes::GAME;
 }
 
 void Scene::SelectPlayerScene::leftClick(std::uint8_t index)

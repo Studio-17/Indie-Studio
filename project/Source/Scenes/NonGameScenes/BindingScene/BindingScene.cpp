@@ -41,6 +41,7 @@ Scene::Scenes Scene::BindingScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+    _nextScene = Scenes::SAVE;
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

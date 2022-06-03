@@ -20,12 +20,12 @@ void Scene::MainMenuScene::exitScene(void)
 
 void Scene::MainMenuScene::gameScene(void)
 {
-    _nextScene = Scene::Scenes::GAME;
+    _nextScene = Scene::Scenes::SAVE;
 }
 
 void Scene::MainMenuScene::newGameScene(void)
 {
-    _nextScene = Scene::Scenes::GAME;
+    _nextScene = Scene::Scenes::OPTION_GAME;
 }
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
