@@ -8,14 +8,14 @@
 #include "Player.hpp"
 #include "raymath.h"
 
-Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position) :
-    AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position)
+Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position, type)
 {
     _playerScale = 7.0f;
 }
 
-Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position) :
-    AThreeDimensionObject(pathToModel, pathToRessources, pathToAnimation, numberOfAnimations, position)
+Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToModel, pathToRessources, pathToAnimation, numberOfAnimations, position, type)
 {
     _playerScale = 7.0f;
 }
@@ -51,7 +51,8 @@ void Object::Player::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-    DrawModel(_model, modelPosition, _playerScale, WHITE);
+    if (_isEnable)
+        DrawModel(_model, modelPosition, _playerScale, WHITE);
 }
 
 void Object::Player::dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range)

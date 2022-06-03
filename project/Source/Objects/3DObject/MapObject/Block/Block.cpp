@@ -7,14 +7,14 @@
 
 #include "Block.hpp"
 
-Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS mapObject) :
-    AThreeDimensionObject(pathToRessources, position), _mapObject(mapObject)
+Object::Block::Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToRessources, position, type)
 {
     _blockScale = 0.5f;
 }
 
-Object::Block::Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS mapObjects) :
-    AThreeDimensionObject(pathToModel, pathToTexture, position), _mapObject(mapObjects)
+Object::Block::Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToModel, pathToTexture, position, type), _type(type)
 {
     _blockScale = 0.5f;
 }
@@ -31,10 +31,6 @@ void Object::Block::draw()
         getPosition().getZ()
     };
 
-    DrawModel(getModel(), modelPosition, _blockScale, WHITE);
-}
-
-Object::MAP_OBJECTS Object::Block::getMapObject() const
-{
-    return _mapObject;
+    if (_isEnable)
+        DrawModel(getModel(), modelPosition, _blockScale, WHITE);
 }

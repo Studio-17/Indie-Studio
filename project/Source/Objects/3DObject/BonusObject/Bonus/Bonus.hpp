@@ -41,7 +41,7 @@ namespace Object {
     class Bonus : public AThreeDimensionObject
     {
         public:
-            Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS bonusObject);
+            Bonus(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::BONUS_OBJECTS bonusObject, Object::MAP_OBJECTS type);
             ~Bonus() override;
 
             void draw() override;

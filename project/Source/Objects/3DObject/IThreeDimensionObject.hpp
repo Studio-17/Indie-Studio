@@ -12,11 +12,27 @@
 
 namespace Object
 {
+    enum class MAP_OBJECTS {
+        GROUND = 'A',
+        WALL_MIDDLE = 'x',
+        WALL_SIDE = 'X',
+        BOX = 'O',
+        EMPTY = ' ',
+        BOMB = 'B',
+        BONUS = 'b',
+        PLAYER = 'P',
+        // EXPLOSION = 'E,
+    };
+
     class IThreeDimensionObject : public IObject {
         public:
             virtual ~IThreeDimensionObject() = default;
 
             virtual void draw() = 0;
+
+            virtual void enable() = 0;
+            virtual void disable() = 0;
+            virtual bool isEnable() const = 0;
 
             virtual void setPosition(Position const &position) = 0;
             virtual void setPosition(float x, float y) = 0;
