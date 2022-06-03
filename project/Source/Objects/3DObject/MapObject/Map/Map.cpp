@@ -178,7 +178,7 @@ int Object::Map::roundUp(int nb, int multiple)
         return (nb + multiple - remainder);
 }
 
-Object::MAP_OBJECTS Object::Map::isColliding(Position &direction, Position playerPosition)
+Object::MAP_OBJECTS Object::Map::isColliding(Position const &direction, Position const &playerPosition)
 {
     Position temppos = playerPosition;
     temppos +=  direction;

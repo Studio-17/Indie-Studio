@@ -46,7 +46,7 @@ void Scene::OptionGameMenuScene::rightClick(std::uint8_t index)
         _options.at(index).first += 1;
 }
 
-Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
@@ -76,6 +76,7 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
     _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/bonus.json"));
 
     _nextScene = Scene::Scenes::OPTION_GAME;
+    _gameSettings = gameSettings;
 }
 
 Scene::OptionGameMenuScene::~OptionGameMenuScene()

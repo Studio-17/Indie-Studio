@@ -39,7 +39,7 @@ void Scene::SelectPlayerScene::rightClick(std::uint8_t  index)
         _players.at(index).first += 1;
 }
 
-Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {

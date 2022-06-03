@@ -28,7 +28,13 @@ void Scene::GameScene::mainMenuScene(void)
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) :
+    AScene(settings), _gameSettings(gameSettings), _actionMap ({
+                {PlayerAction::MoveLeft, {{-1, 0, 0}, {0, 0, 0}}},
+                {PlayerAction::MoveRight, {{1, 0, 0}, {0, 180, 0}}},
+                {PlayerAction::MoveUp, {{0, 0, -1}, {0, 90, 0}}},
+                {PlayerAction::MoveDown, {{0, 0, 1}, {0, -90, 0}}},
+                {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
 
@@ -36,8 +42,15 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings) : AScene(setting
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapSize = {11, 11};
-    _mapFile = "Save/Maps/random.map";
+    _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
+    _collisionCondition = {
+        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
+        {PlayerAction::MoveRight, {_margin, 0, 0}},
+        {PlayerAction::MoveUp, {0, 0, -_margin}},
+        {PlayerAction::MoveDown, {0, 0, _margin}},
+        {PlayerAction::Drop, {0, 0, 0}}
+    };
     _playerSpeed = 0.6f;
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, 90);
@@ -114,20 +127,6 @@ bool Scene::GameScene::isCollidingBomb(Position margin, std::vector<std::unique_
 
 Scene::Scenes Scene::GameScene::handelEvent()
 {
-    std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
-        {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},
-        {PlayerAction::MoveRight, {{_playerSpeed, 0, 0}, {0, 180, 0}}},
-        {PlayerAction::MoveUp, {{0, 0, -_playerSpeed}, {0, 90, 0}}},
-        {PlayerAction::MoveDown, {{0, 0, _playerSpeed}, {0, -90, 0}}},
-        {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}
-    };
-    std::map<PlayerAction, Position> collisionCondition = {
-        {PlayerAction::MoveLeft, {-_margin, 0, 0}},
-        {PlayerAction::MoveRight, {_margin, 0, 0}},
-        {PlayerAction::MoveUp, {0, 0, -_margin}},
-        {PlayerAction::MoveDown, {0, 0, _margin}},
-        {PlayerAction::Drop, {0, 0, 0}}
-    };
     bool moving = false;
     int index = 0;
 
@@ -141,8 +140,8 @@ Scene::Scenes Scene::GameScene::handelEvent()
             if (isPressed) {
                 if (playerPressesDrop(action))
                     placeBomb(_players.at(index)->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
-                else if (_gameMap->isColliding(collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at(action), _players, index)) {
-                    _players.at(index)->move(actionMap.at(action).first, actionMap.at(action).second);
+                else if (_gameMap->isColliding(_collisionCondition.at(action), _players.at(index)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(action), _players, index)) {
+                    _players.at(index)->move(_actionMap.at(action).first, _actionMap.at(action).second);
                     moving = true;
                 }
             }
@@ -220,12 +219,8 @@ void Scene::GameScene::draw()
             }
         }
     }
-
     for (auto &bonus : _bonus)
         bonus->draw();
-
-    // _explosion->draw();
-
     for (auto &bomb : _bombs)
         bomb->draw();
     _settings->getCamera()->endMode3D();

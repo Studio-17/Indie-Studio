@@ -13,6 +13,7 @@
     #include <map>
 
     #include "AScene.hpp"
+    #include "GameSettings.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
     #include "Explosion.hpp"
@@ -36,7 +37,7 @@ namespace Scene {
 
     class GameScene : public AScene {
         public:
-            GameScene(std::shared_ptr<Settings> settings);
+            GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
             void fadeBlack() override;
@@ -61,6 +62,8 @@ namespace Scene {
 
 
         private:
+            std::shared_ptr<GameSettings> _gameSettings;
+
             std::unique_ptr<Object::Map> _gameMap;
             std::vector<std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
@@ -76,6 +79,8 @@ namespace Scene {
 
             float _margin;
             float _playerSpeed;
+            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+            std::map<PlayerAction, Position> _collisionCondition;
     };
 }
 
