@@ -50,7 +50,7 @@ void Scene::SelectGameMenuScene::fadeBlack()
 {
 }
 
-Scene::Scenes Scene::SelectGameMenuScene::handelEvent()
+Scene::Scenes Scene::SelectGameMenuScene::handleEvent()
 {
     std::float_t speed = 0.0;
     int index = 0;

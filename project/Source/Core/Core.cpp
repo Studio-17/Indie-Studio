@@ -56,7 +56,7 @@ void Core::loop()
         _settings->getWindow()->clearBackground(DARKGRAY);
 
         getEvent();
-        _activeScene = _menuScenes.at(_activeScene)->handelEvent();
+        _activeScene = _menuScenes.at(_activeScene)->handleEvent();
         if (_activeScene == Scene::Scenes::QUIT)
             continue;
         _menuScenes.at(_activeScene)->draw();

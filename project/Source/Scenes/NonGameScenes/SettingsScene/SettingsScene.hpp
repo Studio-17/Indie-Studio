@@ -30,7 +30,7 @@ namespace Scene {
             ~SettingsScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
 
             void draw();
 

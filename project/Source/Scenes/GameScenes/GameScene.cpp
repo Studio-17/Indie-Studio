@@ -112,7 +112,7 @@ bool Scene::GameScene::isCollidingBomb(Position margin, std::vector<std::unique_
     return false;
 }
 
-Scene::Scenes Scene::GameScene::handelEvent()
+Scene::Scenes Scene::GameScene::handleEvent()
 {
     std::map<PlayerAction, std::pair<Position, Position>> actionMap = {
         {PlayerAction::MoveLeft, {{-_playerSpeed, 0, 0}, {0, 0, 0}}},

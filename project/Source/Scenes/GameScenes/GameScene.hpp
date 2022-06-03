@@ -40,7 +40,7 @@ namespace Scene {
             ~GameScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void exitScene();
             void settingsScene();
             void newGameScene();
