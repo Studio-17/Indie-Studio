@@ -24,7 +24,8 @@ namespace Scene
         END,
         OPTION_GAME,
         SELECT_MAP,
-        SELECT_PLAYER
+        SELECT_PLAYER,
+        END_GAME
     };
 
     enum SOUNDS {
