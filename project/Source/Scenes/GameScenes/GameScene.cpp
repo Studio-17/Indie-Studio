@@ -161,6 +161,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
             player->animation(1);
         index++;
     }
+    handleWin();
     handleBombs();
     return _nextScene;
 }
@@ -219,8 +220,8 @@ void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosi
     for (auto &[index, player] : _players) {
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
         if (playerPos == explosionPos) {
-            std::cout << "died" << std::endl;
             player->die();
+            _players.erase(index);
         }
     }
 }
@@ -255,6 +256,14 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
             index++;
         }
     }
+}
+
+void Scene::GameScene::handleWin()
+{
+    // Changement de scene segfault actuellement
+    // if (_players.size() == 3) {
+    //     _nextScene = Scene::Scenes::END_GAME;
+    // }
 }
 
 void Scene::GameScene::draw()

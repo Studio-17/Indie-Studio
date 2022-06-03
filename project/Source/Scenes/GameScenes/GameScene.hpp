@@ -61,6 +61,8 @@ namespace Scene {
 
             void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
+            void handleWin();
+
         protected:
         private:
             std::shared_ptr<GameSettings> _gameSettings;
