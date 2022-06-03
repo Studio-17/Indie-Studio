@@ -49,23 +49,24 @@ namespace Scene {
             void draw();
 
             int getMovingKeys();
-            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
+            void handleBombs();
+            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
+            void exploseBomb(Position const &position, int radius);
 
             void setBonus(Position const &position, std::size_t percentageDrop);
 
             void loadSceneAssets();
 
+            void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
+
         protected:
-            bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
-
-
         private:
             std::shared_ptr<GameSettings> _gameSettings;
 
             std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Player>> _players;
+            std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
