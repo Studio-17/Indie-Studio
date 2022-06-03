@@ -20,7 +20,7 @@ namespace Scene {
             ~MainMenuScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void draw() override;
 
         protected:

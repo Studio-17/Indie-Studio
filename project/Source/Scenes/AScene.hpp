@@ -40,7 +40,7 @@ namespace Scene
             virtual ~AScene() = default;
 
             virtual void fadeBlack() = 0;
-            virtual Scenes handelEvent() = 0;
+            virtual Scenes handleEvent() = 0;
             virtual void draw() = 0;
 
         protected:

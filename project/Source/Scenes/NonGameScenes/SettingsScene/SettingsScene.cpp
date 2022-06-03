@@ -21,7 +21,7 @@ void Scene::SettingsScene::fadeBlack()
 
 }
 
-Scene::Scenes Scene::SettingsScene::handelEvent()
+Scene::Scenes Scene::SettingsScene::handleEvent()
 {
     _nextScene = Scene::Scenes::SETTINGS;
 

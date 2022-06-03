@@ -50,7 +50,7 @@ void Scene::MainMenuScene::fadeBlack()
 {
 }
 
-Scene::Scenes Scene::MainMenuScene::handelEvent()
+Scene::Scenes Scene::MainMenuScene::handleEvent()
 {
     _nextScene = Scene::Scenes::MAIN_MENU;
 
