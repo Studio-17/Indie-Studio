@@ -11,6 +11,7 @@ Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object
 {
     _mapTextures = texture;
     _mapModels = models;
+    _blockSize = 10.0f;
 }
 
 Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position) : _isEnable(true)
@@ -44,11 +45,10 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
 {
     std::vector<Position> corners;
 
-    width * _blockSize;
-    corners.push_back({10.0f, 0.0f, 10.0f});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, 10.0f});
-    corners.push_back({10.0f, 0.0f, static_cast<float>(height * 10)});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, static_cast<float>(height * 10)});
+    corners.push_back({_blockSize, 0.0f, _blockSize});
+    corners.push_back({(_blockSize * width) - (_blockSize * 2), 0.0f, _blockSize});
+    corners.push_back({_blockSize, 0.0f, (_blockSize * height) - (_blockSize * 2)});
+    corners.push_back({(_blockSize * width)- (_blockSize * 2), 0.0f, (_blockSize * height) - (_blockSize * 2)});
     return corners;
 }
 
@@ -56,6 +56,8 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 {
     srand(time(NULL));
     std::size_t randomNumber = 1 + (rand() % 100);
+    width -= 2;
+    height -= 2;
 
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");
@@ -134,11 +136,9 @@ void Object::Map::process(std::string const &pathToFile)
 
     srand(time(NULL));
 
-    _blockSize = 10.0f;
     _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
     _mapDimensions.setY(0);
     _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
-    std::cout <<_mapDimensions<<std::endl;
 
     Vector3 tilePosition = {0, 0, 0};
 
@@ -193,8 +193,8 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
     int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 
     if (x % 10 == (_blockSize / 2))
-        x -= 5;
+        x -= static_cast<int>(_blockSize / 2);
     if (z % 10 == (_blockSize / 2))
-        z -= 5;
-    return {x / 10, z / 10};
+        z -= static_cast<int>(_blockSize / 2);
+    return {x / static_cast<int>(_blockSize), z / static_cast<int>(_blockSize)};
 }
