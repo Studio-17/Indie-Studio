@@ -50,12 +50,14 @@ namespace Scene {
 
             int getMovingKeys();
 
+            bool isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
+
             void handleBombs();
-            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void exploseBomb(Position const &position, int radius);
 
-            void setBonus(Position const &position, std::size_t percentageDrop);
+            void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
+            void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
 
             void loadSceneAssets();
 
@@ -79,6 +81,9 @@ namespace Scene {
             Vector2 _mapSize;
 
             std::string _mapFile;
+
+            std::size_t _percentageBonusDrop;
+            std::size_t _percentageBoxDrop;
 
             float _margin;
             float _playerSpeed;
