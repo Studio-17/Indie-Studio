@@ -46,9 +46,9 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
     std::vector<Position> corners;
 
     corners.push_back({_blockSize, 0.0f, _blockSize});
-    corners.push_back({_blockSize * width, 0.0f, _blockSize});
-    corners.push_back({_blockSize, 0.0f, _blockSize * height});
-    corners.push_back({_blockSize * width, 0.0f, _blockSize * height});
+    corners.push_back({(_blockSize * width) - (_blockSize * 2), 0.0f, _blockSize});
+    corners.push_back({_blockSize, 0.0f, (_blockSize * height) - (_blockSize * 2)});
+    corners.push_back({(_blockSize * width)- (_blockSize * 2), 0.0f, (_blockSize * height) - (_blockSize * 2)});
     return corners;
 }
 
@@ -56,6 +56,8 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 {
     srand(time(NULL));
     std::size_t randomNumber = 1 + (rand() % 100);
+    width -= 2;
+    height -= 2;
 
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");

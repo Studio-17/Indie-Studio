@@ -41,7 +41,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _nextScene = Scene::Scenes::GAME;
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
-    _mapSize = {11, 11};
+    _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
     _collisionCondition = {
