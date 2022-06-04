@@ -169,18 +169,15 @@ Scene::Scenes Scene::GameScene::handleEvent()
 void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
 {
     bool blockTooked = false;
-    int nb = _gameMap->roundUp(pos.getZ(), _gameMap->getBlockSize() / 2);
-    if (nb % 10 == (_gameMap->getBlockSize() / 2))
-        nb -= _gameMap->getBlockSize() / 2;
-    Position newPos = {static_cast<float>(_gameMap->roundUp(pos.getX(), _gameMap->getBlockSize() / 2)), pos.getY(), static_cast<float>(nb)};
-    if (static_cast<int>(newPos.getX()) % 10 == 0) {
-        for (auto &bomb : _bombs) {
-            if (bomb->getPosition() == newPos)
-                blockTooked = true;
-        }
-        if (!blockTooked)
-            _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2, Object::MAP_OBJECTS::BOMB));
+    std::pair<int, int> pairPos = _gameMap->transposeFrom3Dto2D(pos);
+    Position newPos = {static_cast<float>(pairPos.first * static_cast<int>(_gameMap->getBlockSize())), pos.getY(), static_cast<float>(pairPos.second * static_cast<int>(_gameMap->getBlockSize()))};
+
+    for (auto &bomb : _bombs) {
+        if (bomb->getPosition() == newPos)
+            blockTooked = true;
     }
+    if (!blockTooked)
+        _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2, Object::MAP_OBJECTS::BOMB));
 }
 
 void Scene::GameScene::setBonus(Position const &position, std::size_t percentageDrop)
@@ -245,7 +242,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                 if ((blockPosition.first + (x * bombRange)) > 0 && (blockPosition.first + (x * bombRange)) < _gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).size()) {
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::WALL_MIDDLE)
                         alreadyDestroyed.at(index) = true;
-                    blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
+                    blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * _gameMap->getBlockSize())};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
                         _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
                         alreadyDestroyed.at(index) = true;

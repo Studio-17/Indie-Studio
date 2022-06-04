@@ -23,7 +23,7 @@ namespace Scene {
             void goToMainMenu();
             void draw () override;
             void fadeBlack() override {};
-            Scenes handleEvent() override {};
+            Scenes handleEvent() override { return _nextScene; };
 
         protected:
         private:
