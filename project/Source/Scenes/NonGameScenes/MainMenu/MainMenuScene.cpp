@@ -25,7 +25,7 @@ void Scene::MainMenuScene::settingsScene(void)
 
 void Scene::MainMenuScene::newGameScene(void)
 {
-    _nextScene = Scene::Scenes::GAME;
+    _nextScene = Scene::Scenes::SELECT_MAP;
 }
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)

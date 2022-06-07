@@ -1,0 +1,25 @@
+{
+    "first": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [450, 300, 0],
+        "texture": "Ressources/buttons/grayBlueYellowButtons.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "second": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [450, 500, 0],
+        "texture": "Ressources/buttons/grayBlueYellowButtons.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "third": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [450, 700, 0],
+        "texture": "Ressources/buttons/grayBlueYellowButtons.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}
+
+project/CMakeLists.txt project/Source/Core/Core.cpp project/Source/Scenes/AScene.hpp project/Source/Scenes/IScene.hpp project/Source/Scenes/NonGameScenes/MainMenu/MainMenuScene.cpp project/Conf/Scenes/SelectMap/ project/Ressources/buttons/grayBlueYellowButtons.png project/Ressources/buttons/newButtons.png project/Save/Maps/asmall.map project/Save/Maps/bmedium.map project/Source/Scenes/NonGameScenes/SelectMap/ project/projectBuild.sh
