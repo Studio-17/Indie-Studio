@@ -44,7 +44,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
-    _percentageBonusDrop = 40;
+    _percentageBonusDrop = 60;
     _percentageBoxDrop = 90;
     _collisionCondition = {
         {PlayerAction::MoveLeft, {-_margin, 0, 0}},
@@ -109,7 +109,7 @@ void Scene::GameScene::loadSceneAssets()
 
 void Scene::GameScene::AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus)
 {
-    // call the right function for the bonus and add it to the player
+    std::cout << "Awarding bonus " << static_cast<int>(bonus) << " to player " << static_cast<int>(playerNb) << std::endl;
 }
 
 bool Scene::GameScene::isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
@@ -118,16 +118,15 @@ bool Scene::GameScene::isCollidingObject(Position const &direction, Position con
     newPlayerPos += direction;
     std::pair<int, int> frontPos = _gameMap->transposeFrom3Dto2D(newPlayerPos);
     std::pair<int, int> actualPos = _gameMap->transposeFrom3Dto2D(playerPosition);
-    std::size_t BonusNb = 0;
 
-    for (auto &bonus : _bonus) {
-        std::pair<int, int> bonusPos = _gameMap->transposeFrom3Dto2D(bonus->getPosition());
-        if (actualPos.first == bonusPos.first && actualPos.second == bonusPos.second) {
-            AwardBonus(playerNb, bonus->getMapObject());
-            _bonus.erase(_bonus.begin() + BonusNb);
-        }
-        BonusNb++;
+    try {
+        _bonus.at(actualPos.second).at(actualPos.first);
+        AwardBonus(playerNb, _bonus.at(actualPos.second).at(actualPos.first)->getMapObject());
+        _bonus.at(actualPos.second).erase(actualPos.first);
+        if (_bonus.at(actualPos.second).empty())
+            _bonus.erase(actualPos.second);
     }
+    catch (std::out_of_range const &) {}
 
     for (auto &bomb : _bombs) {
         std::pair<int, int> bombPos = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
@@ -228,8 +227,16 @@ void Scene::GameScene::placeBonus(std::pair<int, int> position, std::size_t perc
     std::size_t randomNumber = 1 + (rand() % 100);
     std::size_t randomBonus = 1 + (rand() % bonusMap.size());
 
-    if (randomNumber >= 1 && randomNumber <= percentageDrop)
-        _bonus.emplace_back(std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), tempPos, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
+    if (randomNumber >= 1 && randomNumber <= percentageDrop) {
+        std::pair<int, int> finalPos = _gameMap->transposeFrom3Dto2D(tempPos);
+        try {
+            _bonus.at(finalPos.second).emplace(finalPos.first, std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), tempPos, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
+        }
+        catch (std::out_of_range const &) {
+            _bonus.emplace(finalPos.second, std::map<int, std::unique_ptr<Object::Bonus>>());
+            _bonus.at(finalPos.second).emplace(finalPos.first, std::make_unique<Object::Bonus>(bonusMap.at(static_cast<Object::BONUS_OBJECTS>(randomBonus)), tempPos, static_cast<Object::BONUS_OBJECTS>(randomBonus), Object::MAP_OBJECTS::BONUS));
+        }
+    }
 }
 
 void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos)
@@ -278,25 +285,25 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
 
 void Scene::GameScene::handleWin()
 {
-    // Changement de scene segfault actuellement
-    // if (_players.size() == 3) {
-    //     _nextScene = Scene::Scenes::END_GAME;
-    // }
+    if (_players.size() == 1)
+        _nextScene = Scene::Scenes::END_GAME;
 }
 
 void Scene::GameScene::draw()
 {
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
-    for (auto &[index, player] : _players) {
+
+    for (auto &[index, player] : _players)
         if (player->isAlive())
             player->draw();
-    }
 
-    for (auto &bonus : _bonus)
-        bonus->draw();
+    for (auto &[line, bonus] : _bonus)
+        for (auto &[col, bonusObject] : bonus)
+            bonusObject->draw();
 
     for (auto &bomb : _bombs)
         bomb->draw();
+
     _settings->getCamera()->endMode3D();
 }
