@@ -30,8 +30,3 @@ void Object::Bonus::draw()
     if (_isEnable)
         DrawModel(getModel(), modelPosition, _bonusScale, WHITE);
 }
-
-Object::BONUS_OBJECTS Object::Bonus::getMapObject() const
-{
-    return _bonusObject;
-}
