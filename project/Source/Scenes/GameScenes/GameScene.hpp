@@ -49,26 +49,33 @@ namespace Scene {
             void draw();
 
             int getMovingKeys();
-            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
+            bool isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
+
+            void handleBombs();
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
+            void exploseBomb(Position const &position, int radius);
 
-            void setBonus(Position const &position, std::size_t percentageDrop);
+            void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
+            void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
 
             void loadSceneAssets();
 
             void ai();
-            bool seeBomb(Position margin, std::vector<std::unique_ptr<Object::Player>> &players, int playerNb);
+            bool seeBomb(Position margin, std::unique_ptr<Object::Player> &players);
 
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
+            void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
+            void handleWin();
 
+        protected:
         private:
             std::shared_ptr<GameSettings> _gameSettings;
 
             std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Player>> _players;
+            std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
             std::vector<std::unique_ptr<Object::Bonus>> _bonus;
 
@@ -80,6 +87,9 @@ namespace Scene {
             Vector2 _mapSize;
 
             std::string _mapFile;
+
+            std::size_t _percentageBonusDrop;
+            std::size_t _percentageBoxDrop;
 
             float _margin;
             float _playerSpeed;

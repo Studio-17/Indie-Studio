@@ -11,6 +11,7 @@ Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object
 {
     _mapTextures = texture;
     _mapModels = models;
+    _blockSize = 10.0f;
 }
 
 Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position) : _isEnable(true)
@@ -44,11 +45,10 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
 {
     std::vector<Position> corners;
 
-    width * _blockSize;
-    corners.push_back({10.0f, 0.0f, 10.0f});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, 10.0f});
-    corners.push_back({10.0f, 0.0f, static_cast<float>(height * 10)});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, static_cast<float>(height * 10)});
+    corners.push_back({_blockSize, 0.0f, _blockSize});
+    corners.push_back({(_blockSize * width) - (_blockSize * 2), 0.0f, _blockSize});
+    corners.push_back({_blockSize, 0.0f, (_blockSize * height) - (_blockSize * 2)});
+    corners.push_back({(_blockSize * width)- (_blockSize * 2), 0.0f, (_blockSize * height) - (_blockSize * 2)});
     return corners;
 }
 
@@ -56,6 +56,8 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
 {
     srand(time(NULL));
     std::size_t randomNumber = 1 + (rand() % 100);
+    width -= 2;
+    height -= 2;
 
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");
@@ -134,11 +136,9 @@ void Object::Map::process(std::string const &pathToFile)
 
     srand(time(NULL));
 
-    _blockSize = 10.0f;
     _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
     _mapDimensions.setY(0);
     _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
-    std::cout <<_mapDimensions<<std::endl;
 
     Vector3 tilePosition = {0, 0, 0};
 
@@ -193,60 +193,8 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
     int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 
     if (x % 10 == (_blockSize / 2))
-        x -= 5;
+        x -= static_cast<int>(_blockSize / 2);
     if (z % 10 == (_blockSize / 2))
-        z -= 5;
-    return {x / 10, z / 10};
-}
-
-void Object::Map::exploseBomb(Position const &position, int radius)
-{
-    // std::size_t percentageBonusDrop = 30;
-    std::pair<int, int> blockPosition = transposeFrom3Dto2D(position);
-    float blockSize = _blockSize;
-    std::vector<bool> alreadyDestroyed = { false, false, false, false };
-    Position blockToPlace;
-    std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    std::size_t index = 0;
-
-    for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
-        index = 0;
-        for (auto &[x, y] : target) {
-            if ((blockPosition.second + (y * bombRange)) > 0 && (blockPosition.second + (y * bombRange)) < _mapPositionsObjects.size())
-                if ((blockPosition.first + (x * bombRange)) > 0 && (blockPosition.first + (x * bombRange)) < _mapPositionsObjects.at(blockPosition.second + (y * bombRange)).size()) {
-                    if (_mapPositionsObjects.at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::WALL_MIDDLE)
-                        alreadyDestroyed.at(index) = true;
-                    if (_mapPositionsObjects.at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
-                        blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * 10), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * 10)};
-                        placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-                        alreadyDestroyed.at(index) = true;
-                    }
-                }
-            index++;
-        }
-}
-        // if (_mapPositionsObjects.at(blockPosition.second).at(blockPosition.first + 1)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(0) == false) {
-        //     blockToPlace = (Position){static_cast<float>((blockPosition.first +  1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
-        //     placeObjectInMap<Object::Block>({blockPosition.first + 1, blockPosition.second}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-        //     alreadyDestroyed.at(0) = true;
-        // }
-
-        // if (_mapPositionsObjects.at(blockPosition.second).at(blockPosition.first - 1)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(1) == false) {
-        //     blockToPlace = (Position){static_cast<float>((blockPosition.first - 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
-        //     placeObjectInMap<Object::Block>({blockPosition.first - 1, blockPosition.second}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-        //     alreadyDestroyed.at(1) = true;
-        // }
-
-        // if (_mapPositionsObjects.at(blockPosition.second + 1).at(blockPosition.first)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(2) == false) {
-        //     blockToPlace = (Position){static_cast<float>((blockPosition.first + 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
-        //     placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second + 1}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-        //     alreadyDestroyed.at(2) = true;
-        // }
-
-        // if (_mapPositionsObjects.at(blockPosition.second - 1).at(blockPosition.first)->getType() == Object::MAP_OBJECTS::BOX && alreadyDestroyed.at(3) == false) {
-        //     blockToPlace = (Position){static_cast<float>((blockPosition.first - 1) * 10), 0, static_cast<float>(blockPosition.second * 10)};
-        //     placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second - 1}, std::make_shared<Object::Block>(_mapModels.at(8), _mapTextures.at(10), blockToPlace, Object::MAP_OBJECTS::EMPTY));
-        //     alreadyDestroyed.at(3) = true;
-        // }
-    // }
+        z -= static_cast<int>(_blockSize / 2);
+    return {x / static_cast<int>(_blockSize), z / static_cast<int>(_blockSize)};
 }

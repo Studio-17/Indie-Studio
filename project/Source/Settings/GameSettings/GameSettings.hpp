@@ -129,6 +129,10 @@ class GameSettings {
         std::size_t _nbSets; //!< nb round
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled
+
+        // End game stats
+        std::size_t victoriousPlayer;
+        std::vector<float> _playersScore;
 };
 
 #endif /* !GAMESETTINGS_HPP_ */

@@ -72,7 +72,8 @@ namespace Object
 
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
 
-            void exploseBomb(Position const &bombPosition, int radius);
+            std::vector<Object::Render::MyModel> getMapModels() { return _mapModels; };
+            std::vector<Object::Render::MyTexture> getMapTextures() { return _mapTextures; };
 
         protected:
         private:

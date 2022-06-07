@@ -35,6 +35,7 @@ namespace Object {
 
             void dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range);
             void die() { _isAlive = false; };
+            bool isAlive() { return _isAlive; };
             float getSpeed() const { return _speed; };
             void setSpeed(float speed) { _speed = speed; };
 
