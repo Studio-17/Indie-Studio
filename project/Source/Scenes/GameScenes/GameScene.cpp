@@ -102,8 +102,6 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("");
 
     // BOMB
-    // ("Ressourhttps://github.com/MyEpitech/B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/pull/77/conflict?name=project%252FSource%252FScenes%252FGameScenes%252FGameScene.cpp&ancestor_oid=715b3cb86f33664af1a888c95d667bbe42000acc&base_oid=fce135dcf841e6ee2401dde0c4ca9302b3b10b7f&head_oid=55133c22d2d9e8f6b81adcb9a9df24f1ef2b74c2ces/models/bomb/bomb.obj");
-    // ("Ressources/models/bomb/bomb.png");
 }
 
 bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
@@ -196,7 +194,7 @@ void Scene::GameScene::ai()
         int action = rand() % 4;
 
         if (!seeBomb(collisionCondition.at((PlayerAction) action), _players, i)) {
-            if (_gameMap->isColliding(collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at((PlayerAction) action), _players, i)) {
+            if (_gameMap->isColliding(collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition(), static_cast<Object::PLAYER_ORDER>(i))) {
                 _players.at(i)->move(actionMap.at((PlayerAction) action).first, actionMap.at((PlayerAction) action).second);
                 moving = true;
             }
