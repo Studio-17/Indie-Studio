@@ -13,11 +13,18 @@ Object::Image::Image(std::string const &imagePath, Position const &position) :  
 {
 }
 
-Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true))
+Object::Image::Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture) :
+    _isEnable(jsonData.value("isEnable", true)), _imageTexture(texture.getTexture()),
+    _imageScale(jsonData.value("scale", 1.0))
 {
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
-    _imageTexture = LoadTexture(jsonData.value("texture", "default").c_str());
-    _imageScale = jsonData.value("scale", 1.0);
+}
+
+Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true)),
+    _imageTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
+    _imageScale(jsonData.value("scale", 1.0))
+{
+    _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
 }
 
 Object::Image::~Image()

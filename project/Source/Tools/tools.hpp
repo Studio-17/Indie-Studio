@@ -13,6 +13,7 @@
     #include <string>
     #include <vector>
 
+    #include "Texture.hpp"
     #include "FileError.hpp"
     #include "IObject.hpp"
 
@@ -25,7 +26,7 @@ Rectangle setRectangle(std::array<float, 4> const &array);
 
 std::vector<std::unique_ptr<Object::IObject>> loadGenericObjects(std::string const &filepath);
 template <typename Obj>
-std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath)
+std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath, bool oneText = false)
 {
     nlohmann::json jsonData;
     std::vector<std::unique_ptr<Obj>> objects;
@@ -36,9 +37,13 @@ std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath)
         std::cerr << e.what() << std::endl;
         return {};
     }
-    for (auto &oneData : jsonData) {
-        objects.emplace_back(std::make_unique<Obj>(oneData));
-    }
+    if (oneText) {
+        Object::Render::MyTexture objectTexture(jsonData.begin()->value("texture", "default"));
+        for (auto &oneData : jsonData)
+           objects.emplace_back(std::make_unique<Obj>(oneData, objectTexture));
+    } else
+        for (auto &oneData : jsonData)
+            objects.emplace_back(std::make_unique<Obj>(oneData));
     return objects;
 };
 

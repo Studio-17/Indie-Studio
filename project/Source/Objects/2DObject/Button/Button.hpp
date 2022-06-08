@@ -15,6 +15,8 @@
     #include <functional>
 
     #include "MySound.hpp"
+    #include "Texture.hpp"
+    #include "Text.hpp"
     #include "ITwoDimensionObject.hpp"
 
 namespace Object {
@@ -23,6 +25,7 @@ namespace Object {
             Button(std::string const &buttonPath, int nbFrame, Position const &position = {0, 0});
             Button(std::string const &buttonPath, int nbFrame, std::function<void(void)> callBack, std::string const &audioPath, Position const &position = {0, 0});
             Button(nlohmann::json const &jsonData);
+            Button(nlohmann::json const &jsonData, Object::Render::MyTexture &texture);
             ~Button() override;
 
             void draw() override;
@@ -31,10 +34,19 @@ namespace Object {
             void disable() override;
             bool isEnable() const override;
 
+            void enableClick();
+            void disableClick();
+            bool isClickable() const;
+
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
+
+            void setTextPosition();
+            void setTextPosition(float x, float y);
+            void setTextPosition(float x, float y, float z);
+            Position getTextPosition() const;
 
             void setCallBack(std::function<void(void)> callBack);
 
@@ -49,6 +61,7 @@ namespace Object {
                 Click = 2
             };
             bool _isEnable;
+            bool _isClickable;
             int _nbFrame;
             State _state;
             Position _position;
@@ -62,7 +75,9 @@ namespace Object {
             MySound _audio;
             bool _isAudio;
 
+            Text _text;
             std::function<void(void)> _callBack;
+
     };
 }
 
