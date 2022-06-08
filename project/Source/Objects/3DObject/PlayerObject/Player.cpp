@@ -11,13 +11,23 @@
 Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type) :
     AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position, type)
 {
-    _playerScale = 7.0f;
+    _scale = 7.0f;
+    _speed = _defaultSpeed;
+    _rangeBomb = _defaultRangeBomb.first;
+    _rangeExplosion = _defaultRangeExplosion.first;
+    _lifeTimeBombs = _defaultLifeTimeBombs;
+    _kickRange = _defaultKickRange;
 }
 
 Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position, Object::MAP_OBJECTS type) :
     AThreeDimensionObject(pathToModel, pathToRessources, pathToAnimation, numberOfAnimations, position, type)
 {
-    _playerScale = 7.0f;
+    _scale = 7.0f;
+    _speed = _defaultSpeed;
+    _rangeBomb = _defaultRangeBomb.first;
+    _rangeExplosion = _defaultRangeExplosion.first;
+    _lifeTimeBombs = _defaultLifeTimeBombs;
+    _kickRange = _defaultKickRange;
 }
 
 Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData)
@@ -53,7 +63,7 @@ void Object::Player::draw()
         getPosition().getZ()
     };
     if (_isEnable)
-        DrawModel(_model, modelPosition, _playerScale, WHITE);
+        DrawModel(_model, modelPosition, _scale, WHITE);
 }
 
 void Object::Player::dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range)
