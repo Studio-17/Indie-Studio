@@ -8,6 +8,12 @@
 #include "tools.hpp"
 #include "Text.hpp"
 
+Object::Text::Text() :
+    _isEnable(true),
+    _font(LoadFont("Ressources/fonts/primetime/PRIMETIME.ttf"))
+{
+}
+
 Object::Text::Text(std::string const &filename, std::string const &text, Position const &position) : _isEnable(true),
  _position(position), _font(LoadFont(filename.c_str())), _text(text)
 {
@@ -26,18 +32,38 @@ Object::Text::Text(std::string const &filename, std::string const &text, int fon
 
 }
 
-Object::Text::Text(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true))
+Object::Text::Text(nlohmann::json const &jsonData, Object::Render::MyTexture &) : _isEnable(jsonData.value("isEnable", true)),
+    _font(LoadFont(jsonData.value("font", "default").c_str())),
+    _color(createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})))),
+    _text(jsonData.value("text", "")),
+    _fontSize(jsonData.value("fontSize", 50))
 {
     _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
-    _font = LoadFont(jsonData.value("font", "default").c_str());
-    _color = createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})));
-    _text = jsonData.value("text", "");
-    _fontSize = jsonData.value("fontSize", 50);
+}
+
+Object::Text::Text(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true)),
+    _font(LoadFont(jsonData.value("font", "default").c_str())),
+    _color(createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})))),
+    _text(jsonData.value("text", "")),
+    _fontSize(jsonData.value("fontSize", 50))
+{
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
 }
 
 Object::Text::~Text()
 {
     UnloadFont(_font);
+}
+
+void Object::Text::operator ()(nlohmann::json const &jsonData)
+{
+    std::cout << "text on json data" << std::endl;
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _isEnable = jsonData.value("isEnable", true);
+    _font = LoadFont(jsonData.value("font", "default").c_str());
+    _color = createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})));
+    _text = jsonData.value("text", "");
+    _fontSize = jsonData.value("fontSize", 50);
 }
 
 void Object::Text::draw()

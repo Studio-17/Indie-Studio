@@ -28,6 +28,7 @@ namespace Scene {
             void gameScene();
             void newGameScene();
         private:
+            std::vector<std::unique_ptr<Object::Image>> _parallax;
     };
 }
 
