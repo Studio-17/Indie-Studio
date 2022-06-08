@@ -72,7 +72,8 @@ namespace Scene {
             std::unique_ptr<Object::Map> _gameMap;
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-            std::vector<std::unique_ptr<Object::Bonus>> _bonus;
+
+            std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;
 
             std::vector<Object::Render::MyAnimation> _animations;
             std::vector<Object::Render::MyModel> _models;

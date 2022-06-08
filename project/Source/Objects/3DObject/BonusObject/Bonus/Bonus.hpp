@@ -46,7 +46,7 @@ namespace Object {
 
             void draw() override;
 
-            Object::BONUS_OBJECTS getMapObject() const;
+            Object::BONUS_OBJECTS getMapObject() { return _bonusObject; };
 
             void setBlockScale(float blockScale) { _bonusScale = blockScale; };
             float getBlockScale() { return _bonusScale; };
