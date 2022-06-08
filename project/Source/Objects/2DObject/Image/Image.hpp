@@ -11,12 +11,14 @@
     #include <raylib.h>
     #include <nlohmann/json.hpp>
 
+    #include "Texture.hpp"
     #include "ITwoDimensionObject.hpp"
 
 namespace Object {
     class Image : public ITwoDimensionObject {
         public:
             Image(std::string const &imagePath, Position const &position = {0, 0});
+            Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture);
             Image(nlohmann::json const &jsonData);
             ~Image();
 
