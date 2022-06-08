@@ -19,11 +19,8 @@ namespace Object {
     enum class BONUS_OBJECTS {
         BOMB_DOWN = 1,
         BOMB_UP,
-        DEATH_HEAD,
         FIRE_DOWN,
         FIRE_UP,
-        KICK,
-        PUNCH,
         SPEED_DOWN,
         SPEED_UP
     };

@@ -33,45 +33,44 @@ namespace Object {
             void animation(std::size_t animNb);
             void move(Position const &position, Position const &direction);
 
-            void dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range);
             void die() { _isAlive = false; };
             bool isAlive() { return _isAlive; };
+            float getLifeTimeBombs() const { return _lifeTimeBombs; };
 
-            float getDefaultSpeed() const { return _defaultSpeed; };
+            std::pair<float, float> getDefaultSpeed() const { return _defaultSpeed; };
             std::pair<std::size_t, std::size_t> getDefaultRangeBomb() const { return _defaultRangeBomb; };
             std::pair<std::size_t, std::size_t> getDefaultRangeExplosion() const { return _defaultRangeExplosion; };
-            float getDefaultLifeTimeBombs() const { return _defaultLifeTimeBombs; };
             std::size_t getDefaultKickRange() const { return _defaultKickRange; };
 
             float getSpeed() const { return _speed; };
-            void setSpeed(float speed) { _speed = speed; };
+            void setSpeed(bool addSpeed);
 
             std::size_t getRangeBomb() const { return _rangeBomb; };
-            void setRangeBomb(std::size_t rangeBomb) { _rangeBomb = rangeBomb; };
+            void setRangeBomb(bool addRangeBomb);
 
             std::size_t getRangeExplosion() const { return _rangeExplosion; };
-            void setRangeExplosion(std::size_t rangeExplosion) { _rangeExplosion = rangeExplosion; };
+            void setRangeExplosion(bool addrangeExplosion);
 
-            float getLifeTimeBombs() const { return _lifeTimeBombs; };
-            void setLifeTimeBombs(float lifeTimeBombs) { _lifeTimeBombs = lifeTimeBombs; };
+            std::size_t getAlreadyPlacedBombs() const { return _alreadyPlacedBombs; };
+            void setAlreadyPlacedBombs(bool addBomb);
 
-            std::size_t getKickRange() const { return _kickRange; };
-            void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
+            // std::size_t getKickRange() const { return _kickRange; };
+            // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
         private:
 
-            float _defaultSpeed = 0.6f;
+            std::pair<float, float> _defaultSpeed = {0.4f, 0.9f};
             std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
             std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 6};
-            float _defaultLifeTimeBombs = 3;
             std::size_t _defaultKickRange = 1;
 
             float _speed;
             std::size_t _rangeBomb;
             std::size_t _rangeExplosion;
-            float _lifeTimeBombs;
             std::size_t _kickRange;
 
+            std::size_t _alreadyPlacedBombs;
+            float _lifeTimeBombs = 3;
             float _scale;
             int _life;
             bool _isAlive = true;
