@@ -12,8 +12,8 @@
     #include <memory>
 
     #include "IScene.hpp"
-    #include "IObject.hpp"
     #include "Settings.hpp"
+    #include "IObject.hpp"
     #include "Button.hpp"
     #include "Music.hpp"
     #include "Image.hpp"
@@ -39,7 +39,6 @@ namespace Scene
             AScene(std::shared_ptr<Settings> settings);
             virtual ~AScene() = default;
 
-            virtual void fadeBlack() = 0;
             virtual Scenes handleEvent() = 0;
             virtual void draw() = 0;
 

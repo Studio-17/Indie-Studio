@@ -67,11 +67,6 @@ Scene::GameScene::~GameScene()
 {
 }
 
-void Scene::GameScene::fadeBlack()
-{
-
-}
-
 void Scene::GameScene::loadSceneAssets()
 {
     /* CHARACTERS */

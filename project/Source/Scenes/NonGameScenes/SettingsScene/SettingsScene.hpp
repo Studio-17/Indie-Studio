@@ -8,18 +8,18 @@
 #ifndef SETTINGSSCENE_HPP_
     #define SETTINGSSCENE_HPP_
 
-    #include <vector>
-    #include <map>
+    // #include <vector>
+    // #include <map>
 
     #include "AScene.hpp"
-    #include "Music.hpp"
-    #include "Map.hpp"
-    #include "Explosion.hpp"
-    #include "Player.hpp"
-    #include "Bonus.hpp"
-    #include "Bomb.hpp"
-    #include "IRenderding.hpp"
-    #include "Rendering/Texture.hpp"
+    // #include "Music.hpp"
+    // #include "Map.hpp"
+    // #include "Explosion.hpp"
+    // #include "Player.hpp"
+    // #include "Bonus.hpp"
+    // #include "Bomb.hpp"
+    // #include "IRenderding.hpp"
+    // #include "Rendering/Texture.hpp"
 /**
  * @brief The settings scene of the game
  */
@@ -29,13 +29,21 @@ namespace Scene {
             SettingsScene(std::shared_ptr<Settings> settings);
             ~SettingsScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
 
             void draw();
 
         protected:
         private:
+            void credits();
+            void help();
+            void volume();
+            void framerate();
+            void controls();
+            void back();
+        private:
+            std::vector<std::unique_ptr<Object::Image>> _parallax;
+
             // std::unique_ptr<Object::Map> _gameMap;
             // std::vector<std::unique_ptr<Object::Player>> _players;
             // std::vector<std::unique_ptr<Object::Bomb>> _bombs;

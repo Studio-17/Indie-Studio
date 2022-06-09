@@ -7,10 +7,15 @@
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
             "font": "Ressources/fonts/squarefont/Square.ttf",
-            "text": "Play",
+            "text": "Start Game",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/vs_ico.png",
+            "scale": 1,
+            "position": [15, 10, 0]
         }
     },
     "second": {
@@ -25,6 +30,11 @@
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/settings_ico.png",
+            "scale": 1,
+            "position": [15, 10, 0]
         }
     },
     "third": {
@@ -39,6 +49,11 @@
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/exit_ico.png",
+            "scale": 1,
+            "position": [10, 5, 0]
         }
     }
 }

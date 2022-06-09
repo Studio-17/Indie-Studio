@@ -40,7 +40,6 @@ namespace Scene {
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void exitScene();
             void settingsScene();

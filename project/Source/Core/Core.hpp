@@ -30,6 +30,8 @@ class Core {
         void bindKey(int player, int action, int Key);
 
         void loadKeyBinding(nlohmann::json const &jsonData);
+
+        void waitingLoad();
     protected:
     private:
         std::shared_ptr<Settings> _settings;

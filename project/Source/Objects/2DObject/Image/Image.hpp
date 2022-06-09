@@ -17,11 +17,13 @@
 namespace Object {
     class Image : public ITwoDimensionObject {
         public:
+            Image();
             Image(std::string const &imagePath, Position const &position = {0, 0});
             Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture);
             Image(nlohmann::json const &jsonData);
             ~Image();
 
+            void operator ()(nlohmann::json const &jsonData);
             void draw() override;
 
             void enable() override;

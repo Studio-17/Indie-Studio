@@ -17,6 +17,7 @@
     #include "MySound.hpp"
     #include "Texture.hpp"
     #include "Text.hpp"
+    #include "Image.hpp"
     #include "ITwoDimensionObject.hpp"
 
 namespace Object {
@@ -76,6 +77,7 @@ namespace Object {
             bool _isAudio;
 
             Text _text;
+            Image _image;
             std::function<void(void)> _callBack;
 
     };
