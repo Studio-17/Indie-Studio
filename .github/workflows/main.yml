@@ -53,6 +53,23 @@ jobs:
         # run: |
           # Get-Help
 
+  # This workflow contains a single job called "TestDrivenDevelopement"
+  TestDrivenDevelopement:
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    container: epitechcontent/epitest-docker:latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a bash file that executes unit tests (with criterion)
+      - name: Execute Criterion testing sequences
+        run: |
+          bash .github/scripts/build.sh
+
 
   # This workflow contains a job called "EpitechPromo2025"
   EpitechPromo2025:
