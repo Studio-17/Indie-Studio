@@ -90,6 +90,8 @@ namespace Scene {
             float _margin;
             std::map<PlayerAction, Position> _collisionCondition;
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+
+            bool _isPaused;
     };
 }
 

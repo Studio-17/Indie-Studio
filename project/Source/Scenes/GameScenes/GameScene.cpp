@@ -40,6 +40,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _nextScene = Scene::Scenes::GAME;
 
+    _isPaused = false;
+
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
