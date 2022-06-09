@@ -68,7 +68,7 @@ jobs:
       # Runs a bash file that executes unit tests (with criterion)
       - name: Execute Criterion testing sequences
         run: |
-          bash .github/scripts/build.sh
+          bash .github/scripts/unit_tests.sh
 
 
   # This workflow contains a job called "EpitechPromo2025"
