@@ -22,7 +22,7 @@ namespace Scene {
             void loadSceneAssets();
             void goToMainMenu();
             void draw () override;
-            Scenes handleEvent() override { return _nextScene; };
+            Scenes handleEvent() override;
 
         protected:
         private:

@@ -104,7 +104,27 @@ void Scene::GameScene::loadSceneAssets()
 
 void Scene::GameScene::AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus)
 {
-    std::cout << "Awarding bonus " << static_cast<int>(bonus) << " to player " << static_cast<int>(playerNb) << std::endl;
+    switch (bonus) {
+        case Object::BONUS_OBJECTS::BOMB_DOWN:
+            _players.at(static_cast<char>(playerNb))->setRangeBomb(false);
+            break;
+        case Object::BONUS_OBJECTS::BOMB_UP:
+            _players.at(static_cast<char>(playerNb))->setRangeBomb(true);
+            break;
+        case Object::BONUS_OBJECTS::FIRE_DOWN:
+            _players.at(static_cast<char>(playerNb))->setRangeExplosion(false);
+            break;
+        case Object::BONUS_OBJECTS::FIRE_UP:
+            _players.at(static_cast<char>(playerNb))->setRangeExplosion(true);
+            break;
+        case Object::BONUS_OBJECTS::SPEED_DOWN:
+            _players.at(static_cast<char>(playerNb))->setSpeed(false);
+            break;
+        case Object::BONUS_OBJECTS::SPEED_UP:
+            _players.at(static_cast<char>(playerNb))->setSpeed(true);
+            break;
+    };
+    std::cout << _players.at(static_cast<char>(playerNb))->getSpeed() << std::endl;
 }
 
 bool Scene::GameScene::isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
@@ -141,6 +161,7 @@ void Scene::GameScene::handleBombs()
     if (!_bombs.empty()) {
         for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
             if (_bombs.at(bombPos)->checkIfShouldExplode()) {
+                _players.at(static_cast<int>(_bombs.at(bombPos)->getPlayer()))->setAlreadyPlacedBombs(false);
                 exploseBomb(_bombs.at(bombPos)->getPosition(), _bombs.at(bombPos)->getRange());
                 _bombs.erase(_bombs.begin() + bombPos);
             }
@@ -157,14 +178,14 @@ Scene::Scenes Scene::GameScene::handleEvent()
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
 
-    _settings->getPlayerActionsPressed().at(0);
+    _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
         moving = false;
         std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
         for (auto &[action, isPressed] : tmp) {
-            if (isPressed) {
-                if (action == PlayerAction::Drop)
-                    placeBomb(player->getPosition(), 5, 1, static_cast<Object::PLAYER_ORDER>(index));
+            if (isPressed && player->isAlive()) {
+                if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
+                    placeBomb(player->getPosition(), player->getLifeTimeBombs(), player->getRangeExplosion(), static_cast<Object::PLAYER_ORDER>(index));
                 else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingObject(_collisionCondition.at(action), player->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
                     player->move(_actionMap.at(action).first, _actionMap.at(action).second);
                     moving = true;
@@ -190,32 +211,21 @@ void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range
         if (bomb->getPosition() == newPos)
             blockTooked = true;
     }
-    if (!blockTooked)
-        _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, 3, 2, Object::MAP_OBJECTS::BOMB));
+    if (!blockTooked) {
+        _players.at(static_cast<char>(playerNb))->setAlreadyPlacedBombs(true);
+        _bombs.emplace_back(std::make_unique<Object::Bomb>(std::make_pair<std::string, std::string>("Ressources/models/bomb/bomb.obj", "Ressources/models/bomb/bomb.png"), newPos, playerNb, lifetime, range, Object::MAP_OBJECTS::BOMB));
+    }
 }
 
 void Scene::GameScene::placeBonus(std::pair<int, int> position, std::size_t percentageDrop)
 {
     static std::map<Object::BONUS_OBJECTS, std::pair<std::string, std::string>> bonusMap = {
         {Object::BONUS_OBJECTS::BOMB_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_down.png"}},
-        {Object::BONUS_OBJECTS::BOMB_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_move.png"}},
         {Object::BONUS_OBJECTS::BOMB_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/bomb_up.png"}},
-        {Object::BONUS_OBJECTS::BOX_MOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/box_move.png"}},
-        {Object::BONUS_OBJECTS::DEATH_HEAD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/death_head.png"}},
-        {Object::BONUS_OBJECTS::EMPTY, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/empty.png"}},
         {Object::BONUS_OBJECTS::FIRE_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_down.png"}},
         {Object::BONUS_OBJECTS::FIRE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/fire_up.png"}},
-        {Object::BONUS_OBJECTS::HEARTH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/hearth.png"}},
-        {Object::BONUS_OBJECTS::ICE_GLOVE, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/ice_glove.png"}},
-        {Object::BONUS_OBJECTS::KICK, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/kick.png"}},
-        {Object::BONUS_OBJECTS::P_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/p_bomb.png"}},
-        {Object::BONUS_OBJECTS::PEAKY_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/peaky_bomb.png"}},
-        {Object::BONUS_OBJECTS::PUNCH, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/punch.png"}},
-        {Object::BONUS_OBJECTS::RISE_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/rise_up.png"}},
         {Object::BONUS_OBJECTS::SPEED_DOWN, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_down.png"}},
         {Object::BONUS_OBJECTS::SPEED_UP, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/speed_up.png"}},
-        {Object::BONUS_OBJECTS::WATER_BOMB, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/water_bomb.png"}},
-        {Object::BONUS_OBJECTS::WIZARD, {"Ressources/models/bonus/speedup.obj", "Ressources/models/bonus/textures/wizard.png"}}
     };
     Position tempPos = {static_cast<float>(position.first * _gameMap->getBlockSize()), 0.0f, static_cast<float>(position.second * _gameMap->getBlockSize())};
 
@@ -239,10 +249,8 @@ void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosi
     std::pair<int, int> playerPos;
     for (auto &[index, player] : _players) {
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
-        if (playerPos == explosionPos) {
+        if (playerPos == explosionPos)
             player->die();
-            _players.erase(index);
-        }
     }
 }
 
@@ -280,7 +288,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
 
 void Scene::GameScene::handleWin()
 {
-    if (_players.size() == 1)
+    std::size_t nbPlayersAlive = 0;
+
+    for (auto &player : _players) {
+        if (player.second->isAlive())
+            nbPlayersAlive++;
+    }
+    if (nbPlayersAlive == 1)
         _nextScene = Scene::Scenes::END_GAME;
 }
 
