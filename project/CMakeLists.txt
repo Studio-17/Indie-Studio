@@ -15,8 +15,6 @@ include(cmake-modules/Findjson.cmake)
 
 # specify the sources
 file(GLOB SOURCES
-    Source/*.cpp
-
     Source/Audio/*.cpp
     Source/Audio/Music/*.cpp
     Source/Audio/Sound/*.cpp
@@ -75,6 +73,11 @@ file(GLOB SOURCES
 
 
     Source/Tools/*.cpp
+)
+
+# specify the sources
+file(GLOB TESTS
+    Tests/*.cpp
 )
 
 # specify the headers
@@ -139,10 +142,19 @@ include_directories(
     Source/Tools/
 )
 
-add_executable(IndieStudio ${SOURCES})
 
-target_link_libraries(IndieStudio nlohmann_json::nlohmann_json)
-target_link_libraries(IndieStudio raylib)
+option(UNIT_TEST "Run unit tests" OFF) #OFF by default
+if (UNIT_TEST)
+    add_executable(unit_tests ${SOURCES} ${TESTS})
+    target_link_libraries(unit_tests criterion)
+    target_link_libraries(unit_tests nlohmann_json::nlohmann_json)
+    target_link_libraries(unit_tests raylib)
+else()
+    add_executable(bomberman Source/main.cpp ${SOURCES})
+    target_link_libraries(bomberman nlohmann_json::nlohmann_json)
+    target_link_libraries(bomberman raylib)
+endif(UNIT_TEST)
+unset(UNIT_TEST CACHE) # Unset the cache variable
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")

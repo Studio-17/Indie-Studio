@@ -17,17 +17,21 @@ cmake ..
 cmake --build .
 cd ..
 
-./build/IndieStudio
+./build/bomberman
 ```
 
 > Generate Doxygen
 ```
-cb build
-cmake -DDOXYGEN=ON .. # this is the step
-cmake --build .
-cd ..
+cmake -DDOXYGEN=ON ..
+```
 
-./build/IndieStudio
+> Run Unit Tests
+```
+cmake -DUNIT_TEST=ON ..
+...
+
+./build/unit_tests
+
 ```
 
 > Usage
