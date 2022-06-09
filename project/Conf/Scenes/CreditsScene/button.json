@@ -1,0 +1,9 @@
+{
+    "Back": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [100, 880, 0],
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "texture": "Ressources/buttons/back_button.png"
+    }
+}

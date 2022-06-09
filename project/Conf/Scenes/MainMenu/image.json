@@ -1,12 +1,17 @@
 {
-    "logo-font": {
+    "0-logo-font": {
         "texture": "Ressources/sprites/title_background.png",
         "scale": 1,
         "position": [0, 60, 0]
     },
-    "logo-top-corner-left": {
-        "texture": "Ressources/sprites/icon.png",
+    "1-logo-top-corner-left": {
+        "texture": "Ressources/icon/bomberman_wico.png",
+        "scale": 0.6,
+        "position": [15, 85, 0]
+    },
+    "2-big-bomb": {
+        "texture": "Ressources/sprites/bomb_menu.png",
         "scale": 1,
-        "position": [25, 90, 0]
+        "position": [20, 300, 0]
     }
 }

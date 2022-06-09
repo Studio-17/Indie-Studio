@@ -22,7 +22,6 @@ namespace Scene {
             void loadSceneAssets();
             void goToMainMenu();
             void draw () override;
-            void fadeBlack() override {};
             Scenes handleEvent() override { return _nextScene; };
 
         protected:
