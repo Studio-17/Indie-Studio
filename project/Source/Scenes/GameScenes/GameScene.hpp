@@ -42,7 +42,6 @@ namespace Scene {
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void exitScene();
             void settingsScene();
@@ -99,6 +98,8 @@ namespace Scene {
             float _margin;
             std::map<PlayerAction, Position> _collisionCondition;
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+
+            bool _isPaused;
     };
 }
 

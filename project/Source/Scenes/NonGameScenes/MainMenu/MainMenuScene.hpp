@@ -9,8 +9,6 @@
     #define MAINMENUSCENE_HPP_
 
     #include "AScene.hpp"
-    #include "Music.hpp"
-    #include "Image.hpp"
 
 namespace Scene {
 
@@ -19,14 +17,14 @@ namespace Scene {
             MainMenuScene(std::shared_ptr<Settings> settings);
             ~MainMenuScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void draw() override;
 
         protected:
+        private:
             void exitScene();
+            void settingsScene();
             void gameScene();
-            void newGameScene();
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax;
     };

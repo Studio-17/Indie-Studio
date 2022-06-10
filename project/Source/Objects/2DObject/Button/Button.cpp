@@ -46,19 +46,13 @@ Object::Button::Button(nlohmann::json const &jsonData) :
         _isAudio = false;
     }
     if (jsonData.contains("text")) {
-        std::cout << "contain text" << std::endl;
         _text(jsonData.at("text"));
-        std::cout << "button pos" << getPosition() << std::endl;
-        std::cout << "text pos" << _text.getPosition() << std::endl;
         _text.setPosition(getPosition() + _text.getPosition());
-    // there is an entry with key "foo"
     }
-    // try {
-    //     _text(jsonData.value("text"));
-    //     std::cout << "text text" << std::endl;
-    // } catch (nlohmann::json::out_of_range const &e) {
-    //     _text.disable();
-    // }
+    if (jsonData.contains("image")) {
+        _image(jsonData.at("image"));
+        _image.setPosition(getPosition() + _image.getPosition());
+    }
 }
 
 Object::Button::Button(nlohmann::json const &jsonData, Object::Render::MyTexture &texture) :
@@ -80,17 +74,13 @@ Object::Button::Button(nlohmann::json const &jsonData, Object::Render::MyTexture
     } catch (Error::AudioError const &) {
         _isAudio = false;
     }
-    // try {
-        // _text(jsonData.at("text"));
-    // } catch (nlohmann::json::out_of_range const &e) {
-        // _text.disable();
-    // }
     if (jsonData.contains("text")) {
-        std::cout << "contain text" << std::endl;
         _text(jsonData.at("text"));
         _text.setPosition(getPosition() + _text.getPosition());
-
-    // there is an entry with key "foo"
+    }
+    if (jsonData.contains("image")) {
+        _image(jsonData.at("image"));
+        _image.setPosition(getPosition() + _image.getPosition());
     }
 }
 
@@ -108,6 +98,7 @@ void Object::Button::draw()
     if (_isEnable) {
         DrawTextureRec(_buttonTexture, _sourceRec, (Vector2){ _buttonRect.x, _buttonRect.y }, WHITE); // Draw button frame
         _text.draw();
+        _image.draw();
     }
 }
 

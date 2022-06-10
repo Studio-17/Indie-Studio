@@ -42,6 +42,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _nextScene = Scene::Scenes::GAME;
 
+    _isPaused = false;
+
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _timePerRound = 3;
     _actualMinutes = _timePerRound -1;
@@ -70,11 +72,6 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
 Scene::GameScene::~GameScene()
 {
-}
-
-void Scene::GameScene::fadeBlack()
-{
-
 }
 
 void Scene::GameScene::loadSceneAssets()

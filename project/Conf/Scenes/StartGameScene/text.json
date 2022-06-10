@@ -1,8 +1,7 @@
 {
     "title": {
-        "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "BOMBERMAN",
+        "text": "START GAME",
         "color": [255, 255, 255, 255],
         "fontSize": 40,
         "position": [100, 100, 0]

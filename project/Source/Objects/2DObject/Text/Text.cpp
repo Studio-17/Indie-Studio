@@ -57,7 +57,6 @@ Object::Text::~Text()
 
 void Object::Text::operator ()(nlohmann::json const &jsonData)
 {
-    std::cout << "text on json data" << std::endl;
     _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
     _isEnable = jsonData.value("isEnable", true);
     _font = LoadFont(jsonData.value("font", "default").c_str());
