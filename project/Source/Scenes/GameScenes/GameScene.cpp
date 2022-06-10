@@ -37,12 +37,17 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
                 {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
+    _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
+    _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
 
     _nextScene = Scene::Scenes::GAME;
 
     _isPaused = false;
+    _endGame = false;
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
+    _timePerRound = 3;
+    _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
@@ -58,6 +63,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
     _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, _percentageBoxDrop);
     _gameMap->process(_mapFile);
+    _clockGame.start();
 
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER1), std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
@@ -180,6 +186,8 @@ Scene::Scenes Scene::GameScene::handleEvent()
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
 
+    printTimer();
+
     _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
         moving = false;
@@ -297,7 +305,33 @@ void Scene::GameScene::handleWin()
             nbPlayersAlive++;
     }
     if (nbPlayersAlive == 1)
+        _endGame = true;
+
+    if (_endGame == true)
         _nextScene = Scene::Scenes::END_GAME;
+}
+
+static float getInversedTime(float second)
+{
+    return ((second - 60) * -1);
+}
+
+void Scene::GameScene::printTimer()
+{
+    float seconds;
+
+        seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
+        if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
+            _endGame = true;
+        }
+        if (seconds == 0) {
+            _actualMinutes -= 1;
+            _clockGame.restart();
+        }
+        if (std::to_string(static_cast<int>(seconds)).size() == 1)
+            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":0" + std::to_string(static_cast<int>(seconds)));
+        else
+            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":" + std::to_string(static_cast<int>(seconds)));
 }
 
 void Scene::GameScene::draw()
@@ -317,4 +351,8 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
+    for (auto &image : _images)
+        image->draw();
+    for (auto &text : _texts)
+        text->draw();
 }
