@@ -40,7 +40,6 @@ namespace Scene {
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void exitScene();
             void settingsScene();
@@ -76,31 +75,33 @@ namespace Scene {
             std::shared_ptr<GameSettings> _gameSettings;
 
             std::unique_ptr<Object::Map> _gameMap;
+            std::string _mapFile;
+            Vector2 _mapSize;
+
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
+            std::vector<Position> _playerPositions;
+            float _playerSpeed;
+
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-            std::vector<std::unique_ptr<Object::Bonus>> _bonus;
+            std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;
 
             std::vector<Object::Render::MyAnimation> _animations;
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
-            std::vector<Position> _playerPositions;
-
-            Vector2 _mapSize;
-
-            std::string _mapFile;
 
             std::size_t _percentageBonusDrop;
             std::size_t _percentageBoxDrop;
 
             float _margin;
-            float _playerSpeed;
-            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
             std::map<PlayerAction, Position> _collisionCondition;
 
             int _action;
             bool _isMoving;
             std::vector<PlayerAction> _dirs;
 
+            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+
+            bool _isPaused;
     };
 }
 

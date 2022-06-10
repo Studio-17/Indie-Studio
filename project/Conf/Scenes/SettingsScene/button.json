@@ -1,0 +1,104 @@
+{
+    "1-credits": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 250, 0],
+        "texture": "Ressources/buttons/button2.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Crédits",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/award_ico.png",
+            "scale": 1,
+            "position": [15, 10, 0]
+        }
+    },
+    "2-help": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 400, 0],
+        "texture": "Ressources/buttons/button2.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Help",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/help_ico.png",
+            "scale": 1,
+            "position": [15, 10, 0]
+        }
+    },
+    "3-volume": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 550, 0],
+        "texture": "Ressources/buttons/button2.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Volume",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/volume_ico.png",
+            "scale": 1,
+            "position": [10, 5, 0]
+        }
+    },
+    "4-framerate": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 700, 0],
+        "texture": "Ressources/buttons/button2.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Framerate",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/power_ico.png",
+            "scale": 1,
+            "position": [10, 5, 0]
+        }
+    },
+    "5-controls": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 850, 0],
+        "texture": "Ressources/buttons/button2.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Controls",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/password_ico.png",
+            "scale": 1,
+            "position": [10, 5, 0]
+        }
+    },
+    "6-Back": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [100, 880, 0],
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "texture": "Ressources/buttons/back_button.png"
+    }
+}
