@@ -399,7 +399,6 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
-
     if (_isPaused)
         _pauseScene->draw();
 
