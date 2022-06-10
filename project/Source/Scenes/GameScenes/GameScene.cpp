@@ -71,7 +71,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
-    _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this));
+    _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::save, this));
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.4, 0.8}},
@@ -227,7 +227,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
         handlePlayers();
         handleBombs();
     } else {
-        _pauseScene->handleEvent();
+        _nextScene = _pauseScene->handleEvent();
     }
     handlePause();
     handleButtons();
