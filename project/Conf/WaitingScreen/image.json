@@ -1,22 +1,7 @@
 {
-    "0-logo-font": {
-        "texture": "Ressources/sprites/title_background.png",
+    "studio-17-logo": {
+        "texture": "Ressources/sprites/studio17.png",
         "scale": 1,
-        "position": [0, 60, 0]
-    },
-    "1-logo-top-corner-left": {
-        "texture": "Ressources/icon/bomberman_wico.png",
-        "scale": 0.6,
-        "position": [15, 85, 0]
-    },
-    "2-big-bomb": {
-        "texture": "Ressources/sprites/bomb_menu.png",
-        "scale": 1,
-        "position": [20, 300, 0]
-    },
-    "main-logo": {
-        "texture": "Ressources/sprites/luz.png",
-        "scale": 1,
-        "position": [100, 0, 0]
+        "position": [860, 400, 0]
     }
 }

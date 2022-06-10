@@ -39,6 +39,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
                 {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
+    _backgroundImage = loadObjects<Object::Image>("Conf/Scenes/GameScene/background.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
 
@@ -49,6 +50,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _timePerRound = 3;
+    _3dcameraVue = false;
     _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
@@ -197,7 +199,6 @@ void Scene::GameScene::handlePlayers()
 {
     bool moving = false;
     int index = 0;
-    printTimer();
 
     _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
@@ -353,22 +354,36 @@ void Scene::GameScene::printTimer()
 {
     float seconds;
 
-        seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
-        if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
-            _endGame = true;
-        }
-        if (seconds == 0) {
-            _actualMinutes -= 1;
-            _clockGame.restart();
-        }
-        if (std::to_string(static_cast<int>(seconds)).size() == 1)
-            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":0" + std::to_string(static_cast<int>(seconds)));
-        else
-            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":" + std::to_string(static_cast<int>(seconds)));
+    seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
+    if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
+        _endGame = true;
+    }
+    if (seconds == 0) {
+        _actualMinutes -= 1;
+        _clockGame.restart();
+    }
+    if (std::to_string(static_cast<int>(seconds)).size() == 1)
+        _texts.at(0)->setText(std::to_string(_actualMinutes) + ":0" + std::to_string(static_cast<int>(seconds)));
+    else
+        _texts.at(0)->setText(std::to_string(_actualMinutes) + ":" + std::to_string(static_cast<int>(seconds)));
+}
+
+void Scene::GameScene::setCameraVue()
+{
+    if (_3dcameraVue) {
+        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 3, _mapSize.x * 10});
+        _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
+    } else {
+        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 4, ((_mapSize.x * 10) / 2) + 1});
+        _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
+    }
 }
 
 void Scene::GameScene::draw()
 {
+    _backgroundImage.at(0)->draw();
+    printTimer();
+    setCameraVue();
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
 
@@ -384,7 +399,6 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
-  
     if (_isPaused)
         _pauseScene->draw();
 
