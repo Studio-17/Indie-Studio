@@ -7,9 +7,9 @@
 
 #include "PauseScene.hpp"
 
-Scene::PauseScene::PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack) : AScene(settings)
+Scene::PauseScene::PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack, std::function<void(void)> saveCallBack) : AScene(settings)
 {
-    std::vector<std::function<void(void)>> callBacks = {callBack, callBack, std::bind(&Scene::PauseScene::printExitPopUp, this), std::bind(&Scene::PauseScene::printExitPopUp, this), callBack, std::bind(&Scene::PauseScene::unPrintExitPopUp, this)};
+    std::vector<std::function<void(void)>> callBacks = {callBack, callBack, std::bind(&Scene::PauseScene::printExitPopUp, this), saveCallBack, std::bind(&Scene::PauseScene::exitGame, this), std::bind(&Scene::PauseScene::unPrintExitPopUp, this)};
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/PauseScene/button.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/PauseScene/image.json");
@@ -26,6 +26,7 @@ Scene::PauseScene::~PauseScene()
 
 Scene::Scenes Scene::PauseScene::handleEvent()
 {
+    _nextScene = Scene::Scenes::GAME;
     if (!_shouldPrintExitPopUp) {
         for (int index = 0; index < 3; index++)
             _buttons.at(index)->checkHover(GetMousePosition());
@@ -49,7 +50,7 @@ void Scene::PauseScene::unPrintExitPopUp()
 
 void Scene::PauseScene::exitGame()
 {
-    std::cout << "exit game" << std::endl;
+    _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
 void Scene::PauseScene::draw()

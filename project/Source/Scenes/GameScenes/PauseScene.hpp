@@ -16,7 +16,7 @@
 namespace Scene {
     class PauseScene : public AScene {
         public:
-            PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack);
+            PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack, std::function<void(void)> saveCallBack);
             ~PauseScene();
 
             Scenes handleEvent() override;
@@ -26,7 +26,6 @@ namespace Scene {
 
             void printExitPopUp();
             void unPrintExitPopUp();
-
 
         protected:
         private:

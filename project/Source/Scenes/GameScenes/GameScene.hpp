@@ -76,7 +76,7 @@ namespace Scene {
             void handleWin();
 
             void resumeGame();
-            
+
             void save();
 
 
