@@ -51,6 +51,8 @@ namespace Scene {
 
             int getMovingKeys();
 
+            void setCameraVue();
+
             bool isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
             void handleBombs();
@@ -74,6 +76,8 @@ namespace Scene {
 
             std::vector<std::unique_ptr<Object::Image>> _backgroundImage;
 
+            bool _3dcameraVue;
+
             Clock _clockGame;
 
             std::size_t _timePerRound;
@@ -82,6 +86,7 @@ namespace Scene {
             std::unique_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
+
             bool _endGame;
 
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
