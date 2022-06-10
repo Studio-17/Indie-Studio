@@ -61,8 +61,9 @@ namespace Scene {
 
             void loadSceneAssets();
 
-            void ai();
-            bool seeBomb(Position margin, std::unique_ptr<Object::Player> &players);
+            void ai(std::map<PlayerAction, bool> &tmp, std::unique_ptr<Object::Player> const &player, int indexPlayer);
+            std::vector<PlayerAction> getPossibleDir(Position const &aiPos);
+            std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexPlayer);
 
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
@@ -95,6 +96,11 @@ namespace Scene {
             float _playerSpeed;
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
             std::map<PlayerAction, Position> _collisionCondition;
+
+            int _action;
+            bool _isMoving;
+            std::vector<PlayerAction> _dirs;
+
     };
 }
 

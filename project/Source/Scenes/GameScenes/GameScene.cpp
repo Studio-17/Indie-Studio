@@ -61,6 +61,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+
+    _isMoving = false;
 }
 
 Scene::GameScene::~GameScene()
@@ -167,6 +169,10 @@ Scene::Scenes Scene::GameScene::handleEvent()
     for (auto &[playerIndex, player] : _players) {
         moving = false;
         std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
+
+        if (_gameSettings->getIaPlayers().at(playerIndex))
+            ai(tmp, player, playerIndex);
+
         for (auto &[action, isPressed] : tmp) {
             if (isPressed) {
                 if (action == PlayerAction::Drop)
@@ -183,46 +189,67 @@ Scene::Scenes Scene::GameScene::handleEvent()
     }
     handleWin();
     handleBombs();
-    ai();
     return _nextScene;
 }
 
-bool Scene::GameScene::seeBomb(Position margin, std::unique_ptr<Object::Player> &players)
+std::vector<PlayerAction> Scene::GameScene::getPossibleDir(Position const &aiPos)
 {
-    Position playerPos = players->getPosition();
-    float tileSpace = _gameMap->getBlockSize() - (_margin * 2 + 0.4f);
+    const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
+    std::vector<PlayerAction> dirs;
 
-    for (auto &object : _bombs) {
-        Position block = object->getPosition();
-
-        if (object->getPosition().getY() == 0 &&
-        ((playerPos.getX() + margin.getX() >= (block.getX() - tileSpace) && playerPos.getX() + margin.getX() <= (block.getX() + tileSpace)) &&
-        (playerPos.getZ() + margin.getZ() >= (block.getZ() - tileSpace) && playerPos.getZ() + margin.getZ() <= (block.getZ() + tileSpace)))) {
-            if (!object->getCollide())
-                return false;
-            return true;
-        }
+    for (auto &action : all_actions) {
+        if (_gameMap->isColliding(_collisionCondition.at(action), aiPos) == Object::MAP_OBJECTS::EMPTY)
+            dirs.emplace_back(action);
     }
-    return false;
+    return dirs;
 }
 
-void Scene::GameScene::ai()
+std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position const &aiPos, int indexPlayer)
 {
-    bool moving = false;
+    std::vector<std::pair<int, Position>> posPlayers;
+    int index = 0;
+
+    for (auto &player : _players) {
+        if (index != indexPlayer) {
+            posPlayers.emplace_back(index, player.second->getPosition());
+        }
+        index++;
+    }
+    return posPlayers;
+}
+
+void dropBombToPlayer()
+{
+    // const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
+
+}
+
+void Scene::GameScene::ai(std::map<PlayerAction, bool> &tmp, std::unique_ptr<Object::Player> const &player, int indexPlayer)
+{
+    // std::cout << "IA" << std::endl;
+    for (auto &[action, isPressed] : tmp)
+        tmp.at(action) = false;
+
+    if (!_isMoving) {
+        _dirs = getPossibleDir(player->getPosition());
+        _isMoving = true;
+    }
+
+    std::vector<std::pair<int, Position>> posPlayers = checkPlayerPos(player->getPosition(), indexPlayer);
+
+    // if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition()) == Object::MAP_OBJECTS::BOX) {
+    //     return;
+    // }
 
     srand(time(NULL));
-    for (int i = 2; i < 4; i++) {
-        int action = rand() % 4;
+    _action = rand() % _dirs.size();
 
-        if (!seeBomb(_collisionCondition.at((PlayerAction) action), _players.at(i))) {
-            if (_gameMap->isColliding(_collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingObject(_collisionCondition.at((PlayerAction) action), _players.at(i)->getPosition(), static_cast<Object::PLAYER_ORDER>(i))) {
-                _players.at(i)->move(_actionMap.at((PlayerAction) action).first, _actionMap.at((PlayerAction) action).second);
-                moving = true;
-            }
-        }
-        if (!moving)
-            _players.at(i)->animation(1);
-    }
+    if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition()) == Object::MAP_OBJECTS::EMPTY)
+        _isMoving = true;
+    else
+        _isMoving = false;
+    tmp.at(static_cast<PlayerAction>(_dirs.at(_action))) = true;
+    // std::cout << "End IA\n" << std::endl;
 }
 
 void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
