@@ -64,7 +64,7 @@ namespace Scene {
 
             void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
-            void printTimer(std::size_t minutes);
+            void printTimer();
 
             void handleWin();
 
@@ -80,6 +80,7 @@ namespace Scene {
             std::unique_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
+            bool _endGame;
 
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<Position> _playerPositions;

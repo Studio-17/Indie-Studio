@@ -43,10 +43,11 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _nextScene = Scene::Scenes::GAME;
 
     _isPaused = false;
+    _endGame = false;
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _timePerRound = 3;
-    _actualMinutes = _timePerRound -1;
+    _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
@@ -185,7 +186,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
 
-    printTimer(_timePerRound);
+    printTimer();
 
     _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
@@ -304,28 +305,33 @@ void Scene::GameScene::handleWin()
             nbPlayersAlive++;
     }
     if (nbPlayersAlive == 1)
+        _endGame = true;
+
+    if (_endGame == true)
         _nextScene = Scene::Scenes::END_GAME;
 }
-
-// faire un fonction qu deroule de 0 à 60 secondes
-// dès qu'il atteint 60s on fait minutes - 1
-// 3:00 (on reverse donc 60 == 00)
 
 static float getInversedTime(float second)
 {
     return ((second - 60) * -1);
 }
 
-void Scene::GameScene::printTimer(std::size_t minutes)
+void Scene::GameScene::printTimer()
 {
     float seconds;
 
         seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
+        if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
+            _endGame = true;
+        }
         if (seconds == 0) {
             _actualMinutes -= 1;
             _clockGame.restart();
         }
-        _texts.at(0)->setText(std::to_string(_actualMinutes) + ":" + std::to_string(static_cast<int>(seconds)));
+        if (std::to_string(static_cast<int>(seconds)).size() == 1)
+            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":0" + std::to_string(static_cast<int>(seconds)));
+        else
+            _texts.at(0)->setText(std::to_string(_actualMinutes) + ":" + std::to_string(static_cast<int>(seconds)));
 }
 
 void Scene::GameScene::draw()
