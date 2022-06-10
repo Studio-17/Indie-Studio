@@ -54,12 +54,13 @@ namespace Object {
             std::size_t getAlreadyPlacedBombs() const { return _alreadyPlacedBombs; };
             void setAlreadyPlacedBombs(bool addBomb);
 
+            nlohmann::json save();
             // std::size_t getKickRange() const { return _kickRange; };
             // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
         private:
 
-            std::pair<float, float> _defaultSpeed = {0.4f, 0.9f};
+            std::pair<float, float> _defaultSpeed = {0.4f, 0.8f};
             std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
             std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 6};
             std::size_t _defaultKickRange = 1;

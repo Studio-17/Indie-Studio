@@ -6,7 +6,7 @@
 */
 
 #ifndef ENDGAMESCENE_HPP_
-#define ENDGAMESCENE_HPP_
+    #define ENDGAMESCENE_HPP_
 
     #include "AScene.hpp"
     #include "GameSettings.hpp"

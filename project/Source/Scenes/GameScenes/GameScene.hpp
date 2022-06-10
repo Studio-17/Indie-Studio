@@ -23,6 +23,8 @@
     #include "IRenderding.hpp"
     #include "Rendering/Texture.hpp"
     #include "PauseScene.hpp"
+    #include "tools.hpp"
+    #include "Settings.hpp"
 
 /**
  * @brief Represents the main game scene
@@ -69,17 +71,28 @@ namespace Scene {
 
             void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
+            void printTimer();
+
             void handleWin();
 
             void resumeGame();
+            
+            void save();
+
 
         protected:
         private:
             std::shared_ptr<GameSettings> _gameSettings;
 
+            Clock _clockGame;
+
+            std::size_t _timePerRound;
+            std::size_t _actualMinutes;
+
             std::unique_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
+            bool _endGame;
 
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
             std::vector<Position> _playerPositions;
@@ -92,7 +105,7 @@ namespace Scene {
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
 
-
+            std::map<std::string, std::pair<float, float>> _defaultAttributes;
             std::size_t _percentageBonusDrop;
             std::size_t _percentageBoxDrop;
 
