@@ -5,6 +5,8 @@
 ** GameScene
 */
 
+#include <nlohmann/json.hpp>
+
 #include "GameScene.hpp"
 #include <tgmath.h>
 
@@ -63,6 +65,10 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+    _defaultAttributes = {{"bombRange", {1, 3}},
+        {"explosionRange", {1, 6}},
+        {"speed", {0.4, 0.8}},
+        {"kickRange", {1, 3}}};
 }
 
 Scene::GameScene::~GameScene()
@@ -296,8 +302,10 @@ void Scene::GameScene::handleWin()
         if (player.second->isAlive())
             nbPlayersAlive++;
     }
-    if (nbPlayersAlive == 1)
+    if (nbPlayersAlive == 1) {
+        save();
         _nextScene = Scene::Scenes::END_GAME;
+    }
 }
 
 void Scene::GameScene::draw()
@@ -317,4 +325,20 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
+}
+
+void Scene::GameScene::save()
+{
+    std::ofstream o("Save/Games/gameSave.json");
+    nlohmann::json saveData;
+    nlohmann::json gameData;
+
+    _gameMap->save();
+    gameData["time"] = 0.0;
+    gameData["map"] = _mapFile;
+    gameData["attributes"] = _defaultAttributes;
+    saveData["game-data"] = gameData;
+    for (auto &[playerIndex, player] : _players)
+        saveData["player-" + std::to_string(static_cast<int>(playerIndex))] = player->save();
+    o << std::setw(4) << saveData << std::endl;
 }

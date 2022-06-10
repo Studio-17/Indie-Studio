@@ -64,6 +64,8 @@ namespace Scene {
 
             void handleWin();
 
+            void save();
+
         protected:
         private:
             std::shared_ptr<GameSettings> _gameSettings;
@@ -83,7 +85,7 @@ namespace Scene {
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
 
-
+            std::map<std::string, std::pair<float, float>> _defaultAttributes;
             std::size_t _percentageBonusDrop;
             std::size_t _percentageBoxDrop;
 
