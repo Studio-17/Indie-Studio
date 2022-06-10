@@ -68,7 +68,7 @@ void Core::loop()
 
 void Core::getEvent()
 {
-    std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
+    std::map<Action, bool> actionPressed = _keyboard.getKeysHasBeenPressed<Action>(_actionPressed);
     std::map<PlayerAction, bool> playerAction;
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;

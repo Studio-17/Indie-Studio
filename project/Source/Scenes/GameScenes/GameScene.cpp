@@ -63,6 +63,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+    _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this));
 }
 
 Scene::GameScene::~GameScene()
@@ -102,6 +103,11 @@ void Scene::GameScene::loadSceneAssets()
     /* BOMBS */
 
     /* BONUSES */
+}
+
+void Scene::GameScene::resumeGame()
+{
+    _isPaused = false;
 }
 
 void Scene::GameScene::AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus)
@@ -160,27 +166,26 @@ bool Scene::GameScene::isCollidingObject(Position const &direction, Position con
 
 void Scene::GameScene::handleBombs()
 {
-    if (!_bombs.empty()) {
-        for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+    for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
             if (_bombs.at(bombPos)->checkIfShouldExplode()) {
                 _players.at(static_cast<int>(_bombs.at(bombPos)->getPlayer()))->setAlreadyPlacedBombs(false);
                 exploseBomb(_bombs.at(bombPos)->getPosition(), _bombs.at(bombPos)->getRange());
                 _bombs.erase(_bombs.begin() + bombPos);
             }
         }
-    }
 }
 
-Scene::Scenes Scene::GameScene::handleEvent()
+void Scene::GameScene::handleButtons()
+{
+    for (auto &button : _buttons)
+        button->checkHover(GetMousePosition());
+}
+
+void Scene::GameScene::handlePlayers()
 {
     bool moving = false;
     int index = 0;
 
-    _nextScene = Scene::Scenes::GAME;
-    for (auto &button : _buttons)
-        button->checkHover(GetMousePosition());
-
-    _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
         moving = false;
         std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
@@ -198,9 +203,29 @@ Scene::Scenes Scene::GameScene::handleEvent()
             player->animation(1);
         index++;
     }
-    handleWin();
-    handleBombs();
+}
+
+Scene::Scenes Scene::GameScene::handleEvent()
+{
+    _nextScene = Scene::Scenes::GAME;
+    if (!_isPaused) {
+        handleWin();
+        handlePlayers();
+        handleBombs();
+    } else {
+        _pauseScene->handleEvent();
+    }
+    handlePause();
+    handleButtons();
     return _nextScene;
+}
+
+void Scene::GameScene::handlePause()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+    if (tmp[Action::Previous] == true) {
+        _isPaused = !_isPaused;
+    }
 }
 
 void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
@@ -317,4 +342,7 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
+
+    if (_isPaused)
+        _pauseScene->draw();
 }
