@@ -48,7 +48,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _timePerRound = 3;
-    _3dcameraVue = false;
+    _3dcameraVue = true;
     _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
@@ -337,7 +337,7 @@ void Scene::GameScene::printTimer()
 void Scene::GameScene::setCameraVue()
 {
     if (_3dcameraVue) {
-        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 3, (_mapSize.x * 5) * 3});
+        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 3, _mapSize.x * 10});
         _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
     } else {
         _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 4, ((_mapSize.x * 10) / 2) + 1});
