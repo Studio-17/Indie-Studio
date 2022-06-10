@@ -22,6 +22,7 @@
     #include "Bomb.hpp"
     #include "IRenderding.hpp"
     #include "Rendering/Texture.hpp"
+    #include "PauseScene.hpp"
     #include "tools.hpp"
     #include "Settings.hpp"
 
@@ -47,7 +48,7 @@ namespace Scene {
             void settingsScene();
             void newGameScene();
             void mainMenuScene();
-            void draw();
+            void draw() override;
 
             int getMovingKeys();
 
@@ -59,6 +60,12 @@ namespace Scene {
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void exploseBomb(Position const &position, int radius);
 
+            void handlePlayers();
+
+            void handleButtons();
+
+            void handlePause();
+
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
             void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
 
@@ -69,6 +76,11 @@ namespace Scene {
             void printTimer();
 
             void handleWin();
+
+            void resumeGame();
+
+            void save();
+
 
         protected:
         private:
@@ -100,6 +112,7 @@ namespace Scene {
             std::vector<Object::Render::MyModel> _models;
             std::vector<Object::Render::MyTexture> _textures;
 
+            std::map<std::string, std::pair<float, float>> _defaultAttributes;
             std::size_t _percentageBonusDrop;
             std::size_t _percentageBoxDrop;
 
@@ -107,6 +120,7 @@ namespace Scene {
             std::map<PlayerAction, Position> _collisionCondition;
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
 
+            std::unique_ptr<Scene::PauseScene> _pauseScene;
             bool _isPaused;
     };
 }

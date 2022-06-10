@@ -54,6 +54,7 @@ namespace Object {
             std::size_t getAlreadyPlacedBombs() const { return _alreadyPlacedBombs; };
             void setAlreadyPlacedBombs(bool addBomb);
 
+            nlohmann::json save();
             // std::size_t getKickRange() const { return _kickRange; };
             // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 

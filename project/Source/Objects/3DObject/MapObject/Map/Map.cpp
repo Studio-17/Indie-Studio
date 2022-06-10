@@ -198,3 +198,14 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
         z -= static_cast<int>(_blockSize / 2);
     return {x / static_cast<int>(_blockSize), z / static_cast<int>(_blockSize)};
 }
+
+void Object::Map::save()
+{
+    std::ofstream o(_pathToMap);
+    for (auto &line : _mapPositionsObjects) {
+        for (auto &elem : line)
+            o << static_cast<char>(elem->getType());
+        o << std::endl;
+    }
+
+}

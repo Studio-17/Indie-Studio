@@ -5,6 +5,8 @@
 ** GameScene
 */
 
+#include <nlohmann/json.hpp>
+
 #include "GameScene.hpp"
 #include <tgmath.h>
 
@@ -48,7 +50,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _gameMap = std::make_unique<Object::Map>(_models, _textures);
     _timePerRound = 3;
-    _3dcameraVue = true;
+    _3dcameraVue = false;
     _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
     _mapFile = gameSettings->getMapPath();
@@ -71,6 +73,11 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+    _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::save, this));
+    _defaultAttributes = {{"bombRange", {1, 3}},
+        {"explosionRange", {1, 6}},
+        {"speed", {0.4, 0.8}},
+        {"kickRange", {1, 3}}};
 }
 
 Scene::GameScene::~GameScene()
@@ -110,6 +117,11 @@ void Scene::GameScene::loadSceneAssets()
     /* BOMBS */
 
     /* BONUSES */
+}
+
+void Scene::GameScene::resumeGame()
+{
+    _isPaused = false;
 }
 
 void Scene::GameScene::AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus)
@@ -168,25 +180,25 @@ bool Scene::GameScene::isCollidingObject(Position const &direction, Position con
 
 void Scene::GameScene::handleBombs()
 {
-    if (!_bombs.empty()) {
-        for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
+    for (std::size_t bombPos = 0; bombPos < _bombs.size(); bombPos++) {
             if (_bombs.at(bombPos)->checkIfShouldExplode()) {
                 _players.at(static_cast<int>(_bombs.at(bombPos)->getPlayer()))->setAlreadyPlacedBombs(false);
                 exploseBomb(_bombs.at(bombPos)->getPosition(), _bombs.at(bombPos)->getRange());
                 _bombs.erase(_bombs.begin() + bombPos);
             }
         }
-    }
 }
 
-Scene::Scenes Scene::GameScene::handleEvent()
+void Scene::GameScene::handleButtons()
+{
+    for (auto &button : _buttons)
+        button->checkHover(GetMousePosition());
+}
+
+void Scene::GameScene::handlePlayers()
 {
     bool moving = false;
     int index = 0;
-
-    _nextScene = Scene::Scenes::GAME;
-    for (auto &button : _buttons)
-        button->checkHover(GetMousePosition());
 
     _settings->getPlayerActionsPressed().at(index);
     for (auto &[playerIndex, player] : _players) {
@@ -206,9 +218,29 @@ Scene::Scenes Scene::GameScene::handleEvent()
             player->animation(1);
         index++;
     }
-    handleWin();
-    handleBombs();
+}
+
+Scene::Scenes Scene::GameScene::handleEvent()
+{
+    _nextScene = Scene::Scenes::GAME;
+    if (!_isPaused) {
+        handleWin();
+        handlePlayers();
+        handleBombs();
+    } else {
+        _nextScene = _pauseScene->handleEvent();
+    }
+    handlePause();
+    handleButtons();
     return _nextScene;
+}
+
+void Scene::GameScene::handlePause()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+    if (tmp[Action::Previous] == true) {
+        _isPaused = !_isPaused;
+    }
 }
 
 void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb)
@@ -307,8 +339,10 @@ void Scene::GameScene::handleWin()
     if (nbPlayersAlive == 1)
         _endGame = true;
 
-    if (_endGame == true)
+    if (_endGame == true) {
+        save();
         _nextScene = Scene::Scenes::END_GAME;
+    }
 }
 
 static float getInversedTime(float second)
@@ -365,8 +399,28 @@ void Scene::GameScene::draw()
         bomb->draw();
 
     _settings->getCamera()->endMode3D();
+
+    if (_isPaused)
+        _pauseScene->draw();
+
     for (auto &image : _images)
         image->draw();
     for (auto &text : _texts)
         text->draw();
+}
+
+void Scene::GameScene::save()
+{
+    std::ofstream o("Save/Games/gameSave.json");
+    nlohmann::json saveData;
+    nlohmann::json gameData;
+
+    _gameMap->save();
+    gameData["time"] = 0.0;
+    gameData["map"] = _mapFile;
+    gameData["attributes"] = _defaultAttributes;
+    saveData["game-data"] = gameData;
+    for (auto &[playerIndex, player] : _players)
+        saveData["player-" + std::to_string(static_cast<int>(playerIndex))] = player->save();
+    o << std::setw(4) << saveData << std::endl;
 }
