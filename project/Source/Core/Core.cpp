@@ -122,7 +122,7 @@ void Core::waitingLoad()
     std::vector<std::unique_ptr<Object::Image>> images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
 
     _settings->getWindow()->startDrawing();
-    _settings->getWindow()->clearBackground(DARKGRAY);
+    _settings->getWindow()->clearBackground(DARKPURPLE);
     for (auto &image : images)
         image->draw();
     _settings->getWindow()->endDrawing();
