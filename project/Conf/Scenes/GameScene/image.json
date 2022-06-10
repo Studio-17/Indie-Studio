@@ -3,5 +3,25 @@
         "texture": "Ressources/sprites/timer.png",
         "scale": 1,
         "position": [830, 0, 0]
+    },
+    "score-player-1": {
+        "texture": "Ressources/sprites/score.png",
+        "scale": 0.5,
+        "position": [0, 300, 0]
+    },
+    "score-player-2": {
+        "texture": "Ressources/sprites/score.png",
+        "scale": 0.5,
+        "position": [0, 700, 0]
+    },
+    "score-player-3": {
+        "texture": "Ressources/sprites/score.png",
+        "scale": 0.5,
+        "position": [1770, 300, 0]
+    },
+    "score-player-4": {
+        "texture": "Ressources/sprites/score.png",
+        "scale": 0.5,
+        "position": [1770, 700, 0]
     }
 }

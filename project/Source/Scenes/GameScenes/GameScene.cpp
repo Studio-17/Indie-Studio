@@ -37,6 +37,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
                 {PlayerAction::Drop, {{0, 0, 0}, {0, 0, 0}}}})
 {
     loadSceneAssets();
+    _backgroundImage = loadObjects<Object::Image>("Conf/Scenes/GameScene/background.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
 
@@ -49,6 +50,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _timePerRound = 3;
     _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
+    _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 10) * 2, ((_mapSize.x * 10) / 2) + 1});
+    _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
     _mapFile = gameSettings->getMapPath();
     _margin = 5.0f;
     _percentageBonusDrop = 60;
@@ -336,6 +339,7 @@ void Scene::GameScene::printTimer()
 
 void Scene::GameScene::draw()
 {
+    _backgroundImage.at(0)->draw();
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
 

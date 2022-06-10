@@ -72,6 +72,8 @@ namespace Scene {
         private:
             std::shared_ptr<GameSettings> _gameSettings;
 
+            std::vector<std::unique_ptr<Object::Image>> _backgroundImage;
+
             Clock _clockGame;
 
             std::size_t _timePerRound;
