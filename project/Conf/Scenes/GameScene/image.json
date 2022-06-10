@@ -1,0 +1,7 @@
+{
+    "time-logo": {
+        "texture": "Ressources/sprites/timer.png",
+        "scale": 1,
+        "position": [830, 0, 0]
+    }
+}
