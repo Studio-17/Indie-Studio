@@ -16,7 +16,6 @@
     #include "GameSettings.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
-    #include "Explosion.hpp"
     #include "Player.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
@@ -59,6 +58,9 @@ namespace Scene {
             void handleBombs();
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void exploseBomb(Position const &position, int radius);
+
+            void placeExplosions(float time, Position position);
+            void handleExplosions();
 
             void handlePlayers();
 
@@ -106,6 +108,10 @@ namespace Scene {
             float _playerSpeed;
 
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
+
+            // std::map<size_t, std::pair<Position, float>> _explosions;
+            std::map<int, std::map<int, float>> _explosions;
+
             std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;
 
             std::vector<Object::Render::MyAnimation> _animations;

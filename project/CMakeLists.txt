@@ -42,7 +42,6 @@ file(GLOB SOURCES
     Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
     Source/Objects/3DObject/BombObject/Bomb/*.cpp
-    Source/Objects/3DObject/BombObject/Explosion/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
     Source/Objects/3DObject/BonusObject/Bonus/*.cpp
     Source/Objects/3DObject/BonusObject/Malus/*.cpp
@@ -111,7 +110,6 @@ include_directories(
     Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
     Source/Objects/3DObject/BombObject/Bomb/
-    Source/Objects/3DObject/BombObject/Explosion/
     Source/Objects/3DObject/BonusObject/
     Source/Objects/3DObject/BonusObject/Bonus/
     Source/Objects/3DObject/BonusObject/Malus/

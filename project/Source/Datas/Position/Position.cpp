@@ -251,3 +251,32 @@ std::ostream &operator<<(std::ostream& os, const Position& position)
     os << position.getX() << " " << position.getY() << " " << position.getZ();
     return os;
 }
+
+bool operator <(Position const &position, float value)
+{
+    if (position.getX() < value && position.getY() <= value && position.getZ() < value)
+        return true;
+    return false;
+}
+
+bool operator <(Position const &position, Position const &position2)
+{
+    if (position.getX() < position2.getX() && position.getY() <= position2.getY() && position.getZ() < position2.getZ())
+        return true;
+    return false;
+}
+
+bool operator >(Position const &position, float value)
+{
+    if (position.getX() > value && position.getY() >= value && position.getZ() > value)
+        return true;
+    return false;
+}
+
+bool operator >(Position const &position, Position const &position2)
+{
+    if (position.getX() > position2.getX() && position.getY() >= position2.getY() && position.getZ() > position2.getZ())
+        return true;
+    return false;
+}
+
