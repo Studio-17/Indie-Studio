@@ -26,7 +26,7 @@ Rectangle setRectangle(std::array<float, 4> const &array);
 
 std::vector<std::unique_ptr<Object::IObject>> loadGenericObjects(std::string const &filepath);
 template <typename Obj>
-std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath, bool oneText = false)
+std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath)
 {
     nlohmann::json jsonData;
     std::vector<std::unique_ptr<Obj>> objects;
@@ -37,13 +37,25 @@ std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath, bool 
         std::cerr << e.what() << std::endl;
         return {};
     }
-    if (oneText) {
-        Object::Render::MyTexture objectTexture(jsonData.begin()->value("texture", "default"));
-        for (auto &oneData : jsonData)
-           objects.emplace_back(std::make_unique<Obj>(oneData, objectTexture));
-    } else
-        for (auto &oneData : jsonData)
-            objects.emplace_back(std::make_unique<Obj>(oneData));
+    for (auto &oneData : jsonData)
+        objects.emplace_back(std::make_unique<Obj>(oneData));
+    return objects;
+};
+
+template <typename Obj>
+std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath, Object::Render::MyTexture &genericTexture)
+{
+    nlohmann::json jsonData;
+    std::vector<std::unique_ptr<Obj>> objects;
+
+    try {
+        jsonData = getJsonData(filepath);
+    } catch (Error::FileError const &e) {
+        std::cerr << e.what() << std::endl;
+        return {};
+    }
+    for (auto &oneData : jsonData)
+        objects.emplace_back(std::make_unique<Obj>(oneData, genericTexture));
     return objects;
 };
 
