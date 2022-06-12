@@ -330,7 +330,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::size_t index = 0;
 
     srand(time(NULL));
-    _gameMap->placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, 10.0f));
+    _gameMap->placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     placeExplosions(_clockGame.getElapsedTime(), position);
     checkIfPlayerIsInRange(blockPosition);
 
@@ -343,13 +343,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                         alreadyDestroyed.at(index) = true;
                     blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * _gameMap->getBlockSize())};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, 10.0f));
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                         alreadyDestroyed.at(index) = true;
                         placeBonus({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, _percentageBonusDrop);
                     }
-                    if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EMPTY || _gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EXPLOSION && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, 10.0f));
+                    if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EMPTY && !alreadyDestroyed.at(index)) {
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                     }
                     if (!alreadyDestroyed.at(index))
@@ -403,11 +403,11 @@ void Scene::GameScene::printTimer()
 void Scene::GameScene::setCameraVue()
 {
     if (_3dcameraVue) {
-        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 3, _mapSize.x * 10});
-        _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
+        _settings->getCamera()->setPosition({(_mapSize.x * _gameMap->getBlockSize()) / 2, (_mapSize.x * 5) * 3, _mapSize.x * _gameMap->getBlockSize()});
+        _settings->getCamera()->setTarget({(_mapSize.x * _gameMap->getBlockSize()) / 2, 0, (_mapSize.x * _gameMap->getBlockSize()) / 2});
     } else {
-        _settings->getCamera()->setPosition({(_mapSize.x * 10) / 2, (_mapSize.x * 5) * 4, ((_mapSize.x * 10) / 2) + 1});
-        _settings->getCamera()->setTarget({(_mapSize.x * 10) / 2, 0, (_mapSize.x * 10) / 2});
+        _settings->getCamera()->setPosition({(_mapSize.x * _gameMap->getBlockSize()) / 2, (_mapSize.x * 5) * 4, ((_mapSize.x * _gameMap->getBlockSize()) / 2) + 1});
+        _settings->getCamera()->setTarget({(_mapSize.x * _gameMap->getBlockSize()) / 2, 0, (_mapSize.x * _gameMap->getBlockSize()) / 2});
     }
 }
 
@@ -424,9 +424,11 @@ void Scene::GameScene::draw()
             player->draw();
 
     for (auto &[line, bonus] : _bonus)
-        for (auto &[col, bonusObject] : bonus)
-            // si c'est bien une case empty alors on draw le bonus
-            bonusObject->draw();
+        for (auto &[col, bonusObject] : bonus) {
+            std::pair<int, int> tempPos = _gameMap->transposeFrom3Dto2D(bonusObject->getPosition());
+            if (_gameMap->getMapPositionsObjects().at(tempPos.second).at(tempPos.first)->getType() == Object::MAP_OBJECTS::EMPTY)
+                bonusObject->draw();
+        }
 
     for (auto &bomb : _bombs)
         bomb->draw();
