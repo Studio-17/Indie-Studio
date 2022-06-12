@@ -9,6 +9,7 @@
 
 RayLib::Audio::Audio(float audioVolume, float soundVolume) : _audioVolume(audioVolume), _soundVolume(soundVolume)
 {
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitAudioDevice();
     if (!isAudioDeviceReady())
         throw Error::AudioError("audio failed to initialize");

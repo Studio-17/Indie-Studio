@@ -10,12 +10,13 @@
 #include "tools.hpp"
 #include "MainMenuScene.hpp"
 
-Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
+    _buttonTexture("Ressources/buttons/button2.png")
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::gameScene, this), std::bind(&Scene::MainMenuScene::settingsScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
 
     _nextScene = Scene::Scenes::MAIN_MENU;
-    _buttons = loadObjects<Object::Button>("Conf/Scenes/MainMenu/button.json", true);
+    _buttons = loadObjects<Object::Button>("Conf/Scenes/MainMenu/button.json", _buttonTexture);
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
         _buttons.at(index)->setCallBack(callBacks.at(index));
     }
@@ -26,6 +27,7 @@ Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene
 
 Scene::MainMenuScene::~MainMenuScene()
 {
+    _buttonTexture.unload();
 }
 
 Scene::Scenes Scene::MainMenuScene::handleEvent()

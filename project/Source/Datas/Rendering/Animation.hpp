@@ -17,14 +17,17 @@ namespace Object {
     namespace Render {
         class MyAnimation {
             public:
-                MyAnimation(std::string const &pathToModel, unsigned int numberOfAnimations) { _animation = LoadModelAnimations(pathToModel.c_str(), &numberOfAnimations); };
+                MyAnimation(std::string const &pathToModel, unsigned int numberOfAnimations): _numberOfAnimations(numberOfAnimations) { _animation = LoadModelAnimations(pathToModel.c_str(), &numberOfAnimations); };
                 ~MyAnimation() { /* UnloadModel(_model) */ };
 
                 ModelAnimation *getAnimation() { return _animation; };
 
+                void unload() { for (auto i = 0; i != _numberOfAnimations; i++) UnloadModelAnimation(_animation[i]);
+                    RL_FREE(_animation);/*UnloadModelAnimation(&_animation);*/ };
             protected:
             private:
                 ModelAnimation *_animation;
+                unsigned int _numberOfAnimations;
         };
     }
 }
