@@ -1,0 +1,9 @@
+{
+    "1": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Now Loading",
+        "color": [255, 255, 255, 255],
+        "fontSize": 20,
+        "position": [1720, 1000, 0]
+    }
+}

@@ -118,10 +118,13 @@ void Core::loadKeyBinding(nlohmann::json const &jsonData)
 void Core::waitingLoad()
 {
     std::vector<std::unique_ptr<Object::Image>> images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
+    std::vector<std::unique_ptr<Object::Text>> texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
 
     _settings->getWindow()->startDrawing();
     _settings->getWindow()->clearBackground(DARKPURPLE);
     for (auto &image : images)
         image->draw();
+        for (auto &text : texts)
+        text->draw();
     _settings->getWindow()->endDrawing();
 }

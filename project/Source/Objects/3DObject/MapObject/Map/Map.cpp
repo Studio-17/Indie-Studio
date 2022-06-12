@@ -131,7 +131,16 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(7)}},
         {MAP_OBJECTS::WALL_SIDE, {_mapModels.at(6), _mapTextures.at(8)}},
         {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(9)}},
-        {MAP_OBJECTS::EMPTY, {_mapModels.at(8), _mapTextures.at(10)}}
+        {MAP_OBJECTS::EMPTY, {_mapModels.at(8), _mapTextures.at(10)}},
+        {MAP_OBJECTS::EXPLOSION, {_mapModels.at(9), _mapTextures.at(11)}}
+    };
+    static const std::map<Object::MAP_OBJECTS, float> mapScale = {
+        {MAP_OBJECTS::WALL_MIDDLE, 0.5f},
+        {MAP_OBJECTS::GROUND, 0.5f},
+        {MAP_OBJECTS::WALL_SIDE, 0.5f},
+        {MAP_OBJECTS::BOX, 0.5f},
+        {MAP_OBJECTS::EMPTY, 0.1f},
+        {MAP_OBJECTS::EXPLOSION, 10.0f}
     };
 
     srand(time(NULL));
@@ -147,18 +156,18 @@ void Object::Map::process(std::string const &pathToFile)
         std::vector<std::shared_ptr<AThreeDimensionObject>> tempGrass;
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
-                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).first, keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
+                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).first, keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col)), mapScale.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col)))));
             if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
-                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE).first, keyMap.at(MAP_OBJECTS::WALL_SIDE).second, (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE).first, keyMap.at(MAP_OBJECTS::WALL_SIDE).second, (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE, mapScale.at(MAP_OBJECTS::WALL_SIDE)));
             else
-                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::GROUND).first, keyMap.at(MAP_OBJECTS::GROUND).second, (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::GROUND).first, keyMap.at(MAP_OBJECTS::GROUND).second, (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND, mapScale.at(MAP_OBJECTS::GROUND)));
             tilePosition.x += _blockSize;
         }
         _mapPositionsObjects.emplace_back(tempVector);
         _groundMap.emplace_back(tempGrass);
         tilePosition.z += _blockSize;
         tilePosition.x = 0;
-        tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX).first, keyMap.at(MAP_OBJECTS::BOX).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
+        tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX).first, keyMap.at(MAP_OBJECTS::BOX).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX, mapScale.at(MAP_OBJECTS::WALL_MIDDLE)));
     }
 }
 

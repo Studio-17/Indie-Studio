@@ -62,7 +62,7 @@ namespace Object {
 
             std::pair<float, float> _defaultSpeed = {0.4f, 0.8f};
             std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
-            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 6};
+            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4};
             std::size_t _defaultKickRange = 1;
 
             float _speed;
