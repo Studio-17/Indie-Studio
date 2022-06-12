@@ -66,7 +66,7 @@ void Core::loop()
 
 void Core::getEvent()
 {
-    std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
+    std::map<Action, bool> actionPressed = _keyboard.getKeysHasBeenPressed<Action>(_actionPressed);
     std::map<PlayerAction, bool> playerAction;
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;
@@ -120,7 +120,7 @@ void Core::waitingLoad()
     std::vector<std::unique_ptr<Object::Image>> images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
 
     _settings->getWindow()->startDrawing();
-    _settings->getWindow()->clearBackground(DARKGRAY);
+    _settings->getWindow()->clearBackground(DARKPURPLE);
     for (auto &image : images)
         image->draw();
     _settings->getWindow()->endDrawing();

@@ -1,0 +1,7 @@
+{
+    "game-background": {
+        "texture": "Ressources/sprites/game_background2d.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    }
+}

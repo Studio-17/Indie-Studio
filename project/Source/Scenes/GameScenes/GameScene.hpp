@@ -22,6 +22,7 @@
     #include "Bomb.hpp"
     #include "IRenderding.hpp"
     #include "Rendering/Texture.hpp"
+    #include "PauseScene.hpp"
     #include "tools.hpp"
     #include "Settings.hpp"
 
@@ -47,15 +48,23 @@ namespace Scene {
             void settingsScene();
             void newGameScene();
             void mainMenuScene();
-            void draw();
+            void draw() override;
 
             int getMovingKeys();
+
+            void setCameraVue();
 
             bool isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
             void handleBombs();
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void exploseBomb(Position const &position, int radius);
+
+            void handlePlayers();
+
+            void handleButtons();
+
+            void handlePause();
 
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
             void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
@@ -68,11 +77,18 @@ namespace Scene {
 
             void handleWin();
 
+            void resumeGame();
+
             void save();
+
 
         protected:
         private:
             std::shared_ptr<GameSettings> _gameSettings;
+
+            std::vector<std::unique_ptr<Object::Image>> _backgroundImage;
+
+            bool _3dcameraVue;
 
             Clock _clockGame;
 
@@ -82,6 +98,7 @@ namespace Scene {
             std::unique_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
+
             bool _endGame;
 
             std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
@@ -103,6 +120,7 @@ namespace Scene {
             std::map<PlayerAction, Position> _collisionCondition;
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
 
+            std::unique_ptr<Scene::PauseScene> _pauseScene;
             bool _isPaused;
     };
 }
