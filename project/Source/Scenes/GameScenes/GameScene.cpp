@@ -79,6 +79,10 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
 Scene::GameScene::~GameScene()
 {
+    for (auto &model : _models)
+        model.unload();
+    for (auto &texture : _textures)
+        texture.unload();
 }
 
 void Scene::GameScene::loadSceneAssets()

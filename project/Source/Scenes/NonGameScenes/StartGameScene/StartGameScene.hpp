@@ -27,6 +27,8 @@ namespace Scene {
             void backScene();
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax;
+
+            Object::Render::MyTexture _buttonTexture;
     };
 }
 

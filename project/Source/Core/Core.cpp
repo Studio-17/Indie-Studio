@@ -7,8 +7,6 @@
 
 #include <raylib.h>
 
-#include <thread>
-
 #include "MainMenuScene.hpp"
 #include "StartGameScene.hpp"
 #include "GameScene.hpp"
