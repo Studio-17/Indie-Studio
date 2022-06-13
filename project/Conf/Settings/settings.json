@@ -4,7 +4,7 @@
     "audioVolume": 10,
     "musicVolume": 100,
 
-    "cameraPosition": [65, 200, 97],
+    "cameraPosition": [65, 230, 66],
     "cameraTarget": [65, 0, 65],
     "cameraUp": [0, 1, 0],
     "cameraFovy": 45,

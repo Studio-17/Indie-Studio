@@ -75,6 +75,7 @@ namespace Object
             std::vector<Object::Render::MyModel> getMapModels() { return _mapModels; };
             std::vector<Object::Render::MyTexture> getMapTextures() { return _mapTextures; };
 
+            void save();
         protected:
         private:
             std::vector<std::shared_ptr<Object::Block>> _mapObjects;

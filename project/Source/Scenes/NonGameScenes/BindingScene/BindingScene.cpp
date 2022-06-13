@@ -13,8 +13,7 @@
 Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction) : 
     AScene(settings), _keyboard(keyboard), _playerAction(playerAction), _bindingFunction(bindingFunction), _buttonIndex(0)
 {
-    _nextScene = Scenes::SAVE;
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
+    _nextScene = Scenes::BINDING_MENU;
     _buttons = loadObjects<Object::Button>("Conf/Scenes/BindingScene/button.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::BindingScene::exitScene, this));
     for (std::size_t index = 1; index !=_buttons.size(); index++)
@@ -25,15 +24,11 @@ Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &
     for (auto &text: _texts)
         text->disable();
     _texts.at(0)->enable();
+    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 }
 
 Scene::BindingScene::~BindingScene()
 {
-}
-
-void Scene::BindingScene::fadeBlack()
-{
-
 }
 
 Scene::Scenes Scene::BindingScene::handleEvent()
@@ -41,7 +36,7 @@ Scene::Scenes Scene::BindingScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
-    _nextScene = Scenes::SAVE;
+    _nextScene = Scenes::BINDING_MENU;
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

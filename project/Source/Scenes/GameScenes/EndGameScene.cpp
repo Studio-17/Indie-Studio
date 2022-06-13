@@ -18,6 +18,16 @@ Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::share
     _buttons.at(0)->setCallBack(std::bind(&Scene::EndGameScene::goToMainMenu, this));
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
+    _nextScene = Scene::Scenes::END_GAME;
+}
+
+Scene::Scenes Scene::EndGameScene::handleEvent()
+{
+    _nextScene = Scene::Scenes::END_GAME;
+
+    for (auto &button : _buttons)
+        button->checkHover(GetMousePosition());
+    return _nextScene;
 }
 
 Scene::EndGameScene::~EndGameScene()
@@ -26,8 +36,8 @@ Scene::EndGameScene::~EndGameScene()
 
 void Scene::EndGameScene::draw()
 {
-    for (auto &button : _buttons)
-        button->draw();
     for (auto &parallax : _parallax)
         parallax->draw();
+    for (auto &button : _buttons)
+        button->draw();
 }

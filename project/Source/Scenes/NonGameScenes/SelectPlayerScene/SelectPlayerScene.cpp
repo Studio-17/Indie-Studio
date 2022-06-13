@@ -85,10 +85,6 @@ Scene::SelectPlayerScene::~SelectPlayerScene()
 {
 }
 
-void Scene::SelectPlayerScene::fadeBlack()
-{
-}
-
 Scene::Scenes Scene::SelectPlayerScene::handleEvent()
 {
     std::float_t speed = 0.0;

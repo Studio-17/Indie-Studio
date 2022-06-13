@@ -11,15 +11,19 @@
     #include <raylib.h>
     #include <nlohmann/json.hpp>
 
+    #include "Texture.hpp"
     #include "ITwoDimensionObject.hpp"
 
 namespace Object {
     class Image : public ITwoDimensionObject {
         public:
+            Image();
             Image(std::string const &imagePath, Position const &position = {0, 0});
+            Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture);
             Image(nlohmann::json const &jsonData);
             ~Image();
 
+            void operator ()(nlohmann::json const &jsonData);
             void draw() override;
 
             void enable() override;
@@ -35,6 +39,7 @@ namespace Object {
         protected:
         private:
             bool _isEnable;
+            bool _imageLoaded;
             Position _imagePosition;
             Texture2D _imageTexture;
             float _imageScale = 1.0f;

@@ -13,17 +13,21 @@
 
     #include <string>
 
+    #include "Texture.hpp"
     #include "ITwoDimensionObject.hpp"
 
 namespace Object {
     class Text : public ITwoDimensionObject {
         public:
+            Text();
             Text(std::string const &filename, std::string const &text, Position const &position);
             Text(std::string const &filename, std::string const &text, Color const &color, Position const &position = {0, 0});
             Text(std::string const &filename, std::string const &text, int fontSize, Color const &color, Position const &position = {0, 0});
+            Text(nlohmann::json const &jsonData, Object::Render::MyTexture &);
             Text(nlohmann::json const &jsonData);
             ~Text();
 
+            void operator ()(nlohmann::json const &jsonData);
             void draw() override;
 
             void enable() override;

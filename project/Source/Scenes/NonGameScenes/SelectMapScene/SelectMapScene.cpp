@@ -198,11 +198,6 @@ Scene::SelectMapScene::~SelectMapScene()
 {
 }
 
-void Scene::SelectMapScene::fadeBlack()
-{
-}
-
-
 Scene::Scenes Scene::SelectMapScene::handleEvent()
 {
     int index = 0;

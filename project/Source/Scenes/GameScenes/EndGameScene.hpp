@@ -6,7 +6,7 @@
 */
 
 #ifndef ENDGAMESCENE_HPP_
-#define ENDGAMESCENE_HPP_
+    #define ENDGAMESCENE_HPP_
 
     #include "AScene.hpp"
     #include "GameSettings.hpp"
@@ -22,8 +22,7 @@ namespace Scene {
             void loadSceneAssets();
             void goToMainMenu();
             void draw () override;
-            void fadeBlack() override {};
-            Scenes handleEvent() override { return _nextScene; };
+            Scenes handleEvent() override;
 
         protected:
         private:

@@ -18,24 +18,11 @@
 namespace Object {
     enum class BONUS_OBJECTS {
         BOMB_DOWN = 1,
-        BOMB_MOVE,
         BOMB_UP,
-        BOX_MOVE,
-        DEATH_HEAD,
-        EMPTY,
         FIRE_DOWN,
         FIRE_UP,
-        HEARTH,
-        ICE_GLOVE,
-        KICK,
-        P_BOMB,
-        PEAKY_BOMB,
-        PUNCH,
-        RISE_UP,
         SPEED_DOWN,
-        SPEED_UP,
-        WATER_BOMB,
-        WIZARD
+        SPEED_UP
     };
 
     class Bonus : public AThreeDimensionObject
@@ -46,7 +33,7 @@ namespace Object {
 
             void draw() override;
 
-            Object::BONUS_OBJECTS getMapObject() const;
+            Object::BONUS_OBJECTS getMapObject() { return _bonusObject; };
 
             void setBlockScale(float blockScale) { _bonusScale = blockScale; };
             float getBlockScale() { return _bonusScale; };

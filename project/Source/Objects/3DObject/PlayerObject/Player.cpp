@@ -11,13 +11,23 @@
 Object::Player::Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type) :
     AThreeDimensionObject(pathToRessources, pathToAnimation, nbAnimation, position, type)
 {
-    _playerScale = 7.0f;
+    _scale = 7.0f;
+    _speed = 0.6f;
+    _rangeBomb = _defaultRangeBomb.first;
+    _rangeExplosion = _defaultRangeExplosion.first;
+    _kickRange = _defaultKickRange;
+    _alreadyPlacedBombs = 0;
 }
 
 Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position, Object::MAP_OBJECTS type) :
     AThreeDimensionObject(pathToModel, pathToRessources, pathToAnimation, numberOfAnimations, position, type)
 {
-    _playerScale = 7.0f;
+    _scale = 7.0f;
+    _speed = 0.6f;
+    _rangeBomb = _defaultRangeBomb.first;
+    _rangeExplosion = _defaultRangeExplosion.first;
+    _kickRange = _defaultKickRange;
+    _alreadyPlacedBombs = 0;
 }
 
 Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(jsonData)
@@ -53,9 +63,62 @@ void Object::Player::draw()
         getPosition().getZ()
     };
     if (_isEnable)
-        DrawModel(_model, modelPosition, _playerScale, WHITE);
+        DrawModel(_model, modelPosition, _scale, WHITE);
 }
 
-void Object::Player::dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range)
+void Object::Player::setSpeed(bool addSpeed)
 {
+    if (addSpeed) {
+        if (_speed < _defaultSpeed.second)
+            _speed += 0.1f;
+    }
+    else {
+        if (_speed > _defaultSpeed.first)
+            _speed -= 0.1f;
+    }
+}
+
+void Object::Player::setRangeBomb(bool addRangeBomb)
+{
+    if (addRangeBomb) {
+        if (_rangeBomb < _defaultRangeBomb.second)
+            _rangeBomb += 1;
+    }
+    else {
+        if (_rangeBomb > _defaultRangeBomb.first)
+            _rangeBomb -= 1;
+    }
+}
+
+void Object::Player::setRangeExplosion(bool addrangeExplosion)
+{
+    if (addrangeExplosion) {
+        if (_rangeExplosion < _defaultRangeExplosion.second)
+            _rangeExplosion += 1;
+    }
+    else {
+        if (_rangeExplosion > _defaultRangeExplosion.first)
+            _rangeExplosion -= 1;
+    }
+}
+
+void Object::Player::setAlreadyPlacedBombs(bool addBomb)
+{
+    if (addBomb)
+        _alreadyPlacedBombs += 1;
+    else
+        _alreadyPlacedBombs -= 1;
+}
+
+nlohmann::json Object::Player::save()
+{
+    nlohmann::json saveData;
+
+    saveData["position"] = {_position.getX(), _position.getY(), _position.getZ()};
+    saveData["speed"] = _speed;
+    saveData["bombRange"] = _rangeBomb;
+    saveData["explosionRange"] = _rangeExplosion;
+    saveData["kickRange"] = _kickRange;
+    saveData["isAlive"] = _isAlive;
+    return saveData;
 }

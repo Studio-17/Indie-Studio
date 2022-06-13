@@ -9,42 +9,7 @@
 
 #include "tools.hpp"
 #include "OptionGameMenuScene.hpp"
-
 #include "FileError.hpp"
-
-void Scene::OptionGameMenuScene::selectGameMenuScene()
-{
-    _nextScene = Scene::Scenes::MAIN_MENU;
-}
-
-void Scene::OptionGameMenuScene::selectMapScene()
-{
-    _nextScene = Scene::Scenes::SELECT_MAP;
-
-    _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
-    _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
-    _gameSettings->setGameTime(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
-    if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Oui")
-        _gameSettings->enableBonus();
-    else
-        _gameSettings->disableBonus();
-}
-
-void Scene::OptionGameMenuScene::leftClick(std::size_t index)
-{
-    if (_options.at(index).first == 0)
-        _options.at(index).first = _options.at(index).second.size() - 1;
-    else
-        _options.at(index).first -= 1;
-}
-
-void Scene::OptionGameMenuScene::rightClick(std::size_t index)
-{
-    if (_options.at(index).first == (_options.at(index).second.size() - 1))
-        _options.at(index).first = 0;
-    else
-        _options.at(index).first += 1;
-}
 
 Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
 {
@@ -83,10 +48,6 @@ Scene::OptionGameMenuScene::~OptionGameMenuScene()
 {
 }
 
-void Scene::OptionGameMenuScene::fadeBlack()
-{
-}
-
 Scene::Scenes Scene::OptionGameMenuScene::handleEvent()
 {
     std::float_t speed = 0.0;
@@ -121,4 +82,38 @@ void Scene::OptionGameMenuScene::draw()
         text->draw();
     for (auto &button : _buttons)
         button->draw();
+}
+
+void Scene::OptionGameMenuScene::selectGameMenuScene()
+{
+    _nextScene = Scene::Scenes::START_GAME;
+}
+
+void Scene::OptionGameMenuScene::selectMapScene()
+{
+    _nextScene = Scene::Scenes::SELECT_MAP;
+
+    _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
+    _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
+    _gameSettings->setGameTime(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
+    if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Oui")
+        _gameSettings->enableBonus();
+    else
+        _gameSettings->disableBonus();
+}
+
+void Scene::OptionGameMenuScene::leftClick(std::size_t index)
+{
+    if (_options.at(index).first == 0)
+        _options.at(index).first = _options.at(index).second.size() - 1;
+    else
+        _options.at(index).first -= 1;
+}
+
+void Scene::OptionGameMenuScene::rightClick(std::size_t index)
+{
+    if (_options.at(index).first == (_options.at(index).second.size() - 1))
+        _options.at(index).first = 0;
+    else
+        _options.at(index).first += 1;
 }

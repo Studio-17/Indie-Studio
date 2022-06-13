@@ -241,4 +241,10 @@ class Position {
  */
 std::ostream &operator<<(std::ostream &, const Position &);
 
+bool operator <(Position const &position, float value);
+bool operator <(Position const &position, Position const &position2);
+
+bool operator >(Position const &position, float value);
+bool operator >(Position const &position, Position const &position2);
+
 #endif /* !POSITION_HPP_ */

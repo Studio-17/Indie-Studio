@@ -14,18 +14,20 @@ namespace Scene
      * @brief An enumeration of every scene of the game
      */
     enum class Scenes {
-        QUIT,
         MAIN_MENU,
-        GAME,
-        GAME_MENU,
+        QUIT,
+        START_GAME,
         SETTINGS,
+        GAME,
+        BINDING_MENU,
         SAVE,
         SPLASH_SCREEN,
         END,
         OPTION_GAME,
         SELECT_MAP,
         SELECT_PLAYER,
-        END_GAME
+        END_GAME,
+        CREDITS
     };
 
     enum SOUNDS {
@@ -42,11 +44,6 @@ namespace Scene
     class IScene {
         public:
             virtual ~IScene() = default;
-
-            /**
-             * @brief Fade the end of the scene in black
-             */
-            virtual void fadeBlack() = 0;
 
             /**
              * @brief To handle every event in the scene

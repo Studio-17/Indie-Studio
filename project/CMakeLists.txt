@@ -15,8 +15,6 @@ include(cmake-modules/Findjson.cmake)
 
 # specify the sources
 file(GLOB SOURCES
-    Source/*.cpp
-
     Source/Audio/*.cpp
     Source/Audio/Music/*.cpp
     Source/Audio/Sound/*.cpp
@@ -44,7 +42,6 @@ file(GLOB SOURCES
     Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
     Source/Objects/3DObject/BombObject/Bomb/*.cpp
-    Source/Objects/3DObject/BombObject/Explosion/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
     Source/Objects/3DObject/BonusObject/Bonus/*.cpp
     Source/Objects/3DObject/BonusObject/Malus/*.cpp
@@ -59,12 +56,12 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/*.cpp
     Source/Scenes/NonGameScenes/MainMenu/*.cpp
     Source/Scenes/NonGameScenes/SettingsScene/*.cpp
-    # Source/Scenes/NonGameScenes/PopScenes/*.cpp
-    Source/Scenes/NonGameScenes/SelectGameMenu/*.cpp
+    Source/Scenes/NonGameScenes/StartGameScene/*.cpp
     Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
     Source/Scenes/NonGameScenes/BindingScene/*.cpp
     Source/Scenes/NonGameScenes/SelectPlayerScene/*.cpp
     Source/Scenes/NonGameScenes/SelectMapScene/*.cpp
+    Source/Scenes/NonGameScenes/CreditsScene/*.cpp
 
     Source/Settings/*.cpp
     Source/Settings/GameSetting/*.cpp
@@ -76,6 +73,11 @@ file(GLOB SOURCES
 
 
     Source/Tools/*.cpp
+)
+
+# specify the sources
+file(GLOB TESTS
+    Tests/*.cpp
 )
 
 # specify the headers
@@ -109,7 +111,6 @@ include_directories(
     Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
     Source/Objects/3DObject/BombObject/Bomb/
-    Source/Objects/3DObject/BombObject/Explosion/
     Source/Objects/3DObject/BonusObject/
     Source/Objects/3DObject/BonusObject/Bonus/
     Source/Objects/3DObject/BonusObject/Malus/
@@ -123,11 +124,12 @@ include_directories(
     Source/Scenes/NonGameScenes/
     Source/Scenes/NonGameScenes/MainMenu/
     Source/Scenes/NonGameScenes/SettingsScene/
-    Source/Scenes/NonGameScenes/SelectGameMenu/
+    Source/Scenes/NonGameScenes/StartGameScene/
     Source/Scenes/NonGameScenes/OptionGameMenuScene/
     Source/Scenes/NonGameScenes/BindingScene/
     Source/Scenes/NonGameScenes/SelectPlayerScene/
     Source/Scenes/NonGameScenes/SelectMapScene/
+    Source/Scenes/NonGameScenes/CreditsScene/
 
     Source/Settings/
     Source/Settings/GameSetting/
@@ -140,10 +142,19 @@ include_directories(
     Source/Tools/
 )
 
-add_executable(IndieStudio ${SOURCES})
 
-target_link_libraries(IndieStudio nlohmann_json::nlohmann_json)
-target_link_libraries(IndieStudio raylib)
+option(UNIT_TEST "Run unit tests" OFF) #OFF by default
+if (UNIT_TEST)
+    add_executable(unit_tests ${SOURCES} ${TESTS})
+    target_link_libraries(unit_tests criterion)
+    target_link_libraries(unit_tests nlohmann_json::nlohmann_json)
+    target_link_libraries(unit_tests raylib)
+else()
+    add_executable(bomberman Source/main.cpp ${SOURCES})
+    target_link_libraries(bomberman nlohmann_json::nlohmann_json)
+    target_link_libraries(bomberman raylib)
+endif(UNIT_TEST)
+unset(UNIT_TEST CACHE) # Unset the cache variable
 
 # Web Configurations
 if (${PLATFORM} STREQUAL "Web")

@@ -8,14 +8,15 @@
 #include <raylib.h>
 
 #include "MainMenuScene.hpp"
+#include "StartGameScene.hpp"
 #include "GameScene.hpp"
 #include "SettingsScene.hpp"
-#include "SelectGameMenuScene.hpp"
 #include "OptionGameMenuScene.hpp"
 #include "BindingScene.hpp"
 #include "SelectPlayerScene.hpp"
 #include "EndGameScene.hpp"
 #include "SelectMapScene.hpp"
+#include "CreditsScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -26,13 +27,8 @@ Core::Core() : _isRunning(true),
     _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
     _gameSettings(std::make_shared<GameSettings>())
 {
+    waitingLoad();
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
-    _gamepadPlayerMovement = {
-        {PlayerAction::MoveLeft, GAMEPAD_AXIS_LEFT_X},
-        {PlayerAction::MoveRight, GAMEPAD_AXIS_LEFT_X},
-        {PlayerAction::MoveUp, GAMEPAD_AXIS_LEFT_Y},
-        {PlayerAction::MoveDown, GAMEPAD_AXIS_LEFT_Y}
-    };
     loadMenuScenes();
 }
 
@@ -43,15 +39,15 @@ Core::~Core()
 void Core::loadMenuScenes()
 {
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::GAME_MENU, std::make_shared<Scene::SelectGameMenuScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
-    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
-    //rajouter toutes les scènes des menus
+    _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
 }
 
 void Core::loop()
@@ -72,7 +68,7 @@ void Core::loop()
 
 void Core::getEvent()
 {
-    std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
+    std::map<Action, bool> actionPressed = _keyboard.getKeysHasBeenPressed<Action>(_actionPressed);
     std::map<PlayerAction, bool> playerAction;
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;
@@ -113,4 +109,24 @@ void Core::loadKeyBinding(nlohmann::json const &jsonData)
         _playerActions.emplace_back(tmpPLayerAction);
         _gamepadPlayerActions.emplace_back(PlayerAction::Drop, jsonData.at(player).value("gamepadDrop", 7));
     }
+    _gamepadPlayerMovement = {
+        {PlayerAction::MoveLeft, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveRight, GAMEPAD_AXIS_LEFT_X},
+        {PlayerAction::MoveUp, GAMEPAD_AXIS_LEFT_Y},
+        {PlayerAction::MoveDown, GAMEPAD_AXIS_LEFT_Y}
+    };
+}
+
+void Core::waitingLoad()
+{
+    std::vector<std::unique_ptr<Object::Image>> images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
+    std::vector<std::unique_ptr<Object::Text>> texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
+
+    _settings->getWindow()->startDrawing();
+    _settings->getWindow()->clearBackground(DARKPURPLE);
+    for (auto &image : images)
+        image->draw();
+        for (auto &text : texts)
+        text->draw();
+    _settings->getWindow()->endDrawing();
 }

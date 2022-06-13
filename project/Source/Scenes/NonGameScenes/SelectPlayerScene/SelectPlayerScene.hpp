@@ -26,7 +26,6 @@ namespace Scene {
             SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~SelectPlayerScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void draw() override;
 

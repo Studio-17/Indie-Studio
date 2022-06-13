@@ -1,2 +1,2 @@
 cmake --build build/
-./build/IndieStudio
+./build/bomberman

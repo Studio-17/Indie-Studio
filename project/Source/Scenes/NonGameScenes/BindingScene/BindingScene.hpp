@@ -17,7 +17,6 @@ namespace Scene {
             BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction);
             ~BindingScene();
 
-            void fadeBlack() override;
             Scenes handleEvent() override;
             void draw() override;
 

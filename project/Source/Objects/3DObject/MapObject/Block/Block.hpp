@@ -20,8 +20,8 @@ namespace Object
     class Block : public AThreeDimensionObject
     {
         public:
-            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type);
-            Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type);
+            Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type, float scale);
+            Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type, float scale);
             ~Block() override;
 
             void draw() override;
@@ -32,7 +32,7 @@ namespace Object
         protected:
         private:
             Object::MAP_OBJECTS _type;
-            float _blockScale;
+            float _blockScale = 0.5f;
     };
 }
 
