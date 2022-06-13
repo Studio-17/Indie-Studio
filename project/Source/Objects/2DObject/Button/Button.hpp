@@ -44,9 +44,11 @@ namespace Object {
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
-            void setTextPosition();
+            void setText(std::string const &text);
+            std::string getText() const;
+
+            void setTextPosition(Position const &position);
             void setTextPosition(float x, float y);
-            void setTextPosition(float x, float y, float z);
             Position getTextPosition() const;
 
             void setCallBack(std::function<void(void)> callBack);

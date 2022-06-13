@@ -49,4 +49,6 @@ std::vector<std::unique_ptr<Obj>> loadObjects(std::string const &filepath, bool 
 
 Color createColor(std::array<float, 4> const &array);
 
+std::string setActionToString(int key);
+
 #endif /* !TOOLS_HPP_ */
