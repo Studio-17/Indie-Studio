@@ -39,6 +39,7 @@ namespace Scene {
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _players;
 
             std::vector<std::unique_ptr<Object::Image>> _parallax;
+            std::shared_ptr<GameSettings> _gameSettings;
     };
 }
 

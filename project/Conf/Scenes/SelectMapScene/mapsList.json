@@ -1,0 +1,16 @@
+{
+    "1-Select-map": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Select map size",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [300, 450, 0]
+    },
+    "2-Map-name": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Map",
+        "color": [255, 255, 255, 255],
+        "fontSize": 25,
+        "position": [395, 550, 0]
+    }
+}

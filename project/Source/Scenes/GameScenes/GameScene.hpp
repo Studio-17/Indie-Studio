@@ -8,7 +8,6 @@
 #ifndef GAMESCENE_HPP_
     #define GAMESCENE_HPP_
 
-
     #include <vector>
     #include <map>
 
@@ -84,6 +83,8 @@ namespace Scene {
 
             void save();
 
+            void setBombToPause(bool pause);
+
 
         protected:
         private:
@@ -98,13 +99,13 @@ namespace Scene {
             std::size_t _timePerRound;
             std::size_t _actualMinutes;
 
-            std::unique_ptr<Object::Map> _gameMap;
+            std::shared_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
 
             bool _endGame;
 
-            std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
+            std::map<std::size_t, std::shared_ptr<Object::Player>> _players;
             std::vector<Position> _playerPositions;
             float _playerSpeed;
 

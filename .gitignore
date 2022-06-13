@@ -49,3 +49,4 @@ _deps
 build/
 project/Save/Maps/*.map
 project/Save/Games/*.json
+project/projetBuild.sh

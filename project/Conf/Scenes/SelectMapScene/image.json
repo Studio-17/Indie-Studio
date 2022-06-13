@@ -1,0 +1,7 @@
+{
+    "logo-top-corner-left": {
+        "texture": "Ressources/sprites/icon.png",
+        "scale": 1,
+        "position": [25, 90, 0]
+    }
+}

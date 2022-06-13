@@ -52,6 +52,8 @@ namespace Scene
             std::unique_ptr<MyMusic> _mainMusic;
             std::vector<std::unique_ptr<Object::Image>> _images;
             std::vector<std::unique_ptr<Object::Text>> _texts;
+            std::string _pathToMap;
+            std::vector<std::string> _mapsList;
 
         private:
     };

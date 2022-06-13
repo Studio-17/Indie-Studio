@@ -9,6 +9,7 @@
 
 #include "tools.hpp"
 #include "OptionGameMenuScene.hpp"
+#include "FileError.hpp"
 
 Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
 {
@@ -90,7 +91,7 @@ void Scene::OptionGameMenuScene::selectGameMenuScene()
 
 void Scene::OptionGameMenuScene::selectMapScene()
 {
-    _nextScene = Scene::Scenes::SELECT_PLAYER;
+    _nextScene = Scene::Scenes::SELECT_MAP;
 
     _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
     _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));

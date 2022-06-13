@@ -26,7 +26,7 @@ Object::Map::~Map()
 
 void Object::Map::createFile(const std::string &filename)
 {
-    _file.open(filename, std::ios::out);
+    _file.open(filename, std::ofstream::out);
     if (!_file) {
         _file.close();
         throw Error::FileError("file failed to open " + filename);
@@ -80,6 +80,7 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
         _file << std::endl;
     }
     printLine(height);
+    _file.close();
 }
 
 void Object::Map::draw()
