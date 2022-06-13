@@ -20,7 +20,7 @@ namespace Scene {
             ~SelectGameMenuScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void draw() override;
 
         protected:
@@ -28,6 +28,7 @@ namespace Scene {
             void loadGameScene();
             void newGameScene();
         private:
+            std::vector<std::unique_ptr<Object::Image>> _parallax;
     };
 }
 

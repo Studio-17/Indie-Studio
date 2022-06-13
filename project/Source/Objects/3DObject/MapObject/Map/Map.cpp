@@ -7,13 +7,14 @@
 
 #include "Map.hpp"
 
-Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture)
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture) : _isEnable(true)
 {
     _mapTextures = texture;
     _mapModels = models;
+    _blockSize = 10.0f;
 }
 
-Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position)
+Object::Map::Map(std::vector<Object::Render::MyModel> models, std::vector<Object::Render::MyTexture> texture, Position const &position) : _isEnable(true)
 {
     _mapPosition = position;
     _blockSize = 10.0f;
@@ -25,7 +26,7 @@ Object::Map::~Map()
 
 void Object::Map::createFile(const std::string &filename)
 {
-    _file.open(filename, std::ios::out);
+    _file.open(filename, std::ofstream::out);
     if (!_file) {
         _file.close();
         throw Error::FileError("file failed to open " + filename);
@@ -44,16 +45,20 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
 {
     std::vector<Position> corners;
 
-    width * _blockSize;
-    corners.push_back({10.0f, 0.0f, 10.0f});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, 10.0f});
-    corners.push_back({10.0f, 0.0f, static_cast<float>(height * 10)});
-    corners.push_back({static_cast<float>(width * 10), 0.0f, static_cast<float>(height * 10)});
+    corners.push_back({_blockSize, 0.0f, _blockSize});
+    corners.push_back({(_blockSize * width) - (_blockSize * 2), 0.0f, _blockSize});
+    corners.push_back({_blockSize, 0.0f, (_blockSize * height) - (_blockSize * 2)});
+    corners.push_back({(_blockSize * width)- (_blockSize * 2), 0.0f, (_blockSize * height) - (_blockSize * 2)});
     return corners;
 }
 
-void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height)
+void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height, std::size_t percentageDrop)
 {
+    srand(time(NULL));
+    std::size_t randomNumber = 1 + (rand() % 100);
+    width -= 2;
+    height -= 2;
+
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");
     createFile(filename);
@@ -63,19 +68,35 @@ void Object::Map::generate(const std::string &filename, std::size_t width, std::
         for (size_t y = 0; y < width; y++) {
             if (x % 2 && y % 2)
                 _file << static_cast<char>(MAP_OBJECTS::WALL_MIDDLE);
-            else
-                _file << " ";
+            else {
+                randomNumber = 1 + (rand() % 100);
+                if (randomNumber > percentageDrop || (x <= 1 || x >= height - 2) && (y <= 1 || y >= width - 2))
+                    _file << static_cast<char>(MAP_OBJECTS::EMPTY);
+                else
+                    _file << static_cast<char>(MAP_OBJECTS::BOX);
+            }
         }
         _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
         _file << std::endl;
     }
     printLine(height);
+    _file.close();
 }
 
 void Object::Map::draw()
 {
-    for (auto &mapObject : _mapObjects)
-        mapObject->draw();
+    for (int index = 0; index < _mapPositionsObjects.size(); index++) {
+        for (int idx = 0; idx < _mapPositionsObjects[index].size(); idx++) {
+            _mapPositionsObjects[index][idx]->draw();
+
+        }
+    }
+    for (int index = 0; index < _groundMap.size(); index++) {
+        for (int idx = 0; idx < _groundMap[index].size(); idx++) {
+            _groundMap[index][idx]->draw();
+
+        }
+    }
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)
@@ -96,7 +117,7 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
 
 void Object::Map::removeBlock(std::size_t index)
 {
-    if (_mapObjects.at(index)->getMapObject() == MAP_OBJECTS::BOX)
+    if (_mapObjects.at(index)->getType() == MAP_OBJECTS::BOX)
         _mapObjects.erase(_mapObjects.begin() + index);
 }
 
@@ -106,51 +127,75 @@ void Object::Map::process(std::string const &pathToFile)
 
     std::vector<std::string> mapLayout = load(_pathToMap);
 
-
-    std::cout << "Models size : " << _mapModels.size() << std::endl;
-
     static const std::map<Object::MAP_OBJECTS, std::pair<Object::Render::MyModel, Object::Render::MyTexture>> keyMap = {
         {MAP_OBJECTS::WALL_MIDDLE, {_mapModels.at(4), _mapTextures.at(6)}},
         {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(7)}},
         {MAP_OBJECTS::WALL_SIDE, {_mapModels.at(6), _mapTextures.at(8)}},
-        {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(9)}}
+        {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(9)}},
+        {MAP_OBJECTS::EMPTY, {_mapModels.at(8), _mapTextures.at(10)}}
     };
 
     srand(time(NULL));
 
-    _blockSize = 10.0f;
     _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
     _mapDimensions.setY(0);
     _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
-    std::cout <<_mapDimensions<<std::endl;
 
     Vector3 tilePosition = {0, 0, 0};
 
     for (std::size_t line = 0; line < mapLayout.size(); line += 1) {
+        std::vector<std::shared_ptr<AThreeDimensionObject>> tempVector;
+        std::vector<std::shared_ptr<AThreeDimensionObject>> tempGrass;
         for (std::size_t col = 0; col < mapLayout.at(line).size(); col++) {
-            if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE).first, keyMap.at(MAP_OBJECTS::WALL_SIDE).second,
-                    (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
-            else if ((col >= 3 && col <= mapLayout.at(line).size() - 4) || ( line >= 3 && line <= mapLayout.size() - 4)) {
-                if (((rand() % 8) + 1) != 1) {
-                    _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                        keyMap.at(MAP_OBJECTS::BOX).first, keyMap.at(MAP_OBJECTS::BOX).second,
-                        (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
-                }
-            }
-
             if (keyMap.find(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))) != keyMap.end())
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                    keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).first, keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).second,
-                    (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
+                tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).first, keyMap.at(static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, static_cast<MAP_OBJECTS>(mapLayout.at(line).at(col))));
+            if (mapLayout.at(line).at(col) == static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE))
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::WALL_SIDE).first, keyMap.at(MAP_OBJECTS::WALL_SIDE).second, (Position){tilePosition.x, tilePosition.y - _blockSize, tilePosition.z}, MAP_OBJECTS::WALL_SIDE));
             else
-                _mapObjects.emplace_back(std::make_shared<Object::Block>(
-                    keyMap.at(MAP_OBJECTS::GROUND).first, keyMap.at(MAP_OBJECTS::GROUND).second,
-                    (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
-
+                tempGrass.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::GROUND).first, keyMap.at(MAP_OBJECTS::GROUND).second, (Position){tilePosition.x, tilePosition.y - (_blockSize - 1), tilePosition.z}, MAP_OBJECTS::GROUND));
             tilePosition.x += _blockSize;
         }
+        _mapPositionsObjects.emplace_back(tempVector);
+        _groundMap.emplace_back(tempGrass);
         tilePosition.z += _blockSize;
         tilePosition.x = 0;
+        tempVector.emplace_back(std::make_shared<Object::Block>(keyMap.at(MAP_OBJECTS::BOX).first, keyMap.at(MAP_OBJECTS::BOX).second, (Position){tilePosition.x, tilePosition.y, tilePosition.z}, MAP_OBJECTS::BOX));
     }
+}
+
+int Object::Map::roundUp(int nb, int multiple)
+{
+    if (multiple == 0)
+        return nb;
+
+    int remainder = abs(nb) % multiple;
+
+    if (remainder == 0)
+        return nb;
+
+    if (nb < 0)
+        return (-(abs(nb) - remainder));
+    else
+        return (nb + multiple - remainder);
+}
+
+Object::MAP_OBJECTS Object::Map::isColliding(Position const &direction, Position const &playerPosition)
+{
+    Position temppos = playerPosition;
+    temppos +=  direction;
+
+    std::pair<int, int> position = transposeFrom3Dto2D(temppos);
+    return (_mapPositionsObjects.at(position.second).at(position.first)->getType());
+}
+
+std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
+{
+    int x = roundUp(static_cast<int>(position.getX()), (_blockSize / 2));
+    int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
+
+    if (x % 10 == (_blockSize / 2))
+        x -= static_cast<int>(_blockSize / 2);
+    if (z % 10 == (_blockSize / 2))
+        z -= static_cast<int>(_blockSize / 2);
+    return {x / static_cast<int>(_blockSize), z / static_cast<int>(_blockSize)};
 }

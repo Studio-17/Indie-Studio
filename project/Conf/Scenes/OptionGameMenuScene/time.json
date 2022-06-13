@@ -1,0 +1,42 @@
+{
+    "1": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "1",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [900, 500, 0]
+    },
+    "2": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "2",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [900, 500, 0]
+    },
+    "3": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "3",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [900, 500, 0]
+    },
+    "4": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "4",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [900, 500, 0]
+    },
+    "5": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "5",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [900, 500, 0]
+    }
+}

@@ -16,6 +16,7 @@
     #include "Settings.hpp"
     #include "Keyboard.hpp"
     #include "Gamepad.hpp"
+    #include "GameSettings.hpp"
 
 class Core {
     public:
@@ -26,11 +27,13 @@ class Core {
         void loop();
 
         void getEvent();
+        void bindKey(int player, int action, int Key);
 
         void loadKeyBinding(nlohmann::json const &jsonData);
     protected:
     private:
         std::shared_ptr<Settings> _settings;
+        std::shared_ptr<GameSettings> _gameSettings;
         bool _isRunning;
         std::unordered_map<Scene::Scenes, std::shared_ptr<Scene::IScene>> _menuScenes;
         Scene::Scenes _activeScene;

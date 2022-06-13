@@ -74,10 +74,13 @@ class Position {
          */
         Position &operator =(float pos);
 
+        Position operator +(float value);
         Position operator +(Position const &position);
 
+        Position operator -(float value);
         Position operator -(Position const &position);
 
+        Position operator *(float value);
         Position operator *(Position const &position);
 
         /**

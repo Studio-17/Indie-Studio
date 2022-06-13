@@ -20,12 +20,12 @@ namespace Scene {
             ~MainMenuScene();
 
             void fadeBlack() override;
-            Scenes handelEvent() override;
+            Scenes handleEvent() override;
             void draw() override;
 
         protected:
             void exitScene();
-            void settingsScene();
+            void gameScene();
             void newGameScene();
         private:
     };

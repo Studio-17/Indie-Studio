@@ -25,18 +25,25 @@ namespace Object {
             ~Text();
 
             void draw() override;
-            void drawFramePerSeconds(Position const &position);
+
+            void enable() override;
+            void disable() override;
+            bool isEnable() const override;
 
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
+            void drawFramePerSeconds(Position const &position);
+
+            std::string getText() const;
+            void setText(std::string const &text = "");
             void setColor(Color const &color);
             void setFontSize(int fontSize);
-
         protected:
         private:
+            bool _isEnable;
             Position _position;
             Font _font;
             Color _color;

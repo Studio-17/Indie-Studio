@@ -1,0 +1,72 @@
+{
+    "1-Back": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [100, 880, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "2-Continue": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [1620, 880, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "3-player1-left-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [200, 600, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "3-playe1-right-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [500, 600, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "4-player2-left-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [600, 600, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "4-player2-right-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [900, 600, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "5-player3-left-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1000, 600, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "5-playe3-right-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1300, 600, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "6-player4-left-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1400, 600, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "6-playe4-right-arrow": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1700, 600, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}

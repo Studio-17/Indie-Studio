@@ -17,12 +17,15 @@ namespace Scene
         QUIT,
         MAIN_MENU,
         GAME,
+        GAME_MENU,
         SETTINGS,
         SAVE,
         SPLASH_SCREEN,
         END,
-        NEW_GAME,
-        SELECT_MAP
+        OPTION_GAME,
+        SELECT_MAP,
+        SELECT_PLAYER,
+        END_GAME
     };
 
     enum SOUNDS {
@@ -48,7 +51,7 @@ namespace Scene
             /**
              * @brief To handle every event in the scene
              */
-            virtual Scenes handelEvent() = 0;
+            virtual Scenes handleEvent() = 0;
 
             virtual void draw() = 0;
 

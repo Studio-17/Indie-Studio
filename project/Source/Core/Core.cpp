@@ -8,9 +8,14 @@
 #include <raylib.h>
 
 #include "MainMenuScene.hpp"
+#include "GameScene.hpp"
 #include "SettingsScene.hpp"
 #include "SelectGameMenuScene.hpp"
-#include "SelectMap.hpp"
+#include "OptionGameMenuScene.hpp"
+#include "BindingScene.hpp"
+#include "SelectPlayerScene.hpp"
+#include "EndGameScene.hpp"
+#include "SelectMapScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -18,7 +23,8 @@
 
 Core::Core() : _isRunning(true),
     _activeScene(Scene::Scenes::MAIN_MENU),
-    _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json")))
+    _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
+    _gameSettings(std::make_shared<GameSettings>())
 {
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
     _gamepadPlayerMovement = {
@@ -37,9 +43,14 @@ Core::~Core()
 void Core::loadMenuScenes()
 {
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::SelectGameMenuScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMap>(_settings));
+    _menuScenes.emplace(Scene::Scenes::GAME_MENU, std::make_shared<Scene::SelectGameMenuScene>(_settings));
+    _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
     //rajouter toutes les scènes des menus
 }
 
@@ -50,7 +61,7 @@ void Core::loop()
         _settings->getWindow()->clearBackground(DARKGRAY);
 
         getEvent();
-        _activeScene = _menuScenes.at(_activeScene)->handelEvent();
+        _activeScene = _menuScenes.at(_activeScene)->handleEvent();
         if (_activeScene == Scene::Scenes::QUIT)
             continue;
         _menuScenes.at(_activeScene)->draw();
@@ -74,6 +85,11 @@ void Core::getEvent()
     }
     _settings->setActionPressed(actionPressed);
     _settings->setPlayerActionsPressed(playerActions);
+}
+
+void Core::bindKey(int player, int action, int Key)
+{
+    _playerActions.at(player).at(static_cast<PlayerAction>(action)) = Key;
 }
 
 void Core::loadKeyBinding(nlohmann::json const &jsonData)

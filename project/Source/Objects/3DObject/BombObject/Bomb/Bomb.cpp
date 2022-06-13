@@ -7,8 +7,8 @@
 
 #include "Bomb.hpp"
 
-Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range) :
-    AThreeDimensionObject(pathToRessources, position)
+Object::Bomb::Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range, Object::MAP_OBJECTS type) :
+    AThreeDimensionObject(pathToRessources, position, type)
 {
     _bombClock.start();
     _player = player;
@@ -29,7 +29,8 @@ void Object::Bomb::draw()
         getPosition().getY(),
         getPosition().getZ()
     };
-    DrawModel(_model, modelPosition, _bombScale, WHITE);
+    if (_isEnable)
+        DrawModel(_model, modelPosition, _bombScale, WHITE);
 }
 
 bool Object::Bomb::checkIfShouldExplode()
@@ -37,7 +38,7 @@ bool Object::Bomb::checkIfShouldExplode()
     int toSecond = 1000;
 
     if (_lifeTime * toSecond <= _bombClock.getElapsedTime()) {
-        explode();
+        // explode();
         return true;
     }
     return false;

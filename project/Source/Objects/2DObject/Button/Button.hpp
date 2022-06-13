@@ -27,6 +27,10 @@ namespace Object {
 
             void draw() override;
 
+            void enable() override;
+            void disable() override;
+            bool isEnable() const override;
+
             void setPosition(Position const &position) override;
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
@@ -44,6 +48,7 @@ namespace Object {
                 Hover = 1,
                 Click = 2
             };
+            bool _isEnable;
             int _nbFrame;
             State _state;
             Position _position;

@@ -59,15 +59,21 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/*.cpp
     Source/Scenes/NonGameScenes/MainMenu/*.cpp
     Source/Scenes/NonGameScenes/SettingsScene/*.cpp
-    Source/Scenes/NonGameScenes/PopScenes/*.cpp
+    # Source/Scenes/NonGameScenes/PopScenes/*.cpp
     Source/Scenes/NonGameScenes/SelectGameMenu/*.cpp
-    Source/Scenes/NonGameScenes/SelectMap/*.cpp
+    Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
+    Source/Scenes/NonGameScenes/BindingScene/*.cpp
+    Source/Scenes/NonGameScenes/SelectPlayerScene/*.cpp
+    Source/Scenes/NonGameScenes/SelectMapScene/*.cpp
 
     Source/Settings/*.cpp
+    Source/Settings/GameSetting/*.cpp
     Source/Settings/SettingsModules/*.cpp
     Source/Settings/SettingsModules/Audio/*.cpp
     Source/Settings/SettingsModules/Camera/*.cpp
     Source/Settings/SettingsModules/Window/*.cpp
+    Source/Settings/GameSettings/*.cpp
+
 
     Source/Tools/*.cpp
 )
@@ -117,15 +123,19 @@ include_directories(
     Source/Scenes/NonGameScenes/
     Source/Scenes/NonGameScenes/MainMenu/
     Source/Scenes/NonGameScenes/SettingsScene/
-    Source/Scenes/NonGameScenes/PopScenes/
     Source/Scenes/NonGameScenes/SelectGameMenu/
-    Source/Scenes/NonGameScenes/SelectMap/
+    Source/Scenes/NonGameScenes/OptionGameMenuScene/
+    Source/Scenes/NonGameScenes/BindingScene/
+    Source/Scenes/NonGameScenes/SelectPlayerScene/
+    Source/Scenes/NonGameScenes/SelectMapScene/
 
     Source/Settings/
+    Source/Settings/GameSetting/
     Source/Settings/SettingsModules/
     Source/Settings/SettingsModules/Audio/
     Source/Settings/SettingsModules/Camera/
     Source/Settings/SettingsModules/Window/
+    Source/Settings/GameSettings/
 
     Source/Tools/
 )

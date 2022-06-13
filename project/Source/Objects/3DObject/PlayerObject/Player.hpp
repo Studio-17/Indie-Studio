@@ -23,8 +23,8 @@ namespace Object {
 
     class Player : public AThreeDimensionObject {
         public:
-            Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position);
-            Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position);
+            Player(std::pair<std::string, std::string> const &pathToRessources, std::string const pathToAnimation, unsigned int nbAnimation, Position const &position, Object::MAP_OBJECTS type);
+            Player(Object::Render::MyModel &pathToModel, Object::Render::MyTexture &pathToRessources, Object::Render::MyAnimation &pathToAnimation, unsigned int numberOfAnimations, Position const &position, Object::MAP_OBJECTS type);
 
             Player(nlohmann::json const &jsonData);
             ~Player() override;
@@ -34,9 +34,16 @@ namespace Object {
             void move(Position const &position, Position const &direction);
 
             void dropBomb(Position const &postion, float timeBeforeExplosion, std::size_t range);
+            void die() { _isAlive = false; };
+            bool isAlive() { return _isAlive; };
+            float getSpeed() const { return _speed; };
+            void setSpeed(float speed) { _speed = speed; };
 
         private:
             float _playerScale;
+            int _life;
+            bool _isAlive = true;
+            float _speed = 0.6;
 
     };
 }
