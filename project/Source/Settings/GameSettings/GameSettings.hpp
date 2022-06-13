@@ -12,6 +12,9 @@
 
     #include <string>
     #include <vector>
+    #include <utility>
+    #include "Map.hpp"
+    #include "Player.hpp"
 
 class GameSettings {
     public:
@@ -38,6 +41,24 @@ class GameSettings {
          */
         void setMapPath(std::string const &mapPath);
         /**
+         * @brief Set the Map Size
+         *
+         * @param mapSize std::pair with the new values of the map
+         */
+        void setMapSize(std::pair<float, float> mapSize);
+        /**
+         * @brief Set the Object game Map
+         *
+         * @param gameMap std::shared_ptr<Object::Map> new Object Map
+         */
+        void setGameMap(std::shared_ptr<Object::Map> gameMap);
+        /**
+         * @brief Set the percentage box drop
+         *
+         * @param percentage std::size_t new percentage box drop
+         */
+        void setPercentageBoxDrop(std::size_t percentage);
+        /**
          * @brief Set the Player Skins vector
          *
          * @param playerSkins vector of player skins
@@ -55,6 +76,12 @@ class GameSettings {
          * @param nbPlayers number of player
          */
         void setNbPlayers(std::size_t nbPlayers);
+        /**
+         * @brief Set the Players list
+         *
+         * @param players map of player object
+         */
+        void setPlayers(std::map<std::size_t, std::shared_ptr<Object::Player>> players);
         /**
          * @brief Set the Nb Sets
          *
@@ -83,6 +110,24 @@ class GameSettings {
          */
         std::string getMapPath() const;
         /**
+         * @brief Get the Map Size
+         *
+         * @return std::pair map height and width size
+         */
+        std::pair<float, float> getMapSize() const;
+        /**
+         * @brief Get the Object Map
+         *
+         * @return std::shared_ptr<Object::Map> shared_ptr of the game map
+         */
+        std::shared_ptr<Object::Map> getGameMap() const;
+        /**
+         * @brief Get the Percentage Box Drop
+         *
+         * @return std::size_t percentage of box drop
+         */
+        std::size_t getPercentageBoxDrop() const;
+        /**
          * @brief Get the Player Skins
          *
          * @return std::vector<std::string> vector of player skins
@@ -100,6 +145,12 @@ class GameSettings {
          * @return std::size_t number of players
          */
         std::size_t getNbPlayers() const;
+        /**
+         * @brief Get the Players list
+         *
+         * @return std::map<std::size_t, std::shared_ptr<Object::Player>> map of player object
+         */
+        std::map<std::size_t, std::shared_ptr<Object::Player>> getPlayers() const;
         /**
          * @brief Get the Nb Sets
          *
@@ -123,9 +174,13 @@ class GameSettings {
     protected:
     private:
         std::string _mapPath; //!< path to the .map map
+        std::pair<float, float> _mapSize; //!< size of the map
+        std::shared_ptr<Object::Map> _gameMap; //!< object map
+        std::size_t _percentageBoxDrop; //!< percentage of box drop
         std::vector<std::string> _playerSkins; //!< vector of player skins
         std::vector<bool> _iaPlayers; //!< vector of if a player is an IA
         std::size_t _nbPlayers; //!< number of player
+        std::map<std::size_t, std::shared_ptr<Object::Player>> _players;
         std::size_t _nbSets; //!< nb round
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled

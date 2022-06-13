@@ -1,0 +1,45 @@
+{
+    "1-Back": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [100, 880, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "2-Continue": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [1620, 880, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "3-BasicMode": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [200, 250, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "4-CustomMode": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [400, 250, 0],
+        "texture": "Ressources/buttons/button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "5-PreviousMap": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [300, 540, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+    ,
+    "6-NextMap": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [500, 540, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}

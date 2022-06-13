@@ -15,6 +15,7 @@
 #include "BindingScene.hpp"
 #include "SelectPlayerScene.hpp"
 #include "EndGameScene.hpp"
+#include "SelectMapScene.hpp"
 #include "CreditsScene.hpp"
 
 #include "tools.hpp"
@@ -45,6 +46,7 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
 }
 

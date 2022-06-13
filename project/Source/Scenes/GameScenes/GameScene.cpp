@@ -48,15 +48,17 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _isPaused = false;
     _endGame = false;
 
-    _gameMap = std::make_unique<Object::Map>(_models, _textures);
+    _gameMap = std::make_shared<Object::Map>(_models, _textures);
+    _gameSettings->setGameMap(_gameMap);
     _timePerRound = 3;
     _3dcameraVue = false;
     _actualMinutes = _timePerRound - 1;
     _mapSize = {13, 13};
-    _mapFile = gameSettings->getMapPath();
+    _mapFile = _gameSettings->getMapPath();
     _margin = 5.0f;
     _percentageBonusDrop = 60;
     _percentageBoxDrop = 70;
+    _gameSettings->setPercentageBoxDrop(_percentageBoxDrop);
     _collisionCondition = {
         {PlayerAction::MoveLeft, {-_margin, 0, 0}},
         {PlayerAction::MoveRight, {_margin, 0, 0}},
@@ -64,9 +66,10 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
         {PlayerAction::MoveDown, {0, 0, _margin}},
         {PlayerAction::Drop, {0, 0, 0}}
     };
+    // _playerPositions = _gameSettings->getGameMap()->getMapCorners(_gameSettings->getMapSize().first, _gameSettings->getMapSize().second);
     _playerPositions = _gameMap->getMapCorners(_mapSize.x, _mapSize.y);
-    _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, _percentageBoxDrop);
-    _gameMap->process(_mapFile);
+    // _gameMap->generate(_mapFile, _mapSize.x, _mapSize.y, _percentageBoxDrop);
+    // _gameMap->process(_mapFile);
     _clockGame.start();
 
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER1), std::make_unique<Object::Player>(_models.at(0), _textures.at(1), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)), Object::MAP_OBJECTS::PLAYER));
@@ -74,6 +77,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
     _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::save, this));
+    _gameSettings->setPlayers(_players);
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.4, 0.8}},
@@ -207,6 +211,7 @@ void Scene::GameScene::handlePlayers()
     int index = 0;
 
     _settings->getPlayerActionsPressed().at(index);
+    _players = _gameSettings->getPlayers();
     for (auto &[playerIndex, player] : _players) {
         moving = false;
         std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
@@ -224,6 +229,7 @@ void Scene::GameScene::handlePlayers()
             player->animation(1);
         index++;
     }
+    _gameSettings->setPlayers(_players);
 }
 
 Scene::Scenes Scene::GameScene::handleEvent()
@@ -296,6 +302,7 @@ void Scene::GameScene::placeBonus(std::pair<int, int> position, std::size_t perc
 void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos)
 {
     std::pair<int, int> playerPos;
+    _players = _gameSettings->getPlayers();
     for (auto &[index, player] : _players) {
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
         if (playerPos == explosionPos)
@@ -323,6 +330,7 @@ void Scene::GameScene::handleExplosions()
             }
         }
     }
+    _gameSettings->setPlayers(_players);
 }
 
 void Scene::GameScene::exploseBomb(Position const &position, int radius)
@@ -422,8 +430,7 @@ void Scene::GameScene::draw()
     setCameraVue();
     _settings->getCamera()->startMode3D();
     _gameMap->draw();
-
-    for (auto &[index, player] : _players)
+    for (auto &[index, player] : _gameSettings->getPlayers())
         if (player->isAlive())
             player->draw();
 
