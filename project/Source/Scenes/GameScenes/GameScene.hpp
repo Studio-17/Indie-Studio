@@ -70,6 +70,7 @@ namespace Scene {
 
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
             void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
+            void drawObjects();
 
             void loadSceneAssets();
 
