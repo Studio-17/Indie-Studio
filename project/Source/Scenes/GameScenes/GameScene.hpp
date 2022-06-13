@@ -83,6 +83,8 @@ namespace Scene {
 
             void save();
 
+            void setBombToPause(bool pause);
+
 
         protected:
         private:

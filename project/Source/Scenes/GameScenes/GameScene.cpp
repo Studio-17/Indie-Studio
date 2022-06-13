@@ -127,6 +127,7 @@ void Scene::GameScene::loadSceneAssets()
 
 void Scene::GameScene::resumeGame()
 {
+    _clockGame.unpause();
     _isPaused = false;
 }
 
@@ -247,6 +248,14 @@ void Scene::GameScene::handlePause()
     std::map<Action, bool> tmp = _settings->getActionPressed();
     if (tmp[Action::Previous] == true) {
         _isPaused = !_isPaused;
+        if (_clockGame.isPaused() == true) {
+            _clockGame.unpause();
+            setBombToPause(false);
+        }
+        else {
+            _clockGame.pause();
+            setBombToPause(true);
+        }
     }
 }
 
@@ -362,6 +371,12 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
             index++;
         }
     }
+}
+
+void Scene::GameScene::setBombToPause(bool pause)
+{
+    for (auto &bomb : _bombs)
+        pause ? bomb->pause() : bomb->unpause();
 }
 
 void Scene::GameScene::handleWin()
