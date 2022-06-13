@@ -14,17 +14,34 @@ Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &
     AScene(settings), _keyboard(keyboard), _playerAction(playerAction), _bindingFunction(bindingFunction), _buttonIndex(0)
 {
     _nextScene = Scenes::BINDING_MENU;
-    _buttons = loadObjects<Object::Button>("Conf/Scenes/BindingScene/button.json");
-    _buttons.at(0)->setCallBack(std::bind(&Scene::BindingScene::exitScene, this));
-    for (std::size_t index = 1; index !=_buttons.size(); index++)
-        _buttons.at(index)->setCallBack(std::bind(&Scene::BindingScene::newGameScene, this));
     _images = loadObjects<Object::Image>("Conf/Scenes/BindingScene/image.json");
-    _images.at(0)->disable();
     _texts = loadObjects<Object::Text>("Conf/Scenes/BindingScene/text.json");
-    for (auto &text: _texts)
-        text->disable();
-    _texts.at(0)->enable();
+    _buttons = loadObjects<Object::Button>("Conf/Scenes/BindingScene/button.json");
+    _buttons.at(0)->setCallBack(std::bind(&Scene::BindingScene::back, this));
+    for (std::size_t player = 0; player != 4; player++)
+        for (std::size_t touch = 1; touch != 6; touch++) {
+            std::cout << "player" << player * 5 + touch << std::endl;
+            _buttons.at((player * 5) + touch)->setText(setActionToString(playerAction.at(player).at(static_cast<PlayerAction>(touch - 1))));
+            _buttons.at((player * 5) + touch)->setCallBack(std::bind(&Scene::BindingScene::bindKey, this));
+        }
+    // for (std::size_t index = 1; index !=_buttons.size(); index++)
+        // _buttons.at(index)->setCallBack(std::bind(&Scene::BindingScene::newGameScene, this));
+    // for (auto &text: _texts)
+        // text->disable();
+    // _texts.at(0)->enable();
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
+    _popUp = loadObjects<Object::Image>("Conf/Scenes/BindingScene/pop_up.json");
+    _popUpText = loadObjects<Object::Text>("Conf/Scenes/BindingScene/pop_up_text.json");
+    _popUpButton = loadObjects<Object::Button>("Conf/Scenes/BindingScene/pop_up_button.json");
+    _popUpButton.at(0)->setCallBack(std::bind(&Scene::BindingScene::cancelBind, this));
+    for (auto &popUp : _popUp)
+        popUp->disable();
+    for (auto &popUp : _popUpText)
+        popUp->disable();
+    for (auto &popUp : _popUpButton) {
+        popUp->disable();
+        popUp->disableClick();
+    }
 }
 
 Scene::BindingScene::~BindingScene()
@@ -33,6 +50,7 @@ Scene::BindingScene::~BindingScene()
 
 Scene::Scenes Scene::BindingScene::handleEvent()
 {
+    Vector2 mousePos = GetMousePosition();
     std::float_t speed = 0.0;
     int index = 0;
 
@@ -46,21 +64,22 @@ Scene::Scenes Scene::BindingScene::handleEvent()
             parallax->setPosition(1928, parallax->getPosition().getY());
         index++;
     }
-    if (_images.at(0)->isEnable()) {
+    if (_popUpButton.at(0)->isEnable()) {
         int newKey = _keyboard.getPressedKeycode();
         if (newKey) {
-            _images.at(0)->disable();
-            _texts.at(_buttonOpened)->disable();
+            cancelBind();
             _bindingFunction((_buttonOpened - 1) / 5, (_buttonOpened - 1) % 5, newKey);
             _playerAction.at((_buttonOpened - 1) / 5).at(static_cast<PlayerAction>((_buttonOpened - 1) % 5)) = newKey;
+            _buttons.at(_buttonOpened)->setText(setActionToString(newKey));
         }
     }
-
     _buttonIndex = 0;
     for (auto &button : _buttons) {
-        button->checkHover(GetMousePosition());
+        button->checkHover(mousePos);
         _buttonIndex++;
     }
+    for (auto &button : _popUpButton)
+        button->checkHover(mousePos);
     return _nextScene;
 }
 
@@ -68,17 +87,38 @@ void Scene::BindingScene::draw()
 {
     for (auto &parallax : _parallax)
         parallax->draw();
-    for (auto &button: _buttons)
-        button->draw();
-    for (auto &image: _images)
+    for (auto &image : _images)
         image->draw();
-    for (auto &text: _texts)
+    for (auto &button : _buttons)
+        button->draw();
+    for (auto &text : _texts)
         text->draw();
+    for (auto &popUp : _popUp)
+        popUp->draw();
+    for (auto &popUp : _popUpText)
+        popUp->draw();
+    for (auto &popUp : _popUpButton)
+        popUp->draw();
 }
 
-void Scene::BindingScene::exitScene()
+void Scene::BindingScene::back()
 {
-    _nextScene = Scenes::MAIN_MENU;
+    _nextScene = Scenes::SETTINGS;
+}
+
+void Scene::BindingScene::bindKey()
+{
+    for (auto &button : _buttons)
+        button->disableClick();
+    for (auto &popUp : _popUp)
+        popUp->enable();
+    for (auto &popUp : _popUpText)
+        popUp->enable();
+    for (auto &popUp : _popUpButton) {
+        popUp->enable();
+        popUp->enableClick();
+    }
+    _buttonOpened = _buttonIndex;
 }
 
 void Scene::BindingScene::settingsScene()
@@ -93,3 +133,16 @@ void Scene::BindingScene::newGameScene()
     _buttonOpened = _buttonIndex;
 }
 
+void Scene::BindingScene::cancelBind()
+{
+    for (auto &popUp : _popUp)
+        popUp->disable();
+    for (auto &popUp : _popUpText)
+        popUp->disable();
+    for (auto &popUp : _popUpButton) {
+        popUp->disable();
+        popUp->disableClick();
+    }
+    for (auto &button : _buttons)
+        button->enableClick();
+}
