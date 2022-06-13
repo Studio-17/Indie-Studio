@@ -8,7 +8,6 @@
 #ifndef GAMESCENE_HPP_
     #define GAMESCENE_HPP_
 
-
     #include <vector>
     #include <map>
 
@@ -16,7 +15,6 @@
     #include "GameSettings.hpp"
     #include "Music.hpp"
     #include "Map.hpp"
-    #include "Explosion.hpp"
     #include "Player.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
@@ -60,6 +58,9 @@ namespace Scene {
             void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
             void exploseBomb(Position const &position, int radius);
 
+            void placeExplosions(float time, Position position);
+            void handleExplosions();
+
             void handlePlayers();
 
             void handleButtons();
@@ -68,6 +69,7 @@ namespace Scene {
 
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
             void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
+            void drawObjects();
 
             void loadSceneAssets();
 
@@ -80,6 +82,8 @@ namespace Scene {
             void resumeGame();
 
             void save();
+
+            void setBombToPause(bool pause);
 
 
         protected:
@@ -95,17 +99,21 @@ namespace Scene {
             std::size_t _timePerRound;
             std::size_t _actualMinutes;
 
-            std::unique_ptr<Object::Map> _gameMap;
+            std::shared_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
 
             bool _endGame;
 
-            std::map<std::size_t, std::unique_ptr<Object::Player>> _players;
+            std::map<std::size_t, std::shared_ptr<Object::Player>> _players;
             std::vector<Position> _playerPositions;
             float _playerSpeed;
 
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
+
+            // std::map<size_t, std::pair<Position, float>> _explosions;
+            std::map<int, std::map<int, float>> _explosions;
+
             std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;
 
             std::vector<Object::Render::MyAnimation> _animations;

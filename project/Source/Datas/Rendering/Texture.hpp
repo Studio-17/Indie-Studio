@@ -18,10 +18,10 @@ namespace Object {
         class MyTexture {
             public:
                 MyTexture(std::string const &pathToTexture) { _texture = LoadTexture(pathToTexture.c_str()); };
-                ~MyTexture() { /* UnloadTexture(_texture) */ } ;
+                ~MyTexture() { /*UnloadTexture(_texture);*/ };
 
                 Texture2D getTexture() { return _texture; };
-
+                void unload() { UnloadTexture(_texture); };
             protected:
             private:
                 Texture2D _texture;

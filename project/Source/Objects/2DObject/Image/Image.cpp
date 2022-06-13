@@ -8,24 +8,26 @@
 #include "tools.hpp"
 #include "Image.hpp"
 
-Object::Image::Image() : _isEnable(false)
+Object::Image::Image() : _isEnable(false), _imageLoaded(false)
 {
 
 }
 
-Object::Image::Image(std::string const &imagePath, Position const &position) :  _isEnable(true), _imagePosition(position),
+Object::Image::Image(std::string const &imagePath, Position const &position) :  _isEnable(true), _imageLoaded(true), _imagePosition(position),
     _imageTexture(LoadTexture(imagePath.c_str()))
 {
 }
 
 Object::Image::Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture) :
-    _isEnable(jsonData.value("isEnable", true)), _imageTexture(texture.getTexture()),
+    _isEnable(jsonData.value("isEnable", true)), _imageLoaded(true),
+    _imageTexture(texture.getTexture()),
     _imageScale(jsonData.value("scale", 1.0))
 {
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
 }
 
 Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true)),
+    _imageLoaded(true),
     _imageTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
     _imageScale(jsonData.value("scale", 1.0))
 {
@@ -34,12 +36,14 @@ Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value(
 
 Object::Image::~Image()
 {
-    UnloadTexture(_imageTexture);
+    if (_imageLoaded)
+        UnloadTexture(_imageTexture);
 }
 
 void Object::Image::operator ()(nlohmann::json const &jsonData)
 {
     _isEnable = jsonData.value("isEnable", true);
+    _imageLoaded = true;
     _imageTexture = LoadTexture(jsonData.value("texture", "default").c_str());
     _imageScale = jsonData.value("scale", 1.0);
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));

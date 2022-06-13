@@ -1,9 +1,9 @@
 {
-    "1-Back": {
+    "2-Continue": {
         "type": "button",
         "nbFrame": 3,
-        "position": [100, 880, 0],
-        "texture": "Ressources/buttons/button.png",
-        "audio": "Ressources/buttons/click_sound.ogg"
+        "position": [1770, 900, 0],
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "texture": "Ressources/buttons/next_button.png"
     }
 }

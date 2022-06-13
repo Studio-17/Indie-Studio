@@ -42,7 +42,6 @@ file(GLOB SOURCES
     Source/Objects/2DObject/Image/*.cpp
     Source/Objects/3DObject/*.cpp
     Source/Objects/3DObject/BombObject/Bomb/*.cpp
-    Source/Objects/3DObject/BombObject/Explosion/*.cpp
     Source/Objects/3DObject/BonusObject/*.cpp
     Source/Objects/3DObject/BonusObject/Bonus/*.cpp
     Source/Objects/3DObject/BonusObject/Malus/*.cpp
@@ -61,6 +60,7 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/OptionGameMenuScene/*.cpp
     Source/Scenes/NonGameScenes/BindingScene/*.cpp
     Source/Scenes/NonGameScenes/SelectPlayerScene/*.cpp
+    Source/Scenes/NonGameScenes/SelectMapScene/*.cpp
     Source/Scenes/NonGameScenes/CreditsScene/*.cpp
 
     Source/Settings/*.cpp
@@ -111,7 +111,6 @@ include_directories(
     Source/Objects/2DObject/Image/
     Source/Objects/3DObject/
     Source/Objects/3DObject/BombObject/Bomb/
-    Source/Objects/3DObject/BombObject/Explosion/
     Source/Objects/3DObject/BonusObject/
     Source/Objects/3DObject/BonusObject/Bonus/
     Source/Objects/3DObject/BonusObject/Malus/
@@ -129,6 +128,7 @@ include_directories(
     Source/Scenes/NonGameScenes/OptionGameMenuScene/
     Source/Scenes/NonGameScenes/BindingScene/
     Source/Scenes/NonGameScenes/SelectPlayerScene/
+    Source/Scenes/NonGameScenes/SelectMapScene/
     Source/Scenes/NonGameScenes/CreditsScene/
 
     Source/Settings/

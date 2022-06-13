@@ -1,0 +1,9 @@
+{
+    "no-dropped-file": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Drop your file here!",
+        "color": [255, 255, 255, 255],
+        "fontSize": 20,
+        "position": [300, 500, 0]
+    }
+}
