@@ -10,12 +10,21 @@
 
     #include "IObject.hpp"
 
+/**
+ * @brief An interface of every two dimensional object
+ */
 namespace Object
 {
     class ITwoDimensionObject : public IObject  {
         public:
+            /**
+             * @brief Destroy the ITwoDimensionObject object
+             */
             virtual ~ITwoDimensionObject() = default;
 
+            /**
+             * @brief draw a two dimensional object
+             */
             virtual void draw() = 0;
 
             virtual void enable() = 0;

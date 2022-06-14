@@ -20,15 +20,55 @@ namespace Object {
         public:
             virtual ~IObject() = default;
 
+            /**
+             * @brief Draw 2 types of object
+             * - two dimensional object
+             * - three dimensional object
+             */
             virtual void draw() = 0;
 
+            /**
+             * @brief Enable an object
+             */
             virtual void enable() = 0;
+            /**
+             * @brief Disable an object
+             */
             virtual void disable() = 0;
+            /**
+             * @brief Check if an object is enable
+             *
+             * @return true
+             * @return false
+             */
             virtual bool isEnable() const = 0;
 
+            /**
+             * @brief Set the Position object
+             *
+             * @param position 2 or 3 dimension position class
+             */
             virtual void setPosition(Position const &position) = 0;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x position x value
+             * @param y position y value
+             */
             virtual void setPosition(float x, float y) = 0;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x position x value
+             * @param y position y value
+             * @param z position z value
+             */
             virtual void setPosition(float x, float y, float z) = 0;
+            /**
+             * @brief Get the Position object
+             *
+             * @return 3 dimensional Position
+             */
             virtual Position getPosition() const = 0;
         protected:
         private:

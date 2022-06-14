@@ -10,6 +10,9 @@
 
     #include "IObject.hpp"
 
+/**
+ * @brief An interface of every three dimensional object
+ */
 namespace Object
 {
     enum class MAP_OBJECTS {
@@ -26,8 +29,14 @@ namespace Object
 
     class IThreeDimensionObject : public IObject {
         public:
+            /**
+             * @brief Destroy the IThreeDimensionObject object
+             */
             virtual ~IThreeDimensionObject() = default;
 
+            /**
+             * @brief draw a three dimensional object
+             */
             virtual void draw() = 0;
 
             virtual void enable() = 0;

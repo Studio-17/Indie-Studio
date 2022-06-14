@@ -54,6 +54,9 @@ namespace Object {
             std::size_t getAlreadyPlacedBombs() const { return _alreadyPlacedBombs; };
             void setAlreadyPlacedBombs(bool addBomb);
 
+            bool getIsMoving() const { return _isMoving; };
+            void setIsMoving(bool isMoving);
+
             // std::size_t getKickRange() const { return _kickRange; };
             // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
@@ -74,6 +77,7 @@ namespace Object {
             float _scale;
             int _life;
             bool _isAlive = true;
+            bool _isMoving = false;
 
     };
 }
