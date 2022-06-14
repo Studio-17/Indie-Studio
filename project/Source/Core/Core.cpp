@@ -31,6 +31,7 @@ Core::Core() : _isRunning(true),
     waitingLoad();
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
     loadMenuScenes();
+    srand(time(NULL));
 }
 
 Core::~Core()
