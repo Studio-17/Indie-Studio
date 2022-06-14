@@ -1,0 +1,9 @@
+{
+    "title": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "MAP SELECTION",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [100, 100, 0]
+    }
+}

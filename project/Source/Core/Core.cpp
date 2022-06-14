@@ -7,8 +7,6 @@
 
 #include <raylib.h>
 
-#include <thread>
-
 #include "MainMenuScene.hpp"
 #include "StartGameScene.hpp"
 #include "GameScene.hpp"
@@ -17,6 +15,7 @@
 #include "BindingScene.hpp"
 #include "SelectPlayerScene.hpp"
 #include "EndGameScene.hpp"
+#include "SelectMapScene.hpp"
 #include "CreditsScene.hpp"
 
 #include "tools.hpp"
@@ -48,6 +47,7 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
 }
 
@@ -69,7 +69,7 @@ void Core::loop()
 
 void Core::getEvent()
 {
-    std::map<Action, bool> actionPressed = _keyboard.getKeysPressed<Action>(_actionPressed);
+    std::map<Action, bool> actionPressed = _keyboard.getKeysHasBeenPressed<Action>(_actionPressed);
     std::map<PlayerAction, bool> playerAction;
     std::vector<std::map<PlayerAction, bool>> playerActions;
     std::size_t index = 0;
@@ -121,10 +121,13 @@ void Core::loadKeyBinding(nlohmann::json const &jsonData)
 void Core::waitingLoad()
 {
     std::vector<std::unique_ptr<Object::Image>> images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
+    std::vector<std::unique_ptr<Object::Text>> texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
 
     _settings->getWindow()->startDrawing();
-    _settings->getWindow()->clearBackground(DARKGRAY);
+    _settings->getWindow()->clearBackground(DARKPURPLE);
     for (auto &image : images)
         image->draw();
+        for (auto &text : texts)
+        text->draw();
     _settings->getWindow()->endDrawing();
 }

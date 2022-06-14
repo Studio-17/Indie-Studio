@@ -114,3 +114,22 @@ void Object::Player::setIsMoving(bool isMoving)
 {
     _isMoving = isMoving;
 }
+
+void Object::Player::setSetsWon(bool setWon)
+{
+    if (setWon)
+        _setsWon += 1;
+}
+
+nlohmann::json Object::Player::save()
+{
+    nlohmann::json saveData;
+
+    saveData["position"] = {_position.getX(), _position.getY(), _position.getZ()};
+    saveData["speed"] = _speed;
+    saveData["bombRange"] = _rangeBomb;
+    saveData["explosionRange"] = _rangeExplosion;
+    saveData["kickRange"] = _kickRange;
+    saveData["isAlive"] = _isAlive;
+    return saveData;
+}

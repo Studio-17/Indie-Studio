@@ -22,11 +22,16 @@ namespace Scene {
 
         protected:
         private:
-            void exitScene();
+            void back();
+            void bindKey();
+            void cancelBind();
             void settingsScene();
             void newGameScene();
 
             std::vector<std::unique_ptr<Object::Image>> _parallax;
+            std::vector<std::unique_ptr<Object::Image>> _popUp;
+            std::vector<std::unique_ptr<Object::Text>> _popUpText;
+            std::vector<std::unique_ptr<Object::Button>> _popUpButton;
             Keyboard &_keyboard;
             std::vector<std::map<PlayerAction, int>> _playerAction;
             std::function<void(int, int, int)> _bindingFunction;

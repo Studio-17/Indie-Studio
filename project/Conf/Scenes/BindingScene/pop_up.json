@@ -1,0 +1,7 @@
+{
+    "0-background": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 0.6,
+        "position": [700, 400, 0]
+    }
+}

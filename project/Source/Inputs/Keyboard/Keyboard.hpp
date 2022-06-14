@@ -33,6 +33,15 @@ class Keyboard {
                 actionPressed.emplace(action, isBeingPressed(key));
             return actionPressed;
         };
+        template<typename ENUM>
+        std::map<ENUM, bool> getKeysHasBeenPressed(std::map<ENUM, int> map) const
+        {
+            std::map<ENUM, bool> actionPressed;
+            for (auto &[action, key] : map)
+                actionPressed.emplace(action, hasbeenReleased(key));
+            return actionPressed;
+        };
+
     protected:
     private:
 };

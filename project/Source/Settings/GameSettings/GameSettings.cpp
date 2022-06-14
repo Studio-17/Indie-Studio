@@ -32,6 +32,21 @@ void GameSettings::setMapPath(std::string const &mapPath)
     _mapPath = mapPath;
 }
 
+void GameSettings::setMapSize(std::pair<float, float> mapSize)
+{
+    _mapSize = mapSize;
+}
+
+void GameSettings::setGameMap(std::shared_ptr<Object::Map> gameMap)
+{
+    _gameMap = gameMap;
+}
+
+void GameSettings::setPercentageBoxDrop(std::size_t percentage)
+{
+    _percentageBoxDrop = percentage;
+}
+
 void GameSettings::setPlayerSkins(std::vector<std::string> const &playerSkins)
 {
     _playerSkins = playerSkins;
@@ -45,6 +60,11 @@ void GameSettings::setIaPlayers(std::vector<bool> const &iaPlayers)
 void GameSettings::setNbPlayers(std::size_t nbPlayers)
 {
     _nbPlayers = nbPlayers;
+}
+
+void GameSettings::setPlayers(std::map<std::size_t, std::shared_ptr<Object::Player>> players)
+{
+    _players = players;
 }
 
 void GameSettings::setNbSets(std::size_t nbSets)
@@ -72,6 +92,21 @@ std::string GameSettings::getMapPath() const
     return _mapPath;
 }
 
+std::pair<float, float> GameSettings::getMapSize() const
+{
+    return _mapSize;
+}
+
+std::shared_ptr<Object::Map> GameSettings::getGameMap() const
+{
+    return _gameMap;
+}
+
+std::size_t GameSettings::getPercentageBoxDrop() const
+{
+    return _percentageBoxDrop;
+}
+
 std::vector<std::string> GameSettings::getPlayerSkins() const
 {
     return _playerSkins;
@@ -85,6 +120,11 @@ std::vector<bool> GameSettings::getIaPlayers() const
 std::size_t GameSettings::getNbPlayers() const
 {
     return _nbPlayers;
+}
+
+std::map<std::size_t, std::shared_ptr<Object::Player>> GameSettings::getPlayers() const
+{
+    return _players;
 }
 
 std::size_t GameSettings::getNbSets() const

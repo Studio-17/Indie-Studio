@@ -22,6 +22,8 @@ namespace Object {
 
                 Model getModel() { return _model; };
 
+                void unload() { UnloadModel(_model); };
+
             protected:
             private:
                 Model _model;

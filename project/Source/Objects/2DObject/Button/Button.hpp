@@ -84,6 +84,11 @@ namespace Object {
              */
             bool isClickable() const;
 
+            void setPosition(Position const &position) override;
+            void setPosition(float x, float y) override;
+            void setPosition(float x, float y, float z) override;
+            Position getPosition() const override;
+
             void setText(std::string const &text);
             std::string getText() const;
 

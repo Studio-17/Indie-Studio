@@ -10,12 +10,13 @@
 #include "tools.hpp"
 #include "StartGameScene.hpp"
 
-Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings) : AScene(settings),
+    _buttonTexture("Ressources/buttons/button2.png")
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::StartGameScene::newGameScene, this), std::bind(&Scene::StartGameScene::loadSaveScene, this), std::bind(&Scene::StartGameScene::backScene, this)};
 
     _nextScene = Scene::Scenes::START_GAME;
-    _buttons = loadObjects<Object::Button>("Conf/Scenes/StartGameScene/button.json", true);
+    _buttons = loadObjects<Object::Button>("Conf/Scenes/StartGameScene/button.json", _buttonTexture);
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
         _buttons.at(index)->setCallBack(callBacks.at(index));
     }
@@ -26,6 +27,7 @@ Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings) : ASce
 
 Scene::StartGameScene::~StartGameScene()
 {
+    _buttonTexture.unload();
 }
 
 Scene::Scenes Scene::StartGameScene::handleEvent()

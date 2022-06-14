@@ -39,6 +39,7 @@ namespace Object {
         protected:
         private:
             bool _isEnable;
+            bool _imageLoaded;
             Position _imagePosition;
             Texture2D _imageTexture;
             float _imageScale = 1.0f;
