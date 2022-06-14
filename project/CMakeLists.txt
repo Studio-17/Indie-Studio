@@ -78,6 +78,7 @@ file(GLOB SOURCES
 # specify the sources
 file(GLOB TESTS
     Tests/*.cpp
+    Tests/Tools/*.cpp
 )
 
 # specify the headers
