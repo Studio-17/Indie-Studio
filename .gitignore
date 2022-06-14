@@ -47,4 +47,3 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 build/
-project/Save/Maps/*.map
