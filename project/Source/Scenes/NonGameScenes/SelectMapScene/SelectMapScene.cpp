@@ -239,6 +239,7 @@ void Scene::SelectMapScene::draw()
 {
     for (auto &parallax : _parallax)
         parallax->draw();
+    DrawRectangle(100, 250, 800, 600, GRAY);
     for (auto &image : _images)
         image->draw();
     for (auto &text : _texts)
