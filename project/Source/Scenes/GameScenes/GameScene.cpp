@@ -57,7 +57,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _mapFile = _gameSettings->getMapPath();
     _margin = 5.0f;
     _percentageBonusDrop = 60;
-    _percentageBoxDrop = 70;
+    _percentageBoxDrop = 90;
     _gameSettings->setPercentageBoxDrop(_percentageBoxDrop);
     _collisionCondition = {
         {PlayerAction::MoveLeft, {-_margin, 0, 0}},
@@ -80,7 +80,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _gameSettings->setPlayers(_players);
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
-        {"speed", {0.4, 0.8}},
+        {"speed", {0.5, 0.8}},
         {"kickRange", {1, 3}}};
 }
 
@@ -115,14 +115,14 @@ void Scene::GameScene::loadSceneAssets()
     _models.emplace_back("Ressources/models/block/stone/wall_side.obj");
     _models.emplace_back("Ressources/models/block/dirt/box.obj");
     _models.emplace_back("");
-    _models.emplace_back("Ressources/explosion.iqm");
+    _models.emplace_back("Ressources/models/explosion/explosion.iqm");
 
     _textures.emplace_back("Ressources/models/block/stone/box.png");
     _textures.emplace_back("Ressources/models/block/dirt/wall_side.png");
     _textures.emplace_back("Ressources/models/block/stone/wall_side.png");
     _textures.emplace_back("Ressources/models/block/dirt/box.png");
     _textures.emplace_back("");
-    _textures.emplace_back("Ressources/Fire_baseColor.png");
+    _textures.emplace_back("Ressources/models/explosion/Fire_baseColor.png");
 
     /* BOMBS */
 
@@ -131,6 +131,7 @@ void Scene::GameScene::loadSceneAssets()
 
 void Scene::GameScene::resumeGame()
 {
+    _clockGame.unpause();
     _isPaused = false;
 }
 
@@ -156,7 +157,6 @@ void Scene::GameScene::AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_O
             _players.at(static_cast<char>(playerNb))->setSpeed(true);
             break;
     };
-    std::cout << _players.at(static_cast<char>(playerNb))->getSpeed() << std::endl;
 }
 
 bool Scene::GameScene::isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb)
@@ -177,13 +177,8 @@ bool Scene::GameScene::isCollidingObject(Position const &direction, Position con
 
     for (auto &bomb : _bombs) {
         std::pair<int, int> bombPos = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
-        if (frontPos.first == bombPos.first && frontPos.second == bombPos.second && bomb->getPlayer() == playerNb) {
-            if (!bomb->getCollide())
-                return false;
+        if (frontPos.first == bombPos.first && frontPos.second == bombPos.second && bomb->getPlayer() != playerNb)
             return true;
-        }
-        else
-            bomb->setCollide(true);
     }
     return false;
 }
@@ -253,6 +248,14 @@ void Scene::GameScene::handlePause()
     std::map<Action, bool> tmp = _settings->getActionPressed();
     if (tmp[Action::Previous] == true) {
         _isPaused = !_isPaused;
+        if (_clockGame.isPaused() == true) {
+            _clockGame.unpause();
+            setBombToPause(false);
+        }
+        else {
+            _clockGame.pause();
+            setBombToPause(true);
+        }
     }
 }
 
@@ -372,6 +375,12 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     }
 }
 
+void Scene::GameScene::setBombToPause(bool pause)
+{
+    for (auto &bomb : _bombs)
+        pause ? bomb->pause() : bomb->unpause();
+}
+
 void Scene::GameScene::handleWin()
 {
     std::size_t nbPlayersAlive = 0;
@@ -423,6 +432,19 @@ void Scene::GameScene::setCameraVue()
     }
 }
 
+void Scene::GameScene::drawObjects()
+{
+    for (auto &[line, bonus] : _bonus)
+        for (auto &[col, bonusObject] : bonus) {
+            std::pair<int, int> tempPos = _gameMap->transposeFrom3Dto2D(bonusObject->getPosition());
+            if (_gameMap->getMapPositionsObjects().at(tempPos.second).at(tempPos.first)->getType() == Object::MAP_OBJECTS::EMPTY)
+                bonusObject->draw();
+    }
+
+    for (auto &bomb : _bombs)
+        bomb->draw();
+}
+
 void Scene::GameScene::draw()
 {
     _backgroundImage.at(0)->draw();
@@ -434,15 +456,7 @@ void Scene::GameScene::draw()
         if (player->isAlive())
             player->draw();
 
-    for (auto &[line, bonus] : _bonus)
-        for (auto &[col, bonusObject] : bonus) {
-            std::pair<int, int> tempPos = _gameMap->transposeFrom3Dto2D(bonusObject->getPosition());
-            if (_gameMap->getMapPositionsObjects().at(tempPos.second).at(tempPos.first)->getType() == Object::MAP_OBJECTS::EMPTY)
-                bonusObject->draw();
-        }
-
-    for (auto &bomb : _bombs)
-        bomb->draw();
+    drawObjects();
 
     _settings->getCamera()->endMode3D();
     if (_isPaused)

@@ -32,6 +32,7 @@ void Scene::SelectMapScene::runSelectPlayerScene()
         _gameSettings->setMapPath(_currentPath);
         _gameSettings->setMapSize(std::make_pair(static_cast<float>(_height), static_cast<float>(_width)));
     }
+    
     _nextScene = Scenes::SELECT_PLAYER;
 }
 
@@ -238,6 +239,7 @@ void Scene::SelectMapScene::draw()
 {
     for (auto &parallax : _parallax)
         parallax->draw();
+    DrawRectangle(100, 250, 800, 600, GRAY);
     for (auto &image : _images)
         image->draw();
     for (auto &text : _texts)

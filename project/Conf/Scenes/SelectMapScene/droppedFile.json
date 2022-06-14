@@ -3,21 +3,35 @@
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Dropped file:",
         "color": [255, 255, 255, 255],
-        "fontSize": 20,
+        "fontSize": 30,
         "position": [250, 500, 0]
     },
     "2-file": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
-        "fontSize": 20,
-        "position": [250, 550, 0]
+        "fontSize": 30,
+        "position": [250, 560, 0]
     },
     "3-drop-new-file": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Drop new file...",
         "color": [255, 255, 255, 255],
-        "fontSize": 20,
-        "position": [250, 600, 0]
+        "fontSize": 30,
+        "position": [250, 620, 0]
+    },
+    "4-basic-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Switch to Basic mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [135, 290, 0]
+    },
+    "6-Custom-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Custom mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [610, 290, 0]
     }
 }

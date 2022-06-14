@@ -8,5 +8,35 @@
         "texture": "Ressources/icon/award_wico.png",
         "scale": 0.6,
         "position": [15, 85, 0]
+    },
+    "2-credit-clement": {
+        "texture": "Ressources/credit/clement.png",
+        "scale": 1,
+        "position": [300, 200, 0]
+    },
+    "3-credit-gurvan": {
+        "texture": "Ressources/credit/gurvan.png",
+        "scale": 1,
+        "position": [850, 200, 0]
+    },
+    "4-credit-victor": {
+        "texture": "Ressources/credit/victor.png",
+        "scale": 1,
+        "position": [1400, 200, 0]
+    },
+    "5-credit-maxime": {
+        "texture": "Ressources/credit/maxime.png",
+        "scale": 1,
+        "position": [300, 550, 0]
+    },
+    "6-credit-martin": {
+        "texture": "Ressources/credit/martin.png",
+        "scale": 1,
+        "position": [850, 550, 0]
+    },
+    "2-credit-valentin": {
+        "texture": "Ressources/credit/valentin.png",
+        "scale": 1,
+        "position": [1400, 550, 0]
     }
 }

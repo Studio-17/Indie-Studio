@@ -12,11 +12,12 @@
     #include "GameSettings.hpp"
     #include "tools.hpp"
     #include "Settings.hpp"
+    #include "Player.hpp"
 
 namespace Scene {
     class EndGameScene : public AScene {
         public:
-            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::map<Object::PLAYER_ORDER, std::size_t> = {});
             ~EndGameScene();
 
             void loadSceneAssets();
@@ -27,6 +28,7 @@ namespace Scene {
         protected:
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax;
+            std::map<Object::PLAYER_ORDER, std::size_t> _playerCharacteristics;
     };
 }
 

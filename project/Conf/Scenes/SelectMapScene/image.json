@@ -1,7 +1,12 @@
 {
-    "logo-top-corner-left": {
-        "texture": "Ressources/sprites/icon.png",
+    "0-logo-font": {
+        "texture": "Ressources/sprites/title_background.png",
         "scale": 1,
-        "position": [25, 90, 0]
+        "position": [0, 60, 0]
+    },
+    "1-logo-top-corner-left": {
+        "texture": "Ressources/icon/fight_icon.png",
+        "scale": 0.6,
+        "position": [15, 85, 0]
     }
 }
