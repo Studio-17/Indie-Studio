@@ -45,6 +45,25 @@
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
             "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Restart",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 40, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/exit_ico.png",
+            "scale": 1,
+            "position": [15, 10, 0]
+        }
+    },
+    "4-third": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [848, 800, 0],
+        "texture": "Ressources/buttons/little_button.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
             "text": "Exit",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
@@ -56,7 +75,7 @@
             "position": [15, 10, 0]
         }
     },
-    "4-fourth": {
+    "5-fourth": {
         "type": "button",
         "nbFrame": 3,
         "position": [848, 300, 0],
@@ -75,7 +94,7 @@
             "position": [15, 10, 0]
         }
     },
-    "5-fifth": {
+    "6-fifth": {
         "type": "button",
         "nbFrame": 3,
         "position": [848, 700, 0],
@@ -94,7 +113,7 @@
             "position": [15, 10, 0]
         }
     },
-    "6-sixth": {
+    "7-sixth": {
         "type": "button",
         "nbFrame": 3,
         "position": [480, 700, 0],

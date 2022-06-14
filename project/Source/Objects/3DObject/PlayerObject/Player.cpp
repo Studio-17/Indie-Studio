@@ -110,6 +110,12 @@ void Object::Player::setAlreadyPlacedBombs(bool addBomb)
         _alreadyPlacedBombs -= 1;
 }
 
+void Object::Player::setSetsWon(bool setWon)
+{
+    if (setWon)
+        _setsWon += 1;
+}
+
 nlohmann::json Object::Player::save()
 {
     nlohmann::json saveData;

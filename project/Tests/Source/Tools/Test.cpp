@@ -13,27 +13,6 @@
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
 
-#include "Datas/Position/Position.hpp"
-
-Test(Position_All, positionTest)
-{
-    Position pBase(1.0f, 1.0f, 1.0f);
-    Position pEqual(1.0f, 1.0f, 1.0f);
-    Position pGreater(100.0f, 100.0f, 100.0f);
-
-    Position pPosition(pBase);
-
-    assert(pBase.getX() == 1.0f);
-    assert(pBase.getY() == 1.0f);
-    assert(pBase.getZ() == 1.0f);
-
-    if (pBase == pEqual)
-        assert(true);
-
-    if (pBase < pGreater)
-        assert(true);
-}
-
 #include <unistd.h>
 #include "Tools/clock.hpp"
 
@@ -72,7 +51,7 @@ Test(Tools_Json, jsonTest)
     nlohmann::json data;
 
     try {
-        data = getJsonData("Save/Games/gameSave.json");
+        data = getJsonData("Tests/Save/Games/gameSave.json");
     } catch ( ... ) {
         assert(false);
     }
@@ -81,7 +60,7 @@ Test(Tools_Json, jsonTest)
 Test(Tools_File, fileTest)
 {
     try {
-        readFile("Save/Games/gameSave.json", "\n");
+        readFile("Tests/Save/Games/gameSave.json", "\n");
     } catch ( ... ) {
         assert(false);
     }

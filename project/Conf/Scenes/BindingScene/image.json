@@ -1,12 +1,32 @@
 {
-    "logo-top-corner-left": {
-        "texture": "Ressources/sprites/icon.png",
+    "0-logo-font": {
+        "texture": "Ressources/sprites/title_background.png",
         "scale": 1,
-        "position": [25, 90, 0]
+        "position": [0, 60, 0]
     },
-    "black Back": {
-        "texture": "Ressources/sprites/black_back.png",
-        "scale": 1,
-        "position": [500, 500, 0]
+    "1-logo-top-corner-left": {
+        "texture": "Ressources/icon/password_wico.png",
+        "scale": 0.6,
+        "position": [15, 85, 0]
+    },
+    "2-background": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 0.6,
+        "position": [300, 200, 0]
+    },
+    "3-background": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 0.6,
+        "position": [1050, 200, 0]
+    },
+    "4-background": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 0.6,
+        "position": [300, 650, 0]
+    },
+    "5-background": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 0.6,
+        "position": [1050, 650, 0]
     }
 }

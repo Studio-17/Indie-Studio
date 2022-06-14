@@ -38,10 +38,19 @@ bool Object::Bomb::checkIfShouldExplode()
     int toSecond = 1000;
 
     if (_lifeTime * toSecond <= _bombClock.getElapsedTime()) {
-        // explode();
         return true;
     }
     return false;
+}
+
+void Object::Bomb::pause()
+{
+    _bombClock.pause();
+}
+
+void Object::Bomb::unpause()
+{
+    _bombClock.unpause();
 }
 
 void Object::Bomb::animation()

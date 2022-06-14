@@ -4,13 +4,27 @@
         "text": "Select map size",
         "color": [255, 255, 255, 255],
         "fontSize": 30,
-        "position": [300, 450, 0]
+        "position": [375, 500, 0]
     },
     "2-Map-name": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Map",
+        "text": "",
         "color": [255, 255, 255, 255],
-        "fontSize": 25,
-        "position": [395, 550, 0]
+        "fontSize": 30,
+        "position": [460, 560, 0]
+    },
+    "3-Custom-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Switch to Custom mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [535, 290, 0]
+    },
+    "4-Basic-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Basic mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [210, 290, 0]
     }
 }

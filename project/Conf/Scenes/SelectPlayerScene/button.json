@@ -3,14 +3,14 @@
         "type": "button",
         "nbFrame": 3,
         "position": [100, 880, 0],
-        "texture": "Ressources/buttons/button.png",
+        "texture": "Ressources/buttons/back_button.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "2-Continue": {
         "type": "button",
         "nbFrame": 3,
-        "position": [1620, 880, 0],
-        "texture": "Ressources/buttons/button.png",
+        "position": [1770, 900, 0],
+        "texture": "Ressources/buttons/next_button.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "3-player1-left-arrow": {

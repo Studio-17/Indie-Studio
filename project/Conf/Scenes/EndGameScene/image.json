@@ -1,0 +1,7 @@
+{
+    "background": {
+        "texture": "Ressources/sprites/endgame_background.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    }
+}

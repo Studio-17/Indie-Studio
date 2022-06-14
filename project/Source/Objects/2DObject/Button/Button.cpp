@@ -132,7 +132,6 @@ bool Object::Button::isClickable() const
     return _isClickable;
 }
 
-
 void Object::Button::setPosition(Position const &position)
 {
     _position = position;
@@ -152,6 +151,32 @@ Position Object::Button::getPosition() const
 {
     return _position;
 }
+
+void Object::Button::setText(std::string const &text)
+{
+    _text.setText(text);
+}
+
+std::string Object::Button::getText() const
+{
+    return _text.getText();
+}
+
+void Object::Button::setTextPosition(Position const &position)
+{
+    _text.setPosition(position);
+}
+
+void Object::Button::setTextPosition(float x, float y)
+{
+    _text.setPosition(x, y);
+}
+
+Position Object::Button::getTextPosition() const
+{
+    return _text.getPosition();
+}
+
 
 void Object::Button::setCallBack(std::function<void(void)> callBack)
 {

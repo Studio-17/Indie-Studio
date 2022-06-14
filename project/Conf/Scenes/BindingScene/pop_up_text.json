@@ -1,0 +1,9 @@
+{
+    "3-drop": {
+        "font": "Ressources/fonts/squarefont/Square.ttf",
+        "text": "Please press a Key",
+        "color": [150, 150, 150, 255],
+        "fontSize": 40,
+        "position": [780, 535, 0]
+    }
+}
