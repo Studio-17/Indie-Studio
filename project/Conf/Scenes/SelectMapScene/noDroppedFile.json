@@ -1,9 +1,23 @@
 {
-    "no-dropped-file": {
+    "1-no-dropped-file": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Drop your file here!",
         "color": [255, 255, 255, 255],
-        "fontSize": 20,
+        "fontSize": 30,
         "position": [300, 500, 0]
+    },
+    "2-Basic-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Switch to Basic mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [135, 290, 0]
+    },
+    "3-Custom-mod": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Custom mode",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [610, 290, 0]
     }
 }
