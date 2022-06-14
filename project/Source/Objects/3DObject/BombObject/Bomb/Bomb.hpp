@@ -35,6 +35,9 @@ namespace Object
             std::size_t getRange() { return _range; };
             void setRange(std::size_t value) { _range = value; };
 
+            void pause();
+            void unpause();
+
         protected:
         private:
             Clock _bombClock{};
