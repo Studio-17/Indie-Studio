@@ -72,7 +72,7 @@ Test(Tools_Json, jsonTest)
     nlohmann::json data;
 
     try {
-        data = getJsonData("Save/Games/gameSave.json");
+        data = getJsonData("Tests/Save/Games/gameSave.json");
     } catch ( ... ) {
         assert(false);
     }
@@ -81,7 +81,7 @@ Test(Tools_Json, jsonTest)
 Test(Tools_File, fileTest)
 {
     try {
-        readFile("Save/Games/gameSave.json", "\n");
+        readFile("Tests/Save/Games/gameSave.json", "\n");
     } catch ( ... ) {
         assert(false);
     }
