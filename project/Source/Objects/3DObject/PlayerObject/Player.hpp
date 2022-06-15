@@ -199,13 +199,24 @@ namespace Object {
             void setSetsWon(bool setWon);
 
             /**
+             * @brief Get the Kick Range object
+             * 
+             * @return std::size_t kickRange value
+             */
+            std::size_t getKickRange() const { return _kickRange; };
+            /**
+             * @brief Set the Kick Range object
+             * 
+             * @param kickRange size_t kickRange value
+             */
+            void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
+
+            /**
              * @brief Save player data in JSON file
              *
              * @return nlohmann::json
              */
             nlohmann::json save();
-            // std::size_t getKickRange() const { return _kickRange; };
-            // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
         private:
             std::pair<float, float> _defaultSpeed = {0.5f, 0.8f}; ///< default speed

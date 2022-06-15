@@ -1,7 +1,27 @@
 {
-    "background": {
-        "texture": "Ressources/sprites/endgame_background.png",
+    "0-rose-banner": {
+        "texture": "Ressources/sprites/banner.png",
         "scale": 1,
         "position": [0, 0, 0]
+    },
+    "1-black-banner": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 0.5,
+        "position": [1400, 390, 0]
+    },
+    "2-black-banner": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 0.5,
+        "position": [1400, 490, 0]
+    },
+    "3-black-banner": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 0.5,
+        "position": [1400, 590, 0]
+    },
+    "4-black-banner": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 0.5,
+        "position": [1400, 690, 0]
     }
 }
