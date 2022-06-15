@@ -5,7 +5,7 @@
         "position": [0, 60, 0]
     },
     "1-logo-top-corner-left": {
-        "texture": "Ressources/icon/book_wico.png",
+        "texture": "Ressources/icon/player_wico.png",
         "scale": 0.6,
         "position": [15, 85, 0]
     }

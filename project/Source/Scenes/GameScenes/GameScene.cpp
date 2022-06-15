@@ -53,7 +53,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _timePerRound = 3;
     _3dcameraVue = false;
     _actualMinutes = _timePerRound - 1;
-    _mapSize = {13, 13};
+    _mapSize = {11, 11};
     _mapFile = _gameSettings->getMapPath();
     _margin = 5.0f;
     _percentageBonusDrop = 60;
@@ -375,6 +375,15 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     }
 }
 
+void Scene::GameScene::setValuesForEndGame()
+{
+    std::map<Object::PLAYER_ORDER, std::size_t> mapStatistics;
+
+    for (std::size_t index = 0; index < _players.size(); index ++) {
+        mapStatistics.emplace(static_cast<Object::PLAYER_ORDER>(index), _players.at(index)->getSetsWon());
+    }
+}
+
 void Scene::GameScene::setBombToPause(bool pause)
 {
     for (auto &bomb : _bombs)
@@ -389,11 +398,17 @@ void Scene::GameScene::handleWin()
         if (player.second->isAlive())
             nbPlayersAlive++;
     }
-    if (nbPlayersAlive == 1)
+    if (nbPlayersAlive == 1) {
+        for (auto &player : _players) {
+            if (player.second->isAlive())
+                player.second->setSetsWon(true);
+        }
         _endGame = true;
+    }
 
     if (_endGame == true) {
         save();
+        setValuesForEndGame();
         _nextScene = Scene::Scenes::END_GAME;
     }
 }

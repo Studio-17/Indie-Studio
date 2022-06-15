@@ -37,6 +37,8 @@ namespace Scene {
              * @brief Call back function executed when next button is pressed to set next scene to main menu scene
              */
             void goToMainMenu();
+            void setPlayerCharacteristics(std::map<Object::PLAYER_ORDER, std::size_t> characteristics) { _playerCharacteristics = characteristics; };
+
         protected:
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax

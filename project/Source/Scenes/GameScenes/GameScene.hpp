@@ -72,6 +72,8 @@ namespace Scene {
 
             void resumeGame();
 
+            void setValuesForEndGame();
+
             void save();
 
             void setBombToPause(bool pause);
