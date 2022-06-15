@@ -64,8 +64,8 @@ namespace Scene {
 
             void loadSceneAssets();
 
-            void ai(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer);
-            std::vector<PlayerAction> getPossibleDir(Position const &aiPos);
+            void handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer);
+            std::vector<PlayerAction> getPossibleDir(Position const &aiPos, int indexPlayer);
             std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexPlayer);
             // void dropBombToPlayer();
             // std::vector<Position> getExplodedCells(PlayerAction const &action, Position const &bombPos);
@@ -132,8 +132,7 @@ namespace Scene {
             std::map<PlayerAction, Position> _collisionCondition;
 
             int _action;
-            bool _aiSafe;
-            std::vector<PlayerAction> _dirs;
+            std::vector<PlayerAction> _iaPossibleDirection;
             std::vector<std::pair<int, int>> _aiForbiddenCells;
             // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
 
