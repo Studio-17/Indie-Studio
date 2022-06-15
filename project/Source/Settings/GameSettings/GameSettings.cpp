@@ -8,7 +8,7 @@
 #include "GameSettings.hpp"
 
 GameSettings::GameSettings() :
-_mapPath("Save/Maps/random.map"), _nbPlayers(4), _nbSets(1), _gameTime(1), _enableBonus(true)
+_mapPath("Save/Maps/random.map"), _nbPlayers(4), _nbSets(1), _gameTime(1), _enableBonus(true), _iaPlayers({false, false, false, false})
 {
 }
 
@@ -20,7 +20,7 @@ void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 {
     _mapPath = jsonData.value("mapPath", "Save/Maps/random.map");
     _playerSkins = jsonData.value("playerSkins", std::vector<std::string>({"", "", "", ""}));
-    _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({true, false, false, false}));
+    _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({false, false, false, false}));
     _nbPlayers = jsonData.value("nbPlayers", 4);
     _nbSets = jsonData.value("nbSets", 1);
     _gameTime = jsonData.value("gameTime", 1);

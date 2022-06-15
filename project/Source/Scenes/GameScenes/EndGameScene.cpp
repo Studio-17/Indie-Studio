@@ -12,7 +12,7 @@ void Scene::EndGameScene::goToMainMenu()
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::map<std::size_t, Object::PLAYER_ORDER>) : AScene(settings), _gameSettings(gameSettings)
+Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
 {
     _buttons = loadObjects<Object::Button>("Conf/Scenes/EndGameScene/button.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::EndGameScene::goToMainMenu, this));

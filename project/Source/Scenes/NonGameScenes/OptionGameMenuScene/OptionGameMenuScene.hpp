@@ -9,20 +9,20 @@
     #define OPTIONGAMEMENUSCENE_HPP_
 
     #include "AScene.hpp"
-    #include "Music.hpp"
-    #include "Image.hpp"
-    #include "Button.hpp"
-    #include "Text.hpp"
     #include "GameSettings.hpp"
 
-    #include <vector>
-    #include <memory>
-    #include <utility>
-
 namespace Scene {
-
+    /**
+     * @brief Option Game Menu Scene object to handle and display Option Game Menu Scene
+     */
     class OptionGameMenuScene : public AScene {
         public:
+            /**
+             * @brief Construct a new Option Game Menu Scene object
+             *
+             * @param settings Shared pointer to Settings class
+             * @param gameSettings Shared pointer to Game Settings class
+             */
             OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~OptionGameMenuScene();
 
@@ -30,23 +30,39 @@ namespace Scene {
             void draw() override;
 
         protected:
-            void selectGameMenuScene();
-            void selectMapScene();
-            void leftClick(std::size_t index);
-            void rightClick(std::size_t index);
-
         private:
-            std::shared_ptr<GameSettings> _gameSettings;
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options;
-
-            std::vector<std::unique_ptr<Object::Image>> _parallax;
-
             enum OPTION {
                 NBPLAYERS = 0,
                 NBSETS,
                 GAMETIME,
                 BONUS
             };
+
+            /**
+             * @brief Call back function executed when back button is pressed to set next scene to start game scene
+             */
+            void back();
+            /**
+             * @brief Call back function executed when next button is pressed to set next scene to select map scene
+             */
+            void selectMapScene();
+            /**
+             * @brief Call back function executed when left button of an option is pressed to set option to the previous case
+             *
+             * @param index Option representing the button
+             */
+            void leftClick(OPTION index);
+            /**
+             * @brief Call back function executed when right button of an option is pressed to set option to the next case
+             *
+             * @param index Option representing the button
+             */
+            void rightClick(OPTION index);
+
+            std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options; ///< Vector of pair of with his Text
+
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
     };
 }
 

@@ -12,6 +12,9 @@
 
 namespace Object
 {
+    /**
+     * @brief enum of 3D object type present in map
+     */
     enum class MAP_OBJECTS {
         GROUND = 'A',
         WALL_MIDDLE = 'x',
@@ -24,10 +27,19 @@ namespace Object
         EXPLOSION = 'E'
     };
 
+    /**
+     * @brief An interface of every three dimensional object
+     */
     class IThreeDimensionObject : public IObject {
         public:
+            /**
+             * @brief Destroy the IThreeDimensionObject object
+             */
             virtual ~IThreeDimensionObject() = default;
 
+            /**
+             * @brief draw a three dimensional object
+             */
             virtual void draw() = 0;
 
             virtual void enable() = 0;
