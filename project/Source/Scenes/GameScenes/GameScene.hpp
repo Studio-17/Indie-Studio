@@ -8,25 +8,16 @@
 #ifndef GAMESCENE_HPP_
     #define GAMESCENE_HPP_
 
-    #include <vector>
-    #include <map>
-
     #include "AScene.hpp"
     #include "GameSettings.hpp"
-    #include "Music.hpp"
     #include "Map.hpp"
     #include "Player.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
     #include "IRenderding.hpp"
-    #include "Rendering/Texture.hpp"
+    #include "Texture.hpp"
     #include "PauseScene.hpp"
-    #include "tools.hpp"
-    #include "Settings.hpp"
 
-/**
- * @brief Represents the main game scene
- */
 namespace Scene {
 
     enum class ORIENTATION {
@@ -91,6 +82,8 @@ namespace Scene {
             void handleWin();
 
             void resumeGame();
+
+            void setValuesForEndGame();
 
             void save();
 

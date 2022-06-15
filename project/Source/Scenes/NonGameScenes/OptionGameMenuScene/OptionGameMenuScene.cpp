@@ -17,7 +17,7 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
 {
     std::vector<std::function<void(void)>> callBacks =
     {
-        std::bind(&Scene::OptionGameMenuScene::selectGameMenuScene, this),
+        std::bind(&Scene::OptionGameMenuScene::back, this),
         std::bind(&Scene::OptionGameMenuScene::selectMapScene, this),
         std::bind(&Scene::OptionGameMenuScene::leftClick, this, NBPLAYERS),
         std::bind(&Scene::OptionGameMenuScene::rightClick, this, NBPLAYERS),
@@ -64,9 +64,7 @@ Scene::Scenes Scene::OptionGameMenuScene::handleEvent()
             parallax->setPosition(1928, parallax->getPosition().getY());
         index++;
     }
-
     _nextScene = Scene::Scenes::OPTION_GAME;
-
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
     return _nextScene;
@@ -86,7 +84,7 @@ void Scene::OptionGameMenuScene::draw()
         button->draw();
 }
 
-void Scene::OptionGameMenuScene::selectGameMenuScene()
+void Scene::OptionGameMenuScene::back()
 {
     _nextScene = Scene::Scenes::START_GAME;
 }
@@ -113,7 +111,7 @@ void Scene::OptionGameMenuScene::selectMapScene()
         _gameSettings->disableBonus();
 }
 
-void Scene::OptionGameMenuScene::leftClick(std::size_t index)
+void Scene::OptionGameMenuScene::leftClick(OPTION index)
 {
     if (_options.at(index).first == 0)
         _options.at(index).first = _options.at(index).second.size() - 1;
@@ -121,7 +119,7 @@ void Scene::OptionGameMenuScene::leftClick(std::size_t index)
         _options.at(index).first -= 1;
 }
 
-void Scene::OptionGameMenuScene::rightClick(std::size_t index)
+void Scene::OptionGameMenuScene::rightClick(OPTION index)
 {
     if (_options.at(index).first == (_options.at(index).second.size() - 1))
         _options.at(index).first = 0;

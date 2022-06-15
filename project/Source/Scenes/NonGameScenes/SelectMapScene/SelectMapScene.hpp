@@ -9,21 +9,21 @@
     #define SELECTMAP_HPP_
 
     #include "AScene.hpp"
-    #include "Music.hpp"
-    #include "Image.hpp"
-    #include "Button.hpp"
-    #include "Text.hpp"
     #include "Map.hpp"
     #include "GameSettings.hpp"
 
-    #include <vector>
-    #include <memory>
-    #include <utility>
-
 namespace Scene {
-
+    /**
+     * @brief Select Map Scene object to handle and display Option Select Map Scene
+     */
     class SelectMapScene : public AScene {
         public:
+            /**
+             * @brief Construct a new Select Map Scene object
+             *
+             * @param settings Shared pointer to Settings class
+             * @param gameSettings Shared pointer to Game Settings class
+             */
             SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~SelectMapScene();
 
@@ -43,9 +43,9 @@ namespace Scene {
             bool isGoodFileMap(const std::string &filename);
 
         private:
-            std::shared_ptr<GameSettings> _gameSettings;
+            std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
             std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Image>> _parallax;
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
             std::string _currentPath;
             int _count;
             std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText;

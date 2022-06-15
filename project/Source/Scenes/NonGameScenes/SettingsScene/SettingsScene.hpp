@@ -8,59 +8,53 @@
 #ifndef SETTINGSSCENE_HPP_
     #define SETTINGSSCENE_HPP_
 
-    // #include <vector>
-    // #include <map>
-
     #include "AScene.hpp"
-    // #include "Music.hpp"
-    // #include "Map.hpp"
-    // #include "Explosion.hpp"
-    // #include "Player.hpp"
-    // #include "Bonus.hpp"
-    // #include "Bomb.hpp"
-    // #include "IRenderding.hpp"
-    // #include "Rendering/Texture.hpp"
-/**
- * @brief The settings scene of the game
- */
+
 namespace Scene {
+    /**
+     * @brief Settings Scene object to handle and display Option Settings Scene
+     */
     class SettingsScene : public AScene {
         public:
+            /**
+             * @brief Construct a new Settings Scene object
+             *
+             * @param settings Shared pointer to Settings class
+             */
             SettingsScene(std::shared_ptr<Settings> settings);
             ~SettingsScene();
 
             Scenes handleEvent() override;
-
-            void draw();
+            void draw() override;
 
         protected:
         private:
+            /**
+             * @brief Call back function executed when credits button is pressed to set next scene to credits scene
+             */
             void credits();
+            /**
+             * @brief Call back function executed when help button is pressed to set next scene to help scene
+             */
             void help();
+            /**
+             * @brief Call back function executed when volume button is pressed to display a popUp to handle volume
+             */
             void volume();
+            /**
+             * @brief Call back function executed when framerate button is pressed to display a popUp to handle framerate
+             */
             void framerate();
+            /**
+             * @brief Call back function executed when controls button is pressed to set next scene to binding scene
+             */
             void controls();
+            /**
+             * @brief Call back function executed when back button is pressed to set next scene to main menu scene
+             */
             void back();
-        private:
-            std::vector<std::unique_ptr<Object::Image>> _parallax;
 
-            // std::unique_ptr<Object::Map> _gameMap;
-            // std::vector<std::unique_ptr<Object::Player>> _players;
-            // std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-            // std::vector<std::unique_ptr<Object::Bonus>> _bonus;
-
-            // // std::unique_ptr<Object::Explosion> _explosion;
-
-            // std::vector<Object::Render::MyAnimation> _animations;
-            // std::vector<Object::Render::MyModel> _models;
-            // std::vector<Object::Render::MyTexture> _textures;
-            // std::vector<Position> _playerPositions;
-            // Vector2 _mapSize;
-
-            // std::string _mapFile;
-
-            // float _margin;
-            // float _playerSpeed;
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
     };
 }
 
