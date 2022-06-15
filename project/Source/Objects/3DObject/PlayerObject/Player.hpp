@@ -57,9 +57,10 @@ namespace Object {
             std::size_t getSetsWon() const { return _setsWon; };
             void setSetsWon(bool setWon);
 
+            std::size_t getKickRange() const { return _kickRange; };
+            void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
+
             nlohmann::json save();
-            // std::size_t getKickRange() const { return _kickRange; };
-            // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
         private:
 

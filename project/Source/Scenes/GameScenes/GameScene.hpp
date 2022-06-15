@@ -82,8 +82,6 @@ namespace Scene {
 
             void resumeGame();
 
-            void setValuesForEndGame();
-
             void save();
 
             void setBombToPause(bool pause);
@@ -105,6 +103,9 @@ namespace Scene {
             std::shared_ptr<Object::Map> _gameMap;
             std::string _mapFile;
             Vector2 _mapSize;
+
+            std::size_t _placement;
+            std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics;
 
             bool _endGame;
 

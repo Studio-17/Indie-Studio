@@ -17,7 +17,7 @@
 namespace Scene {
     class EndGameScene : public AScene {
         public:
-            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::map<Object::PLAYER_ORDER, std::size_t> = {});
+            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::map<std::size_t, Object::PLAYER_ORDER> = {});
             ~EndGameScene();
 
             void loadSceneAssets();
@@ -25,12 +25,13 @@ namespace Scene {
             void draw () override;
             Scenes handleEvent() override;
 
-            void setPlayerCharacteristics(std::map<Object::PLAYER_ORDER, std::size_t> characteristics) { _playerCharacteristics = characteristics; };
+            void drawPlayerName(Object::PLAYER_ORDER player, std::size_t nbText);
+            void drawScore();
 
         protected:
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax;
-            std::map<Object::PLAYER_ORDER, std::size_t> _playerCharacteristics;
+            std::shared_ptr<GameSettings> _gameSettings;
     };
 }
 
