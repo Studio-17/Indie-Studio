@@ -11,6 +11,8 @@
 #include "OptionGameMenuScene.hpp"
 #include "FileError.hpp"
 
+#include "FileError.hpp"
+
 Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =
@@ -92,6 +94,15 @@ void Scene::OptionGameMenuScene::selectMapScene()
     _nextScene = Scene::Scenes::SELECT_MAP;
 
     _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
+
+    std::vector<bool> typePlayers;
+    for (std::size_t i = 0; i < 4; i++) {
+        if (i < _gameSettings->getNbPlayers())
+            typePlayers.emplace_back(false);
+        else
+            typePlayers.emplace_back(true);
+    }
+    _gameSettings->setIaPlayers(typePlayers);
     _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
     _gameSettings->setGameTime(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
     if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Oui")
