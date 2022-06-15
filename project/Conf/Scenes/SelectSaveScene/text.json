@@ -1,0 +1,23 @@
+{
+    "1-title": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "LOAD SAVE",
+        "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [100, 100, 0]
+    },
+    "2-Select-Save": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Select save file",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [380, 400, 0]
+    },
+    "3-Save-Name": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 30,
+        "position": [440, 560, 0]
+    }
+}

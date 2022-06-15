@@ -33,6 +33,12 @@ class GameSettings {
          * @param jsonData nlohmann::json datas containing all values
          */
         void loadFromJson(nlohmann::json const &jsonData);
+        /**
+         * @brief Update data game settings from a json file
+         *
+         * @param filePath std::string path to json file
+         */
+        void updateSettings(std::string const &filePath);
 
         /**
          * @brief Set the Map Path

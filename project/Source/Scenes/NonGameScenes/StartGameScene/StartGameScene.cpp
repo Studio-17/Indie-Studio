@@ -69,7 +69,7 @@ void Scene::StartGameScene::newGameScene()
 
 void Scene::StartGameScene::loadSaveScene()
 {
-    _nextScene = Scene::Scenes::OPTION_GAME;
+    _nextScene = Scene::Scenes::SAVE;
 }
 
 void Scene::StartGameScene::backScene()
