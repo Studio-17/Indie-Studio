@@ -7,8 +7,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "tools.hpp"
 #include "GameScene.hpp"
-#include <tgmath.h>
 
 void Scene::GameScene::exitScene(void)
 {

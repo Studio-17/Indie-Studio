@@ -6,7 +6,7 @@
 */
 
 #ifndef IRENDERDING_HPP_
-#define IRENDERDING_HPP_
+    #define IRENDERDING_HPP_
 
 namespace Object {
     enum class RENDER_TYPE {
@@ -20,14 +20,12 @@ namespace Object {
         PLAYER = 0,
     };
 
-
     enum class MODEL_TYPE {
         PLAYER_1 = 0,
         PLAYER_2,
         PLAYER_3,
         PLAYER_4,
     };
-
 
     enum class TEXTURE_TYPE {
         PLAYER_BLUE = 0,
