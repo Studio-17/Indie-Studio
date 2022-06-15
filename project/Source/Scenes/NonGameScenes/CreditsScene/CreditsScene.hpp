@@ -34,7 +34,7 @@ namespace Scene {
              */
             void back();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
 
     };
 }

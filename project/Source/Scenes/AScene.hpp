@@ -37,15 +37,15 @@ namespace Scene
             virtual void draw() = 0;
 
         protected:
-            std::shared_ptr<Settings> _settings; //< Shared pointer of Settings class
-            std::vector<std::unique_ptr<Object::IObject>> _objects; //< A vector of every objects of the scene
-            // std::vector<std::shared_ptr<IAudio>> _audios; //< A vector of every audios of the game
-            Scene::Scenes _nextScene; //< Scenes Enum corresponding of the next scene to display / handle
+            std::shared_ptr<Settings> _settings; ///< Shared pointer of Settings class
+            std::vector<std::unique_ptr<Object::IObject>> _objects; ///< A vector of every objects of the scene
+            // std::vector<std::shared_ptr<IAudio>> _audios; ///< A vector of every audios of the game
+            Scene::Scenes _nextScene; ///< Scenes Enum corresponding of the next scene to display / handle
 
-            std::vector<std::unique_ptr<Object::Button>> _buttons; //< A vector of every Buttons of the scene
+            std::vector<std::unique_ptr<Object::Button>> _buttons; ///< A vector of every Buttons of the scene
             std::unique_ptr<MyMusic> _mainMusic;
-            std::vector<std::unique_ptr<Object::Image>> _images; //< A vector of every Images of the scene
-            std::vector<std::unique_ptr<Object::Text>> _texts; //< A vector of every Texts of the scene
+            std::vector<std::unique_ptr<Object::Image>> _images; ///< A vector of every Images of the scene
+            std::vector<std::unique_ptr<Object::Text>> _texts; ///< A vector of every Texts of the scene
             std::string _pathToMap;
             std::vector<std::string> _mapsList;
 

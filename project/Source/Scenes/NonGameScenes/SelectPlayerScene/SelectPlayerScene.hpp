@@ -36,10 +36,10 @@ namespace Scene {
             void rightClick(std::uint8_t index);
 
         private:
-            std::shared_ptr<GameSettings> _gameSettings; //< Shared pointer to game Settings class
+            std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _players;
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
     };
 }
 

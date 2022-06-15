@@ -46,15 +46,15 @@ namespace Scene {
              */
             void cancelBind();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
-            std::vector<std::unique_ptr<Object::Image>> _popUp; //< Vector of every Images of binding popUp
-            std::vector<std::unique_ptr<Object::Text>> _popUpText; //< Vector of every Texts of binding popUp
-            std::vector<std::unique_ptr<Object::Button>> _popUpButton; //< Vector of every Buttons of binding popUp
-            Keyboard &_keyboard; //< Keyboard object to get pressed key
-            std::vector<std::map<PlayerAction, int>> _playerAction; //< Vector of map of key corresponding of a player action
-            std::function<void(int, int, int)> _bindingFunction; //< Function to bind an action by a key
-            int _buttonIndex; //< index of button when handleling an event
-            int _buttonOpened; //< index of button wich opened the popUp
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> _popUp; ///< Vector of every Images of binding popUp
+            std::vector<std::unique_ptr<Object::Text>> _popUpText; ///< Vector of every Texts of binding popUp
+            std::vector<std::unique_ptr<Object::Button>> _popUpButton; ///< Vector of every Buttons of binding popUp
+            Keyboard &_keyboard; ///< Keyboard object to get pressed key
+            std::vector<std::map<PlayerAction, int>> _playerAction; ///< Vector of map of key corresponding of a player action
+            std::function<void(int, int, int)> _bindingFunction; ///< Function to bind an action by a key
+            int _buttonIndex; ///< index of button when handleling an event
+            int _buttonOpened; ///< index of button wich opened the popUp
     };
 }
 

@@ -43,9 +43,9 @@ namespace Scene {
             bool isGoodFileMap(const std::string &filename);
 
         private:
-            std::shared_ptr<GameSettings> _gameSettings; //< Shared pointer to game Settings class
+            std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
             std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
             std::string _currentPath;
             int _count;
             std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText;

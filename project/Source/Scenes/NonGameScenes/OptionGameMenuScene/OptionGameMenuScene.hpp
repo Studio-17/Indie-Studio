@@ -59,10 +59,10 @@ namespace Scene {
              */
             void rightClick(OPTION index);
 
-            std::shared_ptr<GameSettings> _gameSettings; //< Shared pointer to game Settings class
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options; //< Vector of pair of with his Text
+            std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options; ///< Vector of pair of with his Text
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
     };
 }
 
