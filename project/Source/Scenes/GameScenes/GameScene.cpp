@@ -426,6 +426,7 @@ void Scene::GameScene::printTimer()
 
     seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
     if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
+        _gameSettings->setTimeOut(true);
         _endGame = true;
     }
     if (seconds == 0) {

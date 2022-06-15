@@ -67,9 +67,17 @@ void Scene::EndGameScene::draw()
         parallax->draw();
     for (auto &button : _buttons)
         button->draw();
+
+    if (!_gameSettings->getTimeOut()) {
+        drawScore();
         for (auto &image : _images)
-        image->draw();
-    for (auto &text : _texts)
-        text->draw();
-    drawScore();
+            image->draw();
+        for (auto &text : _texts)
+            text->draw();
+    } else {
+        _texts.at(1)->setText("TIME OUT!");
+        _texts.at(1)->setPosition((Position){500, 140, 0});
+        _images.at(0)->draw();
+        _texts.at(1)->draw();
+    }
 }

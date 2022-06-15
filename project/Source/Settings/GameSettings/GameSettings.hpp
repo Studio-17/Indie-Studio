@@ -171,8 +171,11 @@ class GameSettings {
          */
         bool IsEnabledBonus() const;
 
-        void setPlayersRank(std::map<std::size_t, Object::PLAYER_ORDER> playerRank) {_playersRank = playerRank;};
+        void setPlayersRank(std::map<std::size_t, Object::PLAYER_ORDER> playerRank) { _playersRank = playerRank; };
         std::map<std::size_t, Object::PLAYER_ORDER> getPlayersRank() { return _playersRank; };
+
+        void setTimeOut(bool timeOut) { _timeOut = timeOut; };
+        bool getTimeOut() { return _timeOut; };
 
     protected:
     private:
@@ -188,6 +191,7 @@ class GameSettings {
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled
         std::map<std::size_t, Object::PLAYER_ORDER> _playersRank;
+        bool _timeOut = false;
 
         // End game stats
         std::size_t victoriousPlayer;
