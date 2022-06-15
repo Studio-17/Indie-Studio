@@ -20,10 +20,10 @@
     #include "Image.hpp"
     #include "ITwoDimensionObject.hpp"
 
-/**
- * @brief Button class
- */
 namespace Object {
+    /**
+     * @brief Button class
+     */
     class Button : public ITwoDimensionObject {
         public:
             /**
@@ -89,10 +89,30 @@ namespace Object {
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
 
+            /**
+             * @brief Set button text
+             *
+             * @param text
+             */
             void setText(std::string const &text);
+            /**
+             * @brief Get button text
+             *
+             * @return std::string
+             */
             std::string getText() const;
-
+            /**
+             * @brief Set button text position
+             *
+             * @param position 2 or 3 dimensional object
+             */
             void setTextPosition(Position const &position);
+            /**
+             * @brief Set the Text Position object
+             *
+             * @param x
+             * @param y
+             */
             void setTextPosition(float x, float y);
             Position getTextPosition() const;
 
@@ -137,7 +157,7 @@ namespace Object {
             bool _isClickable; ///< button is clickable
             int _nbFrame; ///< number of frame of a button
             State _state; ///< state of a button object
-            Position _position; ///< 2 or 3 dimensional position
+            Position _position; ///< 2 dimensional position
 
             Texture2D _buttonTexture; ///< button texture from raylib
             Rectangle _buttonRect; ///< button rectangle from raylib
@@ -146,7 +166,7 @@ namespace Object {
             float _frameHeight; ///< height of each frame
 
             MySound _audio; ///< audio object
-            bool _isAudio; ///< audio is present or not
+            bool _isAudio; ///< audio is present
 
             Text _text; ///< text object
             Image _image; ///< image object

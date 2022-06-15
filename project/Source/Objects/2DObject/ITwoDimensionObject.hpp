@@ -10,11 +10,11 @@
 
     #include "IObject.hpp"
 
-/**
- * @brief An interface of every two dimensional object
- */
 namespace Object
 {
+    /**
+     * @brief An interface of every two dimensional object
+     */
     class ITwoDimensionObject : public IObject  {
         public:
             /**
