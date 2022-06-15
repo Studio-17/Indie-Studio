@@ -51,9 +51,9 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _gameMap = std::make_shared<Object::Map>(_models, _textures);
     _gameSettings->setGameMap(_gameMap);
     _timePerRound = 3;
-    _3dcameraVue = false;
+    _3dcameraVue = true;
     _actualMinutes = _timePerRound - 1;
-    _mapSize = {13, 13};
+    _mapSize = {11, 11};
     _mapFile = _gameSettings->getMapPath();
     _margin = 5.0f;
     _percentageBonusDrop = 60;

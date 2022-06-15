@@ -25,6 +25,8 @@ namespace Scene {
             void draw () override;
             Scenes handleEvent() override;
 
+            void setPlayerCharacteristics(std::map<Object::PLAYER_ORDER, std::size_t> characteristics) { _playerCharacteristics = characteristics; };
+
         protected:
         private:
             std::vector<std::unique_ptr<Object::Image>> _parallax;

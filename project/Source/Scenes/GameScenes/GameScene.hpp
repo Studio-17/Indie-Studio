@@ -21,6 +21,7 @@
     #include "IRenderding.hpp"
     #include "Rendering/Texture.hpp"
     #include "PauseScene.hpp"
+    #include "EndGameScene.hpp"
     #include "tools.hpp"
     #include "Settings.hpp"
 

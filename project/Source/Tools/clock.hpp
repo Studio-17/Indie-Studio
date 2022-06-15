@@ -42,7 +42,7 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
             _end = std::chrono::system_clock::now();
             _elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(_end - _start).count();
 
-            return (!_isPaused ? _elapsedTime + _elapsedTimePause : _tmpElapsedTime);
+            return (!_isPaused ? _elapsedTime - _elapsedTimePause : _tmpElapsedTime);
         };
 
         void pause()
@@ -54,7 +54,6 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
 
         void unpause()
         {
-            start();
             _endPause = std::chrono::system_clock::now();
             _elapsedTimePause += std::chrono::duration_cast<std::chrono::milliseconds>(_endPause - _startPause).count();
             _isPaused = false;
