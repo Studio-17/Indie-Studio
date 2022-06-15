@@ -8,6 +8,9 @@
 #ifndef ISCENE_HPP_
     #define ISCENE_HPP_
 
+/**
+ * @brief A namesapce grouping every scene of the game
+ */
 namespace Scene
 {
     /**
@@ -50,9 +53,10 @@ namespace Scene
              */
             virtual Scenes handleEvent() = 0;
 
+            /**
+             * @brief To draw every object of the Scene
+             */
             virtual void draw() = 0;
-
-
     };
 }
 

@@ -11,8 +11,6 @@
 #include "tools.hpp"
 #include "SelectPlayerScene.hpp"
 
-#include "FileError.hpp"
-
 void Scene::SelectPlayerScene::exitSelectPlayerScene()
 {
     _nextScene = Scenes::SELECT_MAP;

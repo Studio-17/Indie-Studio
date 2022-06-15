@@ -9,20 +9,20 @@
     #define SELECTPLAYERSCENE_HPP_
 
     #include "AScene.hpp"
-    #include "Music.hpp"
-    #include "Image.hpp"
-    #include "Button.hpp"
-    #include "Text.hpp"
     #include "GameSettings.hpp"
 
-    #include <vector>
-    #include <memory>
-    #include <utility>
-
 namespace Scene {
-
+    /**
+     * @brief Select Player Scene object to handle and display Option Select Player Scene
+     */
     class SelectPlayerScene : public AScene {
         public:
+            /**
+             * @brief Construct a new Select Player Scene object
+             *
+             * @param settings Shared pointer to Settings class
+             * @param gameSettings Shared pointer to Game Settings class
+             */
             SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~SelectPlayerScene();
 
@@ -36,10 +36,10 @@ namespace Scene {
             void rightClick(std::uint8_t index);
 
         private:
+            std::shared_ptr<GameSettings> _gameSettings; //< Shared pointer to game Settings class
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _players;
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax;
-            std::shared_ptr<GameSettings> _gameSettings;
+            std::vector<std::unique_ptr<Object::Image>> _parallax; //< Vector of every Images of the parallax
     };
 }
 

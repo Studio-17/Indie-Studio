@@ -10,7 +10,7 @@
 #include "tools.hpp"
 #include "BindingScene.hpp"
 
-Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction) : 
+Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction) :
     AScene(settings), _keyboard(keyboard), _playerAction(playerAction), _bindingFunction(bindingFunction), _buttonIndex(0)
 {
     _nextScene = Scenes::BINDING_MENU;
@@ -24,11 +24,6 @@ Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &
             _buttons.at((player * 5) + touch)->setText(setActionToString(playerAction.at(player).at(static_cast<PlayerAction>(touch - 1))));
             _buttons.at((player * 5) + touch)->setCallBack(std::bind(&Scene::BindingScene::bindKey, this));
         }
-    // for (std::size_t index = 1; index !=_buttons.size(); index++)
-        // _buttons.at(index)->setCallBack(std::bind(&Scene::BindingScene::newGameScene, this));
-    // for (auto &text: _texts)
-        // text->disable();
-    // _texts.at(0)->enable();
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _popUp = loadObjects<Object::Image>("Conf/Scenes/BindingScene/pop_up.json");
     _popUpText = loadObjects<Object::Text>("Conf/Scenes/BindingScene/pop_up_text.json");
@@ -118,18 +113,6 @@ void Scene::BindingScene::bindKey()
         popUp->enable();
         popUp->enableClick();
     }
-    _buttonOpened = _buttonIndex;
-}
-
-void Scene::BindingScene::settingsScene()
-{
-
-}
-
-void Scene::BindingScene::newGameScene()
-{
-    _images.at(0)->enable();
-    _texts.at(_buttonIndex)->enable();
     _buttonOpened = _buttonIndex;
 }
 

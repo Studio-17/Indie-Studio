@@ -13,8 +13,6 @@
 #include "tools.hpp"
 #include "SelectMapScene.hpp"
 
-#include "FileError.hpp"
-
 void Scene::SelectMapScene::exitSelectMapSceneScene()
 {
     _nextScene = Scenes::OPTION_GAME;
@@ -32,7 +30,6 @@ void Scene::SelectMapScene::runSelectPlayerScene()
         _gameSettings->setMapPath(_currentPath);
         _gameSettings->setMapSize(std::make_pair(static_cast<float>(_height), static_cast<float>(_width)));
     }
-    
     _nextScene = Scenes::SELECT_PLAYER;
 }
 
