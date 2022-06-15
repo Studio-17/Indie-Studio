@@ -15,6 +15,9 @@
     #include "Settings.hpp"
     #include "Position.hpp"
 
+/**
+ * @brief A namespace regrouping all objects in the game
+ */
 namespace Object {
     class IObject {
         public:
