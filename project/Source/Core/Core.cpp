@@ -18,13 +18,14 @@
 #include "SelectMapScene.hpp"
 #include "CreditsScene.hpp"
 #include "SelectSaveScene.hpp"
+#include "IntroductionScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
 #include "Core.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::MAIN_MENU),
+    _activeScene(Scene::Scenes::INTRODUCTION),
     _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
     _gameSettings(std::make_shared<GameSettings>())
 {
@@ -56,19 +57,23 @@ void Core::loadMenuScenes()
     _texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
     updateLoadingScreen();
 
+    std::shared_ptr<Scene::GameScene> gameScene = std::make_shared<Scene::GameScene>(_settings, _gameSettings);
+    updateLoadingScreen();
+    _menuScenes.emplace(Scene::Scenes::INTRODUCTION, std::make_shared<Scene::IntroductionScene>(_settings, _keyboard));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
     updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::GAME, std::make_shared<Scene::GameScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::GAME, gameScene);
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
     updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
     updateLoadingScreen();

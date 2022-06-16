@@ -30,6 +30,8 @@ namespace RayLib
             void startMode3D();
             void endMode3D();
 
+            Camera getCamera() const;
+
             void setPosition(Position const &position);
             void setTarget(Position const &target);
             void setUp(Position const &up);

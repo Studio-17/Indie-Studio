@@ -34,11 +34,6 @@ cmake -DUNIT_TEST=ON ..
 
 ```
 
-> Usage
-```
-This repository is intended for epitech students for want to access github actions and other features
-If you are heving an issue please submit it on this github : )
-```
 #
 
 Made by :

@@ -76,48 +76,11 @@ namespace Object
              */
             std::vector<Position> getMapCorners(std::size_t width, std::size_t height);
             /**
-             * @brief Generate final map
-             *
-             * @param filename path to map file
-             * @param width width of map
-             * @param height height of map
-             * @param percentageDrop box percentage drop
-             */
-            void generate(const std::string &filename, std::size_t width, std::size_t height, std::size_t percentageDrop);
-
-            /**
-             * @brief Create a file
-             *
-             * @param filename path to file
-             */
-            void createFile(const std::string &filename);
-
-            /**
-             * @brief Get objects in map
-             *
-             * @return std::vector<std::shared_ptr<Object::Block>>
-             */
-            std::vector<std::shared_ptr<Object::Block>> getMapObjects() { return _mapObjects; };
-            /**
              * @brief Get objects position in map
              *
              * @return std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>>
              */
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> getMapPositionsObjects() { return _mapPositionsObjects; };
-
-
-            /**
-             * @brief Print map line
-             *
-             * @param height height of map
-             */
-            void printLine(std::size_t height);
-            /**
-             * @brief Get the Dimensions of map
-             *
-             * @return Position
-             */
-            Position getDimensions() { return _mapDimensions; };
 
             /**
              * @brief Get block size
@@ -125,12 +88,6 @@ namespace Object
              * @return float
              */
             float getBlockSize() { return _blockSize; };
-            /**
-             * @brief Remove block at index
-             *
-             * @param index index of block to remove
-             */
-            void removeBlock(std::size_t index);
             /**
              * @brief Is collision with block
              *
@@ -183,7 +140,15 @@ namespace Object
              */
             std::pair<int, int> transposeFrom3Dto2D(Position const &position);
 
-            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects; ///< map positions objects
+            /**
+             * @brief Clear the content of the map
+             */
+            void clearMap() {
+                if (!_mapPositionsObjects.empty())
+                    _mapPositionsObjects.clear();
+                if (!_groundMap.empty())
+                    _groundMap.clear();
+            };
 
             /**
              * @brief Get the map model
@@ -201,24 +166,19 @@ namespace Object
             /**
              * @brief Save map in file
              */
-            void save();
+            void save(std::string const &mapPath);
         protected:
         private:
-            std::vector<std::shared_ptr<Object::Block>> _mapObjects; ///< map objects
 
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects; ///< map positions objects
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap; ///< ground map objects
 
-
             bool _isEnable; ///< is enable
-            std::string _pathToMap; ///< path to save map file
-            std::ofstream _file; ///< file map
 
 
             Position _mapPosition; ///< map position
-            Position _mapDimensions; ///< map dimensions
 
             float _blockSize; ///> block size
-
 
             std::vector<Object::Render::MyModel> _mapModels; ///< map of MyModels
             std::vector<Object::Render::MyTexture> _mapTextures; ///< map of MyTextures

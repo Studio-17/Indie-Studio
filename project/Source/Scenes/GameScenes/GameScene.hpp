@@ -32,37 +32,32 @@ namespace Scene {
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             ~GameScene();
 
+            void loadSceneAssets();
+            void applyGameParams();
+
             Scenes handleEvent() override;
-            void exitScene();
-            void settingsScene();
-            void newGameScene();
-            void mainMenuScene();
             void draw() override;
 
-            int getMovingKeys();
-
-            void setCameraVue();
-
-            bool isCollidingObject(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
-
-            void handleBombs();
-            void placeBomb(Position pos, float lifetime, std::size_t range, Object::PLAYER_ORDER playerNb);
-            void exploseBomb(Position const &position, int radius);
-
-            void placeExplosions(float time, Position position);
-            void handleExplosions();
+            /* Handle part */
+            void handleWin();
 
             void handlePlayers();
+            void placeBomb(Position const &pos, Object::PLAYER_ORDER playerNb);
+            void CollideObject(Position const &playerPosition, Object::PLAYER_ORDER playerNb);
+            void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
 
-            void handleButtons();
+            void handleBombs();
+            void exploseBomb(Position const &position, int radius);
+            void placeExplosions(float time, Position position);
+            void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
+            void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
 
             void handlePause();
+            void setBombToPause(bool pause);
 
-            void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
-            void AwardBonus(Object::PLAYER_ORDER playerNb, Object::BONUS_OBJECTS bonus);
-            void drawObjects();
+            void handleExplosions();
+            void handleTimer();
 
-            void loadSceneAssets();
 
             void handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi);
             std::vector<PlayerAction> getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi);
@@ -74,21 +69,21 @@ namespace Scene {
 
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
-            void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
 
-            void printTimer();
+            bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
-            void handleWin();
+            /* Draw part */
+            void drawObjects();
 
+            /*              */
             void resumeGame();
 
             void save();
 
-            void setBombToPause(bool pause);
-
-
         protected:
         private:
+            void setCameraView();
+
             std::shared_ptr<GameSettings> _gameSettings;
 
             std::vector<std::unique_ptr<Object::Image>> _backgroundImage;
@@ -98,24 +93,19 @@ namespace Scene {
             Clock _clockGame;
 
             std::size_t _timePerRound;
-            std::size_t _actualMinutes;
 
             std::shared_ptr<Object::Map> _gameMap;
-            std::string _mapFile;
-            Vector2 _mapSize;
-
             std::size_t _placement;
             std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics;
 
             bool _endGame;
 
-            std::map<std::size_t, std::shared_ptr<Object::Player>> _players;
-            std::vector<Position> _playerPositions;
+            std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players;
             float _playerSpeed;
 
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
+            float _timeBeforeBombExplosion;
 
-            // std::map<size_t, std::pair<Position, float>> _explosions;
             std::map<int, std::map<int, float>> _explosions;
 
             std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;

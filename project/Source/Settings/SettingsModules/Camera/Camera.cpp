@@ -38,6 +38,11 @@ void RayLib::CinematicCamera::endMode3D()
     EndMode3D();
 }
 
+Camera RayLib::CinematicCamera::getCamera() const
+{
+    return _camera;
+}
+
 void RayLib::CinematicCamera::setPosition(Position const &position)
 {
     _camera.position = position.getVector3();

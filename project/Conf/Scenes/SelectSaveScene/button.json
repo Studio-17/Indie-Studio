@@ -19,13 +19,19 @@
         "position": [300, 551, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
-    }
-    ,
+    },
     "4-NextSave": {
         "type": "button",
         "nbFrame": 2,
         "position": [670, 551, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "5-NewGameScene": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [300, 700, 0],
+        "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     }
 }
