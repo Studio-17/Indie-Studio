@@ -1,8 +1,8 @@
 {
-    "1-first": {
+    "1-Resume": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 300, 0],
+        "position": [520, 350, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -18,10 +18,10 @@
             "position": [15, 10, 0]
         }
     },
-    "2-second": {
+    "2-Settings": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 500, 0],
+        "position": [520, 600, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -37,10 +37,10 @@
             "position": [15, 10, 0]
         }
     },
-    "3-third": {
+    "3-Restart": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 700, 0],
+        "position": [1000, 350, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -56,10 +56,10 @@
             "position": [15, 10, 0]
         }
     },
-    "4-third": {
+    "4-Exit": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 800, 0],
+        "position": [1000, 600, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -75,15 +75,15 @@
             "position": [15, 10, 0]
         }
     },
-    "5-fourth": {
+    "5-Yes": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 300, 0],
+        "position": [520, 500, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
             "font": "Ressources/fonts/squarefont/Square.ttf",
-            "text": "Oui",
+            "text": "Yes",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
@@ -94,15 +94,15 @@
             "position": [15, 10, 0]
         }
     },
-    "6-fifth": {
+    "6-No": {
         "type": "button",
         "nbFrame": 3,
-        "position": [848, 700, 0],
+        "position": [1000, 500, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
             "font": "Ressources/fonts/squarefont/Square.ttf",
-            "text": "Non",
+            "text": "No",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
@@ -113,7 +113,7 @@
             "position": [15, 10, 0]
         }
     },
-    "7-sixth": {
+    "7-Switch": {
         "type": "button",
         "nbFrame": 3,
         "position": [480, 700, 0],
