@@ -65,6 +65,8 @@ namespace Object {
             void setPosition(float x, float y) override;
             void setPosition(float x, float y, float z) override;
             Position getPosition() const override;
+            void setRotation(float rotation);
+            float getRotation() const;
 
             /**
              * @brief Set scale of object
@@ -79,6 +81,7 @@ namespace Object {
             Position _imagePosition; ///< 2 dimensional position
             Texture2D _imageTexture; ///< image texture from raylib
             float _imageScale = 1.0f; ///< float scale value
+            float _rotation;
     };
 }
 

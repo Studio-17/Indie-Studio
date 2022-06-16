@@ -13,14 +13,16 @@ Object::Image::Image() : _isEnable(false), _imageLoaded(false)
 }
 
 Object::Image::Image(std::string const &imagePath, Position const &position) :  _isEnable(true), _imageLoaded(true), _imagePosition(position),
-    _imageTexture(LoadTexture(imagePath.c_str()))
+    _imageTexture(LoadTexture(imagePath.c_str())),
+    _rotation(0.0f)
 {
 }
 
 Object::Image::Image(nlohmann::json const &jsonData, Object::Render::MyTexture &texture) :
     _isEnable(jsonData.value("isEnable", true)), _imageLoaded(true),
     _imageTexture(texture.getTexture()),
-    _imageScale(jsonData.value("scale", 1.0))
+    _imageScale(jsonData.value("scale", 1.0)),
+    _rotation(jsonData.value("rotation", 0.0f))
 {
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
 }
@@ -28,7 +30,8 @@ Object::Image::Image(nlohmann::json const &jsonData, Object::Render::MyTexture &
 Object::Image::Image(nlohmann::json const &jsonData) : _isEnable(jsonData.value("isEnable", true)),
     _imageLoaded(true),
     _imageTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
-    _imageScale(jsonData.value("scale", 1.0))
+    _imageScale(jsonData.value("scale", 1.0)),
+    _rotation(jsonData.value("rotation", 0.0f))
 {
     _imagePosition.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
 }
@@ -51,7 +54,7 @@ void Object::Image::operator ()(nlohmann::json const &jsonData)
 void Object::Image::draw()
 {
     if (_isEnable)
-        DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, 0.0f, _imageScale, WHITE);
+        DrawTextureEx(_imageTexture, (Vector2){_imagePosition.getX(), _imagePosition.getY()}, _rotation, _imageScale, WHITE);
 }
 
 void Object::Image::enable()
@@ -92,4 +95,14 @@ void Object::Image::setScale(float scale)
 Position Object::Image::getPosition() const
 {
     return _imagePosition;
+}
+
+void Object::Image::setRotation(float rotation)
+{
+    _rotation = rotation;
+}
+
+float Object::Image::getRotation() const
+{
+    return _rotation;
 }
