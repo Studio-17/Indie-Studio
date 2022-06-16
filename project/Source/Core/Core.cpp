@@ -18,13 +18,14 @@
 #include "SelectMapScene.hpp"
 #include "CreditsScene.hpp"
 #include "SelectSaveScene.hpp"
+#include "IntroductionScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
 #include "Core.hpp"
 
 Core::Core() : _isRunning(true),
-    _activeScene(Scene::Scenes::MAIN_MENU),
+    _activeScene(Scene::Scenes::INTRODUCTION),
     _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
     _gameSettings(std::make_shared<GameSettings>())
 {
@@ -42,6 +43,7 @@ void Core::loadMenuScenes()
 {
     std::shared_ptr<Scene::GameScene> gameScene = std::make_shared<Scene::GameScene>(_settings, _gameSettings);
 
+    _menuScenes.emplace(Scene::Scenes::INTRODUCTION, std::make_shared<Scene::IntroductionScene>(_settings, _keyboard));
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings));
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
