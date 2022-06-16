@@ -35,6 +35,7 @@ namespace Scene {
             void runGame();
             void previousSave();
             void nextSave();
+            void newGameScene();
             bool isGoodSaveFile(const std::string &filename);
             std::vector<std::string> getFilesListFromDirectory(const std::string &directory);
 
