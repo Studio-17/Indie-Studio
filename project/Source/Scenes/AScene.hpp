@@ -15,6 +15,7 @@
     #include "Settings.hpp"
     #include "Button.hpp"
     #include "Music.hpp"
+    #include "MySound.hpp"
     #include "Image.hpp"
     #include "Text.hpp"
 
@@ -43,7 +44,8 @@ namespace Scene
             Scene::Scenes _nextScene; ///< Scenes Enum corresponding of the next scene to display / handle
 
             std::vector<std::unique_ptr<Object::Button>> _buttons; ///< A vector of every Buttons of the scene
-            std::unique_ptr<MyMusic> _mainMusic; ///< Ptr to main music object
+            std::vector<std::unique_ptr<MyMusic>> _mainMusic; ///< Ptr to main music object
+            std::vector<std::unique_ptr<MySound>> _audios;
             std::vector<std::unique_ptr<Object::Image>> _images; ///< A vector of every Images of the scene
             std::vector<std::unique_ptr<Object::Text>> _texts; ///< A vector of every Texts of the scene
         private:

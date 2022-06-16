@@ -35,6 +35,7 @@ Scene::Scenes Scene::StartGameScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+    _settings->updateMusicStream(MusicsEnum::Menu);
     _nextScene = Scene::Scenes::START_GAME;
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
@@ -69,7 +70,7 @@ void Scene::StartGameScene::newGameScene()
 
 void Scene::StartGameScene::loadSaveScene()
 {
-    _nextScene = Scene::Scenes::OPTION_GAME;
+    _nextScene = Scene::Scenes::SAVE;
 }
 
 void Scene::StartGameScene::backScene()

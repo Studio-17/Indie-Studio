@@ -76,6 +76,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER2), std::make_unique<Object::Player>(_models.at(1), _textures.at(2), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER3), std::make_unique<Object::Player>(_models.at(2), _textures.at(3), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)), Object::MAP_OBJECTS::PLAYER));
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
+    _placement = _players.size();
 
     _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::save, this));
     _gameSettings->setPlayers(_players);
@@ -236,6 +237,7 @@ void Scene::GameScene::handlePlayers()
 Scene::Scenes Scene::GameScene::handleEvent()
 {
     _nextScene = Scene::Scenes::GAME;
+    _settings->updateMusicStream(MusicsEnum::Game);
     if (!_isPaused) {
         handleWin();
         handlePlayers();
@@ -377,6 +379,8 @@ void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range
     std::pair<int, int> pairPos = _gameMap->transposeFrom3Dto2D(pos);
     Position newPos = {static_cast<float>(pairPos.first * static_cast<int>(_gameMap->getBlockSize())), pos.getY(), static_cast<float>(pairPos.second * static_cast<int>(_gameMap->getBlockSize()))};
 
+    _settings->playSound(SoundsEnum::BombDrop);
+
     for (auto &bomb : _bombs) {
         if (bomb->getPosition() == newPos)
             blockTooked = true;
@@ -416,12 +420,18 @@ void Scene::GameScene::placeBonus(std::pair<int, int> position, std::size_t perc
 
 void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos)
 {
+    std::size_t playerIndex = 0;
     std::pair<int, int> playerPos;
+
     _players = _gameSettings->getPlayers();
     for (auto &[index, player] : _players) {
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
-        if (playerPos == explosionPos)
+        if (playerPos == explosionPos) {
             player->die();
+            _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(playerIndex));
+            _placement--;
+        }
+        playerIndex++;
     }
 }
 
@@ -456,6 +466,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     std::size_t index = 0;
 
+    _settings->playSound(SoundsEnum::BombExplosion);
     srand(time(NULL));
     _gameMap->placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     placeExplosions(_clockGame.getElapsedTime(), position);
@@ -487,15 +498,6 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     }
 }
 
-void Scene::GameScene::setValuesForEndGame()
-{
-    std::map<Object::PLAYER_ORDER, std::size_t> mapStatistics;
-
-    for (std::size_t index = 0; index < _players.size(); index ++) {
-        mapStatistics.emplace(static_cast<Object::PLAYER_ORDER>(index), _players.at(index)->getSetsWon());
-    }
-}
-
 void Scene::GameScene::setBombToPause(bool pause)
 {
     for (auto &bomb : _bombs)
@@ -505,22 +507,28 @@ void Scene::GameScene::setBombToPause(bool pause)
 void Scene::GameScene::handleWin()
 {
     std::size_t nbPlayersAlive = 0;
+    std::size_t winnerPlayer;
+    std::size_t index = 0;
 
     for (auto &player : _players) {
-        if (player.second->isAlive())
+        if (player.second->isAlive()) {
+            winnerPlayer = index;
             nbPlayersAlive++;
+        }
+        index++;
     }
     if (nbPlayersAlive == 1) {
-        for (auto &player : _players) {
-            if (player.second->isAlive())
-                player.second->setSetsWon(true);
-        }
         _endGame = true;
+        _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(winnerPlayer));
     }
 
     if (_endGame == true) {
         save();
-        setValuesForEndGame();
+        _settings->stopMusic(MusicsEnum::Game);
+        _settings->playMusic(MusicsEnum::EndGame);
+        for (auto &i: _mapStatistics)
+            std::cout << i.first << " " << static_cast<int>(i.second) << std::endl;
+        _gameSettings->setPlayersRank(_mapStatistics);
         _nextScene = Scene::Scenes::END_GAME;
     }
 }
@@ -536,6 +544,7 @@ void Scene::GameScene::printTimer()
 
     seconds = getInversedTime(_clockGame.getElapsedTime() / 1000);
     if (_actualMinutes == 0 && std::to_string(static_cast<int>(seconds)) == "0") {
+        _gameSettings->setTimeOut(true);
         _endGame = true;
     }
     if (seconds == 0) {

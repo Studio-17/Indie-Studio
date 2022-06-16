@@ -10,6 +10,8 @@
 
     #include <raylib.h>
 
+    #include <nlohmann/json.hpp>
+
     #include <string>
 
     #include "IAudio.hpp"
@@ -17,6 +19,8 @@
 class MySound : public IAudio {
     public:
         MySound(std::string const &filename);
+        MySound(nlohmann::json const &jsonData);
+
         MySound();
         ~MySound();
 

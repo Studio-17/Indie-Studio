@@ -1,0 +1,72 @@
+{
+    "0-winner-player": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "J",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [925, 50, 0]
+    },
+    "1-winner": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "WON!",
+        "color": [255, 255, 0, 255],
+        "fontSize": 150,
+        "position": [800, 140, 0]
+    },
+    "2-first": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "1",
+        "color": [243, 58, 108, 255],
+        "fontSize": 60,
+        "position": [1450, 400, 0]
+    },
+    "3-player1": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "J",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 400, 0]
+    },
+    "4-second": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "2",
+        "color": [243, 58, 108, 255],
+        "fontSize": 60,
+        "position": [1450, 500, 0]
+    },
+    "5-player2": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "J",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 500, 0]
+    },
+    "6-third": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "3",
+        "color": [243, 58, 108, 255],
+        "fontSize": 60,
+        "position": [1450, 600, 0]
+    },
+    "7-player3": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "J",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 600, 0]
+    },
+    "8-fourth": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "4",
+        "color": [243, 58, 108, 255],
+        "fontSize": 60,
+        "position": [1450, 700, 0]
+    },
+    "6-player4": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "J",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 700, 0]
+    }
+}
