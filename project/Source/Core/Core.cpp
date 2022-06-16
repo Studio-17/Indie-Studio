@@ -29,7 +29,7 @@ Core::Core() : _isRunning(true),
     _settings(std::make_shared<Settings>(getJsonData("Conf/Settings/settings.json"))),
     _gameSettings(std::make_shared<GameSettings>())
 {
-    waitingLoad();
+    // waitingLoad();
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
     loadMenuScenes();
     srand(time(NULL));
@@ -39,22 +39,51 @@ Core::~Core()
 {
 }
 
+void Core::updateLoadingScreen()
+{
+     _settings->getWindow()->startDrawing();
+    _settings->getWindow()->clearBackground(DARKPURPLE);
+    for (auto &text : _texts)
+        text->draw();
+    _images.at(1)->draw();
+    _images.at(0)->setRotation(_images.at(0)->getRotation() + 90.0f);
+    _images.at(0)->draw();
+    _settings->getWindow()->endDrawing();
+}
+
 void Core::loadMenuScenes()
 {
-    std::shared_ptr<Scene::GameScene> gameScene = std::make_shared<Scene::GameScene>(_settings, _gameSettings);
+    _images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
+    _texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
+    updateLoadingScreen();
 
+    std::shared_ptr<Scene::GameScene> gameScene = std::make_shared<Scene::GameScene>(_settings, _gameSettings);
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::INTRODUCTION, std::make_shared<Scene::IntroductionScene>(_settings, _keyboard));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::GAME, gameScene);
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
+    updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
+    updateLoadingScreen();
+    _settings->getWindow()->endDrawing();
 }
 
 void Core::loop()
@@ -131,9 +160,10 @@ void Core::waitingLoad()
 
     _settings->getWindow()->startDrawing();
     _settings->getWindow()->clearBackground(DARKPURPLE);
-    for (auto &image : images)
+    for (auto &image : images) {
         image->draw();
-        for (auto &text : texts)
+    }
+    for (auto &text : texts)
         text->draw();
     _settings->getWindow()->endDrawing();
 }

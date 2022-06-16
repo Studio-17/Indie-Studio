@@ -11,7 +11,15 @@
 Scene::PauseScene::PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::function<void(void)>> callBacks) : AScene(settings),
  _shouldPrintExitPopUp(false)
 {
-    std::vector<std::function<void(void)>> callBack = {callBacks.at(0), callBacks.at(0), callBacks.at(1), std::bind(&Scene::PauseScene::printExitPopUp, this), std::bind(&Scene::PauseScene::save, this), std::bind(&Scene::PauseScene::exitGame, this), std::bind(&Scene::PauseScene::unPrintExitPopUp, this)};
+    std::vector<std::function<void(void)>> callBack = {
+        callBacks.at(0),
+        callBacks.at(0),
+        callBacks.at(1),
+        std::bind(&Scene::PauseScene::printExitPopUp, this),
+        std::bind(&Scene::PauseScene::save, this),
+        std::bind(&Scene::PauseScene::exitGame, this),
+        std::bind(&Scene::PauseScene::unPrintExitPopUp, this)
+    };
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/PauseScene/button.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/PauseScene/image.json");
