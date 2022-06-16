@@ -9,7 +9,7 @@
 
 GameSettings::GameSettings() :
  _mapPath("Save/Maps/random.map"), _nbPlayers(4), _nbSets(1), _gameTime(1), _enableBonus(true),
- _playerSkins({0, 0, 0, 0}), _iaPlayers({true, false, false, false})
+ _playerSkins({0, 0, 0, 0}), _iaPlayers({false, false, false, false})
 {
     // _gameMap = std::make_shared<Object::Map>();
 }
@@ -22,11 +22,16 @@ void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 {
     _mapPath = jsonData.value("mapPath", "Save/Maps/random.map");
     _playerSkins = jsonData.value("playerSkins", std::vector<std::size_t>({0, 0, 0, 0}));
-    _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({true, false, false, false}));
+    _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({false, false, false, false}));
     _nbPlayers = jsonData.value("nbPlayers", 4);
     _nbSets = jsonData.value("nbSets", 1);
     _gameTime = jsonData.value("gameTime", 1);
     _enableBonus = jsonData.value("enableBonus", true);
+}
+
+void GameSettings::updateSettings(std::string const &filePath)
+{
+    std::cout << "Save: " << filePath << std::endl;
 }
 
 void GameSettings::setMapPath(std::string const &mapPath)

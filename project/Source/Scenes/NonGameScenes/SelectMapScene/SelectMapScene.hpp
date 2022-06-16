@@ -53,7 +53,6 @@ namespace Scene {
             int _count;
             std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText;
             std::vector<std::unique_ptr<Object::Text>> _droppedFilesText;
-            std::vector<std::unique_ptr<Object::Text>> _pathFileDropped;
             std::vector<std::unique_ptr<Object::Text>> _mapName;
             int _minMapSize;
             int _maxMapSize;

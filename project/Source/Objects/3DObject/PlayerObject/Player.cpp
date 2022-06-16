@@ -110,6 +110,11 @@ void Object::Player::setAlreadyPlacedBombs(bool addBomb)
         _alreadyPlacedBombs -= 1;
 }
 
+void Object::Player::setIsMoving(bool isMoving)
+{
+    _isMoving = isMoving;
+}
+
 void Object::Player::setWon()
 {
     _setsWon += 1;

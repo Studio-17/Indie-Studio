@@ -58,6 +58,19 @@ namespace Scene {
             void handleExplosions();
             void handleTimer();
 
+
+            void ai(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer);
+            std::vector<PlayerAction> getPossibleDir(Position const &aiPos);
+            std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexPlayer);
+            // void dropBombToPlayer();
+            // std::vector<Position> getExplodedCells(PlayerAction const &action, Position const &bombPos);
+            std::vector<std::pair<int, int>> stockForbiddenCells(std::shared_ptr<Object::Player> const &ai);
+            bool checkAiIsSafe(std::unique_ptr<Object::Player> const &ai);
+
+
+        protected:
+            bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
+
             bool isCollidingBomb(Position const &direction, Position const &playerPosition, Object::PLAYER_ORDER playerNb);
 
             /* Draw part */
@@ -83,6 +96,10 @@ namespace Scene {
             std::size_t _timePerRound;
 
             std::shared_ptr<Object::Map> _gameMap;
+            std::size_t _placement;
+            std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics;
+
+            bool _endGame;
 
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players;
             float _playerSpeed;
@@ -104,6 +121,13 @@ namespace Scene {
 
             float _margin;
             std::map<PlayerAction, Position> _collisionCondition;
+
+            int _action;
+            bool _aiSafe;
+            std::vector<PlayerAction> _dirs;
+            std::vector<std::pair<int, int>> _aiForbiddenCells;
+            // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
+
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
 
             std::unique_ptr<Scene::PauseScene> _pauseScene;

@@ -62,6 +62,7 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/SelectPlayerScene/*.cpp
     Source/Scenes/NonGameScenes/SelectMapScene/*.cpp
     Source/Scenes/NonGameScenes/CreditsScene/*.cpp
+    Source/Scenes/NonGameScenes/SelectSaveScene/*.cpp
 
     Source/Settings/*.cpp
     Source/Settings/GameSetting/*.cpp
@@ -133,6 +134,7 @@ include_directories(
     Source/Scenes/NonGameScenes/SelectPlayerScene/
     Source/Scenes/NonGameScenes/SelectMapScene/
     Source/Scenes/NonGameScenes/CreditsScene/
+    Source/Scenes/NonGameScenes/SelectSaveScene/
 
     Source/Settings/
     Source/Settings/GameSetting/

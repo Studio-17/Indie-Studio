@@ -10,7 +10,6 @@
 
 Object::Image::Image() : _isEnable(false), _imageLoaded(false)
 {
-
 }
 
 Object::Image::Image(std::string const &imagePath, Position const &position) :  _isEnable(true), _imageLoaded(true), _imagePosition(position),

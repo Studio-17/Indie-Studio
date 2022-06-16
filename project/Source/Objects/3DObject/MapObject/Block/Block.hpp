@@ -17,22 +17,52 @@
 
 namespace Object
 {
+    /**
+     * @brief Block class
+     */
     class Block : public AThreeDimensionObject
     {
         public:
+            /**
+             * @brief Construct a new Block object
+             *
+             * @param pathToRessources pair of path to ressources texture and model
+             * @param position 3 dimensional Position
+             * @param type map object type
+             * @param scale scale of block
+             */
             Block(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::MAP_OBJECTS type, float scale);
+            /**
+             * @brief Construct a new Block object
+             *
+             * @param pathToModel path to ressources model
+             * @param pathToTexture path to ressources texture
+             * @param position 3 dimensional Position
+             * @param type map object type
+             * @param scale scale of block
+             */
             Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type, float scale);
             ~Block() override;
 
             void draw() override;
 
+            /**
+             * @brief Set the Block Scale
+             *
+             * @param blockScale float block scale value
+             */
             void setBlockScale(float blockScale) { _blockScale = blockScale; };
+            /**
+             * @brief Get the Block Scale
+             *
+             * @return float
+             */
             float getBlockScale() { return _blockScale; };
 
         protected:
         private:
-            Object::MAP_OBJECTS _type;
-            float _blockScale = 0.5f;
+            Object::MAP_OBJECTS _type; ///< map object type
+            float _blockScale = 0.5f; ///< block scale
     };
 }
 

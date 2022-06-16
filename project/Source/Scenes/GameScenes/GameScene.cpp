@@ -53,6 +53,9 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     for (std::size_t index = 0; index != 4; index++)
         _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
 
+    _placement = _players.size();
+
+    // _aiSafe = true;
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.5, 0.8}},
@@ -177,6 +180,8 @@ void Scene::GameScene::handleWin()
     }
     if (nbPlayersAlive == 1) {
         _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon();
+        _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(alivePlayerIndex));
+        _gameSettings->setPlayersRank(_mapStatistics);
         _nextScene = Scene::Scenes::END_GAME;
     }
 }
@@ -188,6 +193,10 @@ void Scene::GameScene::handlePlayers()
 
     for (auto &[playerIndex, player] : _players) {
         moving = false;
+
+        if (_gameSettings->getIaPlayers().at(static_cast<int>(playerIndex)))
+            ai(playerAction.at(static_cast<int>(playerIndex)), player, static_cast<int>(playerIndex));
+
         for (auto &[action, isPressed] : playerAction.at(static_cast<int>(playerIndex))) {
             if (isPressed && player->isAlive()) {
                 if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
@@ -202,6 +211,114 @@ void Scene::GameScene::handlePlayers()
         if (!moving)
             player->animation(1);
     }
+}
+
+std::vector<PlayerAction> Scene::GameScene::getPossibleDir(Position const &aiPos)
+{
+    const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
+    std::vector<PlayerAction> dirs;
+
+    for (auto &action : all_actions) {
+        bool isPossibleDir = true;
+        Position temppos = aiPos;
+        temppos += _collisionCondition.at(action) + 5.0;
+        std::pair<int, int> newAiPos = _gameMap->transposeFrom3Dto2D(temppos);
+
+        for (auto &forbiddenCell : _aiForbiddenCells) {
+            if (newAiPos == forbiddenCell)
+                isPossibleDir = false;
+        }
+
+        if (isPossibleDir && _gameMap->isColliding(_collisionCondition.at(action), aiPos) == Object::MAP_OBJECTS::EMPTY)
+            dirs.emplace_back(action);
+    }
+    return dirs;
+}
+
+std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position const &aiPos, int indexPlayer)
+{
+    std::vector<std::pair<int, Position>> posPlayers;
+    int index = 0;
+
+    for (auto &player : _players) {
+        if (index != indexPlayer)
+            posPlayers.emplace_back(index, player.second->getPosition());
+        index++;
+    }
+    return posPlayers;
+}
+
+
+std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shared_ptr<Object::Player> const &ai)
+{
+    const std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    std::vector<std::pair<int, int>> aiForbiddenCells;
+    std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
+    Position blockToPlace;
+
+    for (auto &bomb : _bombs) {
+        std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+
+        for (auto &[x, y] : target) {
+            if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
+                if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
+                    blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
+
+                    aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+                }
+            }
+        }
+    }
+    return aiForbiddenCells;
+}
+
+bool Scene::GameScene::checkAiIsSafe(std::unique_ptr<Object::Player> const &ai)
+{
+    std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
+
+    for (auto &pos : _aiForbiddenCells)
+        if (pos == aiPos)
+            return false;
+    return true;
+}
+
+void Scene::GameScene::ai(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer)
+{
+    // std::cout << "IA" << std::endl;
+
+    for (auto &[action, isPressed] : tmp)
+        tmp.at(action) = false;
+
+    if (!player->getIsMoving()) {
+        // player->animation(1);
+        player->setIsMoving(true);
+
+        _aiForbiddenCells = stockForbiddenCells(player);
+        _dirs = getPossibleDir(player->getPosition());
+        _action = rand() % _dirs.size();
+
+        // std::cout << "_dir.size() = " << _dirs.size() << std::endl;
+        // for (auto &dir : _dirs)
+        //     std::cout << "getPossibleDir: " << static_cast<std::underlying_type<PlayerAction>::type>(dir) << std::endl;
+        // std::cout << "_action = " << _action << std::endl;
+    }
+
+    // if (player->getIsMoving()) {
+            player->setIsMoving(false);
+        if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition(), static_cast<Object::PLAYER_ORDER>(indexPlayer))) {
+            player->setIsMoving(true);
+            CollideObject(player->getPosition(), static_cast<Object::PLAYER_ORDER>(indexPlayer));
+            // std::cout << "_isMoving = true" << std::endl;
+            // std::cout << "_dirs.at(_action): " << static_cast<std::underlying_type<PlayerAction>::type>(_dirs.at(_action)) << std::endl;
+            tmp.at(static_cast<PlayerAction>(_dirs.at(_action))) = true;
+        }
+        // else {
+        //     // std::cout << "_isMoving = false" << std::endl;
+        // }
+    // }
+
+    // std::cout << "End IA\n" << std::endl;
+
 }
 
 void Scene::GameScene::placeBomb(Position const &pos, Object::PLAYER_ORDER playerNb)

@@ -32,7 +32,7 @@ Object::Text::Text(std::string const &filename, std::string const &text, int fon
 
 }
 
-Object::Text::Text(nlohmann::json const &jsonData, Object::Render::MyTexture &) : _isEnable(jsonData.value("isEnable", true)),
+Object::Text::Text(nlohmann::json const &jsonData, Object::Render::MyTexture &texture) : _isEnable(jsonData.value("isEnable", true)),
     _font(LoadFont(jsonData.value("font", "default").c_str())),
     _color(createColor(jsonData.value("color", std::array<float, 4>({255, 255, 255, 255})))),
     _text(jsonData.value("text", "")),
