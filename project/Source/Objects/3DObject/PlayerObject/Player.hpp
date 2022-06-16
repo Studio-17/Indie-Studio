@@ -211,6 +211,18 @@ namespace Object {
             void setSkin(Object::Render::MyTexture &texture);
             void reset();
 
+            //AI methods
+            bool getIsSafe() const;
+            void setIsSafe(bool ifIsSafe);
+            bool getAllowForbiddenCells() const;
+            void setAllowForbiddenCells(bool allowForbiddenCells);
+            int getActionMove() const;
+            void setActionMove(int actionMove);
+            std::vector<PlayerAction> getAiPossibleDirections() const;
+            void setAiPossibleDirections(std::vector<PlayerAction> aiPossibleDirections);
+            std::vector<std::pair<int, int>> getAiForbiddenCells() const;
+            void setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells);
+
         private:
 
             std::pair<float, float> _defaultSpeed = {0.5f, 0.8f};
@@ -231,6 +243,11 @@ namespace Object {
             bool _isAlive = true;
             bool _isMoving = false; ///< is moving
 
+            bool _isSafe = true; ///< is safe
+            bool _allowForbiddenCells = false; ///< allow forbidden cells
+            int _actionMove = 0; ///< action move
+            std::vector<PlayerAction> _aiPossibleDirection; ///< ia possible direction
+            std::vector<std::pair<int, int>> _aiForbiddenCells; ///< ai forbidden cells
     };
 }
 
