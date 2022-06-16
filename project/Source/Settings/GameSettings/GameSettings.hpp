@@ -53,12 +53,6 @@ class GameSettings {
          */
         void setMapSize(std::pair<float, float> mapSize);
         /**
-         * @brief Set the Object game Map
-         *
-         * @param gameMap std::shared_ptr<Object::Map> new Object Map
-         */
-        void setGameMap(std::shared_ptr<Object::Map> gameMap);
-        /**
          * @brief Set the percentage box drop
          *
          * @param percentage std::size_t new percentage box drop
@@ -69,7 +63,7 @@ class GameSettings {
          *
          * @param playerSkins vector of player skins
          */
-        void setPlayerSkins(std::vector<std::string> const &playerSkins);
+        void setPlayerSkins(std::vector<std::size_t> const &playerSkins);
         /**
          * @brief Set the IA Players vector
          *
@@ -122,12 +116,6 @@ class GameSettings {
          */
         std::pair<float, float> getMapSize() const;
         /**
-         * @brief Get the Object Map
-         *
-         * @return std::shared_ptr<Object::Map> shared_ptr of the game map
-         */
-        std::shared_ptr<Object::Map> getGameMap() const;
-        /**
          * @brief Get the Percentage Box Drop
          *
          * @return std::size_t percentage of box drop
@@ -138,7 +126,7 @@ class GameSettings {
          *
          * @return std::vector<std::string> vector of player skins
          */
-        std::vector<std::string> getPlayerSkins() const;
+        std::vector<std::size_t> getPlayerSkins() const;
         /**
          * @brief Get the IA Players
          *
@@ -187,9 +175,8 @@ class GameSettings {
     private:
         std::string _mapPath; //!< path to the .map map
         std::pair<float, float> _mapSize; //!< size of the map
-        std::shared_ptr<Object::Map> _gameMap; //!< object map
         std::size_t _percentageBoxDrop; //!< percentage of box drop
-        std::vector<std::string> _playerSkins; //!< vector of player skins
+        std::vector<std::size_t> _playerSkins; //!< vector of player skins
         std::vector<bool> _iaPlayers; //!< vector of if a player is an IA
         std::size_t _nbPlayers; //!< number of player
         std::map<std::size_t, std::shared_ptr<Object::Player>> _players;

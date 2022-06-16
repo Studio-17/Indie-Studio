@@ -27,9 +27,8 @@ namespace Object
              * @param player enum of player order
              * @param lifeTime float life time value
              * @param range std::size_t range value
-             * @param type map object type
              */
-            Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range, Object::MAP_OBJECTS type);
+            Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range);
             /**
              * @brief Destroy the Bomb object
              */

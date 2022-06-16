@@ -31,10 +31,12 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
         void start()
         {
             _start = std::chrono::system_clock::now();
+            _isPaused = false;
         };
         void restart()
         {
             _start = std::chrono::system_clock::now();
+            _isPaused = false;
         };
 
         long long int getElapsedTime()

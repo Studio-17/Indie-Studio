@@ -25,7 +25,8 @@ namespace Scene {
              * @param callBack
              * @param saveCallBack Call back function to save game
              */
-            PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack, std::function<void(void)> saveCallBack);
+            // PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> callBack, std::function<void(void)> saveCallBack);
+            PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::function<void(void)>> callBacks);
             ~PauseScene();
 
             Scenes handleEvent() override;
@@ -38,6 +39,10 @@ namespace Scene {
              */
             void exitGame();
             /**
+             * @brief Call back function executed when exit without save button is pressed to set next scene to main menu scene
+             */
+            void save();
+            /**
              * @brief Call back function executed when exit button is pressed to show exit popUp
              */
             void printExitPopUp();
@@ -47,6 +52,7 @@ namespace Scene {
             void unPrintExitPopUp();
 
             bool _shouldPrintExitPopUp; ///< To know if we should display exit popUp
+            std::function<void(void)> _saveFunction;
     };
 }
 

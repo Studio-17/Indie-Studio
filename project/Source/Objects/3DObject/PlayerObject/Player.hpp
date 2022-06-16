@@ -87,12 +87,6 @@ namespace Object {
              * @return false
              */
             bool isAlive() { return _isAlive; };
-            /**
-             * @brief Get the life time bombs
-             *
-             * @return float
-             */
-            float getLifeTimeBombs() const { return _lifeTimeBombs; };
 
             /**
              * @brief Get the default speed
@@ -191,22 +185,18 @@ namespace Object {
              * @return std::size_t
              */
             std::size_t getSetsWon() const { return _setsWon; };
-            /**
-             * @brief Set number of sets won
-             *
-             * @param setWon size_t setWon value
-             */
-            void setSetsWon(bool setWon);
+            void setWon();
+
 
             /**
              * @brief Get the Kick Range object
-             * 
+             *
              * @return std::size_t kickRange value
              */
             std::size_t getKickRange() const { return _kickRange; };
             /**
              * @brief Set the Kick Range object
-             * 
+             *
              * @param kickRange size_t kickRange value
              */
             void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
@@ -217,6 +207,9 @@ namespace Object {
              * @return nlohmann::json
              */
             nlohmann::json save();
+
+            void setSkin(Object::Render::MyTexture &texture);
+            void reset();
 
             //AI methods
             bool getIsSafe() const;
@@ -231,24 +224,25 @@ namespace Object {
             void setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells);
 
         private:
-            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f}; ///< default speed
-            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3}; ///< default range bomb
-            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4}; ///< default range explosion
-            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3}; ///< default range sets
-            std::size_t _defaultKickRange = 1; ///< default kick range
 
-            float _speed; ///< speed
-            std::size_t _rangeBomb; ///< bomb range
-            std::size_t _rangeExplosion; ///< explosion range
-            std::size_t _kickRange; ///< kick range
-            std::size_t _setsWon = 0; ///< number of sets won
+            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f};
+            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
+            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4};
+            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3};
+            std::size_t _defaultKickRange = 1;
 
-            std::size_t _alreadyPlacedBombs; ///< number of bombs already placed
-            float _lifeTimeBombs = 3; ///< life time bombs
-            float _scale; ///< scale
-            int _life; ///< life
-            bool _isAlive = true; ///< is alive
+            float _speed;
+            std::size_t _rangeBomb;
+            std::size_t _rangeExplosion;
+            std::size_t _kickRange;
+            std::size_t _setsWon = 0;
+
+            std::size_t _alreadyPlacedBombs;
+            float _scale;
+            int _life;
+            bool _isAlive = true;
             bool _isMoving = false; ///< is moving
+
             bool _isSafe = true; ///< is safe
             bool _allowForbiddenCells = false; ///< allow forbidden cells
             int _actionMove = 0; ///< action move
