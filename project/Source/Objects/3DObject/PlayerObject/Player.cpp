@@ -110,10 +110,9 @@ void Object::Player::setAlreadyPlacedBombs(bool addBomb)
         _alreadyPlacedBombs -= 1;
 }
 
-void Object::Player::setSetsWon(bool setWon)
+void Object::Player::setWon()
 {
-    if (setWon)
-        _setsWon += 1;
+    _setsWon += 1;
 }
 
 nlohmann::json Object::Player::save()
@@ -127,4 +126,21 @@ nlohmann::json Object::Player::save()
     saveData["kickRange"] = _kickRange;
     saveData["isAlive"] = _isAlive;
     return saveData;
+}
+
+void Object::Player::setSkin(Object::Render::MyTexture &texture)
+{
+    _texture = texture.getTexture();
+    SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
+}
+
+void Object::Player::reset()
+{
+    _isAlive = true;
+    _speed = _defaultSpeed.first;
+    _rangeBomb = _defaultRangeBomb.first;
+    _rangeExplosion = _defaultRangeExplosion.first;
+    _kickRange = _defaultKickRange;
+    _alreadyPlacedBombs = 0;
+    _setsWon = 0;
 }

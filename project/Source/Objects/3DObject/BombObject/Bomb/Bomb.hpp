@@ -16,7 +16,7 @@ namespace Object
 {
     class Bomb : public AThreeDimensionObject {
         public:
-            Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range, Object::MAP_OBJECTS type);
+            Bomb(std::pair<std::string, std::string> const &pathToRessources, Position const &position, Object::PLAYER_ORDER player, float lifeTime, std::size_t range);
             ~Bomb() override;
 
             void draw() override;

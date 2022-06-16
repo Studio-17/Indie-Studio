@@ -1,0 +1,9 @@
+{
+    "0-cameraVue": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [100, 880, 0],
+        "texture": "Ressources/buttons/back_button.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}

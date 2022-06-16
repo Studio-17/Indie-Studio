@@ -39,19 +39,10 @@ namespace Object
             void process(std::string const &pathToFile);
 
             std::vector<Position> getMapCorners(std::size_t width, std::size_t height);
-            void generate(const std::string &filename, std::size_t width, std::size_t height, std::size_t percentageDrop);
 
-            void createFile(const std::string &filename);
-
-            std::vector<std::shared_ptr<Object::Block>> getMapObjects() { return _mapObjects; };
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> getMapPositionsObjects() { return _mapPositionsObjects; };
 
-
-            void printLine(std::size_t height);
-            Position getDimensions() { return _mapDimensions; };
-
             float getBlockSize() { return _blockSize; };
-            void removeBlock(std::size_t index);
             Object::MAP_OBJECTS isColliding(Position const &direction, Position const &playerPosition);
             int roundUp(int nb, int multiple);
 
@@ -70,30 +61,29 @@ namespace Object
 
             std::pair<int, int> transposeFrom3Dto2D(Position const &position);
 
-            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
+            void clearMap() {
+                if (!_mapPositionsObjects.empty())
+                    _mapPositionsObjects.clear();
+                if (!_groundMap.empty())
+                    _groundMap.clear();
+            };
 
             std::vector<Object::Render::MyModel> getMapModels() { return _mapModels; };
             std::vector<Object::Render::MyTexture> getMapTextures() { return _mapTextures; };
 
-            void save();
+
+            void save(std::string const &mapPath);
         protected:
         private:
-            std::vector<std::shared_ptr<Object::Block>> _mapObjects;
 
+            std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects;
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap;
 
-
             bool _isEnable;
-            std::string _pathToMap;
-            std::ofstream _file;
-
 
             Position _mapPosition;
-            Position _mapDimensions;
 
             float _blockSize;
-
-
 
             std::vector<Object::Render::MyModel> _mapModels;
             std::vector<Object::Render::MyTexture> _mapTextures;

@@ -30,6 +30,9 @@ namespace Scene {
             Scenes handleEvent() override;
             void draw() override;
 
+            void generate(std::string const &filename, std::size_t width, std::size_t height, std::size_t percentageDrop);
+            // void createFile(std::string const &filename);
+
         protected:
             void exitSelectMapSceneScene();
             void runSelectPlayerScene();

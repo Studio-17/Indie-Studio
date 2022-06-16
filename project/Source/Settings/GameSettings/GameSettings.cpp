@@ -8,8 +8,10 @@
 #include "GameSettings.hpp"
 
 GameSettings::GameSettings() :
-_mapPath("Save/Maps/random.map"), _nbPlayers(4), _nbSets(1), _gameTime(1), _enableBonus(true)
+ _mapPath("Save/Maps/random.map"), _nbPlayers(4), _nbSets(1), _gameTime(1), _enableBonus(true),
+ _playerSkins({0, 0, 0, 0}), _iaPlayers({true, false, false, false})
 {
+    // _gameMap = std::make_shared<Object::Map>();
 }
 
 GameSettings::~GameSettings()
@@ -19,7 +21,7 @@ GameSettings::~GameSettings()
 void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 {
     _mapPath = jsonData.value("mapPath", "Save/Maps/random.map");
-    _playerSkins = jsonData.value("playerSkins", std::vector<std::string>({"", "", "", ""}));
+    _playerSkins = jsonData.value("playerSkins", std::vector<std::size_t>({0, 0, 0, 0}));
     _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({true, false, false, false}));
     _nbPlayers = jsonData.value("nbPlayers", 4);
     _nbSets = jsonData.value("nbSets", 1);
@@ -37,17 +39,12 @@ void GameSettings::setMapSize(std::pair<float, float> mapSize)
     _mapSize = mapSize;
 }
 
-void GameSettings::setGameMap(std::shared_ptr<Object::Map> gameMap)
-{
-    _gameMap = gameMap;
-}
-
 void GameSettings::setPercentageBoxDrop(std::size_t percentage)
 {
     _percentageBoxDrop = percentage;
 }
 
-void GameSettings::setPlayerSkins(std::vector<std::string> const &playerSkins)
+void GameSettings::setPlayerSkins(std::vector<std::size_t> const &playerSkins)
 {
     _playerSkins = playerSkins;
 }
@@ -97,17 +94,12 @@ std::pair<float, float> GameSettings::getMapSize() const
     return _mapSize;
 }
 
-std::shared_ptr<Object::Map> GameSettings::getGameMap() const
-{
-    return _gameMap;
-}
-
 std::size_t GameSettings::getPercentageBoxDrop() const
 {
     return _percentageBoxDrop;
 }
 
-std::vector<std::string> GameSettings::getPlayerSkins() const
+std::vector<std::size_t> GameSettings::getPlayerSkins() const
 {
     return _playerSkins;
 }

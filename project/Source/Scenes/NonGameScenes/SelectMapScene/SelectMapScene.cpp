@@ -11,6 +11,7 @@
 #include <cmath>
 
 #include "tools.hpp"
+#include "IThreeDimensionObject.hpp"
 #include "SelectMapScene.hpp"
 
 void Scene::SelectMapScene::exitSelectMapSceneScene()
@@ -23,14 +24,13 @@ void Scene::SelectMapScene::runSelectPlayerScene()
     if(_buttons.at(3)->isEnable()) { //basic mode
         _gameSettings->setMapPath("Save/Maps/random.map");
         _gameSettings->setMapSize(std::make_pair(static_cast<float>(_mapSize), static_cast<float>(_mapSize)));
-        std::shared_ptr<Object::Map> map = _gameSettings->getGameMap();
-        map->generate(_gameSettings->getMapPath(), _gameSettings->getMapSize().first,_gameSettings->getMapSize().second, _gameSettings->getPercentageBoxDrop());
-        _gameSettings->setGameMap(map);
+        generate(_gameSettings->getMapPath(), _gameSettings->getMapSize().first,_gameSettings->getMapSize().second, _gameSettings->getPercentageBoxDrop());
     } else { //custom mode
         _gameSettings->setMapPath(_currentPath);
         _gameSettings->setMapSize(std::make_pair(static_cast<float>(_height), static_cast<float>(_width)));
     }
     _nextScene = Scenes::SELECT_PLAYER;
+    std::cout << "runed" << std::endl;
 }
 
 void Scene::SelectMapScene::basicMode()
@@ -256,3 +256,61 @@ void Scene::SelectMapScene::draw()
             text->draw();
     }
 }
+
+void Scene::SelectMapScene::generate(std::string const &filename, std::size_t width, std::size_t height, std::size_t percentageDrop)
+{
+    srand(time(NULL));
+    std::size_t randomNumber = 1 + (rand() % 100);
+    width -= 2;
+    height -= 2;
+
+    if ((width % 2) == 0 || (height % 2) == 0)
+        throw Error::Errors("Height and Width are not compatible !");
+    // createFile(filename);
+    std::ofstream file;
+    file.open(filename, std::ofstream::out);
+    if (!file) {
+        file.close();
+        throw Error::FileError("file failed to open " + filename);
+    }
+    std::cout << "file created" << std::endl;
+    for (size_t one = 0; one < height + 2; one++) {
+        file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
+    }
+    file << std::endl;
+    // printLine(height);
+    for (size_t x = 0; x < height; x++) {
+        file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
+        for (size_t y = 0; y < width; y++) {
+            if (x % 2 && y % 2)
+                file << static_cast<char>(Object::MAP_OBJECTS::WALL_MIDDLE);
+            else {
+                randomNumber = 1 + (rand() % 100);
+                if (randomNumber > percentageDrop || (x <= 1 || x >= height - 2) && (y <= 1 || y >= width - 2))
+                    file << static_cast<char>(Object::MAP_OBJECTS::EMPTY);
+                else
+                    file << static_cast<char>(Object::MAP_OBJECTS::BOX);
+            }
+        }
+        file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
+        file << std::endl;
+    }
+    for (size_t one = 0; one < height + 2; one++) {
+        file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
+    }
+    file << std::endl;
+    // printLine(height);
+    file.close();
+}
+
+// void Object::Map::createFile(std::string const &filename)
+// {
+//     std::cout << "create" << std::endl;
+//     _file.open(filename, std::ofstream::out);
+//     std::cout << "opened" << std::endl;
+
+//     if (!_file) {
+//         _file.close();
+//         throw Error::FileError("file failed to open " + filename);
+//     }
+// }

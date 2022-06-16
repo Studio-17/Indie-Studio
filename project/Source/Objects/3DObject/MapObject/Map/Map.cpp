@@ -24,23 +24,6 @@ Object::Map::~Map()
 {
 }
 
-void Object::Map::createFile(const std::string &filename)
-{
-    _file.open(filename, std::ofstream::out);
-    if (!_file) {
-        _file.close();
-        throw Error::FileError("file failed to open " + filename);
-    }
-}
-
-void Object::Map::printLine(std::size_t height)
-{
-    for (size_t one = 0; one < height + 2; one++) {
-        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
-    }
-    _file << std::endl;
-}
-
 std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t height)
 {
     std::vector<Position> corners;
@@ -52,51 +35,14 @@ std::vector<Position> Object::Map::getMapCorners(std::size_t width, std::size_t 
     return corners;
 }
 
-void Object::Map::generate(const std::string &filename, std::size_t width, std::size_t height, std::size_t percentageDrop)
-{
-    srand(time(NULL));
-    std::size_t randomNumber = 1 + (rand() % 100);
-    width -= 2;
-    height -= 2;
-
-    if ((width % 2) == 0 || (height % 2) == 0)
-        throw Error::Errors("Height and Width are not compatible !");
-    createFile(filename);
-    printLine(height);
-    for (size_t x = 0; x < height; x++) {
-        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
-        for (size_t y = 0; y < width; y++) {
-            if (x % 2 && y % 2)
-                _file << static_cast<char>(MAP_OBJECTS::WALL_MIDDLE);
-            else {
-                randomNumber = 1 + (rand() % 100);
-                if (randomNumber > percentageDrop || (x <= 1 || x >= height - 2) && (y <= 1 || y >= width - 2))
-                    _file << static_cast<char>(MAP_OBJECTS::EMPTY);
-                else
-                    _file << static_cast<char>(MAP_OBJECTS::BOX);
-            }
-        }
-        _file << static_cast<char>(MAP_OBJECTS::WALL_SIDE);
-        _file << std::endl;
-    }
-    printLine(height);
-    _file.close();
-}
-
 void Object::Map::draw()
 {
-    for (int index = 0; index < _mapPositionsObjects.size(); index++) {
-        for (int idx = 0; idx < _mapPositionsObjects[index].size(); idx++) {
-            _mapPositionsObjects[index][idx]->draw();
-
-        }
-    }
-    for (int index = 0; index < _groundMap.size(); index++) {
-        for (int idx = 0; idx < _groundMap[index].size(); idx++) {
-            _groundMap[index][idx]->draw();
-
-        }
-    }
+    for (auto &line : _mapPositionsObjects)
+        for (auto &object : line)
+            object->draw();
+    for (auto &line : _groundMap)
+        for (auto &object : line)
+            object->draw();
 }
 
 std::vector<std::string> Object::Map::load(std::string const &pathToFile)
@@ -105,28 +51,17 @@ std::vector<std::string> Object::Map::load(std::string const &pathToFile)
     std::string tmp;
     std::vector<std::string> map;
 
-    if (map.empty()) {
-        if (!file.is_open())
-            throw Error::FileError("File " + pathToFile + " doesn't exist");
-        while (std::getline(file, tmp))
-            map.push_back(tmp);
-        file.close();
-    }
+    if (!file.is_open())
+        throw Error::FileError("File " + pathToFile + " doesn't exist");
+    while (std::getline(file, tmp))
+        map.push_back(tmp);
+    file.close();
     return (map);
-}
-
-void Object::Map::removeBlock(std::size_t index)
-{
-    if (_mapObjects.at(index)->getType() == MAP_OBJECTS::BOX)
-        _mapObjects.erase(_mapObjects.begin() + index);
 }
 
 void Object::Map::process(std::string const &pathToFile)
 {
-    _pathToMap = pathToFile;
-
-    std::vector<std::string> mapLayout = load(_pathToMap);
-
+    std::vector<std::string> mapLayout = load(pathToFile);
     static const std::map<Object::MAP_OBJECTS, std::pair<Object::Render::MyModel, Object::Render::MyTexture>> keyMap = {
         {MAP_OBJECTS::WALL_MIDDLE, {_mapModels.at(4), _mapTextures.at(6)}},
         {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(7)}},
@@ -145,10 +80,6 @@ void Object::Map::process(std::string const &pathToFile)
     };
 
     srand(time(NULL));
-
-    _mapDimensions.setX((mapLayout.size() * _blockSize) / 2);
-    _mapDimensions.setY(0);
-    _mapDimensions.setZ((mapLayout[0].size() * _blockSize) / 2);
 
     Vector3 tilePosition = {0, 0, 0};
 
@@ -202,20 +133,20 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
     int x = roundUp(static_cast<int>(position.getX()), (_blockSize / 2));
     int z = roundUp(static_cast<int>(position.getZ()), (_blockSize / 2));
 
-    if (x % 10 == (_blockSize / 2))
+    if (x % static_cast<int>(_blockSize) == (_blockSize / 2))
         x -= static_cast<int>(_blockSize / 2);
-    if (z % 10 == (_blockSize / 2))
+    if (z % static_cast<int>(_blockSize) == (_blockSize / 2))
         z -= static_cast<int>(_blockSize / 2);
     return {x / static_cast<int>(_blockSize), z / static_cast<int>(_blockSize)};
 }
 
-void Object::Map::save()
+void Object::Map::save(std::string const &mapPath)
 {
-    std::ofstream o(_pathToMap);
+    std::ofstream mapFile(mapPath);
     for (auto &line : _mapPositionsObjects) {
         for (auto &elem : line)
-            o << static_cast<char>(elem->getType());
-        o << std::endl;
+            mapFile << static_cast<char>(elem->getType());
+        mapFile << std::endl;
     }
 
 }

@@ -35,7 +35,6 @@ namespace Object {
 
             void die() { _isAlive = false; };
             bool isAlive() { return _isAlive; };
-            float getLifeTimeBombs() const { return _lifeTimeBombs; };
 
             std::pair<float, float> getDefaultSpeed() const { return _defaultSpeed; };
             std::pair<std::size_t, std::size_t> getDefaultRangeBomb() const { return _defaultRangeBomb; };
@@ -55,9 +54,13 @@ namespace Object {
             void setAlreadyPlacedBombs(bool addBomb);
 
             std::size_t getSetsWon() const { return _setsWon; };
-            void setSetsWon(bool setWon);
+            void setWon();
+
 
             nlohmann::json save();
+
+            void setSkin(Object::Render::MyTexture &texture);
+            void reset();
             // std::size_t getKickRange() const { return _kickRange; };
             // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
@@ -76,7 +79,6 @@ namespace Object {
             std::size_t _setsWon = 0;
 
             std::size_t _alreadyPlacedBombs;
-            float _lifeTimeBombs = 3;
             float _scale;
             int _life;
             bool _isAlive = true;
