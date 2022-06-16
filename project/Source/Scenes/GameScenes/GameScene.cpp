@@ -78,7 +78,6 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _players.emplace(static_cast<char>(Object::PLAYER_ORDER::PLAYER4), std::make_unique<Object::Player>(_models.at(3), _textures.at(4), _animations.at(0), 1, _playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)), Object::MAP_OBJECTS::PLAYER));
     _placement = _players.size();
 
-    // _aiSafe = true;
     _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::save, this));
     _gameSettings->setPlayers(_players);
     _defaultAttributes = {{"bombRange", {1, 3}},
@@ -215,20 +214,21 @@ void Scene::GameScene::handlePlayers()
         std::map<PlayerAction, bool> tmp = _settings->getPlayerActionsPressed().at(index);
 
         if (_gameSettings->getIaPlayers().at(playerIndex))
-            ai(tmp, player, playerIndex);
-
-        for (auto &[action, isPressed] : tmp) {
-            if (isPressed && player->isAlive()) {
-                if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
-                    placeBomb(player->getPosition(), player->getLifeTimeBombs(), player->getRangeExplosion(), static_cast<Object::PLAYER_ORDER>(index));
-                else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingObject(_collisionCondition.at(action), player->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
-                    player->move(_actionMap.at(action).first, _actionMap.at(action).second);
-                    moving = true;
+            handleAi(tmp, player, playerIndex);
+        else {
+            for (auto &[action, isPressed] : tmp) {
+                if (isPressed && player->isAlive()) {
+                    if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
+                        placeBomb(player->getPosition(), player->getLifeTimeBombs(), player->getRangeExplosion(), static_cast<Object::PLAYER_ORDER>(index));
+                    else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingObject(_collisionCondition.at(action), player->getPosition(), static_cast<Object::PLAYER_ORDER>(index))) {
+                        player->move(_actionMap.at(action).first, _actionMap.at(action).second);
+                        moving = true;
+                    }
                 }
             }
+            if (!moving)
+                player->animation(1);
         }
-        if (!moving)
-            player->animation(1);
         index++;
     }
     _gameSettings->setPlayers(_players);
@@ -237,6 +237,7 @@ void Scene::GameScene::handlePlayers()
 Scene::Scenes Scene::GameScene::handleEvent()
 {
     _nextScene = Scene::Scenes::GAME;
+    _settings->updateMusicStream(MusicsEnum::Game);
     if (!_isPaused) {
         handleWin();
         handlePlayers();
@@ -250,35 +251,30 @@ Scene::Scenes Scene::GameScene::handleEvent()
     return _nextScene;
 }
 
-std::vector<PlayerAction> Scene::GameScene::getPossibleDir(Position const &aiPos)
+std::vector<PlayerAction> Scene::GameScene::getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi)
 {
     const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
     std::vector<PlayerAction> dirs;
 
     for (auto &action : all_actions) {
         bool isPossibleDir = true;
-        Position temppos = aiPos;
-        temppos += _collisionCondition.at(action) + 5.0;
+        Position temppos = ai->getPosition();
+        temppos += _collisionCondition.at(action);
         std::pair<int, int> newAiPos = _gameMap->transposeFrom3Dto2D(temppos);
 
-        for (auto &forbiddenCell : _aiForbiddenCells) {
-            if (newAiPos == forbiddenCell)
-                isPossibleDir = false;
-        }
-
-        if (isPossibleDir && _gameMap->isColliding(_collisionCondition.at(action), aiPos) == Object::MAP_OBJECTS::EMPTY)
+        if (isPossibleDir)
             dirs.emplace_back(action);
     }
     return dirs;
 }
 
-std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position const &aiPos, int indexPlayer)
+std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position const &aiPos, int indexAi)
 {
     std::vector<std::pair<int, Position>> posPlayers;
     int index = 0;
 
     for (auto &player : _players) {
-        if (index != indexPlayer)
+        if (index != indexAi)
             posPlayers.emplace_back(index, player.second->getPosition());
         index++;
     }
@@ -286,7 +282,7 @@ std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position 
 }
 
 
-std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shared_ptr<Object::Player> const &ai)
+std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shared_ptr<Object::Player> const &ai, int indexAi)
 {
     const std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     std::vector<std::pair<int, int>> aiForbiddenCells;
@@ -294,14 +290,16 @@ std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shar
     Position blockToPlace;
 
     for (auto &bomb : _bombs) {
-        std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+        if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(indexAi)) {
+            std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
 
-        for (auto &[x, y] : target) {
-            if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
-                if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
-                    blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
+            for (auto &[x, y] : target) {
+                if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
+                    if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
+                        blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
 
-                    aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+                        aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+                    }
                 }
             }
         }
@@ -309,52 +307,54 @@ std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shar
     return aiForbiddenCells;
 }
 
-bool Scene::GameScene::checkAiIsSafe(std::unique_ptr<Object::Player> const &ai)
+bool Scene::GameScene::checkAiIsSafe(std::shared_ptr<Object::Player> const &ai)
 {
     std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
 
-    for (auto &pos : _aiForbiddenCells)
-        if (pos == aiPos)
+    for (auto &cell : ai->getAiForbiddenCells())
+        if (cell == aiPos)
             return false;
     return true;
 }
 
-void Scene::GameScene::ai(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer)
+bool Scene::GameScene::checkAiIsSafe(std::shared_ptr<Object::Player> const &ai, std::pair<int, int> const &aiPos)
 {
-    // std::cout << "IA" << std::endl;
+    for (auto &cell : ai->getAiForbiddenCells())
+        if (cell == aiPos)
+            return false;
+    return true;
+}
 
-    for (auto &[action, isPressed] : tmp)
+void Scene::GameScene::handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi)
+{
+    for (auto &[action, isPressed] : tmp) {
         tmp.at(action) = false;
-
-    if (!player->getIsMoving()) {
-        // player->animation(1);
-        player->setIsMoving(true);
-
-        _aiForbiddenCells = stockForbiddenCells(player);
-        _dirs = getPossibleDir(player->getPosition());
-        _action = rand() % _dirs.size();
-
-        // std::cout << "_dir.size() = " << _dirs.size() << std::endl;
-        // for (auto &dir : _dirs)
-        //     std::cout << "getPossibleDir: " << static_cast<std::underlying_type<PlayerAction>::type>(dir) << std::endl;
-        // std::cout << "_action = " << _action << std::endl;
     }
 
-    // if (player->getIsMoving()) {
-            player->setIsMoving(false);
-        if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingObject(_collisionCondition.at(static_cast<PlayerAction>(_action)), player->getPosition(), static_cast<Object::PLAYER_ORDER>(indexPlayer))) {
-            player->setIsMoving(true);
-            // std::cout << "_isMoving = true" << std::endl;
-            // std::cout << "_dirs.at(_action): " << static_cast<std::underlying_type<PlayerAction>::type>(_dirs.at(_action)) << std::endl;
-            tmp.at(static_cast<PlayerAction>(_dirs.at(_action))) = true;
+    if (!ai->getIsMoving()) {
+        ai->animation(1);
+        ai->setAiPossibleDirections(getPossibleDir(ai, indexAi));
+        ai->setActionMove(rand() % ai->getAiPossibleDirections().size());
+    }
+
+    if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition()) == Object::MAP_OBJECTS::EMPTY  && !isCollidingObject(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition(), static_cast<Object::PLAYER_ORDER>(indexAi))) {
+        tmp.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))) = true;
+        ai->setIsMoving(true);
+    } else {
+        ai->setIsMoving(false);
+        if (ai->getIsSafe() && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition()) == Object::MAP_OBJECTS::BOX) {
+            tmp.at(PlayerAction::Drop) = true;
         }
-        // else {
-        //     // std::cout << "_isMoving = false" << std::endl;
-        // }
-    // }
+    }
 
-    // std::cout << "End IA\n" << std::endl;
-
+    for (auto &[action, isPressed] : tmp) {
+        if (isPressed && ai->isAlive()) {
+            if (action == PlayerAction::Drop && ai->getAlreadyPlacedBombs() < ai->getRangeBomb())
+                placeBomb(ai->getPosition(), ai->getLifeTimeBombs(), ai->getRangeExplosion(), static_cast<Object::PLAYER_ORDER>(indexAi));
+            else
+                ai->move(_actionMap.at(action).first, _actionMap.at(action).second);
+        }
+    }
 }
 
 void Scene::GameScene::handlePause()
@@ -378,6 +378,8 @@ void Scene::GameScene::placeBomb(Position pos, float lifetime, std::size_t range
     bool blockTooked = false;
     std::pair<int, int> pairPos = _gameMap->transposeFrom3Dto2D(pos);
     Position newPos = {static_cast<float>(pairPos.first * static_cast<int>(_gameMap->getBlockSize())), pos.getY(), static_cast<float>(pairPos.second * static_cast<int>(_gameMap->getBlockSize()))};
+
+    _settings->playSound(SoundsEnum::BombDrop);
 
     for (auto &bomb : _bombs) {
         if (bomb->getPosition() == newPos)
@@ -464,6 +466,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     std::size_t index = 0;
 
+    _settings->playSound(SoundsEnum::BombExplosion);
     srand(time(NULL));
     _gameMap->placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     placeExplosions(_clockGame.getElapsedTime(), position);
@@ -521,6 +524,8 @@ void Scene::GameScene::handleWin()
 
     if (_endGame == true) {
         save();
+        _settings->stopMusic(MusicsEnum::Game);
+        _settings->playMusic(MusicsEnum::EndGame);
         for (auto &i: _mapStatistics)
             std::cout << i.first << " " << static_cast<int>(i.second) << std::endl;
         _gameSettings->setPlayersRank(_mapStatistics);
@@ -614,29 +619,3 @@ void Scene::GameScene::save()
         saveData["player-" + std::to_string(static_cast<int>(playerIndex))] = player->save();
     o << std::setw(4) << saveData << std::endl;
 }
-
-// std::vector<Position> Scene::GameScene::getExplodedCells(PlayerAction const &action, Position const &bombPos)
-// {
-//     // std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bombPos);
-//     // std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-//     // std::vector<bool> alreadyDestroyed = { false, false, false, false };
-
-//     // std::vector<Position> _cells;
-// }
-
-// void Scene::GameScene::dropBombToPlayer()
-// {
-//     const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
-//     int index = 0;
-
-//     for (auto &bomb : _bombs) {
-//         std::vector<std::pair<PlayerAction, std::vector<Position>>> posBombs;
-
-//         for (auto &action : all_actions) {
-
-//             // posBombs.emplace_back(action, );
-//         }
-//         _aiBombExplosion.emplace_back(index, posBombs);
-//         index++;
-//     }
-// }

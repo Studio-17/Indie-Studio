@@ -27,6 +27,8 @@ void Scene::SelectPlayerScene::runGame()
     players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)));
     players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)));
     _gameSettings->setPlayers(players);
+    _settings->stopMusic(MusicsEnum::PlayerSelectMenu);
+    _settings->playMusic(MusicsEnum::Game);
     _nextScene = Scenes::GAME;
 }
 
@@ -88,6 +90,8 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+
+    _settings->updateMusicStream(MusicsEnum::PlayerSelectMenu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

@@ -1,8 +1,8 @@
 {
     "title": "Indie Studio",
     "windowSize": [1920, 1080],
-    "audioVolume": 10,
-    "musicVolume": 100,
+    "audioVolume": 1,
+    "musicVolume": 1,
 
     "cameraPosition": [65, 230, 66],
     "cameraTarget": [65, 0, 65],

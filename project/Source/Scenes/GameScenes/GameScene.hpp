@@ -64,13 +64,12 @@ namespace Scene {
 
             void loadSceneAssets();
 
-            void ai(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &player, int indexPlayer);
-            std::vector<PlayerAction> getPossibleDir(Position const &aiPos);
-            std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexPlayer);
-            // void dropBombToPlayer();
-            // std::vector<Position> getExplodedCells(PlayerAction const &action, Position const &bombPos);
-            std::vector<std::pair<int, int>> stockForbiddenCells(std::shared_ptr<Object::Player> const &ai);
-            bool checkAiIsSafe(std::unique_ptr<Object::Player> const &ai);
+            void handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi);
+            std::vector<PlayerAction> getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi);
+            std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexAi);
+            std::vector<std::pair<int, int>> stockForbiddenCells(std::shared_ptr<Object::Player> const &ai, int indexAi);
+            bool checkAiIsSafe(std::shared_ptr<Object::Player> const &ai);
+            bool checkAiIsSafe(std::shared_ptr<Object::Player> const &ai, std::pair<int, int> const &aiPos);
 
 
         protected:
@@ -132,10 +131,10 @@ namespace Scene {
             float _margin;
             std::map<PlayerAction, Position> _collisionCondition;
 
-            int _action;
-            bool _aiSafe;
-            std::vector<PlayerAction> _dirs;
-            std::vector<std::pair<int, int>> _aiForbiddenCells;
+            // int _action;
+            // std::vector<PlayerAction> _iaPossibleDirection;
+            // std::vector<std::pair<int, int>> _aiForbiddenCells;
+
             // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
 
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
