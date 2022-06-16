@@ -17,6 +17,8 @@
     #include "Keyboard.hpp"
     #include "Gamepad.hpp"
     #include "GameSettings.hpp"
+    #include "Image.hpp"
+    #include "Text.hpp"
 
 class Core {
     public:
@@ -32,6 +34,8 @@ class Core {
         void loadKeyBinding(nlohmann::json const &jsonData);
 
         void waitingLoad();
+
+        void updateLoadingScreen();
     protected:
     private:
         std::shared_ptr<Settings> _settings;
@@ -46,6 +50,9 @@ class Core {
         std::vector<std::map<PlayerAction, int>> _playerActions;
         std::vector<std::pair<PlayerAction, int>> _gamepadPlayerActions;
         std::map<PlayerAction, int> _gamepadPlayerMovement;
+
+        std::vector<std::unique_ptr<Object::Image>> _images;
+        std::vector<std::unique_ptr<Object::Text>> _texts;
 };
 
 #endif /* !CORE_HPP_ */
