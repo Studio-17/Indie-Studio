@@ -23,9 +23,13 @@ Settings::Settings(nlohmann::json const &jsonData) :
     _camera->setFovy(jsonData.value("cameraFovy", 45.0));
     _camera->setProjection(jsonData.value("cameraProjection", CAMERA_PERSPECTIVE));
     _musics = loadObjects<MyMusic>("Conf/Settings/musics.json");
+    _sounds = loadObjects<MySound>("Conf/Settings/sounds.json");
 
     for (auto &music : _musics)
         music->setVolume(_audio->getAudioVolume());
+
+    for (auto &sound : _sounds)
+        sound->setVolume(_audio->getSoundVolume());
 }
 
 Settings::~Settings()
@@ -80,6 +84,16 @@ void Settings::updateMusicStream(const MusicsEnum &music)
 void Settings::stopMusic(const MusicsEnum &music)
 {
     _musics.at(music)->stop();
+}
+
+void Settings::playSound(const SoundsEnum &sound)
+{
+    _sounds.at(sound)->play();
+}
+
+void Settings::stopSound(const SoundsEnum &sound)
+{
+    _sounds.at(sound)->stop();
 }
 
 

@@ -9,6 +9,8 @@
 
 void Scene::EndGameScene::goToMainMenu()
 {
+    _settings->stopMusic(MusicsEnum::EndGame);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
@@ -29,6 +31,7 @@ Scene::Scenes Scene::EndGameScene::handleEvent()
     int index = 0;
 
     _nextScene = Scene::Scenes::END_GAME;
+    _settings->updateMusicStream(MusicsEnum::EndGame);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

@@ -2,7 +2,13 @@
     "0-menu-music": {
         "musicPath": "Ressources/musics/music_title.ogg"
     },
-    "1-game-music": {
-        "musicPath":"Ressources/musics/music_title.ogg"
+    "1-player-select-music": {
+        "musicPath":"Ressources/musics/music_player_select.ogg"
+    },
+    "2-game-music": {
+        "musicPath":"Ressources/musics/music_battle.ogg"
+    },
+    "3-result-music": {
+        "musicPath":"Ressources/musics/music_result.ogg"
     }
 }

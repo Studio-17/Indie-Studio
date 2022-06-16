@@ -20,6 +20,7 @@
     #include "Window.hpp"
 
     #include "Music.hpp"
+    #include "MySound.hpp"
 
 enum class Action {
     Next,
@@ -44,6 +45,12 @@ enum MusicsEnum {
     EndGame
 };
 
+enum SoundsEnum {
+    BombExplosion,
+    BombDrop,
+    Bonus
+};
+
 class Settings {
     public:
         // Settings(SettingsParams const &params);
@@ -58,9 +65,13 @@ class Settings {
         void setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction);
         std::map<Action, bool> getActionPressed() const;
         std::vector<std::map<PlayerAction, bool>> getPlayerActionsPressed() const;
+
         void playMusic(const MusicsEnum &music);
         void updateMusicStream(const MusicsEnum &music);
         void stopMusic(const MusicsEnum &music);
+
+        void playSound(const SoundsEnum &sound);
+        void stopSound(const SoundsEnum &sound);
 
     protected:
     private:
@@ -69,6 +80,7 @@ class Settings {
         std::shared_ptr<RayLib::CinematicCamera> _camera;
 
         std::vector<std::unique_ptr<MyMusic>> _musics;
+        std::vector<std::unique_ptr<MySound>> _sounds;
 
         std::map<Action, bool> _actionPressed;
         std::vector<std::map<PlayerAction, bool>> _playerActions;

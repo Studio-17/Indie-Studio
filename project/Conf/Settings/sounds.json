@@ -1,0 +1,11 @@
+{
+    "0-bombExplosion": {
+        "soundPath": "Ressources/models/bomb/sound/bomb_explosion.ogg"
+    },
+    "1-bombDrop": {
+        "soundPath": "Ressources/models/bomb/sound/bomb_drop.ogg"
+    },
+    "3-bonus": {
+        "soundPath": "Ressources/models/bonus/sound/bonus.ogg"
+    }
+}
