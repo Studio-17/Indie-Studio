@@ -77,12 +77,6 @@ class GameSettings {
          */
         void setNbPlayers(std::size_t nbPlayers);
         /**
-         * @brief Set the Players list
-         *
-         * @param players map of player object
-         */
-        void setPlayers(std::map<std::size_t, std::shared_ptr<Object::Player>> players);
-        /**
          * @brief Set the Nb Sets
          *
          * @param nbSets number of set
@@ -140,12 +134,6 @@ class GameSettings {
          */
         std::size_t getNbPlayers() const;
         /**
-         * @brief Get the Players list
-         *
-         * @return std::map<std::size_t, std::shared_ptr<Object::Player>> map of player object
-         */
-        std::map<std::size_t, std::shared_ptr<Object::Player>> getPlayers() const;
-        /**
          * @brief Get the Nb Sets
          *
          * @return std::size_t number of sets
@@ -179,7 +167,6 @@ class GameSettings {
         std::vector<std::size_t> _playerSkins; //!< vector of player skins
         std::vector<bool> _iaPlayers; //!< vector of if a player is an IA
         std::size_t _nbPlayers; //!< number of player
-        std::map<std::size_t, std::shared_ptr<Object::Player>> _players;
         std::size_t _nbSets; //!< nb round
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled

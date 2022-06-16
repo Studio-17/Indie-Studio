@@ -21,12 +21,18 @@ GameSettings::~GameSettings()
 void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 {
     _mapPath = jsonData.value("mapPath", "Save/Maps/random.map");
+    _mapSize = jsonData.value("mapSize", std::pair<int, int>({11, 11}));
+    _percentageBoxDrop = jsonData.value("percentageBoxDrop", 90);
     _playerSkins = jsonData.value("playerSkins", std::vector<std::size_t>({0, 0, 0, 0}));
     _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({false, false, false, false}));
     _nbPlayers = jsonData.value("nbPlayers", 4);
     _nbSets = jsonData.value("nbSets", 1);
     _gameTime = jsonData.value("gameTime", 1);
     _enableBonus = jsonData.value("enableBonus", true);
+    _playersRank.clear();
+    _timeOut = false;
+    victoriousPlayer = 0;
+    _playersScore.clear();
 }
 
 void GameSettings::updateSettings(std::string const &filePath)
@@ -62,11 +68,6 @@ void GameSettings::setIaPlayers(std::vector<bool> const &iaPlayers)
 void GameSettings::setNbPlayers(std::size_t nbPlayers)
 {
     _nbPlayers = nbPlayers;
-}
-
-void GameSettings::setPlayers(std::map<std::size_t, std::shared_ptr<Object::Player>> players)
-{
-    _players = players;
 }
 
 void GameSettings::setNbSets(std::size_t nbSets)
@@ -117,11 +118,6 @@ std::vector<bool> GameSettings::getIaPlayers() const
 std::size_t GameSettings::getNbPlayers() const
 {
     return _nbPlayers;
-}
-
-std::map<std::size_t, std::shared_ptr<Object::Player>> GameSettings::getPlayers() const
-{
-    return _players;
 }
 
 std::size_t GameSettings::getNbSets() const

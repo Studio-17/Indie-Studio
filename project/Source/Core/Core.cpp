@@ -54,7 +54,7 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
-    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
 }
 
 void Core::loop()
