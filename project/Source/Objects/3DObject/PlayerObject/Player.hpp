@@ -204,6 +204,18 @@ namespace Object {
              * @return nlohmann::json
              */
             nlohmann::json save();
+
+            //AI methods
+            bool getIsSafe() const;
+            void setIsSafe(bool ifIsSafe);
+            bool getAllowForbiddenCells() const;
+            void setAllowForbiddenCells(bool allowForbiddenCells);
+            int getActionMove() const;
+            void setActionMove(int actionMove);
+            std::vector<PlayerAction> getAiPossibleDirections() const;
+            void setAiPossibleDirections(std::vector<PlayerAction> aiPossibleDirections);
+            std::vector<std::pair<int, int>> getAiForbiddenCells() const;
+            void setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells);
             // std::size_t getKickRange() const { return _kickRange; };
             // void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
 
@@ -226,6 +238,11 @@ namespace Object {
             int _life; ///< life
             bool _isAlive = true; ///< is alive
             bool _isMoving = false; ///< is moving
+            bool _isSafe = true; ///< is safe
+            bool _allowForbiddenCells = false; ///< allow forbidden cells
+            int _actionMove = 0; ///< action move
+            std::vector<PlayerAction> _aiPossibleDirection; ///< ia possible direction
+            std::vector<std::pair<int, int>> _aiForbiddenCells; ///< ai forbidden cells
     };
 }
 
