@@ -7,10 +7,12 @@
 
 #include "Position.hpp"
 #include "Settings.hpp"
+#include "tools.hpp"
+
 
 Settings::Settings(nlohmann::json const &jsonData) :
     _window(std::make_shared<RayLib::Window>(jsonData.value("windowSize", std::pair<float, float>(1920, 1080)), jsonData.value("title", "Raylib project"))),
-    _audio(std::make_shared<RayLib::Audio>(jsonData.value("audioVolume", 100), jsonData.value("musicVolume", 100))),
+    _audio(std::make_shared<RayLib::Audio>(jsonData.value("audioVolume", 50), jsonData.value("musicVolume", 50))),
     _camera(std::make_shared<RayLib::CinematicCamera>(jsonData.value("cameraMode", CAMERA_FREE)))
 {
     Position tmpPos;
@@ -20,6 +22,10 @@ Settings::Settings(nlohmann::json const &jsonData) :
     _camera->setUp(tmpPos.setFromArray(jsonData.value("cameraUp", std::array<float, 3>({0, 1, 0}))));
     _camera->setFovy(jsonData.value("cameraFovy", 45.0));
     _camera->setProjection(jsonData.value("cameraProjection", CAMERA_PERSPECTIVE));
+    _musics = loadObjects<MyMusic>("Conf/Settings/musics.json");
+
+    for (auto &music : _musics)
+        music->setVolume(_audio->getAudioVolume());
 }
 
 Settings::~Settings()
@@ -60,3 +66,21 @@ std::vector<std::map<PlayerAction, bool>> Settings::getPlayerActionsPressed() co
 {
     return _playerActions;
 }
+
+void Settings::playMusic(const MusicsEnum &music)
+{
+    _musics.at(music)->play();
+}
+
+void Settings::updateMusicStream(const MusicsEnum &music)
+{
+    _musics.at(music)->updateMusicStream();
+}
+
+void Settings::stopMusic(const MusicsEnum &music)
+{
+    _musics.at(music)->stop();
+}
+
+
+

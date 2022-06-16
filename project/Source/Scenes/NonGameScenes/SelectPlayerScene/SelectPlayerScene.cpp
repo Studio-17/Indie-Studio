@@ -88,6 +88,8 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

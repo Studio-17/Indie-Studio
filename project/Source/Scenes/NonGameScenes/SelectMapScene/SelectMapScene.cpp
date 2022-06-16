@@ -203,6 +203,7 @@ Scene::Scenes Scene::SelectMapScene::handleEvent()
     std::string delim = "B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/project/";
     std::string newPath;
 
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

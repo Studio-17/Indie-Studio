@@ -1,0 +1,8 @@
+{
+    "0-menu-music": {
+        "musicPath": "Ressources/musics/music_title.ogg"
+    },
+    "1-game-music": {
+        "musicPath":"Ressources/musics/music_title.ogg"
+    }
+}

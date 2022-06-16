@@ -19,6 +19,8 @@
     #include "Camera.hpp"
     #include "Window.hpp"
 
+    #include "Music.hpp"
+
 enum class Action {
     Next,
     Previous,
@@ -34,6 +36,14 @@ enum class PlayerAction {
     MoveDown,
     Drop
 };
+
+enum MusicsEnum {
+    Menu,
+    PlayerSelectMenu,
+    Game,
+    EndGame
+};
+
 class Settings {
     public:
         // Settings(SettingsParams const &params);
@@ -48,12 +58,17 @@ class Settings {
         void setPlayerActionsPressed(std::vector<std::map<PlayerAction, bool>> const &playerAction);
         std::map<Action, bool> getActionPressed() const;
         std::vector<std::map<PlayerAction, bool>> getPlayerActionsPressed() const;
+        void playMusic(const MusicsEnum &music);
+        void updateMusicStream(const MusicsEnum &music);
+        void stopMusic(const MusicsEnum &music);
 
     protected:
     private:
         std::shared_ptr<RayLib::Window> _window;
         std::shared_ptr<RayLib::Audio> _audio;
         std::shared_ptr<RayLib::CinematicCamera> _camera;
+
+        std::vector<std::unique_ptr<MyMusic>> _musics;
 
         std::map<Action, bool> _actionPressed;
         std::vector<std::map<PlayerAction, bool>> _playerActions;
