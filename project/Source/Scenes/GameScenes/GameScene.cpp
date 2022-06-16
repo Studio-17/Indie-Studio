@@ -115,6 +115,8 @@ void Scene::GameScene::applyGameParams()
     _bombs.clear();
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
+    _mapStatistics.clear();
+    _placement = _players.size();
     playerPositions = _gameMap->getMapCorners(_gameSettings->getMapSize().first, _gameSettings->getMapSize().second);
     for (auto &[index, player] : _players) {
         player->reset();
@@ -128,6 +130,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
     Vector2 mousePos = GetMousePosition();
 
     _nextScene = Scene::Scenes::GAME;
+    _settings->updateMusicStream(MusicsEnum::Game);
     for (auto &button: _buttons)
         button->checkHover(mousePos);
     if (!_isPaused) {
@@ -181,6 +184,8 @@ void Scene::GameScene::handleWin()
     if (nbPlayersAlive == 1) {
         _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon();
         _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(alivePlayerIndex));
+        _settings->stopMusic(MusicsEnum::Game);
+        _settings->playMusic(MusicsEnum::EndGame);
         _gameSettings->setPlayersRank(_mapStatistics);
         _nextScene = Scene::Scenes::END_GAME;
     }
@@ -327,6 +332,8 @@ void Scene::GameScene::placeBomb(Position const &pos, Object::PLAYER_ORDER playe
     std::pair<int, int> pairPos = _gameMap->transposeFrom3Dto2D(pos);
     Position newPos = {pairPos.first * _gameMap->getBlockSize(), pos.getY(), pairPos.second * _gameMap->getBlockSize()};
 
+    _settings->playSound(SoundsEnum::BombDrop);
+
     for (auto &bomb : _bombs) {
         if (bomb->getPosition() == newPos)
             blockTook = true;
@@ -394,8 +401,9 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
     std::size_t index = 0;
 
-    _gameMap->placeObjectInMap<Object::Block>({blockPosition.first, blockPosition.second}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+    _settings->playSound(SoundsEnum::BombExplosion);
     placeExplosions(_clockGame.getElapsedTime(), position);
+    _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     checkIfPlayerIsInRange(blockPosition);
 
     for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
@@ -436,8 +444,11 @@ void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosi
     std::pair<int, int> playerPos;
     for (auto &[index, player] : _players) {
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
-        if (playerPos == explosionPos)
+        if (playerPos == explosionPos) {
             player->die();
+            _mapStatistics.emplace(_placement, index);
+            _placement--;
+        }
     }
 }
 

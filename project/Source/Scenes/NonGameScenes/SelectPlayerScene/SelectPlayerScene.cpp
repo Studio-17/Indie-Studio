@@ -18,30 +18,15 @@ void Scene::SelectPlayerScene::exitSelectPlayerScene()
 
 void Scene::SelectPlayerScene::runGame()
 {
-    // std::vector<Position> playerPositions = _gameSettings->getGameMap()->getMapCorners(_gameSettings->getMapSize().first, _gameSettings->getMapSize().second);
-    // std::map<std::size_t, std::shared_ptr<Object::Player>> players = _gameSettings->getPlayers();
-
-    // _gameSettings->getGameMap()->process(_gameSettings->getMapPath());
-    // players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER1)));
-    // players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER2)));
-    // players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER3)));
-    // players.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4))->setPosition(playerPositions.at(static_cast<char>(Object::PLAYER_ORDER::PLAYER4)));
-    // _gameSettings->setPlayers(players);
-    std::cout << "in player scene" << std::endl;
     std::vector<std::size_t> playerSkins;
 
     for (auto &player : _players)
         playerSkins.emplace_back(player.first);
-    std::cout << "players set" << std::endl;
     _gameSettings->setPlayerSkins(playerSkins);
-    std::cout << "pp" << std::endl;
-
     _applyGameSettings();
-    std::cout << "game settings applied" << std::endl;
-
+    _settings->stopMusic(MusicsEnum::PlayerSelectMenu);
+    _settings->playMusic(MusicsEnum::Game);
     _nextScene = Scenes::GAME;
-    std::cout << "out player scene" << std::endl;
-
 }
 
 void Scene::SelectPlayerScene::leftClick(std::uint8_t index)
@@ -103,6 +88,8 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+
+    _settings->updateMusicStream(MusicsEnum::PlayerSelectMenu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

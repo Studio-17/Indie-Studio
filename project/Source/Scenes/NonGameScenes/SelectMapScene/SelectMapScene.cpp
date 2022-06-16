@@ -29,6 +29,8 @@ void Scene::SelectMapScene::runSelectPlayerScene()
         _gameSettings->setMapPath(_currentPath);
         _gameSettings->setMapSize(std::make_pair(static_cast<float>(_height), static_cast<float>(_width)));
     }
+    _settings->stopMusic(MusicsEnum::Menu);
+    _settings->playMusic(MusicsEnum::PlayerSelectMenu);
     _nextScene = Scenes::SELECT_PLAYER;
     std::cout << "runed" << std::endl;
 }
@@ -203,6 +205,7 @@ Scene::Scenes Scene::SelectMapScene::handleEvent()
     std::string delim = "B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/project/";
     std::string newPath;
 
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

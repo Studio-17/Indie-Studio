@@ -23,6 +23,7 @@ Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene
     _images = loadObjects<Object::Image>("Conf/Scenes/MainMenu/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/MainMenu/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
+    _settings->playMusic(MusicsEnum::Menu);
 }
 
 Scene::MainMenuScene::~MainMenuScene()
@@ -35,7 +36,9 @@ Scene::Scenes Scene::MainMenuScene::handleEvent()
     std::float_t speed = 0.0;
     int index = 0;
 
+
     _nextScene = Scene::Scenes::MAIN_MENU;
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

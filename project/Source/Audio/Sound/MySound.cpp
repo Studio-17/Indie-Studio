@@ -14,6 +14,12 @@ MySound::MySound(std::string const &filename) : _sound(LoadSound(filename.c_str(
         throw Error::AudioError("MySound initialization failed");
 }
 
+MySound::MySound(nlohmann::json const &jsonData) : _sound(LoadSound(jsonData.value("soundPath", "default").c_str()))
+{
+    if (_sound.frameCount == 0)
+        throw Error::AudioError("MySound initialization failed");
+}
+
 MySound::MySound()
 {
 }

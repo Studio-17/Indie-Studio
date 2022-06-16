@@ -9,6 +9,8 @@
 
 void Scene::EndGameScene::goToMainMenu()
 {
+    _settings->stopMusic(MusicsEnum::EndGame);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
@@ -29,6 +31,7 @@ Scene::Scenes Scene::EndGameScene::handleEvent()
     int index = 0;
 
     _nextScene = Scene::Scenes::END_GAME;
+    _settings->updateMusicStream(MusicsEnum::EndGame);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;
@@ -50,11 +53,12 @@ void Scene::EndGameScene::drawPlayerName(Object::PLAYER_ORDER player, std::size_
 
 void Scene::EndGameScene::drawScore()
 {
-    drawPlayerName(_gameSettings->getPlayersRank().at(1), 0);
-    drawPlayerName(_gameSettings->getPlayersRank().at(1), 3);
-    drawPlayerName(_gameSettings->getPlayersRank().at(2), 5);
-    drawPlayerName(_gameSettings->getPlayersRank().at(3), 6);
-    drawPlayerName(_gameSettings->getPlayersRank().at(4), 8);
+    std::map<std::size_t, Object::PLAYER_ORDER> playerRank = _gameSettings->getPlayersRank();
+    drawPlayerName(playerRank.at(1), 0);
+    drawPlayerName(playerRank.at(1), 3);
+    drawPlayerName(playerRank.at(2), 5);
+    drawPlayerName(playerRank.at(3), 6);
+    drawPlayerName(playerRank.at(4), 8);
 }
 
 Scene::EndGameScene::~EndGameScene()

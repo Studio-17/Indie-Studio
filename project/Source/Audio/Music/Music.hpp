@@ -10,6 +10,8 @@
 
     #include <raylib.h>
 
+    #include <nlohmann/json.hpp>
+
     #include <string>
 
     #include "IAudio.hpp"
@@ -17,6 +19,7 @@
 class MyMusic : public IAudio {
     public:
         MyMusic(std::string const &filename);
+        MyMusic(nlohmann::json const &jsonData);
         MyMusic();
         ~MyMusic();
 
@@ -29,6 +32,7 @@ class MyMusic : public IAudio {
 
         bool isPlaying() const override;                  // Check if music is playing
         void setVolume(float volume) override;      // Set volume for music (1.0 is max level)
+        void updateMusicStream();
 
     protected:
     private:

@@ -14,8 +14,10 @@ MyMusic::MyMusic(std::string const &filename) : _music(LoadMusicStream(filename.
         throw Error::AudioError("MyMusic initialization failed");
 }
 
-MyMusic::MyMusic()
+MyMusic::MyMusic(nlohmann::json const &jsonData) : _music(LoadMusicStream(jsonData.value("musicPath", "default").c_str()))
 {
+    if (!_music.ctxData)
+        throw Error::AudioError("MyMusic initialization failed");
 }
 
 MyMusic::~MyMusic()
@@ -59,4 +61,9 @@ bool MyMusic::isPlaying() const
 void MyMusic::setVolume(float volume)
 {
     SetMusicVolume(_music, volume);
+}
+
+void MyMusic::updateMusicStream()
+{
+    UpdateMusicStream(_music);
 }
