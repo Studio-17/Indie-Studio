@@ -44,6 +44,11 @@ void Scene::SelectSaveScene::nextSave()
     _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
 }
 
+void Scene::SelectSaveScene::newGameScene()
+{
+    _nextScene = Scene::Scenes::OPTION_GAME;
+}
+
 bool Scene::SelectSaveScene::isGoodSaveFile(const std::string &filename)
 {
     std::string suffix = ".json";
@@ -82,7 +87,8 @@ Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std:
         std::bind(&Scene::SelectSaveScene::exitSelectSaveScene, this),
         std::bind(&Scene::SelectSaveScene::runGame, this),
         std::bind(&Scene::SelectSaveScene::previousSave, this),
-        std::bind(&Scene::SelectSaveScene::nextSave, this)
+        std::bind(&Scene::SelectSaveScene::nextSave, this),
+        std::bind(&Scene::SelectSaveScene::newGameScene, this)
     };
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/SelectSaveScene/button.json");
@@ -95,8 +101,20 @@ Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std:
 
     _savesFilesList = getFilesListFromDirectory("Save/Games/");
     _indexListFiles = 0;
-    if (_savesFilesList.size() > 0)
+    if (_savesFilesList.size() > 0) {
         _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
+        _texts.at(3)->disable();
+        _buttons.at(4)->disable();
+    } else {
+        _texts.at(2)->setText("No save file in Save/Games directory");
+        _texts.at(2)->setPosition(200, 560);
+        _buttons.at(1)->disable();
+        _buttons.at(1)->disableClick();
+        _buttons.at(2)->disable();
+        _buttons.at(2)->disableClick();
+        _buttons.at(3)->disable();
+        _buttons.at(3)->disableClick();
+    }
     _nextScene = Scene::Scenes::SAVE;
 }
 
@@ -134,8 +152,8 @@ void Scene::SelectSaveScene::draw()
     DrawRectangle(100, 250, 800, 600, GRAY);
     for (auto &image : _images)
         image->draw();
-    for (auto &text : _texts)
-        text->draw();
     for (auto &button : _buttons)
         button->draw();
+    for (auto &text : _texts)
+        text->draw();
 }
