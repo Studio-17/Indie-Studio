@@ -81,7 +81,7 @@ void Core::loadMenuScenes()
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
     updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings));
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
     updateLoadingScreen();
     _settings->getWindow()->endDrawing();
 }

@@ -211,9 +211,9 @@ void Scene::GameScene::handlePlayers()
                         moving = true;
                     }
                 }
-                if (!moving)
-                    player->animation(1);
             }
+            if (!moving)
+                player->animation(1);
         }
     }
 }

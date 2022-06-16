@@ -20,7 +20,8 @@ void Scene::SelectSaveScene::exitSelectSaveScene()
 
 void Scene::SelectSaveScene::runGame()
 {
-    _gameSettings->updateSettings(_savesFilesList.at(_indexListFiles));
+    _gameSettings->loadFromJson(getJsonData(_directory + "/" + _savesFilesList.at(_indexListFiles) + ".json"));
+    _applyGameSettings();
     _nextScene = Scenes::GAME;
 }
 
@@ -49,7 +50,7 @@ void Scene::SelectSaveScene::newGameScene()
     _nextScene = Scene::Scenes::OPTION_GAME;
 }
 
-bool Scene::SelectSaveScene::isGoodSaveFile(const std::string &filename)
+bool Scene::SelectSaveScene::isGoodSaveFile(std::string const &filename)
 {
     std::string suffix = ".json";
     if (filename.length() < suffix.length()) {
@@ -58,17 +59,16 @@ bool Scene::SelectSaveScene::isGoodSaveFile(const std::string &filename)
     return filename.compare(filename.length() - suffix.length(), suffix.length(), suffix) == 0;
 }
 
-std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(const std::string &directory)
+std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(std::string const &directory)
 {
     DIR *dir = opendir(directory.c_str());
     struct dirent *diread;
     std::vector<std::string> files;
     std::string file;
 
-    if (dir == nullptr) {
-        perror ("opendir");
-        return {};
-    }
+    _directory = directory;
+    if (dir == nullptr)
+        throw Error::FileError("Failed to open " + directory + " directory");
     while ((diread = readdir(dir)) != nullptr) {
         file = diread->d_name;
         if (isGoodSaveFile(file)) {
@@ -76,11 +76,12 @@ std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(const
             files.push_back(file);
         }
     }
-    closedir (dir);
+    closedir(dir);
     return files;
 }
 
-Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
+Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
+    _applyGameSettings(applyGameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {

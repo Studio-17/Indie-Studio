@@ -8,7 +8,7 @@
 #include "tools.hpp"
 #include "Image.hpp"
 
-Object::Image::Image() : _isEnable(false), _imageLoaded(false)
+Object::Image::Image() : _isEnable(false), _imageLoaded(false), _rotation(0.0)
 {
 }
 
