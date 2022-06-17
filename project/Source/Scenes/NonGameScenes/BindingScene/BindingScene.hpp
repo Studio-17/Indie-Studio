@@ -22,7 +22,9 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              * @param keyboard Reference to Keyboard object
+             * @param actionPressed map of key corresponding of a basic action to handle menu and non gaming actions
              * @param playerAction Vector of map of key corresponding of a player action
+             * @param gamepadPlayerActions Vector of pair of key corresponding of a drop player action with a gamepad
              * @param bindingFunction Function to bind an action by a key
              */
             BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> const &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions, std::function<void(int, int, int)> bindingFunction);
