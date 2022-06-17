@@ -1,9 +1,9 @@
 {
     "title": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Voulez-vous sauvegarder ?",
-        "color": [255, 255, 255, 255],
+        "text": "Do you want to save?",
+        "color": [0, 0, 0, 255],
         "fontSize": 40,
-        "position": [500, 260, 0]
+        "position": [500, 300, 0]
     }
 }
