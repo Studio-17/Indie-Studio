@@ -577,15 +577,15 @@ void Scene::GameScene::resumeGame()
 
 void Scene::GameScene::save()
 {
-    std::ofstream fileToWrite("Save/Games/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json");
+    std::ofstream fileToWrite("Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json");
     nlohmann::json saveData;
     nlohmann::json gameData;
 
     if (!fileToWrite.is_open())
-        throw Error::FileError("File Save/Games/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json Failed to open");
-    _gameMap->save("Save/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map");
+        throw Error::FileError("File Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json Failed to open");
+    _gameMap->save("Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map");
     gameData["time"] = 0.0;
-    gameData["map"] = _gameSettings->getMapPath();
+    gameData["map"] = "Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map";
     gameData["attributes"] = _defaultAttributes;
     saveData["game-data"] = gameData;
     for (auto &[playerIndex, player] : _players)

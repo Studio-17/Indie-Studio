@@ -32,10 +32,12 @@ namespace Scene {
             void previousSave();
             void nextSave();
             void newGameScene();
-            bool isGoodSaveFile(std::string const &filename);
-            std::vector<std::string> getFilesListFromDirectory(std::string const &directory);
+            bool isGoodSaveFile(std::string const &filename, std::string const &suffix);
+            std::vector<std::string> getFilesListFromDirectory(std::string const &directory, std::string const &suffix);
 
         private:
+            void reset();
+
             std::shared_ptr<GameSettings> _gameSettings;
             std::vector<std::unique_ptr<Object::Image>> _parallax;
             std::vector<std::string> _savesFilesList;
