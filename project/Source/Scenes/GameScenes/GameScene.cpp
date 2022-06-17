@@ -106,7 +106,7 @@ void Scene::GameScene::loadSceneAssets()
 
 void Scene::GameScene::applyGameParams()
 {
-    std::vector<std::size_t> playerSkin = _gameSettings->getPlayerSkins();
+    _playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
 
     _nextScene = Scene::Scenes::GAME;
@@ -129,7 +129,12 @@ void Scene::GameScene::applyGameParams()
     for (auto &[index, player] : _players) {
         player->reset();
         player->setPosition(playerPositions.at(static_cast<int>(index)));
-        player->setSkin(_textures.at(playerSkin.at(static_cast<int>(index))));
+        player->setSkin(_textures.at(_playerSkin.at(static_cast<int>(index))));
+    }
+    for (int i = 0; i < 4; i++) {
+        std::string pathToImage = "Conf/Scenes/GameScene/icons/player" + std::to_string(i + 1) + ".json";
+
+        _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
 }
 
@@ -168,6 +173,10 @@ void Scene::GameScene::draw()
     _settings->getCamera()->endMode3D();
     for (auto &image : _images)
         image->draw();
+    _playersIcons.at(0).second.at(_playerSkin.at(0))->draw();
+    _playersIcons.at(1).second.at(_playerSkin.at(1))->draw();
+    _playersIcons.at(2).second.at(_playerSkin.at(2))->draw();
+    _playersIcons.at(3).second.at(_playerSkin.at(3))->draw();
     for (auto &text : _texts)
         text->draw();
     if (_3dcameraVue)
