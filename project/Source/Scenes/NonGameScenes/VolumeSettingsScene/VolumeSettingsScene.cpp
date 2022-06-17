@@ -68,7 +68,7 @@ void Scene::VolumeSettingsScene::downgradeSound()
 
 void Scene::VolumeSettingsScene::upgradeSound()
 {
-    int soundVolume = _settings->getAudio()->getSoundVolume() * 100;
+    int soundVolume = _settings->getSoundVolume() * 100;
 
     if (soundVolume < 100) {
         soundVolume += 10;
