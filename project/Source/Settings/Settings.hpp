@@ -71,6 +71,12 @@ class Settings {
         void playSound(const SoundsEnum &sound);
         void stopSound(const SoundsEnum &sound);
 
+        void applySoundVolume(float volume);
+        void applyMusicVolume(float volume);
+
+        float getSoundVolume() const;
+        float getMusicVolume() const;
+
         std::size_t getSaveIndex() const;
         void incrementSaveIndex();
         void resetSaveIndex();
@@ -89,6 +95,8 @@ class Settings {
         std::map<Action, bool> _actionPressed;
         std::vector<std::map<PlayerAction, bool>> _playerActions;
         std::map<PlayerAction, bool> _playerAction;
+        float _soundVolume;
+        float _musicVolume;
         std::size_t _saveIndex;
 };
 

@@ -32,6 +32,8 @@ Settings::Settings(nlohmann::json const &jsonData) :
 
     for (auto &sound : _sounds)
         sound->setVolume(_audio->getSoundVolume());
+    _musicVolume = _audio->getAudioVolume();
+    _soundVolume = _audio->getSoundVolume();
 }
 
 Settings::~Settings()
@@ -123,4 +125,30 @@ void Settings::updateSettingsDatas(std::string const &filepath)
     incrementSaveIndex();
     saveData["saveIndex"] = _saveIndex;
     fileToWrite << saveData.dump(4);
+}
+
+void Settings::applySoundVolume(float volume)
+{
+    _soundVolume = volume;
+    for (auto &sound : _sounds) {
+        sound->setVolume(volume);
+    }
+}
+
+void Settings::applyMusicVolume(float volume)
+{
+    _musicVolume = volume;
+    for (auto &music : _musics) {
+        music->setVolume(volume);
+    }
+}
+
+float Settings::getSoundVolume() const
+{
+    return _soundVolume;
+}
+
+float Settings::getMusicVolume() const
+{
+    return _musicVolume;
 }
