@@ -6,37 +6,5 @@
         "color": [255, 255, 255, 255],
         "fontSize": 40,
         "position": [100, 100, 0]
-    },
-    "player": {
-        "type": "text",
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Joueur",
-        "color": [255, 255, 255, 255],
-        "fontSize": 30,
-        "position": [500, 300, 0]
-    },
-    "sets": {
-        "type": "text",
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Sets",
-        "color": [255, 255, 255, 255],
-        "fontSize": 30,
-        "position": [500, 400, 0]
-    },
-    "durée": {
-        "type": "text",
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Durée",
-        "color": [255, 255, 255, 255],
-        "fontSize": 30,
-        "position": [500, 500, 0]
-    },
-    "bonus": {
-        "type": "text",
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Bonus",
-        "color": [255, 255, 255, 255],
-        "fontSize": 30,
-        "position": [500, 600, 0]
     }
 }

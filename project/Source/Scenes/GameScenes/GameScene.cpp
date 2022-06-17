@@ -116,6 +116,12 @@ void Scene::GameScene::applyGameParams()
     _gameMap->process(_gameSettings->getMapPath());
     _mapStatistics.clear();
     _placement = _players.size();
+    _timePerRound = _gameSettings->getGameTime();
+    _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
+    if (_gameSettings->IsEnabledBonus())
+        _percentageBonusDrop = 60;
+    else
+        _percentageBonusDrop = 0;
     playerPositions = _gameMap->getMapCorners(_gameSettings->getMapSize().first, _gameSettings->getMapSize().second);
     for (auto &[index, player] : _players) {
         player->reset();

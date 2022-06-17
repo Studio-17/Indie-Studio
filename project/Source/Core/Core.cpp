@@ -131,10 +131,10 @@ void Core::loadKeyBinding(nlohmann::json const &jsonData)
 
     _actionPressed.emplace(Action::Next, jsonData.at("basicKeyboard").value("next", 1));
     _actionPressed.emplace(Action::Previous, jsonData.at("basicKeyboard").value("previous", 1));
-    _actionPressed.emplace(Action::Right, jsonData.at("basicKeyboard").value("right", 1));
-    _actionPressed.emplace(Action::Left, jsonData.at("basicKeyboard").value("left", 1));
-    _actionPressed.emplace(Action::Up, jsonData.at("basicKeyboard").value("Up", 1));
-    _actionPressed.emplace(Action::Down, jsonData.at("basicKeyboard").value("down", 1));
+    _actionPressed.emplace(Action::Right, jsonData.at("basicKeyboard").value("right", 262));
+    _actionPressed.emplace(Action::Left, jsonData.at("basicKeyboard").value("left", 263));
+    _actionPressed.emplace(Action::Up, jsonData.at("basicKeyboard").value("up", 265));
+    _actionPressed.emplace(Action::Down, jsonData.at("basicKeyboard").value("down", 264));
     for (auto &player : playerConfName) {
         tmpPLayerAction.clear();
         tmpPLayerAction.emplace(PlayerAction::MoveLeft, jsonData.at(player).value("moveLeft", 263));
