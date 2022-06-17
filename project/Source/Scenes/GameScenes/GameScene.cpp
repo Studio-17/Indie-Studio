@@ -25,6 +25,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
+    _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::setCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
@@ -131,10 +132,24 @@ void Scene::GameScene::applyGameParams()
         player->setPosition(playerPositions.at(static_cast<int>(index)));
         player->setSkin(_textures.at(_playerSkin.at(static_cast<int>(index))));
     }
-    for (int i = 0; i < 4; i++) {
+    for (std::size_t i = 0; i < _players.size(); i++) {
         std::string pathToImage = "Conf/Scenes/GameScene/icons/player" + std::to_string(i + 1) + ".json";
 
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
+    }
+}
+
+void Scene::GameScene::handleBonusParameters()
+{
+    int textPos = 0;
+
+    for (auto &[index, player] : _players) {
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(player->getRangeExplosion()) + " / " + std::to_string(player->getDefaultRangeExplosion().second));
+        textPos++;
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(player->getAlreadyPlacedBombs()) + " / " + std::to_string(player->getRangeBomb()));
+        textPos++;
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(static_cast<int>(player->getSpeed() * 10) - 4) + " / " + std::to_string(static_cast<int>(player->getDefaultSpeed().second * 10)  - 4));
+        textPos++;
     }
 }
 
@@ -153,6 +168,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
     } else {
         _nextScene = _pauseScene->handleEvent();
     }
+    handleBonusParameters();
     handlePause();
     handleExplosions();
     handleTimer();
@@ -173,10 +189,12 @@ void Scene::GameScene::draw()
     _settings->getCamera()->endMode3D();
     for (auto &image : _images)
         image->draw();
-    for (std::size_t index = 0; index < 4; index++)
+    for (std::size_t index = 0; index < _players.size(); index++)
         _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
     for (auto &text : _texts)
         text->draw();
+    for (auto &parameter : _playerParameters)
+        parameter->draw();
     if (_3dcameraVue)
         _buttons.at(1)->draw();
     else

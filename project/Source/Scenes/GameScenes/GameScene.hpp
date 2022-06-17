@@ -41,8 +41,12 @@ namespace Scene {
              * 
              */
             ~GameScene();
-
+            /**
+             * @brief Initialize the Game Scene object
+             * 
+             */
             void loadSceneAssets();
+
             void applyGameParams();
 
             Scenes handleEvent() override;
@@ -61,6 +65,7 @@ namespace Scene {
             void placeExplosions(float time, Position position);
             void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
+            void handleBonusParameters();
 
             void handlePause();
             void setBombToPause(bool pause);

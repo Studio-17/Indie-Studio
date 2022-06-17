@@ -17,11 +17,11 @@
     "score-player-3": {
         "texture": "Ressources/sprites/bonus_card_right.png",
         "scale": 1,
-        "position": [1500, 100, 0]
+        "position": [1500, 110, 0]
     },
     "score-player-4": {
         "texture": "Ressources/sprites/bonus_card_right.png",
         "scale": 1,
-        "position": [1500, 500, 0]
+        "position": [1500, 510, 0]
     }
 }
