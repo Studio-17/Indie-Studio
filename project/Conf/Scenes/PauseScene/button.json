@@ -10,11 +10,11 @@
             "text": "Resume",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
             "texture": "Ressources/icon/vs_ico.png",
-            "scale": 1,
+            "scale": 0.8,
             "position": [15, 10, 0]
         }
     },
@@ -29,11 +29,11 @@
             "text": "Settings",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
             "texture": "Ressources/icon/settings_ico.png",
-            "scale": 1,
+            "scale": 0.8,
             "position": [15, 10, 0]
         }
     },
@@ -48,11 +48,11 @@
             "text": "Restart",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
-            "texture": "Ressources/icon/exit_ico.png",
-            "scale": 1,
+            "texture": "Ressources/icon/back_ico.png",
+            "scale": 0.8,
             "position": [15, 10, 0]
         }
     },
@@ -67,18 +67,18 @@
             "text": "Main Menu",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
-            "texture": "Ressources/icon/exit_ico.png",
-            "scale": 1,
+            "texture": "Ressources/icon/home_wico.png",
+            "scale": 0.4,
             "position": [15, 10, 0]
         }
     },
     "5-Yes": {
         "type": "button",
         "nbFrame": 3,
-        "position": [520, 500, 0],
+        "position": [775, 450, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -86,18 +86,18 @@
             "text": "Yes",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
-            "texture": "Ressources/icon/exit_ico.png",
-            "scale": 1,
+            "texture": "Ressources/icon/book_ico.png",
+            "scale": 0.8,
             "position": [15, 10, 0]
         }
     },
     "6-No": {
         "type": "button",
         "nbFrame": 3,
-        "position": [1000, 500, 0],
+        "position": [775, 600, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
@@ -105,19 +105,19 @@
             "text": "No",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
-            "position": [220, 40, 0]
+            "position": [150, 35, 0]
         },
         "image": {
             "texture": "Ressources/icon/exit_ico.png",
-            "scale": 1,
+            "scale": 0.8,
             "position": [15, 10, 0]
         }
     },
     "7-Switch": {
         "type": "button",
         "nbFrame": 3,
-        "position": [480, 700, 0],
-        "texture": "Ressources/buttons/back_button.png",
+        "position": [1350, 285, 0],
+        "texture": "Ressources/buttons/cross.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     }
 }
