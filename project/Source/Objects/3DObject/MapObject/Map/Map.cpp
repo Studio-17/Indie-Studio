@@ -143,6 +143,9 @@ std::pair<int, int> Object::Map::transposeFrom3Dto2D(Position const &position)
 void Object::Map::save(std::string const &mapPath)
 {
     std::ofstream mapFile(mapPath);
+
+    if (!mapFile.is_open())
+        throw Error::FileError("File " + mapPath + " Failed to open");
     for (auto &line : _mapPositionsObjects) {
         for (auto &elem : line)
             mapFile << static_cast<char>(elem->getType());

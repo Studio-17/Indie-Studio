@@ -5,10 +5,11 @@
 ** Settings
 */
 
+#include <fstream>
+
 #include "Position.hpp"
 #include "Settings.hpp"
 #include "tools.hpp"
-
 
 Settings::Settings(nlohmann::json const &jsonData) :
     _window(std::make_shared<RayLib::Window>(jsonData.value("windowSize", std::pair<float, float>(1920, 1080)), jsonData.value("title", "Raylib project"))),
@@ -24,6 +25,7 @@ Settings::Settings(nlohmann::json const &jsonData) :
     _camera->setProjection(jsonData.value("cameraProjection", CAMERA_PERSPECTIVE));
     _musics = loadObjects<MyMusic>("Conf/Settings/musics.json");
     _sounds = loadObjects<MySound>("Conf/Settings/sounds.json");
+    _saveIndex = jsonData.value("saveIndex", 0);
 
     for (auto &music : _musics)
         music->setVolume(_audio->getAudioVolume());
@@ -96,5 +98,29 @@ void Settings::stopSound(const SoundsEnum &sound)
     _sounds.at(sound)->stop();
 }
 
+std::size_t Settings::getSaveIndex() const
+{
+    return _saveIndex;
+}
 
+void Settings::incrementSaveIndex()
+{
+    _saveIndex++;
+}
 
+void Settings::resetSaveIndex()
+{
+    _saveIndex = 0;
+}
+
+void Settings::updateSettingsDatas(std::string const &filepath)
+{
+    nlohmann::json saveData = getJsonData(filepath);
+    std::ofstream fileToWrite(filepath);
+
+    if (!fileToWrite.is_open())
+        throw Error::FileError("File " + filepath + " failed to open");
+    incrementSaveIndex();
+    saveData["saveIndex"] = _saveIndex;
+    fileToWrite << saveData.dump(4);
+}
