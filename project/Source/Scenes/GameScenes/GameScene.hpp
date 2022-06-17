@@ -12,6 +12,7 @@
     #include "GameSettings.hpp"
     #include "Map.hpp"
     #include "Player.hpp"
+    #include "Ai.hpp"
     #include "Bonus.hpp"
     #include "Bomb.hpp"
     #include "IRenderding.hpp"
@@ -58,15 +59,6 @@ namespace Scene {
             void handleExplosions();
             void handleTimer();
 
-
-            void handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi);
-            std::vector<PlayerAction> getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi);
-            std::vector<std::pair<int, Position>> checkPlayerPos(Position const &aiPos, int indexAi);
-            std::vector<std::pair<int, int>> stockForbiddenCells(std::shared_ptr<Object::Player> const &ai, int indexAi);
-            bool checkAiIsSafe(std::shared_ptr<Object::Player> const &ai);
-            bool checkAiIsSafe(std::shared_ptr<Object::Player> const &ai, std::pair<int, int> const &aiPos);
-
-
         protected:
             bool playerPressesDrop(PlayerAction const &action) { return (action == PlayerAction::Drop); };
 
@@ -101,6 +93,7 @@ namespace Scene {
             bool _endGame;
 
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players;
+            std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Ai>> _ai;
             float _playerSpeed;
 
             std::vector<std::unique_ptr<Object::Bomb>> _bombs;
@@ -120,12 +113,6 @@ namespace Scene {
 
             float _margin;
             std::map<PlayerAction, Position> _collisionCondition;
-
-            // int _action;
-            // std::vector<PlayerAction> _iaPossibleDirection;
-            // std::vector<std::pair<int, int>> _aiForbiddenCells;
-
-            // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
 
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
 

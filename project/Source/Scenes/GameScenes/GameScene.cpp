@@ -107,6 +107,9 @@ void Scene::GameScene::applyGameParams()
     std::vector<std::size_t> playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
 
+    _ai.clear();
+    for (std::size_t player = _gameSettings->getNbPlayers(); player < 4; player++)
+        _ai.emplace(static_cast<Object::PLAYER_ORDER>(player), std::make_shared<Object::Ai>(static_cast<Object::PLAYER_ORDER>(player), _players.at(static_cast<Object::PLAYER_ORDER>(player)), _gameMap));
     _nextScene = Scene::Scenes::GAME;
     _clockGame.start();
     _explosions.clear();
@@ -197,159 +200,23 @@ void Scene::GameScene::handlePlayers()
 
     for (auto &[playerIndex, player] : _players) {
         moving = false;
+        std::map<PlayerAction, bool> tmp = playerAction.at(static_cast<int>(playerIndex));
 
-        if (_gameSettings->getIaPlayers().at(static_cast<int>(playerIndex)))
-            handleAi(playerAction.at(static_cast<int>(playerIndex)), player, static_cast<int>(playerIndex));
-        else {
-            for (auto &[action, isPressed] : playerAction.at(static_cast<int>(playerIndex))) {
-                if (isPressed && player->isAlive()) {
-                    if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
-                        placeBomb(player->getPosition(), playerIndex);
-                    else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(action), player->getPosition(), playerIndex)) {
-                        CollideObject(player->getPosition(), playerIndex);
-                        player->move(_actionMap.at(action).first, _actionMap.at(action).second);
-                        moving = true;
-                    }
-                }
-            }
-            if (!moving)
-                player->animation(1);
-        }
-    }
-}
-
-std::vector<PlayerAction> Scene::GameScene::getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi)
-{
-    const std::vector<PlayerAction> all_actions = {PlayerAction::MoveLeft, PlayerAction::MoveRight, PlayerAction::MoveUp, PlayerAction::MoveDown};
-    std::vector<PlayerAction> dirs;
-
-    for (auto &action : all_actions) {
-        bool isPossibleDir = true;
-        Position temppos = ai->getPosition();
-        temppos += _collisionCondition.at(action);
-        std::pair<int, int> newAiPos = _gameMap->transposeFrom3Dto2D(temppos);
-
-        if (_gameMap->isColliding(_collisionCondition.at(action), temppos) == Object::MAP_OBJECTS::EMPTY) {
-            // if (ai->getIsSafe()) {
-            //     // for (auto &cell : ai->getAiForbiddenCells()) {
-            //     //     if (cell == newAiPos)
-            //     //         isPossibleDir = false;
-            //     // }
-            //     if (!checkAiIsSafe(ai, newAiPos))
-            //         isPossibleDir = false;
-            // }
-
-            if (isPossibleDir)
-                dirs.emplace_back(action);
-        }
-    }
-    return dirs;
-}
-
-std::vector<std::pair<int, Position>> Scene::GameScene::checkPlayerPos(Position const &aiPos, int indexAi)
-{
-    std::vector<std::pair<int, Position>> posPlayers;
-    int index = 0;
-
-    for (auto &player : _players) {
-        if (index != indexAi)
-            posPlayers.emplace_back(index, player.second->getPosition());
-        index++;
-    }
-    return posPlayers;
-}
-
-
-std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shared_ptr<Object::Player> const &ai, int indexAi)
-{
-    const std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-    std::vector<std::pair<int, int>> aiForbiddenCells;
-    std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
-    Position blockToPlace;
-
-    for (auto &bomb : _bombs) {
-        if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(indexAi)) {
-            std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
-
-            blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
-            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
-
-            for (auto &[x, y] : target) {
-                if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
-                    if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
-                        blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
-
-                        aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
-                    }
+        if (_ai.find(playerIndex) != _ai.end())
+            _ai.at(playerIndex)->handleEvent(tmp);
+        for (auto &[action, isPressed] : tmp) {
+            if (isPressed && player->isAlive()) {
+                if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())
+                   placeBomb(player->getPosition(), playerIndex);
+                else if (_gameMap->isColliding(_collisionCondition.at(action), player->getPosition()) == Object::MAP_OBJECTS::EMPTY && !isCollidingBomb(_collisionCondition.at(action), player->getPosition(), playerIndex)) {
+                    CollideObject(player->getPosition(), playerIndex);
+                    player->move(_actionMap.at(action).first, _actionMap.at(action).second);
+                    moving = true;
                 }
             }
         }
-    }
-    return aiForbiddenCells;
-}
-
-bool Scene::GameScene::checkAiIsSafe(std::shared_ptr<Object::Player> const &ai)
-{
-    std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
-
-    for (auto &cell : ai->getAiForbiddenCells())
-        if (cell == aiPos)
-            return false;
-    return true;
-}
-
-bool Scene::GameScene::checkAiIsSafe(std::shared_ptr<Object::Player> const &ai, std::pair<int, int> const &aiPos)
-{
-    for (auto &cell : ai->getAiForbiddenCells())
-        if (cell == aiPos)
-            return false;
-    return true;
-}
-
-void Scene::GameScene::handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi)
-{
-    for (auto &[action, isPressed] : tmp) {
-        tmp.at(action) = false;
-    }
-
-    // DEBUG
-
-    // std::cout << "AI is safe ? " << ai->getIsSafe() << std::endl;
-
-    // std::pair<int, int> aipos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
-    // std::cout << "AI position: " << aipos.first << ", " << aipos.second << std::endl;
-
-    // ai->setAiForbiddenCells(stockForbiddenCells(ai, indexAi));
-    // for (auto &cell : ai->getAiForbiddenCells())
-    //     std::cout << "cell : " << cell.first << ", " << cell.second << std::endl;
-
-    // DEBUG
-
-    if (!ai->getIsMoving()) {
-        ai->animation(1);
-        ai->setAiPossibleDirections(getPossibleDir(ai, indexAi));
-        ai->setActionMove(rand() % ai->getAiPossibleDirections().size());
-    }
-
-    if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition()) == Object::MAP_OBJECTS::EMPTY  && !isCollidingBomb(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition(), static_cast<Object::PLAYER_ORDER>(indexAi))) {
-        CollideObject(ai->getPosition(), static_cast<Object::PLAYER_ORDER>(indexAi));
-        tmp.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))) = true;
-        ai->setIsMoving(true);
-    } else {
-        ai->setIsMoving(false);
-        if (ai->getIsSafe() && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(ai->getAiPossibleDirections().at(ai->getActionMove()))), ai->getPosition()) == Object::MAP_OBJECTS::BOX) {
-            tmp.at(PlayerAction::Drop) = true;
-        }
-    }
-
-    for (auto &[action, isPressed] : tmp) {
-        if (isPressed && ai->isAlive()) {
-            if (action == PlayerAction::Drop && ai->getAlreadyPlacedBombs() < ai->getRangeBomb()) {
-                placeBomb(ai->getPosition(), static_cast<Object::PLAYER_ORDER>(indexAi));
-                ai->setIsSafe(false);
-            } else
-                ai->move(_actionMap.at(action).first, _actionMap.at(action).second);
-        }
+        if (!moving)
+            player->animation(1);
     }
 }
 
