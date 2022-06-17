@@ -6,12 +6,13 @@
 */
 
 #include <functional>
+#include <fstream>
 
 #include "tools.hpp"
 #include "BindingScene.hpp"
 
-Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction) :
-    AScene(settings), _keyboard(keyboard), _playerAction(playerAction), _bindingFunction(bindingFunction), _buttonIndex(0)
+Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> const &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions, std::function<void(int, int, int)> bindingFunction) :
+    AScene(settings), _keyboard(keyboard), _actionPressed(actionPressed), _playerAction(playerAction), _gamepadPlayerActions(gamepadPlayerActions), _bindingFunction(bindingFunction), _buttonIndex(0)
 {
     _nextScene = Scenes::BINDING_MENU;
     _images = loadObjects<Object::Image>("Conf/Scenes/BindingScene/image.json");
@@ -96,8 +97,34 @@ void Scene::BindingScene::draw()
         popUp->draw();
 }
 
+void Scene::BindingScene::save()
+{
+    std::ofstream fileToWrite("Conf/Settings/keys.json");
+    std::vector<std::string> playerName {"playerOne", "playerTwo", "playerThree", "playerFour"};
+    std::map<Action, std::string> actionName {{Action::Left, "left"}, {Action::Right, "right"}, {Action::Up, "up"}, {Action::Down, "down"}, {Action::Next, "next"}, {Action::Previous, "previous"}};
+    std::map<PlayerAction, std::string> playerActionName {{PlayerAction::MoveLeft, "moveLeft"}, {PlayerAction::MoveRight, "moveRight"}, {PlayerAction::MoveUp, "moveUp"}, {PlayerAction::MoveDown, "moveDown"}, {PlayerAction::Drop, "keyboardDrop"}};
+    nlohmann::json saveData;
+    nlohmann::json keyData;
+    std::size_t index = 0;
+
+    for (auto &[action, key] : _actionPressed )
+        keyData[actionName.at(action)] = key;
+    saveData["basicKeyboard"] = keyData;
+    for (auto &player : _playerAction) {
+        keyData.clear();
+        for (auto &[action, key] : player) {
+            keyData[playerActionName.at(action)] = key;
+        }
+        keyData["gamepadDrop"] = _gamepadPlayerActions.at(index).second;
+        saveData[playerName.at(index)] = keyData;
+        index++;
+    }
+    fileToWrite << std::setw(4) << saveData << std::endl;
+}
+
 void Scene::BindingScene::back()
 {
+    save();
     _nextScene = Scenes::SETTINGS;
 }
 
