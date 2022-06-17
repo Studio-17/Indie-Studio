@@ -63,12 +63,12 @@ void Object::Map::process(std::string const &pathToFile)
 {
     std::vector<std::string> mapLayout = load(pathToFile);
     static const std::map<Object::MAP_OBJECTS, std::pair<Object::Render::MyModel, Object::Render::MyTexture>> keyMap = {
-        {MAP_OBJECTS::WALL_MIDDLE, {_mapModels.at(4), _mapTextures.at(6)}},
-        {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(7)}},
-        {MAP_OBJECTS::WALL_SIDE, {_mapModels.at(6), _mapTextures.at(8)}},
-        {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(9)}},
-        {MAP_OBJECTS::EMPTY, {_mapModels.at(8), _mapTextures.at(10)}},
-        {MAP_OBJECTS::EXPLOSION, {_mapModels.at(9), _mapTextures.at(11)}}
+        {MAP_OBJECTS::WALL_MIDDLE, {_mapModels.at(4), _mapTextures.at(8)}},
+        {MAP_OBJECTS::GROUND, {_mapModels.at(5), _mapTextures.at(9)}},
+        {MAP_OBJECTS::WALL_SIDE, {_mapModels.at(6), _mapTextures.at(10)}},
+        {MAP_OBJECTS::BOX, {_mapModels.at(7), _mapTextures.at(11)}},
+        {MAP_OBJECTS::EMPTY, {_mapModels.at(8), _mapTextures.at(12)}},
+        {MAP_OBJECTS::EXPLOSION, {_mapModels.at(9), _mapTextures.at(13)}}
     };
     static const std::map<Object::MAP_OBJECTS, float> mapScale = {
         {MAP_OBJECTS::WALL_MIDDLE, 0.5f},

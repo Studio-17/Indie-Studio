@@ -85,6 +85,8 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/player/purple.png");
     _textures.emplace_back("Ressources/models/player/red.png");
     _textures.emplace_back("Ressources/models/player/yellow.png");
+    _textures.emplace_back("Ressources/models/player/pink.png");
+    _textures.emplace_back("Ressources/models/player/white.png");
 
     /* BLOCKS */
     _models.emplace_back("Ressources/models/block/stone/box.obj");
@@ -408,7 +410,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
 
     _settings->playSound(SoundsEnum::BombExplosion);
     placeExplosions(_clockGame.getElapsedTime(), position);
-    _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+    _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     checkIfPlayerIsInRange(blockPosition);
 
     for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
@@ -420,13 +422,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                         alreadyDestroyed.at(index) = true;
                     blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * _gameMap->getBlockSize())};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                         alreadyDestroyed.at(index) = true;
                         placeBonus({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, _percentageBonusDrop);
                     }
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EMPTY && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                     }
                     if (!alreadyDestroyed.at(index))
@@ -514,7 +516,7 @@ void Scene::GameScene::handleExplosions()
         for (auto &[line, timer] : explosions) {
             float newTimer = timer + timeBeforeExplosion;
             if (newTimer <= static_cast<float>(_clockGame.getElapsedTime())) {
-                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(10), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
+                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(12), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
                 _explosions.at(col).erase(line);
             }
         }
