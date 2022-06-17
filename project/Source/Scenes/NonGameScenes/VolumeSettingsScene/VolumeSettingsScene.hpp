@@ -26,9 +26,22 @@ namespace Scene {
              * @param saveCallBack Call back function to save game
              */
             VolumeSettingsScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
+            /**
+             * @brief Destroy the Pause Scene object
+             * 
+             */
             ~VolumeSettingsScene();
 
+            /**
+             * @brief Handle the event of the scene
+             * 
+             * @return Scenes 
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             * 
+             */
             void draw() override;
 
         protected:

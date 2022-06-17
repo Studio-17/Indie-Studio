@@ -173,10 +173,8 @@ void Scene::GameScene::draw()
     _settings->getCamera()->endMode3D();
     for (auto &image : _images)
         image->draw();
-    _playersIcons.at(0).second.at(_playerSkin.at(0))->draw();
-    _playersIcons.at(1).second.at(_playerSkin.at(1))->draw();
-    _playersIcons.at(2).second.at(_playerSkin.at(2))->draw();
-    _playersIcons.at(3).second.at(_playerSkin.at(3))->draw();
+    for (std::size_t index = 0; index < 4; index++)
+        _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
     for (auto &text : _texts)
         text->draw();
     if (_3dcameraVue)

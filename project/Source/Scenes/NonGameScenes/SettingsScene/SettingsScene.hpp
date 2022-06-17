@@ -60,8 +60,8 @@ namespace Scene {
             void closePopupVolume();
 
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
-            std::unique_ptr<Scene::VolumeSettingsScene> _volumeSettingsScene;
-            bool _isVolumeSettings;
+            std::unique_ptr<Scene::VolumeSettingsScene> _volumeSettingsScene; ///< Unique pointer to Volume Settings Scene
+            bool _isVolumeSettings; ///< Boolean to know if the volume settings scene is displayed
     };
 }
 
