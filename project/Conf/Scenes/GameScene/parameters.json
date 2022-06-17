@@ -4,21 +4,21 @@
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 200, 0]
+        "position": [280, 200, 0]
     },
     "1.2-player1-bombs": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 250, 0]
+        "position": [280, 250, 0]
     },
     "1.3-player1-speed": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 300, 0]
+        "position": [280, 300, 0]
     },
     "2.1-player2-range": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
@@ -46,21 +46,21 @@
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 600, 0]
+        "position": [280, 600, 0]
     },
     "3.2-player3-bombs": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 650, 0]
+        "position": [280, 650, 0]
     },
     "3.3-player3-speed": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "TEST",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [260, 700, 0]
+        "position": [280, 700, 0]
     },
     "4.1-player4-range": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
