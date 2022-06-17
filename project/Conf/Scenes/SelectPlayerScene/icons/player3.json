@@ -28,5 +28,15 @@
         "texture": "Ressources/sprites/players_icon/yellow.png",
         "scale": 1.25,
         "position": [1025, 275, 0]
+    },
+    "7-Pink": {
+        "texture": "Ressources/sprites/players_icon/pink.png",
+        "scale": 1.25,
+        "position": [1025, 275, 0]
+    },
+    "8-white": {
+        "texture": "Ressources/sprites/players_icon/white.png",
+        "scale": 1.25,
+        "position": [1025, 275, 0]
     }
 }
