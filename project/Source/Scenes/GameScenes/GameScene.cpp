@@ -211,9 +211,9 @@ void Scene::GameScene::handlePlayers()
                         moving = true;
                     }
                 }
-                if (!moving)
-                    player->animation(1);
             }
+            if (!moving)
+                player->animation(1);
         }
     }
 }
@@ -229,8 +229,19 @@ std::vector<PlayerAction> Scene::GameScene::getPossibleDir(std::shared_ptr<Objec
         temppos += _collisionCondition.at(action);
         std::pair<int, int> newAiPos = _gameMap->transposeFrom3Dto2D(temppos);
 
-        if (isPossibleDir)
-            dirs.emplace_back(action);
+        if (_gameMap->isColliding(_collisionCondition.at(action), temppos) == Object::MAP_OBJECTS::EMPTY) {
+            // if (ai->getIsSafe()) {
+            //     // for (auto &cell : ai->getAiForbiddenCells()) {
+            //     //     if (cell == newAiPos)
+            //     //         isPossibleDir = false;
+            //     // }
+            //     if (!checkAiIsSafe(ai, newAiPos))
+            //         isPossibleDir = false;
+            // }
+
+            if (isPossibleDir)
+                dirs.emplace_back(action);
+        }
     }
     return dirs;
 }
@@ -259,6 +270,9 @@ std::vector<std::pair<int, int>> Scene::GameScene::stockForbiddenCells(std::shar
     for (auto &bomb : _bombs) {
         if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(indexAi)) {
             std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+
+            blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
+            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
 
             for (auto &[x, y] : target) {
                 if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
@@ -298,6 +312,19 @@ void Scene::GameScene::handleAi(std::map<PlayerAction, bool> &tmp, std::shared_p
         tmp.at(action) = false;
     }
 
+    // DEBUG
+
+    // std::cout << "AI is safe ? " << ai->getIsSafe() << std::endl;
+
+    // std::pair<int, int> aipos = _gameMap->transposeFrom3Dto2D(ai->getPosition());
+    // std::cout << "AI position: " << aipos.first << ", " << aipos.second << std::endl;
+
+    // ai->setAiForbiddenCells(stockForbiddenCells(ai, indexAi));
+    // for (auto &cell : ai->getAiForbiddenCells())
+    //     std::cout << "cell : " << cell.first << ", " << cell.second << std::endl;
+
+    // DEBUG
+
     if (!ai->getIsMoving()) {
         ai->animation(1);
         ai->setAiPossibleDirections(getPossibleDir(ai, indexAi));
@@ -317,9 +344,10 @@ void Scene::GameScene::handleAi(std::map<PlayerAction, bool> &tmp, std::shared_p
 
     for (auto &[action, isPressed] : tmp) {
         if (isPressed && ai->isAlive()) {
-            if (action == PlayerAction::Drop && ai->getAlreadyPlacedBombs() < ai->getRangeBomb())
+            if (action == PlayerAction::Drop && ai->getAlreadyPlacedBombs() < ai->getRangeBomb()) {
                 placeBomb(ai->getPosition(), static_cast<Object::PLAYER_ORDER>(indexAi));
-            else
+                ai->setIsSafe(false);
+            } else
                 ai->move(_actionMap.at(action).first, _actionMap.at(action).second);
         }
     }
