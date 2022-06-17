@@ -169,8 +169,10 @@ void Scene::GameScene::draw()
         image->draw();
     for (auto &text : _texts)
         text->draw();
-    for (auto &button : _buttons)
-        button->draw();
+    if (_3dcameraVue)
+        _buttons.at(1)->draw();
+    else
+        _buttons.at(0)->draw();
     if (_isPaused)
         _pauseScene->draw();
 }
