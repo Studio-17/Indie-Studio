@@ -29,7 +29,7 @@ void Scene::SelectPlayerScene::runGame()
     _nextScene = Scenes::GAME;
 }
 
-void Scene::SelectPlayerScene::leftClick(std::uint8_t index)
+void Scene::SelectPlayerScene::leftClick(std::size_t index)
 {
     if (_players.at(index).first == 0)
         _players.at(index).first = _players.at(index).second.size() - 1;
@@ -37,7 +37,7 @@ void Scene::SelectPlayerScene::leftClick(std::uint8_t index)
         _players.at(index).first -= 1;
 }
 
-void Scene::SelectPlayerScene::rightClick(std::uint8_t  index)
+void Scene::SelectPlayerScene::rightClick(std::size_t  index)
 {
     if (_players.at(index).first == (_players.at(index).second.size() - 1))
         _players.at(index).first = 0;

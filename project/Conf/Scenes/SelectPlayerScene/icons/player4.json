@@ -4,8 +4,8 @@
         "scale": 1,
         "position": [1450, 300, 0]
     },
-    "2-Red": {
-        "texture": "Ressources/sprites/players_icon/red.png",
+    "2-Cyan": {
+        "texture": "Ressources/sprites/players_icon/cyan.png",
         "scale": 1,
         "position": [1450, 300, 0]
     },
@@ -19,13 +19,13 @@
         "scale": 1,
         "position": [1450, 300, 0]
     },
-    "5-Yellow": {
-        "texture": "Ressources/sprites/players_icon/yellow.png",
+    "5-Red": {
+        "texture": "Ressources/sprites/players_icon/red.png",
         "scale": 1,
         "position": [1450, 300, 0]
     },
-    "6-Cyan": {
-        "texture": "Ressources/sprites/players_icon/cyan.png",
+    "6-Yellow": {
+        "texture": "Ressources/sprites/players_icon/yellow.png",
         "scale": 1,
         "position": [1450, 300, 0]
     }

@@ -32,8 +32,8 @@ namespace Scene {
         protected:
             void exitSelectPlayerScene();
             void runGame();
-            void leftClick(std::uint8_t index);
-            void rightClick(std::uint8_t index);
+            void leftClick(std::size_t index);
+            void rightClick(std::size_t index);
 
         private:
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
