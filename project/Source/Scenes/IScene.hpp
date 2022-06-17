@@ -47,6 +47,11 @@ namespace Scene
      */
     class IScene {
         public:
+            /**
+             * @brief Construct a new IScene object
+             *
+             * @param settings Shared pointer to Settings class
+             */
             virtual ~IScene() = default;
 
             /**

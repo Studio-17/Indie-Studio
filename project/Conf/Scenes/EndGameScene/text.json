@@ -1,28 +1,28 @@
 {
     "0-winner-player": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "J",
+        "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 60,
-        "position": [925, 50, 0]
+        "position": [1250, 40, 0]
     },
     "1-winner": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "WON!",
+        "text": "Wins!",
         "color": [255, 255, 0, 255],
         "fontSize": 150,
-        "position": [800, 140, 0]
+        "position": [1100, 140, 0]
     },
     "2-first": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "1",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
-        "position": [1450, 400, 0]
+        "position": [1450, 395, 0]
     },
     "3-player1": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "J",
+        "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [1600, 400, 0]
@@ -32,11 +32,11 @@
         "text": "2",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
-        "position": [1450, 500, 0]
+        "position": [1450, 495, 0]
     },
     "5-player2": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "J",
+        "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [1600, 500, 0]
@@ -46,11 +46,11 @@
         "text": "3",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
-        "position": [1450, 600, 0]
+        "position": [1450, 595, 0]
     },
     "7-player3": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "J",
+        "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [1600, 600, 0]
@@ -60,11 +60,11 @@
         "text": "4",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
-        "position": [1450, 700, 0]
+        "position": [1450, 695, 0]
     },
     "6-player4": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "J",
+        "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [1600, 700, 0]

@@ -24,6 +24,10 @@ namespace Scene {
              * @param gameSettings Shared pointer to Game Settings class
              */
             SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> applyGameSettings);
+            /**
+             * @brief Destroy the Select Player Scene object
+             * 
+             */
             ~SelectPlayerScene();
 
             Scenes handleEvent() override;

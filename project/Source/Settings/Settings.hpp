@@ -85,19 +85,19 @@ class Settings {
 
     protected:
     private:
-        std::shared_ptr<RayLib::Window> _window;
-        std::shared_ptr<RayLib::Audio> _audio;
-        std::shared_ptr<RayLib::CinematicCamera> _camera;
+        std::shared_ptr<RayLib::Window> _window; //!< Window object
+        std::shared_ptr<RayLib::Audio> _audio; //!< Audio object
+        std::shared_ptr<RayLib::CinematicCamera> _camera; //!< Camera object
 
-        std::vector<std::unique_ptr<MyMusic>> _musics;
-        std::vector<std::unique_ptr<MySound>> _sounds;
+        std::vector<std::unique_ptr<MyMusic>> _musics; //!< Musics object
+        std::vector<std::unique_ptr<MySound>> _sounds; //!< Sounds object
 
-        std::map<Action, bool> _actionPressed;
-        std::vector<std::map<PlayerAction, bool>> _playerActions;
-        std::map<PlayerAction, bool> _playerAction;
-        float _soundVolume;
-        float _musicVolume;
-        std::size_t _saveIndex;
+        std::map<Action, bool> _actionPressed; //!< Action pressed
+        std::vector<std::map<PlayerAction, bool>> _playerActions; //!< Player actions pressed
+        std::map<PlayerAction, bool> _playerAction; //!< Player action pressed
+        float _soundVolume; //!< Sound volume
+        float _musicVolume; //!< Music volume
+        std::size_t _saveIndex; //!< Save index
 };
 
 #endif /* !SETTINGS_HPP_ */

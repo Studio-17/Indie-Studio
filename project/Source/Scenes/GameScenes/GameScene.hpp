@@ -29,10 +29,24 @@ namespace Scene {
 
     class GameScene : public AScene {
         public:
+            /**
+             * @brief Construct a new Game Scene object
+             * 
+             * @param settings 
+             * @param gameSettings 
+             */
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            /**
+             * @brief Destroy the Game Scene object
+             * 
+             */
             ~GameScene();
-
+            /**
+             * @brief Initialize the Game Scene object
+             * 
+             */
             void loadSceneAssets();
+
             void applyGameParams();
 
             Scenes handleEvent() override;
@@ -51,6 +65,7 @@ namespace Scene {
             void placeExplosions(float time, Position position);
             void checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos);
             void placeBonus(std::pair<int, int> position, std::size_t percentageDrop);
+            void handleBonusParameters();
 
             void handlePause();
             void setBombToPause(bool pause);
@@ -84,42 +99,45 @@ namespace Scene {
         private:
             void setCameraView();
 
-            std::shared_ptr<GameSettings> _gameSettings;
+            std::shared_ptr<GameSettings> _gameSettings; //!< Shared pointer to Game Settings class
 
-            std::vector<std::unique_ptr<Object::Image>> _backgroundImage;
+            std::vector<std::unique_ptr<Object::Image>> _backgroundImage; //!< Vector of unique pointer to Image class
 
-            bool _3dcameraVue;
+            bool _3dcameraVue; //!< Boolean to know if 3d camera is enabled or not
 
-            Clock _clockGame;
+            Clock _clockGame; //!< Clock to manage game time
 
-            std::size_t _timePerRound;
+            std::size_t _timePerRound; //!< Time per round
 
-            std::shared_ptr<Object::Map> _gameMap;
-            std::size_t _placement;
-            std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics;
+            std::shared_ptr<Object::Map> _gameMap; //!< Shared pointer to Map class
+            std::size_t _placement; //!< Placement of the map
+            std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics; //!< Map of statistics of the map
 
-            bool _endGame;
+            bool _endGame; //!< Boolean to know if game is ended or not
 
-            std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players;
-            float _playerSpeed;
+            std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players; //!< Map of players
+            std::vector<std::size_t> _playerSkin; //!< Vector of player skin
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _playersIcons; //!< Vector of players with their skins
+            std::vector<std::unique_ptr<Object::Text>> _playerParameters; //!< Vector of player with their writed parameters
+            float _playerSpeed; //!< Player speed
 
-            std::vector<std::unique_ptr<Object::Bomb>> _bombs;
-            float _timeBeforeBombExplosion;
+            std::vector<std::unique_ptr<Object::Bomb>> _bombs; //!< Vector of bombs
+            float _timeBeforeBombExplosion; //!< Time before bomb explosion
 
-            std::map<int, std::map<int, float>> _explosions;
+            std::map<int, std::map<int, float>> _explosions; //!< Map of explosions
 
-            std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus;
+            std::map<int, std::map<int, std::unique_ptr<Object::Bonus>>> _bonus; //!< Map of bonuses
 
-            std::vector<Object::Render::MyAnimation> _animations;
-            std::vector<Object::Render::MyModel> _models;
-            std::vector<Object::Render::MyTexture> _textures;
+            std::vector<Object::Render::MyAnimation> _animations; //!< Vector of animations
+            std::vector<Object::Render::MyModel> _models; //!< Vector of models
+            std::vector<Object::Render::MyTexture> _textures; //!< Vector of textures
 
-            std::map<std::string, std::pair<float, float>> _defaultAttributes;
-            std::size_t _percentageBonusDrop;
-            std::size_t _percentageBoxDrop;
+            std::map<std::string, std::pair<float, float>> _defaultAttributes; //!< Map of default attributes
+            std::size_t _percentageBonusDrop; //!< Percentage of bonus drop
+            std::size_t _percentageBoxDrop; //!< Percentage of box drop
 
-            float _margin;
-            std::map<PlayerAction, Position> _collisionCondition;
+            float _margin; //!< Margin
+            std::map<PlayerAction, Position> _collisionCondition; //!< Map of collision conditions
 
             // int _action;
             // std::vector<PlayerAction> _iaPossibleDirection;
@@ -127,10 +145,10 @@ namespace Scene {
 
             // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
 
-            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap;
+            const std::map<PlayerAction, std::pair<Position, Position>> _actionMap; //!< Map of actions
 
-            std::unique_ptr<Scene::PauseScene> _pauseScene;
-            bool _isPaused;
+            std::unique_ptr<Scene::PauseScene> _pauseScene; //!< Pause scene
+            bool _isPaused; //!< Is paused
     };
 }
 

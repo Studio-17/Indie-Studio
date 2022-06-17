@@ -18,6 +18,10 @@
 
 namespace RayLib
 {
+    /**
+     * @brief Window class
+     *
+     */
     class Window
     {
         public:
@@ -26,16 +30,46 @@ namespace RayLib
             ~Window();
 
             // Window-related functions
+            /**
+             * @brief Check if KEY_ESCAPE pressed or Close icon pressed
+             * 
+             * @return true 
+             * @return false 
+             */
             bool windowShouldClose() const;                                       // Check if KEY_ESCAPE pressed or Close icon pressed
 
+            /**
+             * @brief Check if window has been initialized successfully
+             * 
+             * @return true 
+             * @return false 
+             */
             bool isWindowReady() const;                                           // Check if window has been initialized successfully
 
             void startDrawing(void) const;
             void endDrawing(void) const;
             void clearBackground(Color color) const;
 
+            /**
+             * @brief Check if window is currently fullscreen
+             * 
+             * @return true if window is fullscreen
+             * @return false if window is not fullscreen
+             */
             bool isWindowFullscreen() const;                                      // Check if window is currently fullscreen
+            /**
+             * @brief Check if window is currently hidden (only PLATFORM_DESKTOP)
+             * 
+             * @return true if window is hidden
+             * @return false if window is not hidden
+             */
             bool isWindowHidden() const;                                          // Check if window is currently hidden (only PLATFORM_DESKTOP)
+            /**
+             * @brief Check if window is currently minimized (only PLATFORM_DESKTOP)
+             * 
+             * @return true if window is minimized
+             * @return false if window is not minimized
+             */
             bool isWindowMinimized() const;                                       // Check if window is currently minimized (only PLATFORM_DESKTOP)
             bool isWindowMaximized() const;                                       // Check if window is currently maximized (only PLATFORM_DESKTOP)
             bool isWindowFocused() const;                                         // Check if window is currently focused (only PLATFORM_DESKTOP)
