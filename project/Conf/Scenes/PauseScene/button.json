@@ -64,7 +64,7 @@
         "audio": "Ressources/buttons/click_sound.ogg",
         "text": {
             "font": "Ressources/fonts/squarefont/Square.ttf",
-            "text": "Exit",
+            "text": "Main Menu",
             "color": [255, 255, 255, 255],
             "fontSize": 40,
             "position": [220, 40, 0]
