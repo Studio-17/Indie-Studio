@@ -4,22 +4,22 @@
         "scale": 1,
         "position": [0, 0, 0]
     },
-    "1-black-banner": {
+    "1-black-banner-player1": {
         "texture": "Ressources/sprites/title_background.png",
         "scale": 0.5,
         "position": [1400, 390, 0]
     },
-    "2-black-banner": {
+    "2-black-banner-player2": {
         "texture": "Ressources/sprites/title_background.png",
         "scale": 0.5,
         "position": [1400, 490, 0]
     },
-    "3-black-banner": {
+    "3-black-banner-player3": {
         "texture": "Ressources/sprites/title_background.png",
         "scale": 0.5,
         "position": [1400, 590, 0]
     },
-    "4-black-banner": {
+    "4-black-banner-player4": {
         "texture": "Ressources/sprites/title_background.png",
         "scale": 0.5,
         "position": [1400, 690, 0]

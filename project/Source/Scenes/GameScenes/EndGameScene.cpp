@@ -21,6 +21,7 @@ Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::share
     _texts = loadObjects<Object::Text>("Conf/Scenes/EndGameScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/image.json");
+    _winner = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/winner.json");
 
     _nextScene = Scene::Scenes::END_GAME;
 }
@@ -71,11 +72,11 @@ void Scene::EndGameScene::draw()
         parallax->draw();
     for (auto &button : _buttons)
         button->draw();
-
     if (!_gameSettings->getTimeOut()) {
         drawScore();
         for (auto &image : _images)
             image->draw();
+        _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
         for (auto &text : _texts)
             text->draw();
     } else {

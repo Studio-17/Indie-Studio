@@ -120,7 +120,7 @@ void Scene::GameScene::applyGameParams()
     _placement = _players.size();
     _timePerRound = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
-    _gameSettings->setTimeOut(true);
+    _gameSettings->setTimeOut(false);
     if (_gameSettings->IsEnabledBonus())
         _percentageBonusDrop = 60;
     else
