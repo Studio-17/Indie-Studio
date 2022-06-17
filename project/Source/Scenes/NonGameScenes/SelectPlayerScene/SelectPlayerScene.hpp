@@ -29,18 +29,23 @@ namespace Scene {
             Scenes handleEvent() override;
             void draw() override;
 
+
         protected:
             void exitSelectPlayerScene();
             void runGame();
             void leftClick(std::size_t index);
             void rightClick(std::size_t index);
+            void SetInfoOfPlayers(std::size_t index);
 
         private:
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _players;
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _players; ///< Vector of players with their skins
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _playerColors; ///< Vector of player colors
 
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
-            std::function<void(void)> _applyGameSettings;
+            std::vector<std::unique_ptr<Object::Image>> _popPlayerNames; ///< Vector of every Images of the pop player names
+            std::vector<std::unique_ptr<Object::Image>> _playersInfo; ///< Vector of every Images of the icon infos
+            std::function<void(void)> _applyGameSettings; ///< Function to apply game settings
     };
 }
 

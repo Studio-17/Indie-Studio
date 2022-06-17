@@ -1,0 +1,42 @@
+{
+    "0-icon-player1": {
+        "texture": "Ressources/icon/player_ico.png",
+        "scale": 0.5,
+        "position": [280, 280, 0]
+    },
+    "1-icon-player2": {
+        "texture": "Ressources/icon/player_ico.png",
+        "scale": 0.5,
+        "position": [680, 280, 0]
+    },
+    "2-icon-player3": {
+        "texture": "Ressources/icon/player_ico.png",
+        "scale": 0.5,
+        "position": [1080, 280, 0]
+    },
+    "3-icon-player4": {
+        "texture": "Ressources/icon/player_ico.png",
+        "scale": 0.5,
+        "position": [1480, 280, 0]
+    },
+    "4-ai-player1": {
+        "texture": "Ressources/icon/ai_ico.png",
+        "scale": 0.4,
+        "position": [285, 285, 0]
+    },
+    "5-ai-player2": {
+        "texture": "Ressources/icon/ai_ico.png",
+        "scale": 0.4,
+        "position": [685, 285, 0]
+    },
+    "6-ai-player3": {
+        "texture": "Ressources/icon/ai_ico.png",
+        "scale": 0.4,
+        "position": [1085, 285, 0]
+    },
+    "7-ai-player4": {
+        "texture": "Ressources/icon/ai_ico.png",
+        "scale": 0.4,
+        "position": [1485, 285, 0]
+    }
+}
