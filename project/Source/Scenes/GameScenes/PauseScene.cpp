@@ -83,6 +83,7 @@ void Scene::PauseScene::unPrintExitPopUp()
 
 void Scene::PauseScene::exitGame()
 {
+    unPrintExitPopUp();
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
