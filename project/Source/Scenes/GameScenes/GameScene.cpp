@@ -120,6 +120,7 @@ void Scene::GameScene::applyGameParams()
     _placement = _players.size();
     _timePerRound = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
+    _gameSettings->setTimeOut(true);
     if (_gameSettings->IsEnabledBonus())
         _percentageBonusDrop = 60;
     else
@@ -532,8 +533,10 @@ void Scene::GameScene::handleTimer()
     int minutes = remaningTime / 60;
     int seconds = remaningTime % 60;
 
-    if (remaningTime <= 0)
+    if (remaningTime <= 0) {
+        _gameSettings->setTimeOut(true);
         _nextScene = Scene::Scenes::END_GAME;
+    }
     if (seconds < 10)
         _texts.at(0)->setText(std::to_string(minutes) + ":0" + std::to_string(seconds));
     else
