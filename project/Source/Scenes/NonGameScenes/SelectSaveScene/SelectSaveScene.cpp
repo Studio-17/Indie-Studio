@@ -5,10 +5,12 @@
 ** SelectSaveScene
 */
 
+#include <dirent.h>
+
 #include <functional>
 #include <iostream>
 #include <vector>
-#include <dirent.h>
+#include <cstdio>
 
 #include "tools.hpp"
 #include "SelectSaveScene.hpp"
@@ -50,16 +52,15 @@ void Scene::SelectSaveScene::newGameScene()
     _nextScene = Scene::Scenes::OPTION_GAME;
 }
 
-bool Scene::SelectSaveScene::isGoodSaveFile(std::string const &filename)
+bool Scene::SelectSaveScene::isGoodSaveFile(std::string const &filename, std::string const &suffix)
 {
-    std::string suffix = ".json";
-    if (filename.length() < suffix.length()) {
+    if (filename.size() < suffix.size()) {
         return false;
     }
-    return filename.compare(filename.length() - suffix.length(), suffix.length(), suffix) == 0;
+    return filename.compare(filename.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
-std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(std::string const &directory)
+std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(std::string const &directory, std::string const &suffix)
 {
     DIR *dir = opendir(directory.c_str());
     struct dirent *diread;
@@ -71,8 +72,8 @@ std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(std::
         throw Error::FileError("Failed to open " + directory + " directory");
     while ((diread = readdir(dir)) != nullptr) {
         file = diread->d_name;
-        if (isGoodSaveFile(file)) {
-            file.erase(file.length() - 5);
+        if (isGoodSaveFile(file, suffix)) {
+            file.erase(file.size() - suffix.size());
             files.push_back(file);
         }
     }
@@ -89,7 +90,8 @@ Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std:
         std::bind(&Scene::SelectSaveScene::runGame, this),
         std::bind(&Scene::SelectSaveScene::previousSave, this),
         std::bind(&Scene::SelectSaveScene::nextSave, this),
-        std::bind(&Scene::SelectSaveScene::newGameScene, this)
+        std::bind(&Scene::SelectSaveScene::newGameScene, this),
+        std::bind(&Scene::SelectSaveScene::reset, this)
     };
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/SelectSaveScene/button.json");
@@ -100,15 +102,15 @@ Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std:
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectSaveScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
-    _savesFilesList = getFilesListFromDirectory("Save/Games/");
+    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".json");
     _indexListFiles = 0;
-    if (_savesFilesList.size() > 0) {
+    if (!_savesFilesList.empty()) {
         _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
         _texts.at(3)->disable();
         _buttons.at(4)->disable();
     } else {
-        _texts.at(2)->setText("No save file in Save/Games directory");
-        _texts.at(2)->setPosition(200, 560);
+        _texts.at(2)->setText("No save file in Save/Games/Params directory");
+        _texts.at(2)->setPosition(150, 560);
         _buttons.at(1)->disable();
         _buttons.at(1)->disableClick();
         _buttons.at(2)->disable();
@@ -158,4 +160,16 @@ void Scene::SelectSaveScene::draw()
         button->draw();
     for (auto &text : _texts)
         text->draw();
+}
+
+void Scene::SelectSaveScene::reset()
+{
+    std::vector<std::string> mapFiles = getFilesListFromDirectory("Save/Games/Maps/", ".map");
+
+    std::cout << _directory << std::endl;
+    for (auto &file : _savesFilesList)
+        std::remove(("Save/Games/Params/" + file + ".json").c_str());
+    for (auto &file : mapFiles)
+        std::remove(("Save/Games/Maps/" + file + ".map").c_str());
+    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".map");
 }

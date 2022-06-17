@@ -33,5 +33,19 @@
         "position": [300, 700, 0],
         "texture": "Ressources/buttons/little_button.png",
         "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "6-Reset": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [1500, 700, 0],
+        "texture": "Ressources/buttons/little_button.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Reset",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [150, 30, 0]
+        }
     }
 }
