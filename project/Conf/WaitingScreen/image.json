@@ -1,11 +1,16 @@
 {
-    "studio-17-logo": {
+    "1-studio-17-logo": {
         "texture": "Ressources/sprites/studio17.png",
         "scale": 1,
         "position": [860, 400, 0]
     },
-    "loading-bompb": {
+    "2-loading-bomb": {
         "texture": "Ressources/sprites/loading_bomb.png",
+        "scale": 0.8,
+        "position": [1700, 850, 0]
+    },
+    "3-loading-bar": {
+        "texture": "Ressources/sprites/loading_bar.png",
         "scale": 0.8,
         "position": [1700, 850, 0]
     }
