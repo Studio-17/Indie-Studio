@@ -66,7 +66,7 @@ namespace Scene {
 
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
             std::vector<std::unique_ptr<Object::Button>> _emptyButton; ///< Vector of background unused Buttons
-            std::size_t _activeButton;
+            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

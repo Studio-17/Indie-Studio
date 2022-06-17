@@ -1,0 +1,30 @@
+{
+    "1-Sound": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Sound",
+        "color": [0, 0, 0, 255],
+        "fontSize": 40,
+        "position": [860, 300, 0]
+    },
+    "2-Sound-Volume": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [900, 400, 0]
+    },
+    "3-Music": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Music",
+        "color": [0, 0, 0, 255],
+        "fontSize": 40,
+        "position": [860, 600, 0]
+    },
+    "4-Music-Volume": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [900, 700, 0]
+    }
+}
