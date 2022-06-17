@@ -125,13 +125,13 @@ void Scene::OptionGameMenuScene::selectMapScene()
     _nextScene = Scene::Scenes::SELECT_MAP;
     std::vector<bool> typePlayers;
 
+    _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
     for (std::size_t i = 0; i < 4; i++) {
         if (i < _gameSettings->getNbPlayers())
             typePlayers.emplace_back(false);
         else
             typePlayers.emplace_back(true);
     }
-    _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
     _gameSettings->setIaPlayers(typePlayers);
     _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
     _gameSettings->setGameTime(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
