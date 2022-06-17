@@ -25,11 +25,16 @@ namespace Scene {
              * @param playerAction Vector of map of key corresponding of a player action
              * @param bindingFunction Function to bind an action by a key
              */
-            BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::vector<std::map<PlayerAction, int>> const &playerAction, std::function<void(int, int, int)> bindingFunction);
+            BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> const &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions, std::function<void(int, int, int)> bindingFunction);
             ~BindingScene();
 
             Scenes handleEvent() override;
             void draw() override;
+
+            /**
+             * @brief Save Action key in Json file
+             */
+            void save();
 
         protected:
         private:
@@ -51,7 +56,9 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Text>> _popUpText; ///< Vector of every Texts of binding popUp
             std::vector<std::unique_ptr<Object::Button>> _popUpButton; ///< Vector of every Buttons of binding popUp
             Keyboard &_keyboard; ///< Keyboard object to get pressed key
+            std::map<Action, int> _actionPressed; ///< map of key corresponding of action in Scenes
             std::vector<std::map<PlayerAction, int>> _playerAction; ///< Vector of map of key corresponding of a player action
+            std::vector<std::pair<PlayerAction, int>> _gamepadPlayerActions; ///< Vector of pair of key corresponding of drop action of each player with a gamepad
             std::function<void(int, int, int)> _bindingFunction; ///< Function to bind an action by a key
             int _buttonIndex; ///< index of button when handleling an event
             int _buttonOpened; ///< index of button wich opened the popUp
