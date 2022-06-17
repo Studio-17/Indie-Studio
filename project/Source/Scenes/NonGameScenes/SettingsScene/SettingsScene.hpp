@@ -9,6 +9,7 @@
     #define SETTINGSSCENE_HPP_
 
     #include "AScene.hpp"
+    #include "VolumeSettingsScene.hpp"
 
 namespace Scene {
     /**
@@ -53,8 +54,14 @@ namespace Scene {
              * @brief Call back function executed when back button is pressed to set next scene to main menu scene
              */
             void back();
+            /**
+             * @brief Call closePopupVolume function executed when back button in popup volume is pressed to close it
+             */
+            void closePopupVolume();
 
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::unique_ptr<Scene::VolumeSettingsScene> _volumeSettingsScene;
+            bool _isVolumeSettings;
     };
 }
 
