@@ -9,11 +9,9 @@
 
 #include "tools.hpp"
 #include "OptionGameMenuScene.hpp"
-#include "FileError.hpp"
 
-#include "FileError.hpp"
-
-Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
+Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings),
+    _activeButton(0)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
@@ -36,11 +34,12 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
     _images = loadObjects<Object::Image>("Conf/Scenes/OptionGameMenuScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
+    _emptyButton = loadObjects<Object::Button>("Conf/Scenes/OptionGameMenuScene/empty_button.json");
 
-    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/player.json"));
-    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/sets.json"));
-    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/time.json"));
-    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/bonus.json"));
+    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/Option/player.json"));
+    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/Option/sets.json"));
+    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/Option/time.json"));
+    _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/Option/bonus.json"));
 
     _nextScene = Scene::Scenes::OPTION_GAME;
     _gameSettings = gameSettings;
@@ -68,6 +67,7 @@ Scene::Scenes Scene::OptionGameMenuScene::handleEvent()
     _nextScene = Scene::Scenes::OPTION_GAME;
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
+    handleAction();
     return _nextScene;
 }
 
@@ -77,12 +77,42 @@ void Scene::OptionGameMenuScene::draw()
         parallax->draw();
     for (auto &image : _images)
         image->draw();
+    for (auto &button : _emptyButton)
+        button->draw();
+    for (auto &button : _buttons)
+        button->draw();
     for (auto &[id, option] : _options)
         option.at(id)->draw();
     for (auto &text : _texts)
         text->draw();
-    for (auto &button : _buttons)
-        button->draw();
+}
+
+void Scene::OptionGameMenuScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+    if (tmp.at(Action::Down)) {
+        _activeButton += 1;
+        if (_activeButton >= _emptyButton.size())
+            _activeButton = 0;
+    } else if (tmp.at(Action::Up)) {
+        if (_activeButton == 0)
+            _activeButton = _emptyButton.size() - 1;
+        else
+            _activeButton -= 1;
+    } else if (tmp.at(Action::Left)) {
+        _buttons.at(2 + _activeButton * 2)->setHover();
+        _buttons.at(2 + _activeButton * 2)->click();
+    } else if (tmp.at(Action::Right)) {
+        _buttons.at(2 + _activeButton * 2 + 1)->setHover();
+        _buttons.at(2 + _activeButton * 2 + 1)->click();
+    } else if (tmp.at(Action::Next)) {
+        _buttons.at(1)->click();
+    } else if (tmp.at(Action::Previous)) {
+        _buttons.at(0)->click();
+    }
+    for (auto &button : _emptyButton)
+        button->unsetHover();
+    _emptyButton.at(_activeButton)->setHover();
 }
 
 void Scene::OptionGameMenuScene::back()
@@ -93,10 +123,9 @@ void Scene::OptionGameMenuScene::back()
 void Scene::OptionGameMenuScene::selectMapScene()
 {
     _nextScene = Scene::Scenes::SELECT_MAP;
+    std::vector<bool> typePlayers;
 
     _gameSettings->setNbPlayers(std::stoi(_options.at(NBPLAYERS).second.at(_options.at(NBPLAYERS).first)->getText()));
-
-    std::vector<bool> typePlayers;
     for (std::size_t i = 0; i < 4; i++) {
         if (i < _gameSettings->getNbPlayers())
             typePlayers.emplace_back(false);

@@ -1,42 +1,42 @@
 {
     "basicKeyboard": {
-        "left": 81,
-        "right": 68,
-        "up": 90,
         "down": 83,
+        "left": 81,
         "next": 257,
-        "previous": 259
-    },
-    "playerOne": {
-        "moveLeft": 263,
-        "moveRight": 262,
-        "moveUp": 265,
-        "moveDown": 264,
-        "keyboardDrop": 32,
-        "gamepadDrop": 7
-    },
-    "playerTwo": {
-        "moveLeft": 65,
-        "moveRight": 68,
-        "moveUp": 87,
-        "moveDown": 83,
-        "keyboardDrop": 81,
-        "gamepadDrop": 7
-    },
-    "playerThree": {
-        "moveLeft": 75,
-        "moveRight": 59,
-        "moveUp": 79,
-        "moveDown": 76,
-        "keyboardDrop": 73,
-        "gamepadDrop": 7
+        "previous": 259,
+        "right": 68,
+        "up": 90
     },
     "playerFour": {
+        "gamepadDrop": 7,
+        "keyboardDrop": 82,
+        "moveDown": 71,
         "moveLeft": 70,
         "moveRight": 72,
-        "moveUp": 84,
-        "moveDown": 71,
-        "keyboardDrop": 82,
-        "gamepadDrop": 7
+        "moveUp": 84
+    },
+    "playerOne": {
+        "gamepadDrop": 7,
+        "keyboardDrop": 32,
+        "moveDown": 264,
+        "moveLeft": 263,
+        "moveRight": 262,
+        "moveUp": 265
+    },
+    "playerThree": {
+        "gamepadDrop": 7,
+        "keyboardDrop": 73,
+        "moveDown": 76,
+        "moveLeft": 75,
+        "moveRight": 59,
+        "moveUp": 79
+    },
+    "playerTwo": {
+        "gamepadDrop": 7,
+        "keyboardDrop": 81,
+        "moveDown": 83,
+        "moveLeft": 65,
+        "moveRight": 68,
+        "moveUp": 87
     }
 }

@@ -215,3 +215,23 @@ void Object::Button::checkHover(Vector2 const &mousePosition)
     else
         _state = Default;
 }
+
+void Object::Button::setHover()
+{
+    _state = Hover;
+}
+
+void Object::Button::unsetHover()
+{
+    _state = Default;
+}
+
+void Object::Button::click()
+{
+    _state = Click;
+    if (_isAudio)
+        _audio.play();
+    if (_callBack)
+        _callBack();
+}
+

@@ -71,7 +71,7 @@ void Core::loadMenuScenes()
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
     updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _playerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
     updateLoadingScreen();
@@ -119,11 +119,6 @@ void Core::getEvent()
     _settings->setPlayerActionsPressed(playerActions);
 }
 
-void Core::bindKey(int player, int action, int Key)
-{
-    _playerActions.at(player).at(static_cast<PlayerAction>(action)) = Key;
-}
-
 void Core::loadKeyBinding(nlohmann::json const &jsonData)
 {
     std::vector<std::string> playerConfName = {"playerOne", "playerTwo", "playerThree", "playerFour"};
@@ -131,10 +126,10 @@ void Core::loadKeyBinding(nlohmann::json const &jsonData)
 
     _actionPressed.emplace(Action::Next, jsonData.at("basicKeyboard").value("next", 1));
     _actionPressed.emplace(Action::Previous, jsonData.at("basicKeyboard").value("previous", 1));
-    _actionPressed.emplace(Action::Right, jsonData.at("basicKeyboard").value("right", 1));
-    _actionPressed.emplace(Action::Left, jsonData.at("basicKeyboard").value("left", 1));
-    _actionPressed.emplace(Action::Up, jsonData.at("basicKeyboard").value("Up", 1));
-    _actionPressed.emplace(Action::Down, jsonData.at("basicKeyboard").value("down", 1));
+    _actionPressed.emplace(Action::Right, jsonData.at("basicKeyboard").value("right", 262));
+    _actionPressed.emplace(Action::Left, jsonData.at("basicKeyboard").value("left", 263));
+    _actionPressed.emplace(Action::Up, jsonData.at("basicKeyboard").value("up", 265));
+    _actionPressed.emplace(Action::Down, jsonData.at("basicKeyboard").value("down", 264));
     for (auto &player : playerConfName) {
         tmpPLayerAction.clear();
         tmpPLayerAction.emplace(PlayerAction::MoveLeft, jsonData.at(player).value("moveLeft", 263));

@@ -16,56 +16,56 @@
     "3-player-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [700, 300, 0],
+        "position": [900, 280, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "3-player-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1100, 300, 0],
+        "position": [1300, 280, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "4-sets-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [700, 400, 0],
+        "position": [900, 430, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "4-sets-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1100, 400, 0],
+        "position": [1300, 430, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "5-durée-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [700, 500, 0],
+        "position": [900, 580, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "5-durée-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1100, 500, 0],
+        "position": [1300, 580, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "6-bonus-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [700, 600, 0],
+        "position": [900, 730, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
     "6-bonus-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1100, 600, 0],
+        "position": [1300, 730, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     }

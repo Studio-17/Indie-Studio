@@ -5,7 +5,7 @@
         "text": "Oui",
         "color": [255, 255, 255, 255],
         "fontSize": 40,
-        "position": [900, 600, 0]
+        "position": [1100, 730, 0]
     },
     "2-No": {
         "type": "text",
@@ -13,6 +13,6 @@
         "text": "Non",
         "color": [255, 255, 255, 255],
         "fontSize": 40,
-        "position": [900, 600, 0]
+        "position": [1100, 730, 0]
     }
 }
