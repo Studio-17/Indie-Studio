@@ -1,42 +1,50 @@
 {
-    "1-title": {
+    "1-Blue": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "SELECT PLAYER",
-        "color": [255, 255, 255, 255],
-        "fontSize": 40,
-        "position": [100, 100, 0]
-    },
-    "2-name-player1": {
-        "type": "text",
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "1J",
+        "text": "Blue",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [242, 290, 0]
+        "position": [1540, 580, 0]
     },
-    "3-name-player2": {
+    "2-Cyan": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "2J",
+        "text": "Cyan",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [638, 290, 0]
+        "position": [1540, 580, 0]
     },
-    "4-name-player3": {
+    "3-Green": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "3J",
+        "text": "Green",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [1038, 290, 0]
+        "position": [1540, 580, 0]
     },
-    "5-name-player4": {
+    "4-Purple": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "3J",
+        "text": "Purple",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
-        "position": [1438, 290, 0]
+        "position": [1540, 580, 0]
+    },
+    "5-Red": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Red",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1540, 580, 0]
+    },
+    "6-Yellow": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Yellow",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1540, 580, 0]
     }
 }

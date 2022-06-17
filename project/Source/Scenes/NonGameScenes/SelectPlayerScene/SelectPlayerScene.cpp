@@ -29,20 +29,26 @@ void Scene::SelectPlayerScene::runGame()
     _nextScene = Scenes::GAME;
 }
 
-void Scene::SelectPlayerScene::leftClick(std::uint8_t index)
+void Scene::SelectPlayerScene::leftClick(std::size_t index)
 {
-    if (_players.at(index).first == 0)
+    if (_players.at(index).first == 0) {
         _players.at(index).first = _players.at(index).second.size() - 1;
-    else
+        _playerColors.at(index).first = _playerColors.at(index).second.size() - 1;
+    } else {
         _players.at(index).first -= 1;
+        _playerColors.at(index).first -= 1;
+    }
 }
 
-void Scene::SelectPlayerScene::rightClick(std::uint8_t  index)
+void Scene::SelectPlayerScene::rightClick(std::size_t  index)
 {
-    if (_players.at(index).first == (_players.at(index).second.size() - 1))
+    if (_players.at(index).first == (_players.at(index).second.size() - 1)) {
         _players.at(index).first = 0;
-    else
+        _playerColors.at(index).first = 0;
+    } else {
         _players.at(index).first += 1;
+        _playerColors.at(index).first += 1;
+    }
 }
 
 Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
@@ -67,15 +73,18 @@ Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, 
         _buttons.at(index)->setCallBack(callBacks.at(index));
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/SelectPlayerScene/image.json");
+    _playersInfo = loadObjects<Object::Image>("Conf/Scenes/SelectPlayerScene/icon.json");
+    _popPlayerNames = loadObjects<Object::Image>("Conf/Scenes/SelectPlayerScene/pop.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectPlayerScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
     for (int i = 0; i < 4; i++) {
-        std::string pathtofile = "Conf/Scenes/SelectPlayerScene/icons/player" + std::to_string(i + 1) + ".json";
+        std::string pathToImage = "Conf/Scenes/SelectPlayerScene/icons/player" + std::to_string(i + 1) + ".json";
+        std::string pathToText = "Conf/Scenes/SelectPlayerScene/colors/player" + std::to_string(i + 1) + ".json";
 
-        _players.emplace_back(0, loadObjects<Object::Image>(pathtofile));
+        _players.emplace_back(0, loadObjects<Object::Image>(pathToImage));
+        _playerColors.emplace_back(0, loadObjects<Object::Text>(pathToText));
     }
-
     _nextScene = Scene::Scenes::SELECT_PLAYER;
 }
 
@@ -87,7 +96,6 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
 {
     std::float_t speed = 0.0;
     int index = 0;
-
 
     _settings->updateMusicStream(MusicsEnum::PlayerSelectMenu);
     for (auto &parallax : _parallax) {
@@ -107,6 +115,17 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
     return _nextScene;
 }
 
+void Scene::SelectPlayerScene::SetInfoOfPlayers(std::size_t index)
+{
+    std::cout << index << std::endl;
+    for (std::size_t i = 0; i < 4; i++) {
+        if (i + 1 <= index)
+            _playersInfo.at(i)->draw();
+        else
+            _playersInfo.at(i + 4)->draw();
+    }
+}
+
 void Scene::SelectPlayerScene::draw()
 {
     for (auto &parallax : _parallax)
@@ -115,6 +134,11 @@ void Scene::SelectPlayerScene::draw()
         image->draw();
     for (auto &[id, player] : _players)
         player.at(id)->draw();
+    for (auto &[id, playerColor] : _playerColors)
+        playerColor.at(id)->draw();
+    for (auto &pop : _popPlayerNames)
+        pop->draw();
+    SetInfoOfPlayers(_gameSettings->getNbPlayers());
     for (auto &text : _texts)
         text->draw();
     for (auto &button : _buttons)

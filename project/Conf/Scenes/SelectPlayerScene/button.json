@@ -13,59 +13,59 @@
         "texture": "Ressources/buttons/next_button.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "3-player1-left-arrow": {
+    "3.1-player1-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [200, 600, 0],
+        "position": [240, 570, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "3-playe1-right-arrow": {
+    "3.2-playe1-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [500, 600, 0],
+        "position": [480, 570, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "4-player2-left-arrow": {
+    "4.1-player2-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [600, 600, 0],
+        "position": [640, 570, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "4-player2-right-arrow": {
+    "4.2-player2-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [900, 600, 0],
+        "position": [880, 570, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "5-player3-left-arrow": {
+    "5.1-player3-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1000, 600, 0],
+        "position": [1040, 570, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "5-playe3-right-arrow": {
+    "5.2-playe3-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1300, 600, 0],
+        "position": [1280, 570, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "6-player4-left-arrow": {
+    "6.1-player4-left-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1400, 600, 0],
+        "position": [1440, 570, 0],
         "texture": "Ressources/buttons/medium_left_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
-    "6-playe4-right-arrow": {
+    "6.2-playe4-right-arrow": {
         "type": "button",
         "nbFrame": 2,
-        "position": [1700, 600, 0],
+        "position": [1680, 570, 0],
         "texture": "Ressources/buttons/medium_right_arrow.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     }

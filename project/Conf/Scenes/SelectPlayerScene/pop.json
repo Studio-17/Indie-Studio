@@ -1,0 +1,42 @@
+{
+    "1-pop-name-player1": {
+        "texture": "Ressources/icon/blue_circle_ico.png",
+        "scale": 0.5,
+        "position": [230, 280, 0]
+    },
+    "2-pop-name-player2": {
+        "texture": "Ressources/icon/blue_circle_ico.png",
+        "scale": 0.5,
+        "position": [630, 280, 0]
+    },
+    "3-pop-name-player3": {
+        "texture": "Ressources/icon/blue_circle_ico.png",
+        "scale": 0.5,
+        "position": [1030, 280, 0]
+    },
+    "4-pop-name-player4": {
+        "texture": "Ressources/icon/blue_circle_ico.png",
+        "scale": 0.5,
+        "position": [1430, 280, 0]
+    },
+    "5-pop-icon-player1": {
+        "texture": "Ressources/icon/red_circle_ico.png",
+        "scale": 0.5,
+        "position": [280, 280, 0]
+    },
+    "6-pop-icon-player2": {
+        "texture": "Ressources/icon/red_circle_ico.png",
+        "scale": 0.5,
+        "position": [680, 280, 0]
+    },
+    "7-pop-icon-player3": {
+        "texture": "Ressources/icon/red_circle_ico.png",
+        "scale": 0.5,
+        "position": [1080, 280, 0]
+    },
+    "8-pop-icon-player4": {
+        "texture": "Ressources/icon/red_circle_ico.png",
+        "scale": 0.5,
+        "position": [1480, 280, 0]
+    }
+}
