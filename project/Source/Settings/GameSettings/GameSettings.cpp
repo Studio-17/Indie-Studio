@@ -21,6 +21,7 @@ GameSettings::~GameSettings()
 void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 {
     _mapPath = jsonData.value("mapPath", "Save/Maps/random.map");
+    _percentageBoxDrop = jsonData.value("percentageBoxDrop", 90);
     _playerSkins = jsonData.value("playerSkins", std::vector<std::size_t>({0, 0, 0, 0}));
     _iaPlayers = jsonData.value("iaPlayers", std::vector<bool>({false, false, false, false}));
     _nbPlayers = jsonData.value("nbPlayers", 4);
