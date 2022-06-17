@@ -29,6 +29,8 @@ namespace Scene {
             Scenes handleEvent() override;
             void draw() override;
 
+            void handleAction();
+
         protected:
         private:
             enum OPTION {
@@ -63,6 +65,8 @@ namespace Scene {
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options; ///< Vector of pair of with his Text
 
             std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Button>> _emptyButton; ///< Vector of background unused Buttons
+            std::size_t _activeButton;
     };
 }
 
