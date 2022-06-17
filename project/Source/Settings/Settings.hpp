@@ -53,8 +53,6 @@ enum SoundsEnum {
 
 class Settings {
     public:
-        // Settings(SettingsParams const &params);
-        // Settings(std::string const &confpath);
         Settings(nlohmann::json const &jsonData);
         ~Settings();
 
@@ -73,6 +71,12 @@ class Settings {
         void playSound(const SoundsEnum &sound);
         void stopSound(const SoundsEnum &sound);
 
+        std::size_t getSaveIndex() const;
+        void incrementSaveIndex();
+        void resetSaveIndex();
+
+        void updateSettingsDatas(std::string const &filepath);
+
     protected:
     private:
         std::shared_ptr<RayLib::Window> _window;
@@ -85,6 +89,7 @@ class Settings {
         std::map<Action, bool> _actionPressed;
         std::vector<std::map<PlayerAction, bool>> _playerActions;
         std::map<PlayerAction, bool> _playerAction;
+        std::size_t _saveIndex;
 };
 
 #endif /* !SETTINGS_HPP_ */

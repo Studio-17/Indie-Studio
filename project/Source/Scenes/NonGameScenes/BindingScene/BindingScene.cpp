@@ -106,6 +106,8 @@ void Scene::BindingScene::save()
     nlohmann::json keyData;
     std::size_t index = 0;
 
+    if (!fileToWrite.is_open())
+        throw Error::FileError("File Conf/Settings/keys.json failed to open");
     for (auto &[action, key] : _actionPressed )
         keyData[actionName.at(action)] = key;
     saveData["basicKeyboard"] = keyData;

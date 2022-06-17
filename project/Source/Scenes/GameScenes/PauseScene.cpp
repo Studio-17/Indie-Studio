@@ -67,6 +67,7 @@ void Scene::PauseScene::draw()
 void Scene::PauseScene::save()
 {
     _saveFunction();
+    _settings->updateSettingsDatas("Conf/Settings/settings.json");
     exitGame();
 }
 
