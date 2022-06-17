@@ -11,8 +11,8 @@
 #include "tools.hpp"
 #include "BindingScene.hpp"
 
-Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> const &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions, std::function<void(int, int, int)> bindingFunction) :
-    AScene(settings), _keyboard(keyboard), _actionPressed(actionPressed), _playerAction(playerAction), _gamepadPlayerActions(gamepadPlayerActions), _bindingFunction(bindingFunction), _buttonIndex(0)
+Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions) :
+    AScene(settings), _keyboard(keyboard), _actionPressed(actionPressed), _playerAction(playerAction), _gamepadPlayerActions(gamepadPlayerActions), _buttonIndex(0)
 {
     _nextScene = Scenes::BINDING_MENU;
     _images = loadObjects<Object::Image>("Conf/Scenes/BindingScene/image.json");
@@ -64,7 +64,6 @@ Scene::Scenes Scene::BindingScene::handleEvent()
         int newKey = _keyboard.getPressedKeycode();
         if (newKey) {
             cancelBind();
-            _bindingFunction((_buttonOpened - 1) / 5, (_buttonOpened - 1) % 5, newKey);
             _playerAction.at((_buttonOpened - 1) / 5).at(static_cast<PlayerAction>((_buttonOpened - 1) % 5)) = newKey;
             _buttons.at(_buttonOpened)->setText(setActionToString(newKey));
         }

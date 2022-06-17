@@ -71,7 +71,7 @@ void Core::loadMenuScenes()
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
     updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions, std::bind(&Core::bindKey, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)));
+    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions));
     updateLoadingScreen();
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
     updateLoadingScreen();
@@ -117,11 +117,6 @@ void Core::getEvent()
     }
     _settings->setActionPressed(actionPressed);
     _settings->setPlayerActionsPressed(playerActions);
-}
-
-void Core::bindKey(int player, int action, int Key)
-{
-    _playerActions.at(player).at(static_cast<PlayerAction>(action)) = Key;
 }
 
 void Core::loadKeyBinding(nlohmann::json const &jsonData)
