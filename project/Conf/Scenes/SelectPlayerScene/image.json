@@ -8,5 +8,25 @@
         "texture": "Ressources/icon/player_wico.png",
         "scale": 0.6,
         "position": [15, 85, 0]
+    },
+    "2-player1-card": {
+        "texture": "Ressources/sprites/player_card.png",
+        "scale": 1,
+        "position": [225, 275, 0]
+    },
+    "3-player2-card": {
+        "texture": "Ressources/sprites/player_card.png",
+        "scale": 1,
+        "position": [625, 275, 0]
+    },
+    "4-player3-card": {
+        "texture": "Ressources/sprites/player_card.png",
+        "scale": 1,
+        "position": [1025, 275, 0]
+    },
+    "5-player4-card": {
+        "texture": "Ressources/sprites/player_card.png",
+        "scale": 1,
+        "position": [1425, 275, 0]
     }
 }
