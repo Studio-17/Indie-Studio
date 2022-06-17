@@ -1,0 +1,74 @@
+{
+    "1-player": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [200, 250, 0],
+        "texture": "Ressources/buttons/mouseOverButtons.png",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Players",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 30, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/player_ico.png",
+            "scale": 0.8,
+            "position": [10, 6, 0]
+        }
+    },
+    "2-sets": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [200, 400, 0],
+        "texture": "Ressources/buttons/mouseOverButtons.png",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Sets",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 30, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/crown_ico.png",
+            "scale": 0.8,
+            "position": [10, 6, 0]
+        }
+    },
+    "3-time": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [200, 550, 0],
+        "texture": "Ressources/buttons/mouseOverButtons.png",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Duration",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 30, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/timer_ico.png",
+            "scale": 0.8,
+            "position": [10, 6, 0]
+        }
+    },
+    "4-bonus": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [200, 700, 0],
+        "texture": "Ressources/buttons/mouseOverButtons.png",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Special Abilities",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [220, 30, 0]
+        },
+        "image": {
+            "texture": "Ressources/icon/muscle_ico.png",
+            "scale": 0.8,
+            "position": [10, 6, 0]
+        }
+    }
+}
