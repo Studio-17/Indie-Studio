@@ -14,6 +14,7 @@
     #include "Settings.hpp"
     #include "Map.hpp"
     #include "Position.hpp"
+    #include "Bomb.hpp"
 
 namespace Object {
 
@@ -25,10 +26,10 @@ namespace Object {
             Ai(Object::PLAYER_ORDER id, std::shared_ptr<Object::Player> const &player, std::shared_ptr<Object::Map> const &gameMap);
             ~Ai();
 
-            void handleEvent(std::map<PlayerAction, bool> &aiAction);
+            void handleEvent(std::map<PlayerAction, bool> &aiAction, std::vector<std::unique_ptr<Object::Bomb>> const &bombs);
 
             std::vector<PlayerAction> getPossibleDir();
-            // std::vector<std::pair<int, int>> stockForbiddenCells();
+            std::vector<std::pair<int, int>> stockForbiddenCells(std::vector<std::unique_ptr<Object::Bomb>> const &bombs);
 
         protected:
         private:
@@ -44,7 +45,7 @@ namespace Object {
             // bool _allowForbiddenCells = false; ///< allow forbidden cells
             int _actionMove = 0; ///< action move
             std::vector<PlayerAction> _possibleDirection; ///< ia possible direction
-            // std::vector<std::pair<int, int>> _aiForbiddenCells; ///< ai forbidden cells
+            std::vector<std::pair<int, int>> _forbiddenCells; ///< ai forbidden cells
 
 
     };

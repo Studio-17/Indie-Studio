@@ -203,7 +203,8 @@ void Scene::GameScene::handlePlayers()
         std::map<PlayerAction, bool> tmp = playerAction.at(static_cast<int>(playerIndex));
 
         if (_ai.find(playerIndex) != _ai.end())
-            _ai.at(playerIndex)->handleEvent(tmp);
+            _ai.at(playerIndex)->handleEvent(tmp, _bombs);
+
         for (auto &[action, isPressed] : tmp) {
             if (isPressed && player->isAlive()) {
                 if (action == PlayerAction::Drop && player->getAlreadyPlacedBombs() < player->getRangeBomb())

@@ -23,11 +23,16 @@ Object::Ai::~Ai()
 {
 }
 
-void Object::Ai::handleEvent(std::map<PlayerAction, bool> &aiAction)
+void Object::Ai::handleEvent(std::map<PlayerAction, bool> &aiAction, std::vector<std::unique_ptr<Object::Bomb>> const &bombs)
 {
     for (auto &[action, isPressed] : aiAction) {
         aiAction.at(action) = false;
     }
+
+    // _forbiddenCells = stockForbiddenCells(bombs);
+    // for (auto &forbiddenCell : _forbiddenCells) {
+    //     std::cout << "ForbiddenCell: " << forbiddenCell.first << ",  " << forbiddenCell.second << std::endl;
+    // }
 
     if (!_isMoving) {
         _possibleDirection = getPossibleDir();
@@ -73,33 +78,33 @@ std::vector<PlayerAction> Object::Ai::getPossibleDir()
     return dirs;
 }
 
-// std::vector<std::pair<int, int>> Object::Ai::stockForbiddenCells()
-// {
-//     const std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
-//     std::vector<std::pair<int, int>> aiForbiddenCells;
-//     std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(_aiPlayer->getPosition());
-//     Position blockToPlace;
+std::vector<std::pair<int, int>> Object::Ai::stockForbiddenCells(std::vector<std::unique_ptr<Object::Bomb>> const &bombs)
+{
+    const std::vector<std::pair<int, int>> target = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    std::vector<std::pair<int, int>> aiForbiddenCells;
+    std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(_aiPlayer->getPosition());
+    Position blockToPlace;
 
-//     for (auto &bomb : _bombs) {
-//         if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(_id)) {
-//             std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+    for (auto &bomb : bombs) {
+        if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(_id)) {
+            std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
 
-//             blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
-//             aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+            blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
+            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
 
-//             for (auto &[x, y] : target) {
-//                 if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
-//                     if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
-//                         blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
+            for (auto &[x, y] : target) {
+                if ((blockPosition.second + y) > 0 && (blockPosition.second + y) < _gameMap->getMapPositionsObjects().size()) {
+                    if ((blockPosition.first + x) > 0 && (blockPosition.first + x) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y).size()) {
+                        blockToPlace = {static_cast<float>((blockPosition.first + x) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y) * _gameMap->getBlockSize())};
 
-//                         aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     return aiForbiddenCells;
-// }
+                        aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+                    }
+                }
+            }
+        }
+    }
+    return aiForbiddenCells;
+}
 
 
 
