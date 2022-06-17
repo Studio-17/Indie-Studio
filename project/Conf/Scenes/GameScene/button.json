@@ -1,9 +1,16 @@
 {
-    "0-cameraVue": {
+    "0-2dcameraVue": {
         "type": "button",
-        "nbFrame": 3,
+        "nbFrame": 2,
         "position": [100, 880, 0],
-        "texture": "Ressources/buttons/back_button.png",
+        "texture": "Ressources/buttons/2dto3d.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "1-3dcameraVue": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [100, 880, 0],
+        "texture": "Ressources/buttons/3dto2d.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     }
 }

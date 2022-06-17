@@ -117,7 +117,6 @@ Scene::Scenes Scene::SelectPlayerScene::handleEvent()
 
 void Scene::SelectPlayerScene::SetInfoOfPlayers(std::size_t index)
 {
-    std::cout << index << std::endl;
     for (std::size_t i = 0; i < 4; i++) {
         if (i + 1 <= index)
             _playersInfo.at(i)->draw();
