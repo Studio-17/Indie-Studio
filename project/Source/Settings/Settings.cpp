@@ -120,24 +120,6 @@ void Settings::updateSettingsDatas(std::string const &filepath)
 
     if (!fileToWrite.is_open())
         throw Error::FileError("File " + filepath + " failed to open");
-    // std::vector<std::string> playerName {"playerOne", "playerTwo", "playerThree", "playerFour"};
-    // std::map<Action, std::string> actionName {{Action::Left, "left"}, {Action::Right, "right"}, {Action::Up, "up"}, {Action::Down, "down"}, {Action::Next, "next"}, {Action::Previous, "previous"}};
-    // std::map<PlayerAction, std::string> playerActionName {{PlayerAction::MoveLeft, "moveLeft"}, {PlayerAction::MoveRight, "moveRight"}, {PlayerAction::MoveUp, "moveUp"}, {PlayerAction::MoveDown, "moveDown"}, {PlayerAction::Drop, "keyboardDrop"}};
-    // nlohmann::json keyData;
-    // std::size_t index = 0;
-
-    // for (auto &[action, key] : _actionPressed )
-    //     keyData[actionName.at(action)] = key;
-    // saveData["basicKeyboard"] = keyData;
-    // for (auto &player : _playerAction) {
-    //     keyData.clear();
-    //     for (auto &[action, key] : player) {
-    //         keyData[playerActionName.at(action)] = key;
-    //     }
-    //     keyData["gamepadDrop"] = _gamepadPlayerActions.at(index).second;
-    //     saveData[playerName.at(index)] = keyData;
-    //     index++;
-    // }
     incrementSaveIndex();
     saveData["saveIndex"] = _saveIndex;
     fileToWrite << saveData.dump(4);
