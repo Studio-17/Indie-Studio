@@ -101,23 +101,7 @@ Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std:
     _images = loadObjects<Object::Image>("Conf/Scenes/SelectSaveScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectSaveScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
-
-    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".json");
-    _indexListFiles = 0;
-    if (!_savesFilesList.empty()) {
-        _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
-        _texts.at(3)->disable();
-        _buttons.at(4)->disable();
-    } else {
-        _texts.at(2)->setText("No save file in Save/Games/Params directory");
-        _texts.at(2)->setPosition(150, 560);
-        _buttons.at(1)->disable();
-        _buttons.at(1)->disableClick();
-        _buttons.at(2)->disable();
-        _buttons.at(2)->disableClick();
-        _buttons.at(3)->disable();
-        _buttons.at(3)->disableClick();
-    }
+    updateSaveFiles();
     _nextScene = Scene::Scenes::SAVE;
 }
 
@@ -166,9 +150,39 @@ void Scene::SelectSaveScene::reset()
 {
     std::vector<std::string> mapFiles = getFilesListFromDirectory("Save/Games/Maps/", ".map");
 
+    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".json");
+    _settings->resetSaveIndex();
+    _settings->updateSettingsDatas("Conf/Settings/settings.json");
     for (auto &file : _savesFilesList)
         std::remove(("Save/Games/Params/" + file + ".json").c_str());
     for (auto &file : mapFiles)
         std::remove(("Save/Games/Maps/" + file + ".map").c_str());
-    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".map");
+    updateSaveFiles();
+}
+
+void Scene::SelectSaveScene::updateSaveFiles()
+{
+    _savesFilesList = getFilesListFromDirectory("Save/Games/Params/", ".json");
+    _indexListFiles = 0;
+    if (!_savesFilesList.empty()) {
+        _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
+        _texts.at(2)->setPosition(440, 560);
+        _buttons.at(4)->disable();
+        _buttons.at(1)->enable();
+        _buttons.at(1)->enableClick();
+        _buttons.at(2)->enable();
+        _buttons.at(2)->enableClick();
+        _buttons.at(3)->enable();
+        _buttons.at(3)->enableClick();
+    } else {
+        _buttons.at(4)->enable();
+        _texts.at(2)->setText("No save file in Save/Games/Params directory");
+        _texts.at(2)->setPosition(150, 560);
+        _buttons.at(1)->disable();
+        _buttons.at(1)->disableClick();
+        _buttons.at(2)->disable();
+        _buttons.at(2)->disableClick();
+        _buttons.at(3)->disable();
+        _buttons.at(3)->disableClick();
+    }
 }
