@@ -2,33 +2,35 @@
 ** EPITECH PROJECT, 2022
 ** B-YEP-400-PAR-4-1-indiestudio-martin.vanaud
 ** File description:
-** VolumeSettingsScene
+** FramerateScene
 */
 
-#ifndef VOLUMESETTINGSSCENE_HPP_
-    #define VOLUMESETTINGSSCENE_HPP_
+#ifndef FRAMERATESCENE_HPP_
+    #define FRAMERATESCENE_HPP_
 
     #include "AScene.hpp"
     #include "GameSettings.hpp"
 
 namespace Scene {
     /**
-     * @brief Pause Scene object to handle and display Pause Scene
+     * @brief Framerate Scene object to handle and display Framerate Scene
      */
-    class VolumeSettingsScene : public AScene {
+    class FramerateScene : public AScene {
         public:
             /**
-             * @brief Construct a new Pause Scene object
+             * @brief Construct a new Framerate Scene object
              *
              * @param settings Shared pointer to Settings class
+             * @param gameSettings Shared pointer to Game Settings class
              * @param callBack
+             * @param saveCallBack Call back function to save game
              */
-            VolumeSettingsScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
+            FramerateScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
             /**
-             * @brief Destroy the Pause Scene object
+             * @brief Destroy the Framerate Scene object
              * 
              */
-            ~VolumeSettingsScene();
+            ~FramerateScene();
 
             /**
              * @brief Handle the event of the scene
@@ -47,20 +49,12 @@ namespace Scene {
             /**
              * @brief upgrade sound volume by 10
              */
-            void upgradeSound();
+            void downgradeFramerate();
             /**
              * @brief downgrade sound volume by 10
              */
-            void downgradeSound();
-            /**
-             * @brief upgrade music volume by 10
-             */
-            void downgradeMusic();
-            /**
-             * @brief upgrade music volume by 10
-             */
-            void upgradeMusic();
+            void upgradeFramerate();
     };
 }
 
-#endif /* !VOLUMESETTINGSSCENE_HPP_ */
+#endif /* !FRAMERATESCENE_HPP_ */

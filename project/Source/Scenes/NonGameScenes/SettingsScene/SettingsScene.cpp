@@ -24,7 +24,9 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     _texts = loadObjects<Object::Text>("Conf/Scenes/SettingsScene/text.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _volumeSettingsScene = std::make_unique<Scene::VolumeSettingsScene>(settings, std::vector<std::function<void(void)>>{std::bind(&Scene::SettingsScene::closePopupVolume, this)});
+    _framerateScene = std::make_unique<Scene::FramerateScene>(settings, std::vector<std::function<void(void)>>{std::bind(&Scene::SettingsScene::closePopupFramerate, this)});
     _isVolumeSettings = false;
+    _isFramerate = false;
 }
 
 Scene::SettingsScene::~SettingsScene()
@@ -54,6 +56,14 @@ Scene::Scenes Scene::SettingsScene::handleEvent()
     } else {
         _nextScene = _volumeSettingsScene->handleEvent();
     }
+    if (!_isFramerate) {
+        for (auto &button : _buttons) {
+            if (button->isClickable())
+                button->checkHover(GetMousePosition());
+        }
+    } else {
+        _nextScene = _framerateScene->handleEvent();
+    }
     return _nextScene;
 }
 
@@ -69,6 +79,8 @@ void Scene::SettingsScene::draw()
         button->draw();
     if (_isVolumeSettings)
         _volumeSettingsScene->draw();
+    if (_isFramerate)
+        _framerateScene->draw();
 }
 
 void Scene::SettingsScene::credits()
@@ -91,7 +103,10 @@ void Scene::SettingsScene::volume()
 
 void Scene::SettingsScene::framerate()
 {
-
+    for (std::size_t index = 0; index !=_buttons.size(); index++) {
+        _buttons.at(index)->disableClick();
+    }
+    _isFramerate = true;
 }
 
 void Scene::SettingsScene::controls()
@@ -110,4 +125,12 @@ void Scene::SettingsScene::closePopupVolume()
         _buttons.at(index)->enableClick();
     }
     _isVolumeSettings = false;
+}
+
+void Scene::SettingsScene::closePopupFramerate()
+{
+    for (std::size_t index = 0; index !=_buttons.size(); index++) {
+        _buttons.at(index)->enableClick();
+    }
+    _isFramerate = false;
 }

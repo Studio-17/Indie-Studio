@@ -34,6 +34,8 @@ Settings::Settings(nlohmann::json const &jsonData) :
         sound->setVolume(_audio->getSoundVolume());
     _musicVolume = _audio->getAudioVolume();
     _soundVolume = _audio->getSoundVolume();
+    _framerate = 140;
+    _window->setTargetFPS(_framerate);
 }
 
 Settings::~Settings()
@@ -151,4 +153,15 @@ float Settings::getSoundVolume() const
 float Settings::getMusicVolume() const
 {
     return _musicVolume;
+}
+
+void Settings::applyFramerate(int framerate)
+{
+    _framerate = framerate;
+    _window->setTargetFPS(framerate);
+}
+
+int Settings::getFramerate() const
+{
+    return _framerate;
 }

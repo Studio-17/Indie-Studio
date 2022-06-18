@@ -1,0 +1,23 @@
+{
+    "1-Exit": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [520, 300, 0],
+        "texture": "Ressources/buttons/cross.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "2-Less-Framerate": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [600, 490, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "3-More-Framerate": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1200, 490, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}

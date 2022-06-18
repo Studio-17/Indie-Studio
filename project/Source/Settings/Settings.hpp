@@ -77,6 +77,10 @@ class Settings {
         float getSoundVolume() const;
         float getMusicVolume() const;
 
+        void applyFramerate(int framerate);
+
+        int getFramerate() const;
+
         std::size_t getSaveIndex() const;
         void incrementSaveIndex();
         void resetSaveIndex();
@@ -98,6 +102,7 @@ class Settings {
         float _soundVolume; //!< Sound volume
         float _musicVolume; //!< Music volume
         std::size_t _saveIndex; //!< Save index
+        int _framerate; //!< framerate max
 };
 
 #endif /* !SETTINGS_HPP_ */
