@@ -51,16 +51,15 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _gameMap = std::make_shared<Object::Map>(_models, _textures);
     _gameSettings->setPercentageBoxDrop(_percentageBoxDrop);
 
-    for (std::size_t index = 0; index != 4; index++)
-        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
-
-    _placement = _players.size();
-
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.5, 0.8}},
         {"kickRange", {1, 3}}};
 
+    for (std::size_t index = 0; index != 4; index++)
+        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
+
+    _placement = _players.size();
     _actualSet = 0;
 }
 

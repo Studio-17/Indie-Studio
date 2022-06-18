@@ -15,7 +15,7 @@ Object::Player::Player(std::pair<std::string, std::string> const &pathToRessourc
     _speed = 0.6f;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange;
+    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 
@@ -26,7 +26,7 @@ Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyT
     _speed = 0.6f;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange;
+    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 
@@ -148,7 +148,7 @@ void Object::Player::reset()
     _speed = _defaultSpeed.first;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange;
+    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 
