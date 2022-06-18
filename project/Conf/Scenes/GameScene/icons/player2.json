@@ -1,41 +1,81 @@
 {
-    "0-Blue": {
-        "texture": "Ressources/sprites/players_icon/blue.png",
+    "00-Blue": {
+        "texture": "Ressources/sprites/players_icon/alive_blue.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "1-Cyan": {
-        "texture": "Ressources/sprites/players_icon/cyan.png",
+    "01-Cyan": {
+        "texture": "Ressources/sprites/players_icon/alive_cyan.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "2-Green": {
-        "texture": "Ressources/sprites/players_icon/green.png",
+    "02-Green": {
+        "texture": "Ressources/sprites/players_icon/alive_green.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "3-Purple": {
-        "texture": "Ressources/sprites/players_icon/purple.png",
+    "03-Purple": {
+        "texture": "Ressources/sprites/players_icon/alive_purple.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "4-Red": {
-        "texture": "Ressources/sprites/players_icon/red.png",
+    "04-Red": {
+        "texture": "Ressources/sprites/players_icon/alive_red.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "5-Yellow": {
-        "texture": "Ressources/sprites/players_icon/yellow.png",
+    "05-Yellow": {
+        "texture": "Ressources/sprites/players_icon/alive_yellow.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "6-Pink": {
-        "texture": "Ressources/sprites/players_icon/pink.png",
+    "06-Pink": {
+        "texture": "Ressources/sprites/players_icon/alive_pink.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     },
-    "7-white": {
-        "texture": "Ressources/sprites/players_icon/white.png",
+    "07-white": {
+        "texture": "Ressources/sprites/players_icon/alive_white.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "08-Blue": {
+        "texture": "Ressources/sprites/players_icon/dead_blue.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "09-Cyan": {
+        "texture": "Ressources/sprites/players_icon/dead_cyan.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "10-Green": {
+        "texture": "Ressources/sprites/players_icon/dead_green.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "11-Purple": {
+        "texture": "Ressources/sprites/players_icon/dead_purple.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "12-Red": {
+        "texture": "Ressources/sprites/players_icon/dead_red.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "13-Yellow": {
+        "texture": "Ressources/sprites/players_icon/dead_yellow.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "14-Pink": {
+        "texture": "Ressources/sprites/players_icon/dead_pink.png",
+        "scale": 0.5,
+        "position": [1740, 142, 0]
+    },
+    "15-white": {
+        "texture": "Ressources/sprites/players_icon/dead_white.png",
         "scale": 0.5,
         "position": [1740, 142, 0]
     }

@@ -191,8 +191,12 @@ void Scene::GameScene::draw()
     _settings->getCamera()->endMode3D();
     for (auto &image : _images)
         image->draw();
-    for (std::size_t index = 0; index < _players.size(); index++)
-        _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
+    for (std::size_t index = 0; index < _players.size(); index++) {
+        if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
+            _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
+        else
+            _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+    }
     for (auto &text : _texts)
         text->draw();
     for (auto &parameter : _playerParameters)
