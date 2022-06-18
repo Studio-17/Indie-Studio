@@ -185,7 +185,7 @@ namespace Object {
              * @return std::size_t
              */
             std::size_t getSetsWon() const { return _setsWon; };
-            void setWon();
+            void setWon(std::size_t nb);
 
 
             /**

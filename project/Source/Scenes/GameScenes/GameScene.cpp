@@ -60,6 +60,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
         {"explosionRange", {1, 6}},
         {"speed", {0.5, 0.8}},
         {"kickRange", {1, 3}}};
+
+    _actualSet = 0;
 }
 
 Scene::GameScene::~GameScene()
@@ -105,7 +107,7 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/explosion/Fire_baseColor.png");
 }
 
-void Scene::GameScene::applyGameParams()
+void Scene::GameScene::restartSet()
 {
     _playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
@@ -122,7 +124,6 @@ void Scene::GameScene::applyGameParams()
     _placement = _players.size();
     _timePerRound = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
-    _gameSettings->setTimeOut(false);
     if (_gameSettings->IsEnabledBonus())
         _percentageBonusDrop = 60;
     else
@@ -139,6 +140,14 @@ void Scene::GameScene::applyGameParams()
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
     setCameraView();
+}
+
+void Scene::GameScene::applyGameParams()
+{
+    restartSet();
+    for (auto &[index, player] : _players)
+        player->setWon(0);
+    _actualSet = 0;
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -223,12 +232,17 @@ void Scene::GameScene::handleWin()
         playerIndex++;
     }
     if (nbPlayersAlive == 1) {
-        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon();
+        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon(1);
         _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(alivePlayerIndex));
         _settings->stopMusic(MusicsEnum::Game);
         _settings->playMusic(MusicsEnum::EndGame);
         _gameSettings->setPlayersRank(_mapStatistics);
-        _nextScene = Scene::Scenes::END_GAME;
+        _actualSet += 1;
+        restartSet();
+    }
+    for (auto &[index, player] : _players) {
+        if (player->getSetsWon() == _gameSettings->getNbSets())
+            _nextScene = Scene::Scenes::END_GAME;
     }
 }
 
@@ -564,10 +578,8 @@ void Scene::GameScene::handleTimer()
     int minutes = remaningTime / 60;
     int seconds = remaningTime % 60;
 
-    if (remaningTime <= 0) {
-        _gameSettings->setTimeOut(true);
-        _nextScene = Scene::Scenes::END_GAME;
-    }
+    if (remaningTime <= 0)
+        restartSet();
     if (seconds < 10)
         _texts.at(0)->setText(std::to_string(minutes) + ":0" + std::to_string(seconds));
     else

@@ -49,6 +49,8 @@ namespace Scene {
 
             void applyGameParams();
 
+            void restartSet();
+
             Scenes handleEvent() override;
             void draw() override;
 
@@ -150,6 +152,7 @@ namespace Scene {
 
             std::unique_ptr<Scene::PauseScene> _pauseScene; //!< Pause scene
             bool _isPaused; //!< Is paused
+            std::size_t _actualSet; //!< Actual set
     };
 }
 

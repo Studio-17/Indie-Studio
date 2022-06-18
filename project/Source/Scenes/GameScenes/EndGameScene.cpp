@@ -72,10 +72,10 @@ void Scene::EndGameScene::draw()
     for (auto &button : _buttons)
         button->draw();
     if (!_gameSettings->getTimeOut()) {
-        drawScore();
+        // drawScore();
         for (auto &image : _images)
             image->draw();
-        _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
+        // _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
         for (auto &text : _texts)
             text->draw();
     } else {
