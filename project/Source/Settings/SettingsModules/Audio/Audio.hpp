@@ -21,7 +21,7 @@ namespace RayLib
     class Audio
     {
         public:
-            Audio(float audioVolume, float soundVolume);
+            Audio(float musicVolume, float soundVolume);
             ~Audio();
 
             // Audio management functions
@@ -30,15 +30,15 @@ namespace RayLib
             void setMasterVolume(float volume);                                 // Set master volume (listener)
 
             // Game Audio management functions
-            void setAudioVolume(float volume);                                  // Set audio volume
-            float getAudioVolume() const;                                         // Get audio volume
+            void setMusicVolume(float volume);                                  // Set audio volume
+            float getMusicVolume() const;                                         // Get audio volume
 
             void setSoundVolume(float volume);                                  // Set sound volume
             float getSoundVolume() const;                                         // Get sound volume
 
         protected:
         private:
-            float _audioVolume;
+            float _musicVolume;
             float _soundVolume;
     };
 }
