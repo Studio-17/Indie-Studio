@@ -16,6 +16,7 @@ Scene::HelpScene::HelpScene(std::shared_ptr<Settings> settings) : AScene(setting
     _images = loadObjects<Object::Image>("Conf/Scenes/HelpScene/image.json");
     _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/HelpScene/button.json");
+    _texts = loadObjects<Object::Text>("Conf/Scenes/HelpScene/text.json");
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
         _buttons.at(index)->setCallBack(callBacks.at(index));
     }
@@ -51,6 +52,8 @@ void Scene::HelpScene::draw()
         parallax->draw();
     for (auto &image : _images)
         image->draw();
+    for (auto &text : _texts)
+        text->draw();
     for (auto &button : _buttons)
         button->draw();
 }
