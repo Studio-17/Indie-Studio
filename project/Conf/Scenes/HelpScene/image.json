@@ -1,0 +1,7 @@
+{
+    "0-help-text": {
+        "texture": "Ressources/sprites/helper.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    }
+}

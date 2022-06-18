@@ -97,6 +97,7 @@ namespace Scene {
 
         protected:
         private:
+            void changeCameraView();
             void setCameraView();
 
             std::shared_ptr<GameSettings> _gameSettings; //!< Shared pointer to Game Settings class
