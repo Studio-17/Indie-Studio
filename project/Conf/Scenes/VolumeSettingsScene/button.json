@@ -2,7 +2,7 @@
     "1-Exit": {
         "type": "button",
         "nbFrame": 3,
-        "position": [1300, 300, 0],
+        "position": [520, 300, 0],
         "texture": "Ressources/buttons/cross.png",
         "audio": "Ressources/buttons/click_sound.ogg"
     },
