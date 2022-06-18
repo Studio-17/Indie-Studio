@@ -112,7 +112,7 @@ void Scene::GameScene::applyGameParams()
 
     _3dcameraVue = false;
     _nextScene = Scene::Scenes::GAME;
-    _clockGame.start();
+    _clockGame.reset();
     _explosions.clear();
     _isPaused = false;
     _bombs.clear();
