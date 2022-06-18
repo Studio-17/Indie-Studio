@@ -35,7 +35,7 @@ class Core {
 
         void waitingLoad();
 
-        void updateLoadingScreen(Position const &position);
+        void updateLoadingScreen(std::string const &string);
     protected:
     private:
         std::shared_ptr<Settings> _settings;
