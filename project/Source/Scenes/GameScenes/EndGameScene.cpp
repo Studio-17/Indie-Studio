@@ -47,14 +47,14 @@ Scene::Scenes Scene::EndGameScene::handleEvent()
 void Scene::EndGameScene::drawPlayerNameAndScore(Object::PLAYER_ORDER player, std::size_t score, std::size_t nbText)
 {
     int resultOfPlayer = static_cast<int>(player) + 1;
-    _texts.at(nbText)->setText(std::to_string(resultOfPlayer) + "J   : " + std::to_string(score));
+    _texts.at(nbText)->setText(std::to_string(resultOfPlayer) + "J");
+    _texts.at(nbText + 4)->setText(std::to_string(score));
 }
 
 void Scene::EndGameScene::drawScore()
 {
     std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> playerScores = _gameSettings->getPlayersRank();
-    for (std::size_t i = 0; i < playerScores.size(); i++)
-        std::cout << i << "Score: "<< playerScores.at(i).first << " Player: " << (static_cast<int>(playerScores.at(i).second) + 1) << std::endl;
+    _winnerId = static_cast<int>(playerScores.at(3).second);
     drawPlayerNameAndScore(playerScores.at(3).second, playerScores.at(3).first, 6);
     drawPlayerNameAndScore(playerScores.at(2).second, playerScores.at(2).first, 7);
     drawPlayerNameAndScore(playerScores.at(1).second, playerScores.at(1).first, 8);
@@ -74,7 +74,8 @@ void Scene::EndGameScene::draw()
     for (auto &image : _images)
         image->draw();
     drawScore();
-    // _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
+    _texts.at(0)->setText(std::to_string(_winnerId + 1) + "J");
+    _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_winnerId))))->draw();
     for (auto &text : _texts)
         text->draw();
 }

@@ -45,7 +45,7 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> &_parallax;
             std::vector<std::unique_ptr<Object::Image>> _winner;
             std::shared_ptr<GameSettings> _gameSettings;
-            std::size_t _winnerId;
+            int _winnerId;
     };
 }
 

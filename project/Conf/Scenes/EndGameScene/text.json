@@ -68,5 +68,33 @@
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [1600, 700, 0]
+    },
+    "10-score1": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1800, 395, 0]
+    },
+    "11-score2": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1800, 495, 0]
+    },
+    "12-score3": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1800, 595, 0]
+    },
+    "13-score4": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1800, 695, 0]
     }
 }
