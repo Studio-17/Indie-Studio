@@ -34,6 +34,8 @@ namespace Object {
         PLAYER_PURPLE,
         PLAYER_RED,
         PLAYER_YELLOW,
+        PLAYER_WHITE,
+        PLAYER_PINK,
     };
 
 #endif /* !IRENDERDING_HPP_ */
