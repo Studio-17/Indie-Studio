@@ -166,7 +166,6 @@ void Scene::SelectSaveScene::reset()
 {
     std::vector<std::string> mapFiles = getFilesListFromDirectory("Save/Games/Maps/", ".map");
 
-    std::cout << _directory << std::endl;
     for (auto &file : _savesFilesList)
         std::remove(("Save/Games/Params/" + file + ".json").c_str());
     for (auto &file : mapFiles)

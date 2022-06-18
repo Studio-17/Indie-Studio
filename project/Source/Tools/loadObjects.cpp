@@ -38,7 +38,6 @@ std::vector<std::unique_ptr<Object::IObject>> loadGenericObjects(std::string con
         std::cerr << e.what() << std::endl;
         return {};
     }
-    std::cout << jsonData.size() << std::endl;
     for (auto oneData : jsonData) {
         std::string type = oneData.value("type", "default");
         std::function<std::unique_ptr<Object::IObject>(nlohmann::json const &jsonData)> func;

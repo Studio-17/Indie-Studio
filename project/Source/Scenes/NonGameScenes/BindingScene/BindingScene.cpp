@@ -21,7 +21,6 @@ Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &
     _buttons.at(0)->setCallBack(std::bind(&Scene::BindingScene::back, this));
     for (std::size_t player = 0; player != 4; player++)
         for (std::size_t touch = 1; touch != 6; touch++) {
-            std::cout << "player" << player * 5 + touch << std::endl;
             _buttons.at((player * 5) + touch)->setText(setActionToString(playerAction.at(player).at(static_cast<PlayerAction>(touch - 1))));
             _buttons.at((player * 5) + touch)->setCallBack(std::bind(&Scene::BindingScene::bindKey, this));
         }
