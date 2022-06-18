@@ -23,7 +23,7 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              */
-            SettingsScene(std::shared_ptr<Settings> settings);
+            SettingsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~SettingsScene();
 
             Scenes handleEvent() override;
@@ -64,7 +64,7 @@ namespace Scene {
              */
             void closePopupFramerate();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::unique_ptr<Scene::VolumeSettingsScene> _volumeSettingsScene; ///< Unique pointer to Volume Settings Scene
             bool _isVolumeSettings; ///< Boolean to know if the volume settings scene is displayed
             std::unique_ptr<Scene::FramerateScene> _framerateScene; ///< Unique pointer to Framerate Settings Scene

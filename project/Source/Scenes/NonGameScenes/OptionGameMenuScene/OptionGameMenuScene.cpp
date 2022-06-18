@@ -10,8 +10,8 @@
 #include "tools.hpp"
 #include "OptionGameMenuScene.hpp"
 
-Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings),
-    _activeButton(0)
+Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings), _gameSettings(gameSettings),
+    _parallax(parallax), _activeButton(0)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
@@ -33,7 +33,6 @@ Scene::OptionGameMenuScene::OptionGameMenuScene(std::shared_ptr<Settings> settin
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/OptionGameMenuScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _emptyButton = loadObjects<Object::Button>("Conf/Scenes/OptionGameMenuScene/empty_button.json");
 
     _options.emplace_back(0, loadObjects<Object::Text>("Conf/Scenes/OptionGameMenuScene/Option/player.json"));

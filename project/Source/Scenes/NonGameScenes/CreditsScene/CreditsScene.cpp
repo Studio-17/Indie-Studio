@@ -10,7 +10,8 @@
 #include "tools.hpp"
 #include "CreditsScene.hpp"
 
-Scene::CreditsScene::CreditsScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::CreditsScene::CreditsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
+    _parallax(parallax)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::CreditsScene::back, this)};
 
@@ -21,7 +22,6 @@ Scene::CreditsScene::CreditsScene(std::shared_ptr<Settings> settings) : AScene(s
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/CreditsScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/CreditsScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 }
 
 Scene::CreditsScene::~CreditsScene()

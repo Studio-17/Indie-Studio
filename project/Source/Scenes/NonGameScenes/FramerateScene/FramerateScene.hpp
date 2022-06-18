@@ -28,14 +28,12 @@ namespace Scene {
             FramerateScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
             /**
              * @brief Destroy the Framerate Scene object
-             * 
              */
             ~FramerateScene();
 
             /**
              * @brief Handle the event of the scene
-             * 
-             * @return Scenes 
+             * @return Scenes
              */
             Scenes handleEvent() override;
             /**

@@ -11,8 +11,8 @@
 #include "tools.hpp"
 #include "BindingScene.hpp"
 
-Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions) :
-    AScene(settings), _keyboard(keyboard), _actionPressed(actionPressed), _playerAction(playerAction), _gamepadPlayerActions(gamepadPlayerActions), _buttonIndex(0)
+Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions) :
+    AScene(settings), _parallax(parallax), _keyboard(keyboard), _actionPressed(actionPressed), _playerAction(playerAction), _gamepadPlayerActions(gamepadPlayerActions), _buttonIndex(0)
 {
     _nextScene = Scenes::BINDING_MENU;
     _images = loadObjects<Object::Image>("Conf/Scenes/BindingScene/image.json");
@@ -24,7 +24,6 @@ Scene::BindingScene::BindingScene(std::shared_ptr<Settings> settings, Keyboard &
             _buttons.at((player * 5) + touch)->setText(setActionToString(playerAction.at(player).at(static_cast<PlayerAction>(touch - 1))));
             _buttons.at((player * 5) + touch)->setCallBack(std::bind(&Scene::BindingScene::bindKey, this));
         }
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _popUp = loadObjects<Object::Image>("Conf/Scenes/BindingScene/pop_up.json");
     _popUpText = loadObjects<Object::Text>("Conf/Scenes/BindingScene/pop_up_text.json");
     _popUpButton = loadObjects<Object::Button>("Conf/Scenes/BindingScene/pop_up_button.json");

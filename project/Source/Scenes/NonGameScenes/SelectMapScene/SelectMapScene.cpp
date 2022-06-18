@@ -156,7 +156,7 @@ bool Scene::SelectMapScene::isGoodFileMap(const std::string &filename)
     return false;
 }
 
-Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
+Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings), _gameSettings(gameSettings), _parallax(parallax)
 {
     std::string name;
 
@@ -176,7 +176,6 @@ Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::s
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/SelectMapScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectMapScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
     _currentPath = "Save/Maps/random.map";
     _count = 0;

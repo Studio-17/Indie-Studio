@@ -8,10 +8,9 @@
 #include "tools.hpp"
 #include "IntroductionScene.hpp"
 
-Scene::IntroductionScene::IntroductionScene(std::shared_ptr<Settings> settings, Keyboard &keyboard) : AScene(settings), _keyboard(keyboard)
+Scene::IntroductionScene::IntroductionScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, Keyboard &keyboard) : AScene(settings), _keyboard(keyboard), _parallax(parallax)
 {
     _nextScene = Scene::Scenes::INTRODUCTION;
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/IntroductionScene/text.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/IntroductionScene/image.json");
     _shouldPrintText = true;

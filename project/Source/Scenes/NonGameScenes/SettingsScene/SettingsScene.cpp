@@ -10,7 +10,8 @@
 #include "tools.hpp"
 #include "SettingsScene.hpp"
 
-Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
+    _parallax(parallax)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::SettingsScene::credits, this), std::bind(&Scene::SettingsScene::help, this), std::bind(&Scene::SettingsScene::volume, this),
         std::bind(&Scene::SettingsScene::framerate, this), std::bind(&Scene::SettingsScene::controls, this), std::bind(&Scene::SettingsScene::back, this), };
@@ -22,7 +23,6 @@ Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings) : AScene
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/SettingsScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SettingsScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _volumeSettingsScene = std::make_unique<Scene::VolumeSettingsScene>(settings, std::vector<std::function<void(void)>>{std::bind(&Scene::SettingsScene::closePopupVolume, this)});
     _framerateScene = std::make_unique<Scene::FramerateScene>(settings, std::vector<std::function<void(void)>>{std::bind(&Scene::SettingsScene::closePopupFramerate, this)});
     _isVolumeSettings = false;

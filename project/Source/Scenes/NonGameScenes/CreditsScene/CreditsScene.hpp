@@ -21,7 +21,7 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              */
-            CreditsScene(std::shared_ptr<Settings> settings);
+            CreditsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~CreditsScene();
 
             Scenes handleEvent() override;
@@ -34,7 +34,7 @@ namespace Scene {
              */
             void back();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
 
     };
 }

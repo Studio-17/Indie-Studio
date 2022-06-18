@@ -18,13 +18,12 @@ namespace Scene {
         public:
             /**
              * @brief Construct a new Help Scene object
-             * 
-             * @param settings 
+             *
+             * @param settings
              */
-            HelpScene(std::shared_ptr<Settings> settings);
+            HelpScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             /**
              * @brief Destroy the Help Scene object
-             * 
              */
             ~HelpScene();
 
@@ -42,7 +41,7 @@ namespace Scene {
 
         protected:
         private:
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
     };
 }
 

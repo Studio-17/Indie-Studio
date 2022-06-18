@@ -14,12 +14,11 @@ void Scene::EndGameScene::goToMainMenu()
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
+Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings), _gameSettings(gameSettings), _parallax(parallax)
 {
     _buttons = loadObjects<Object::Button>("Conf/Scenes/EndGameScene/button.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::EndGameScene::goToMainMenu, this));
     _texts = loadObjects<Object::Text>("Conf/Scenes/EndGameScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/image.json");
     _winner = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/winner.json");
 
