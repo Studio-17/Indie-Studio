@@ -1,5 +1,5 @@
 {
-    "0-rose-banner": {
+    "0-bomberman-logo": {
         "texture": "Ressources/sprites/logo_bomberman.png",
         "scale": 1,
         "position": [660, 200, 0]

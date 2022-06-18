@@ -37,7 +37,6 @@ void GameSettings::loadFromJson(nlohmann::json const &jsonData)
 
 void GameSettings::updateSettings(std::string const &filePath)
 {
-    std::cout << "Save: " << filePath << std::endl;
 }
 
 void GameSettings::setMapPath(std::string const &mapPath)

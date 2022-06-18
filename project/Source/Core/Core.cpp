@@ -19,6 +19,7 @@
 #include "CreditsScene.hpp"
 #include "SelectSaveScene.hpp"
 #include "IntroductionScene.hpp"
+#include "HelpScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -84,6 +85,9 @@ void Core::loadMenuScenes()
     updateLoadingScreen(".");
     _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
     updateLoadingScreen("..");
+    _menuScenes.emplace(Scene::Scenes::HELP, std::make_shared<Scene::HelpScene>(_settings));
+    updateLoadingScreen("...");
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
     _settings->getWindow()->endDrawing();
 }
 

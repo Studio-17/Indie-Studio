@@ -32,7 +32,6 @@ void Scene::SelectMapScene::runSelectPlayerScene()
     _settings->stopMusic(MusicsEnum::Menu);
     _settings->playMusic(MusicsEnum::PlayerSelectMenu);
     _nextScene = Scenes::SELECT_PLAYER;
-    std::cout << "runed" << std::endl;
 }
 
 void Scene::SelectMapScene::basicMode()
@@ -275,7 +274,6 @@ void Scene::SelectMapScene::generate(std::string const &filename, std::size_t wi
         file.close();
         throw Error::FileError("file failed to open " + filename);
     }
-    std::cout << "file created" << std::endl;
     for (std::size_t one = 0; one < height + 2; one++) {
         file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
     }

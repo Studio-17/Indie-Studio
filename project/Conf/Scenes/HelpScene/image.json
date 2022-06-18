@@ -1,0 +1,17 @@
+{
+    "0-logo-font": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 1,
+        "position": [0, 60, 0]
+    },
+    "1-logo-top-corner-left": {
+        "texture": "Ressources/icon/help_wico.png",
+        "scale": 0.6,
+        "position": [15, 85, 0]
+    },
+    "2-help-text": {
+        "texture": "Ressources/sprites/helper.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    }
+}
