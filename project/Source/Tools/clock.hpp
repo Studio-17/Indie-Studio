@@ -66,12 +66,25 @@ using timePoint = std::chrono::time_point<std::chrono::system_clock>;
             return _isPaused;
         }
 
+        void reset()
+        {
+            _start = std::chrono::system_clock::now();
+            _isPaused = false;
+            _elapsedTime = 0;
+            _elapsedTimePause = 0;
+            _tmpElapsedTime = 0;
+            _start = std::chrono::system_clock::now();
+            _end = std::chrono::system_clock::now();
+            _startPause = std::chrono::system_clock::now();
+            _endPause = std::chrono::system_clock::now();
+        }
+
     protected:
     private:
-        timePoint _start;
-        timePoint _end;
-        timePoint _startPause;
-        timePoint _endPause;
+        std::chrono::time_point<std::chrono::system_clock> _start;
+        std::chrono::time_point<std::chrono::system_clock> _end;
+        std::chrono::time_point<std::chrono::system_clock> _startPause;
+        std::chrono::time_point<std::chrono::system_clock> _endPause;
         long long int _elapsedTimePause = 0;
         long long int _elapsedTime;
         long long int _tmpElapsedTime = 0;
