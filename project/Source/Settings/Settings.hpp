@@ -74,9 +74,6 @@ class Settings {
         void applySoundVolume(float volume);
         void applyMusicVolume(float volume);
 
-        float getSoundVolume() const;
-        float getMusicVolume() const;
-
         void applyFramerate(int framerate);
 
         int getFramerate() const;
@@ -99,8 +96,6 @@ class Settings {
         std::map<Action, bool> _actionPressed; //!< Action pressed
         std::vector<std::map<PlayerAction, bool>> _playerActions; //!< Player actions pressed
         std::map<PlayerAction, bool> _playerAction; //!< Player action pressed
-        float _soundVolume; //!< Sound volume
-        float _musicVolume; //!< Music volume
         std::size_t _saveIndex; //!< Save index
         int _framerate; //!< framerate max
 };

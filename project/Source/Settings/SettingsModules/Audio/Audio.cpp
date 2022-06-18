@@ -7,7 +7,7 @@
 
 #include "Audio.hpp"
 
-RayLib::Audio::Audio(float audioVolume, float soundVolume) : _audioVolume(audioVolume), _soundVolume(soundVolume)
+RayLib::Audio::Audio(float musicVolume, float soundVolume) : _musicVolume(musicVolume), _soundVolume(soundVolume)
 {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitAudioDevice();
@@ -30,14 +30,14 @@ void RayLib::Audio::setMasterVolume(float volume)
     SetMasterVolume(volume);
 }
 
-void RayLib::Audio::setAudioVolume(float volume)
+void RayLib::Audio::setMusicVolume(float volume)
 {
-    _audioVolume = volume;
+    _musicVolume = volume;
 }
 
-float RayLib::Audio::getAudioVolume() const
+float RayLib::Audio::getMusicVolume() const
 {
-    return (_audioVolume);
+    return (_musicVolume);
 }
 
 void RayLib::Audio::setSoundVolume(float volume)

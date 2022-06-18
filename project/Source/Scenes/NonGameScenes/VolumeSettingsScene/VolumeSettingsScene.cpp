@@ -10,8 +10,6 @@
 
 Scene::VolumeSettingsScene::VolumeSettingsScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks) : AScene(settings)
 {
-    int audioVolume = 0;
-    int soundVolume = 0;
     std::vector<std::function<void(void)>> callBack = {
         callBacks.at(0),
         std::bind(&Scene::VolumeSettingsScene::downgradeSound, this),
@@ -27,10 +25,8 @@ Scene::VolumeSettingsScene::VolumeSettingsScene(std::shared_ptr<Settings> settin
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
         _buttons.at(index)->setCallBack(callBack.at(index));
     }
-    audioVolume = _settings->getAudio()->getAudioVolume() * 100;
-    soundVolume = _settings->getAudio()->getSoundVolume() * 100;
-    _texts.at(1)->setText(std::to_string(soundVolume) + "%");
-    _texts.at(3)->setText(std::to_string(audioVolume) + "%");
+    _texts.at(1)->setText(std::to_string(static_cast<int>(_settings->getAudio()->getSoundVolume() * 100)) + "%");
+    _texts.at(3)->setText(std::to_string(static_cast<int>(_settings->getAudio()->getMusicVolume() * 100)) + "%");
 }
 
 Scene::VolumeSettingsScene::~VolumeSettingsScene()
@@ -57,44 +53,44 @@ void Scene::VolumeSettingsScene::draw()
 
 void Scene::VolumeSettingsScene::downgradeSound()
 {
-    int soundVolume = _settings->getSoundVolume() * 100;
+    float soundVolume = _settings->getAudio()->getSoundVolume();
 
-    if (soundVolume > 0) {
-        soundVolume -= 10;
-        _settings->applySoundVolume((float)soundVolume / 100);
-        _texts.at(1)->setText(std::to_string(soundVolume) + "%");
+    if (soundVolume > 0.0) {
+        soundVolume -= 0.1;
+        _settings->applySoundVolume(soundVolume);
+        _texts.at(1)->setText(std::to_string(static_cast<int>(soundVolume * 100)) + "%");
     }
 }
 
 void Scene::VolumeSettingsScene::upgradeSound()
 {
-    int soundVolume = _settings->getSoundVolume() * 100;
+    float soundVolume = _settings->getAudio()->getSoundVolume();
 
-    if (soundVolume < 100) {
-        soundVolume += 10;
-        _settings->applySoundVolume((float)soundVolume / 100);
-        _texts.at(1)->setText(std::to_string(soundVolume) + "%");
+    if (soundVolume < 1) {
+        soundVolume += 0.1;
+        _settings->applySoundVolume(soundVolume);
+        _texts.at(1)->setText(std::to_string(static_cast<int>(soundVolume * 100)) + "%");
     }
 }
 
 void Scene::VolumeSettingsScene::downgradeMusic()
 {
-    int musicVolume = _settings->getMusicVolume() * 100;
+    float musicVolume = _settings->getAudio()->getMusicVolume();
 
-    if (musicVolume > 0) {
-        musicVolume -= 10;
-        _settings->applyMusicVolume((float)musicVolume / 100);
-        _texts.at(3)->setText(std::to_string(musicVolume) + "%");
+    if (musicVolume > 0.0) {
+        musicVolume -= 0.1;
+        _settings->applyMusicVolume(musicVolume);
+        _texts.at(3)->setText(std::to_string(static_cast<int>(musicVolume * 100)) + "%");
     }
 }
 
 void Scene::VolumeSettingsScene::upgradeMusic()
 {
-    int musicVolume = _settings->getMusicVolume() * 100;
+    float musicVolume = _settings->getAudio()->getMusicVolume();
 
-    if (musicVolume < 100) {
-        musicVolume += 10;
-        _settings->applyMusicVolume((float)musicVolume / 100);
-        _texts.at(3)->setText(std::to_string(musicVolume) + "%");
+    if (musicVolume < 1) {
+        musicVolume += 0.1;
+        _settings->applyMusicVolume(musicVolume);
+        _texts.at(3)->setText(std::to_string(static_cast<int>(musicVolume * 100)) + "%");
     }
 }

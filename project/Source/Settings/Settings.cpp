@@ -13,7 +13,7 @@
 
 Settings::Settings(nlohmann::json const &jsonData) :
     _window(std::make_shared<RayLib::Window>(jsonData.value("windowSize", std::pair<float, float>(1920, 1080)), jsonData.value("title", "Raylib project"))),
-    _audio(std::make_shared<RayLib::Audio>(jsonData.value("audioVolume", 50), jsonData.value("musicVolume", 50))),
+    _audio(std::make_shared<RayLib::Audio>(jsonData.value("musicVolume", 0.5), jsonData.value("soundVolume", 0.5))),
     _camera(std::make_shared<RayLib::CinematicCamera>(jsonData.value("cameraMode", CAMERA_FREE)))
 {
     Position tmpPos;
@@ -28,12 +28,10 @@ Settings::Settings(nlohmann::json const &jsonData) :
     _saveIndex = jsonData.value("saveIndex", 0);
 
     for (auto &music : _musics)
-        music->setVolume(_audio->getAudioVolume());
+        music->setVolume(_audio->getMusicVolume());
 
     for (auto &sound : _sounds)
         sound->setVolume(_audio->getSoundVolume());
-    _musicVolume = _audio->getAudioVolume();
-    _soundVolume = _audio->getSoundVolume();
     _framerate = 140;
     _window->setTargetFPS(_framerate);
 }
@@ -126,12 +124,16 @@ void Settings::updateSettingsDatas(std::string const &filepath)
         throw Error::FileError("File " + filepath + " failed to open");
     incrementSaveIndex();
     saveData["saveIndex"] = _saveIndex;
+    std::cout << "audio Volume " << _audio->getSoundVolume() << std::endl;
+    std::cout << "music Volume " << _audio->getMusicVolume() << std::endl;
+    saveData["soundVolume"] = _audio->getSoundVolume();
+    saveData["musicVolume"] = _audio->getMusicVolume();
     fileToWrite << saveData.dump(4);
 }
 
 void Settings::applySoundVolume(float volume)
 {
-    _soundVolume = volume;
+    _audio->setSoundVolume(volume);
     for (auto &sound : _sounds) {
         sound->setVolume(volume);
     }
@@ -139,20 +141,11 @@ void Settings::applySoundVolume(float volume)
 
 void Settings::applyMusicVolume(float volume)
 {
-    _musicVolume = volume;
+    std::cout << "new volume " << volume << std::endl;
+    _audio->setMusicVolume(volume);
     for (auto &music : _musics) {
         music->setVolume(volume);
     }
-}
-
-float Settings::getSoundVolume() const
-{
-    return _soundVolume;
-}
-
-float Settings::getMusicVolume() const
-{
-    return _musicVolume;
 }
 
 void Settings::applyFramerate(int framerate)

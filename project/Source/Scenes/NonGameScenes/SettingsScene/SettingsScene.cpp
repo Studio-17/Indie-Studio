@@ -125,6 +125,7 @@ void Scene::SettingsScene::closePopupVolume()
         _buttons.at(index)->enableClick();
     }
     _isVolumeSettings = false;
+    _settings->updateSettingsDatas("Conf/Settings/settings.json");
 }
 
 void Scene::SettingsScene::closePopupFramerate()
