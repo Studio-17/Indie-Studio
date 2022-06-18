@@ -42,6 +42,7 @@ namespace Scene {
              * @brief Draw the scene
              */
             void draw() override;
+            void updateSaveFiles();
 
         protected:
             /**

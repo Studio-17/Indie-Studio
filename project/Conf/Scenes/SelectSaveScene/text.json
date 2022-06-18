@@ -19,12 +19,5 @@
         "color": [255, 255, 255, 255],
         "fontSize": 30,
         "position": [440, 560, 0]
-    },
-    "4-New-Game": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Create new game",
-        "color": [255, 255, 255, 255],
-        "fontSize": 30,
-        "position": [380, 735, 0]
     }
 }
