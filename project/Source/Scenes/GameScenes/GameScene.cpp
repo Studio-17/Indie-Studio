@@ -26,7 +26,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
     _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
-    _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::setCameraView, this));
+    _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
     _isPaused = false;
@@ -110,6 +110,7 @@ void Scene::GameScene::applyGameParams()
     _playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
 
+    _3dcameraVue = false;
     _nextScene = Scene::Scenes::GAME;
     _clockGame.start();
     _explosions.clear();
@@ -137,6 +138,7 @@ void Scene::GameScene::applyGameParams()
 
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
+    setCameraView();
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -618,11 +620,16 @@ void Scene::GameScene::save()
     fileToWrite << std::setw(4) << saveData << std::endl;
 }
 
+void Scene::GameScene::changeCameraView()
+{
+    _3dcameraVue = !_3dcameraVue;
+    setCameraView();
+}
+
 void Scene::GameScene::setCameraView()
 {
     std::pair<float, float> mapSize = _gameSettings->getMapSize();
 
-    _3dcameraVue = !_3dcameraVue;
     if (_3dcameraVue) {
         _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 3, mapSize.second * _gameMap->getBlockSize()});
     } else {

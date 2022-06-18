@@ -31,7 +31,8 @@ namespace Scene
         SELECT_PLAYER,
         END_GAME,
         CREDITS,
-        INTRODUCTION
+        INTRODUCTION,
+        HELP
     };
 
     enum SOUNDS {

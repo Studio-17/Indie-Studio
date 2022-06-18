@@ -78,7 +78,7 @@ void Scene::SettingsScene::credits()
 
 void Scene::SettingsScene::help()
 {
-
+    _nextScene = Scene::Scenes::HELP;
 }
 
 void Scene::SettingsScene::volume()
