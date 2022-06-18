@@ -8,13 +8,13 @@
 #include "HelpScene.hpp"
 #include "tools.hpp"
 
-Scene::HelpScene::HelpScene(std::shared_ptr<Settings> settings) : AScene(settings)
+Scene::HelpScene::HelpScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
+    _parallax(parallax)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::HelpScene::backScene, this)};
 
     _nextScene = Scene::Scenes::HELP;
     _images = loadObjects<Object::Image>("Conf/Scenes/HelpScene/image.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/HelpScene/button.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/HelpScene/text.json");
     for (std::size_t index = 0; index !=_buttons.size(); index++) {

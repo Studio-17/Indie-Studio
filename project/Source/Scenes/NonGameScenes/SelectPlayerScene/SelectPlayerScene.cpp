@@ -51,8 +51,8 @@ void Scene::SelectPlayerScene::rightClick(std::size_t  index)
     }
 }
 
-Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
-    _applyGameSettings(applyGameSettings)
+Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
+    _parallax(parallax), _applyGameSettings(applyGameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
@@ -76,7 +76,6 @@ Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, 
     _playersInfo = loadObjects<Object::Image>("Conf/Scenes/SelectPlayerScene/icon.json");
     _popPlayerNames = loadObjects<Object::Image>("Conf/Scenes/SelectPlayerScene/pop.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectPlayerScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
     for (int i = 0; i < 4; i++) {
         std::string pathToImage = "Conf/Scenes/SelectPlayerScene/icons/player" + std::to_string(i + 1) + ".json";

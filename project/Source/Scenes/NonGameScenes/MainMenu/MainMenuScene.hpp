@@ -21,7 +21,7 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              */
-            MainMenuScene(std::shared_ptr<Settings> settings);
+            MainMenuScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~MainMenuScene();
 
             Scenes handleEvent() override;
@@ -42,7 +42,7 @@ namespace Scene {
              */
             void gameScene();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
 
             Object::Render::MyTexture _buttonTexture; ///< Texture of every Button of the Scene
     };

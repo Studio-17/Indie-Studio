@@ -53,6 +53,8 @@ class Core {
 
         std::vector<std::unique_ptr<Object::Image>> _images;
         std::vector<std::unique_ptr<Object::Text>> _texts;
+
+        std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
 };
 
 #endif /* !CORE_HPP_ */

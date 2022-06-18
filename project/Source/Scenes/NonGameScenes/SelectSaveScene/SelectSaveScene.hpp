@@ -26,7 +26,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::function<void(void)> applyGameSettings);
+            SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings);
             /**
              * @brief Destroy the Select Save Scene object
              */
@@ -63,7 +63,7 @@ namespace Scene {
             void reset();
 
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::vector<std::string> _savesFilesList; ///< Vector of every saves files list
             int _indexListFiles; ///< Integer representing the index of the list of files
             std::function<void(void)> _applyGameSettings; ///< Function to apply the game settings

@@ -24,7 +24,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~SelectMapScene();
 
             Scenes handleEvent() override;
@@ -48,7 +48,7 @@ namespace Scene {
         private:
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
             std::unique_ptr<Object::Map> _gameMap; ///< Unique pointer to game Map object
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::string _currentPath; ///< String representing the current path of the map
             int _count; ///< Integer representing the number of the current map
             std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText; ///< Vector of every Text of the no dropped files

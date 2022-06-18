@@ -27,7 +27,7 @@ namespace Scene {
              * @param settings
              * @param keyboard
              */
-            IntroductionScene(std::shared_ptr<Settings> settings, Keyboard &keyboard);
+            IntroductionScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, Keyboard &keyboard);
             /**
              * @brief ~IntroductionScene
              */
@@ -50,7 +50,7 @@ namespace Scene {
 
         protected:
         private:
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             Keyboard &_keyboard; ///< Keyboard object to get pressed key
             Clock _clock; ///< Clock object to get time
             bool _shouldPrintText;
