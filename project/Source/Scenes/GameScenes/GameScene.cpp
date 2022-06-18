@@ -51,15 +51,14 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _gameMap = std::make_shared<Object::Map>(_models, _textures);
     _gameSettings->setPercentageBoxDrop(_percentageBoxDrop);
 
-    for (std::size_t index = 0; index != 4; index++)
-        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
-
-    _placement = _players.size();
-
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.5, 0.8}},
         {"kickRange", {1, 3}}};
+
+    for (std::size_t index = 0; index != 4; index++)
+        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
+    _actualSet = 0;
 }
 
 Scene::GameScene::~GameScene()
@@ -105,7 +104,7 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/explosion/Fire_baseColor.png");
 }
 
-void Scene::GameScene::applyGameParams()
+void Scene::GameScene::restartSet()
 {
     _playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
@@ -119,10 +118,8 @@ void Scene::GameScene::applyGameParams()
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
     _mapStatistics.clear();
-    _placement = _players.size();
     _timePerRound = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
-    _gameSettings->setTimeOut(false);
     if (_gameSettings->IsEnabledBonus())
         _percentageBonusDrop = 60;
     else
@@ -139,6 +136,14 @@ void Scene::GameScene::applyGameParams()
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
     setCameraView();
+}
+
+void Scene::GameScene::applyGameParams()
+{
+    restartSet();
+    for (auto &[index, player] : _players)
+        player->setWon(0);
+    _actualSet = 0;
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -223,12 +228,18 @@ void Scene::GameScene::handleWin()
         playerIndex++;
     }
     if (nbPlayersAlive == 1) {
-        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon();
-        _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(alivePlayerIndex));
+        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon(1);
+        for (std::size_t index = 0; index < _players.size(); index++)
+            _mapStatistics.push_back({_players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon(), static_cast<Object::PLAYER_ORDER>(index)});
         _settings->stopMusic(MusicsEnum::Game);
         _settings->playMusic(MusicsEnum::EndGame);
         _gameSettings->setPlayersRank(_mapStatistics);
-        _nextScene = Scene::Scenes::END_GAME;
+        _actualSet += 1;
+        restartSet();
+    }
+    for (auto &[index, player] : _players) {
+        if (player->getSetsWon() == _gameSettings->getNbSets())
+            _nextScene = Scene::Scenes::END_GAME;
     }
 }
 
@@ -487,8 +498,6 @@ void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosi
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
         if (playerPos == explosionPos) {
             player->die();
-            _mapStatistics.emplace(_placement, index);
-            _placement--;
         }
     }
 }
@@ -564,10 +573,8 @@ void Scene::GameScene::handleTimer()
     int minutes = remaningTime / 60;
     int seconds = remaningTime % 60;
 
-    if (remaningTime <= 0) {
-        _gameSettings->setTimeOut(true);
-        _nextScene = Scene::Scenes::END_GAME;
-    }
+    if (remaningTime <= 0)
+        restartSet();
     if (seconds < 10)
         _texts.at(0)->setText(std::to_string(minutes) + ":0" + std::to_string(seconds));
     else

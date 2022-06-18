@@ -49,6 +49,8 @@ namespace Scene {
 
             void applyGameParams();
 
+            void restartSet();
+
             Scenes handleEvent() override;
             void draw() override;
 
@@ -111,8 +113,7 @@ namespace Scene {
             std::size_t _timePerRound; //!< Time per round
 
             std::shared_ptr<Object::Map> _gameMap; //!< Shared pointer to Map class
-            std::size_t _placement; //!< Placement of the map
-            std::map<std::size_t, Object::PLAYER_ORDER> _mapStatistics; //!< Map of statistics of the map
+            std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _mapStatistics; //!< Statistics of the players for the podium
 
             bool _endGame; //!< Boolean to know if game is ended or not
 
@@ -150,6 +151,7 @@ namespace Scene {
 
             std::unique_ptr<Scene::PauseScene> _pauseScene; //!< Pause scene
             bool _isPaused; //!< Is paused
+            std::size_t _actualSet; //!< Actual set
     };
 }
 

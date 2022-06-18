@@ -1,72 +1,100 @@
 {
-    "0-winner-player": {
+    "00-winner-player": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 60,
-        "position": [1250, 40, 0]
+        "position": [1250, 135, 0]
     },
-    "1-winner": {
+    "01-winner": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Wins!",
         "color": [255, 255, 0, 255],
         "fontSize": 150,
-        "position": [1100, 140, 0]
+        "position": [1100, 240, 0]
     },
-    "2-first": {
+    "02-first": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "1",
         "color": [243, 58, 108, 255],
-        "fontSize": 60,
-        "position": [1450, 395, 0]
+        "fontSize": 70,
+        "position": [1230, 470, 0]
     },
-    "3-player1": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 400, 0]
-    },
-    "4-second": {
+    "03-second": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "2",
         "color": [243, 58, 108, 255],
-        "fontSize": 60,
-        "position": [1450, 495, 0]
+        "fontSize": 70,
+        "position": [1220, 570, 0]
     },
-    "5-player2": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 500, 0]
-    },
-    "6-third": {
+    "04-third": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "3",
         "color": [243, 58, 108, 255],
-        "fontSize": 60,
-        "position": [1450, 595, 0]
+        "fontSize": 70,
+        "position": [1220, 670, 0]
     },
-    "7-player3": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 600, 0]
-    },
-    "8-fourth": {
+    "05-fourth": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "4",
         "color": [243, 58, 108, 255],
-        "fontSize": 60,
-        "position": [1450, 695, 0]
+        "fontSize": 70,
+        "position": [1220, 770, 0]
     },
-    "6-player4": {
+    "06-placement1": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 700, 0]
+        "fontSize": 60,
+        "position": [1300, 475, 0]
+    },
+    "07-placement2": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1300, 575, 0]
+    },
+    "08-placement3": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1300, 675, 0]
+    },
+    "09-placement4": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 60,
+        "position": [1300, 775, 0]
+    },
+    "10-score1": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 70,
+        "position": [1850, 470, 0]
+    },
+    "11-score2": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 70,
+        "position": [1850, 570, 0]
+    },
+    "12-score3": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 70,
+        "position": [1850, 670, 0]
+    },
+    "13-score4": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 70,
+        "position": [1850, 770, 0]
     }
 }

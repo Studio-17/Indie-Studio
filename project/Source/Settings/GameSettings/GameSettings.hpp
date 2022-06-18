@@ -158,13 +158,16 @@ class GameSettings {
          * 
          * @param playerRank 
          */
-        void setPlayersRank(std::map<std::size_t, Object::PLAYER_ORDER> playerRank) { _playersRank = playerRank; };
+        void setPlayersRank(std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> playerRank) { _playersRank = playerRank; };
         /**
-         * @brief Get the Players Rank object
+         * @brief Construct a new std::vector<std::pair<std::size t, Object::PLAYER ORDER>>getPlayersRank object
          * 
-         * @return std::map<std::size_t, Object::PLAYER_ORDER> 
          */
-        std::map<std::size_t, Object::PLAYER_ORDER> getPlayersRank() { return _playersRank; };
+        std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>>getPlayersRank()
+        {
+            std::sort(_playersRank.begin(), _playersRank.end());
+            return _playersRank;
+        };
 
         /**
          * @brief Set the Time Out object
@@ -191,7 +194,7 @@ class GameSettings {
         std::size_t _nbSets; //!< nb round
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled
-        std::map<std::size_t, Object::PLAYER_ORDER> _playersRank; //!< map of player rank
+        std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _playersRank; //!< map of player rank
         bool _timeOut = false; //!< if time out is enabled
 
         // End game stats

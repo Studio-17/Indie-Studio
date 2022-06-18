@@ -95,11 +95,23 @@ namespace Object {
              */
             std::pair<float, float> getDefaultSpeed() const { return _defaultSpeed; };
             /**
+             * @brief Set the Default Speed object
+             * 
+             * @param defaultSpeed 
+             */
+            void setDefaultSpeed(std::pair<float, float> const &defaultSpeed) { _defaultSpeed = defaultSpeed; };
+            /**
              * @brief Get the default range Bomb object
              *
              * @return std::pair<std::size_t, std::size_t>
              */
             std::pair<std::size_t, std::size_t> getDefaultRangeBomb() const { return _defaultRangeBomb; };
+            /**
+             * @brief Set the Default Range Bomb object
+             * 
+             * @param defaultRangeBomb 
+             */
+            void setDefaultRangeBomb(std::pair<std::size_t, std::size_t> const &defaultRangeBomb) { _defaultRangeBomb = defaultRangeBomb; };
             /**
              * @brief Get the default range bomb explosion
              *
@@ -107,11 +119,23 @@ namespace Object {
              */
             std::pair<std::size_t, std::size_t> getDefaultRangeExplosion() const { return _defaultRangeExplosion; };
             /**
+             * @brief Set the Default Range Explosion object
+             * 
+             * @param defaultRangeExplosion 
+             */
+            void setDefaultRangeExplosion(std::pair<std::size_t, std::size_t> const &defaultRangeExplosion) { _defaultRangeExplosion = defaultRangeExplosion; };
+            /**
              * @brief Get the default kick range
              *
              * @return std::size_t
              */
-            std::size_t getDefaultKickRange() const { return _defaultKickRange; };
+            std::pair<std::size_t, std::size_t> getDefaultKickRange() const { return _defaultKickRange; };
+            /**
+             * @brief Set the Default Kick Range object
+             * 
+             * @param defaultKickRange 
+             */
+            void setDefaultKickRange(std::pair<std::size_t, std::size_t> const &defaultKickRange) { _defaultKickRange = defaultKickRange; };
 
             /**
              * @brief Get player speed
@@ -185,7 +209,7 @@ namespace Object {
              * @return std::size_t
              */
             std::size_t getSetsWon() const { return _setsWon; };
-            void setWon();
+            void setWon(std::size_t nb);
 
 
             /**
@@ -229,7 +253,7 @@ namespace Object {
             std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
             std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4};
             std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3};
-            std::size_t _defaultKickRange = 1;
+            std::pair<std::size_t, std::size_t> _defaultKickRange = {1, 3};
 
             float _speed;
             std::size_t _rangeBomb;
