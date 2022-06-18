@@ -1,68 +1,68 @@
 {
-    "0-winner-player": {
+    "00-winner-player": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 60,
         "position": [1250, 40, 0]
     },
-    "1-winner": {
+    "01-winner": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Wins!",
         "color": [255, 255, 0, 255],
         "fontSize": 150,
         "position": [1100, 140, 0]
     },
-    "2-first": {
+    "02-first": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "1",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
         "position": [1450, 395, 0]
     },
-    "3-player1": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 400, 0]
-    },
-    "4-second": {
+    "03-second": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "2",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
         "position": [1450, 495, 0]
     },
-    "5-player2": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 500, 0]
-    },
-    "6-third": {
+    "04-third": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "3",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
         "position": [1450, 595, 0]
     },
-    "7-player3": {
-        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "",
-        "color": [255, 255, 255, 255],
-        "fontSize": 50,
-        "position": [1600, 600, 0]
-    },
-    "8-fourth": {
+    "05-fourth": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "4",
         "color": [243, 58, 108, 255],
         "fontSize": 60,
         "position": [1450, 695, 0]
     },
-    "6-player4": {
+    "06-placement1": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 400, 0]
+    },
+    "07-placement2": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 500, 0]
+    },
+    "08-placement3": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [1600, 600, 0]
+    },
+    "09-placement4": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],

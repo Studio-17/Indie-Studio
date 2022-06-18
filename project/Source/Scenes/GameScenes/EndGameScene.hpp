@@ -37,7 +37,7 @@ namespace Scene {
              */
             void goToMainMenu();
 
-            void drawPlayerName(Object::PLAYER_ORDER player, std::size_t nbText);
+            void drawPlayerNameAndScore(Object::PLAYER_ORDER player, std::size_t score, std::size_t nbText);
             void drawScore();
 
         protected:
@@ -45,6 +45,7 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> &_parallax;
             std::vector<std::unique_ptr<Object::Image>> _winner;
             std::shared_ptr<GameSettings> _gameSettings;
+            std::size_t _winnerId;
     };
 }
 

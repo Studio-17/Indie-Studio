@@ -21,7 +21,6 @@ Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::share
     _texts = loadObjects<Object::Text>("Conf/Scenes/EndGameScene/text.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/image.json");
     _winner = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/winner.json");
-
     _nextScene = Scene::Scenes::END_GAME;
 }
 
@@ -45,20 +44,21 @@ Scene::Scenes Scene::EndGameScene::handleEvent()
     return _nextScene;
 }
 
-void Scene::EndGameScene::drawPlayerName(Object::PLAYER_ORDER player, std::size_t nbText)
+void Scene::EndGameScene::drawPlayerNameAndScore(Object::PLAYER_ORDER player, std::size_t score, std::size_t nbText)
 {
     int resultOfPlayer = static_cast<int>(player) + 1;
-    _texts.at(nbText)->setText(std::to_string(resultOfPlayer) + "J");
+    _texts.at(nbText)->setText(std::to_string(resultOfPlayer) + "J   : " + std::to_string(score));
 }
 
 void Scene::EndGameScene::drawScore()
 {
-    std::map<std::size_t, Object::PLAYER_ORDER> playerRank = _gameSettings->getPlayersRank();
-    drawPlayerName(playerRank.at(1), 0);
-    drawPlayerName(playerRank.at(1), 3);
-    drawPlayerName(playerRank.at(2), 5);
-    drawPlayerName(playerRank.at(3), 6);
-    drawPlayerName(playerRank.at(4), 8);
+    std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> playerScores = _gameSettings->getPlayersRank();
+    for (std::size_t i = 0; i < playerScores.size(); i++)
+        std::cout << i << "Score: "<< playerScores.at(i).first << " Player: " << (static_cast<int>(playerScores.at(i).second) + 1) << std::endl;
+    drawPlayerNameAndScore(playerScores.at(3).second, playerScores.at(3).first, 6);
+    drawPlayerNameAndScore(playerScores.at(2).second, playerScores.at(2).first, 7);
+    drawPlayerNameAndScore(playerScores.at(1).second, playerScores.at(1).first, 8);
+    drawPlayerNameAndScore(playerScores.at(0).second, playerScores.at(0).first, 9);
 }
 
 Scene::EndGameScene::~EndGameScene()
@@ -71,17 +71,10 @@ void Scene::EndGameScene::draw()
         parallax->draw();
     for (auto &button : _buttons)
         button->draw();
-    if (!_gameSettings->getTimeOut()) {
-        // drawScore();
-        for (auto &image : _images)
-            image->draw();
-        // _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
-        for (auto &text : _texts)
-            text->draw();
-    } else {
-        _texts.at(1)->setText("TIME OUT!");
-        _texts.at(1)->setPosition((Position){500, 140, 0});
-        _images.at(0)->draw();
-        _texts.at(1)->draw();
-    }
+    for (auto &image : _images)
+        image->draw();
+    drawScore();
+    // _winner.at(static_cast<int>(_gameSettings->getPlayerSkins().at(static_cast<int>(_gameSettings->getPlayersRank().at(1)))))->draw();
+    for (auto &text : _texts)
+        text->draw();
 }
