@@ -2,8 +2,29 @@
     "2-Continue": {
         "type": "button",
         "nbFrame": 3,
-        "position": [1770, 900, 0],
+        "position": [940, 900, 0],
         "audio": "Ressources/buttons/click_sound.ogg",
-        "texture": "Ressources/buttons/next_button.png"
+        "texture": "Ressources/buttons/little_button.png",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Main Menu",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [80, 40, 0]
+        }
+    },
+    "3-Restart": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [1470, 900, 0],
+        "texture": "Ressources/buttons/little_button.png",
+        "audio": "Ressources/buttons/click_sound.ogg",
+        "text": {
+            "font": "Ressources/fonts/squarefont/Square.ttf",
+            "text": "Battle Again",
+            "color": [255, 255, 255, 255],
+            "fontSize": 40,
+            "position": [80, 40, 0]
+        }
     }
 }
