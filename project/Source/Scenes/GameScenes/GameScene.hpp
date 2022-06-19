@@ -61,6 +61,12 @@ namespace Scene {
              * @brief restart set
              */
             void restartSet();
+            /**
+             * @brief load Game from json Data
+             *
+             * @param jsonData list containing all datas of game
+             */
+            void loadFromSave(nlohmann::json const &jsonData);
 
             /**
              * @brief Handle the event of the scene
@@ -238,6 +244,7 @@ namespace Scene {
             Clock _endSetClock; //!< Clock to manage the end of the set time
 
             std::size_t _timePerRound; //!< Time per round
+            int _elapsedTime; //!< Elapsed time
 
             std::shared_ptr<Object::Map> _gameMap; //!< Shared pointer to Map class
             std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _mapStatistics; //!< Statistics of the players for the podium
@@ -248,8 +255,8 @@ namespace Scene {
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players; //!< Map of players
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Ai>> _ai;
             std::vector<std::size_t> _playerSkin; //!< Vector of player skin
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _playersIcons; //!< Vector of players with their skins
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _setsIcons; //!< Vector of stars for sets for each player
+            std::vector<std::vector<std::unique_ptr<Object::Image>>> _playersIcons; //!< Vector of players with their skins
+            std::vector<std::vector<std::unique_ptr<Object::Image>>> _setsIcons; //!< Vector of stars for sets for each player
             std::vector<std::unique_ptr<Object::Text>> _playerParameters; //!< Vector of player with their writed parameters
             float _playerSpeed; //!< Player speed
 

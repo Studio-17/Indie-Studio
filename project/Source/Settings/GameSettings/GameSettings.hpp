@@ -185,6 +185,25 @@ class GameSettings {
          * @return false
          */
         bool getTimeOut() { return _timeOut; };
+        /**
+         * @brief Get the Default Attributes
+         *
+         * @return std::map<std::string, std::pair<float, float>> map of string corresponding of default attributes name and pair of float with the min and max
+         */
+        std::map<std::string, std::pair<float, float>> getDefaultAttributes() const;
+
+        /**
+         * @brief Get the Time Per Round object
+         *
+         * @return Int time per round
+         */
+        int getTimePerRound() const;
+        /**
+         * @brief Set the Time Per Round object
+         *
+         * @param time Time per round
+         */
+        void setTimePerRound(int time);
 
     protected:
     private:
@@ -195,7 +214,8 @@ class GameSettings {
         std::vector<bool> _iaPlayers; //!< vector of if a player is an IA
         std::size_t _nbPlayers; //!< number of player
         std::size_t _nbSets; //!< nb round
-        float _gameTime; //!< game time
+        int _gameTimePerRound; //!< game time
+        int _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled
         std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _playersRank; //!< map of player rank
         bool _timeOut = false; //!< if time out is enabled
@@ -203,6 +223,7 @@ class GameSettings {
         // End game stats
         std::size_t victoriousPlayer; //!< player who won the game
         std::vector<float> _playersScore; //!< vector of player score
+        std::map<std::string, std::pair<float, float>> _defaultAttributes; //!< Map of default attributes
 };
 
 #endif /* !GAMESETTINGS_HPP_ */
