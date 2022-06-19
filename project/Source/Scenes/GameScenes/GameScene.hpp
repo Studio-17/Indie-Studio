@@ -121,6 +121,8 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Text>> _playerParameters; //!< Vector of player with their writed parameters
             float _playerSpeed; //!< Player speed
 
+            std::vector<std::unique_ptr<Object::Text>> _startingGameTexts;
+
             std::vector<std::unique_ptr<Object::Bomb>> _bombs; //!< Vector of bombs
             float _timeBeforeBombExplosion; //!< Time before bomb explosion
 
