@@ -21,15 +21,27 @@ namespace Scene {
              * @brief Construct a new Binding Scene object
              *
              * @param settings Shared pointer to Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              * @param keyboard Reference to Keyboard object
              * @param actionPressed map of key corresponding of a basic action to handle menu and non gaming actions
              * @param playerAction Vector of map of key corresponding of a player action
              * @param gamepadPlayerActions Vector of pair of key corresponding of a drop player action with a gamepad
              */
             BindingScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions);
+            /**
+             * @brief Destroy the Option Binding Scene object
+             */
             ~BindingScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
             /**

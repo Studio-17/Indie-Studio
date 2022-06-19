@@ -25,20 +25,17 @@ namespace Scene {
              */
             VolumeSettingsScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
             /**
-             * @brief Destroy the Pause Scene object
-             * 
+             * @brief Destroy the Volume Settings Scene object
              */
             ~VolumeSettingsScene();
 
             /**
              * @brief Handle the event of the scene
-             * 
-             * @return Scenes 
+             * @return Scenes
              */
             Scenes handleEvent() override;
             /**
              * @brief Draw the scene
-             * 
              */
             void draw() override;
 
