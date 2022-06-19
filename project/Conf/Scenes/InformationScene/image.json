@@ -1,0 +1,22 @@
+{
+    "0-logo-font": {
+        "texture": "Ressources/sprites/title_background.png",
+        "scale": 1,
+        "position": [0, 60, 0]
+    },
+    "1-logo-top-corner-left": {
+        "texture": "Ressources/icon/find_wico.png",
+        "scale": 0.6,
+        "position": [15, 85, 0]
+    },
+    "2-pop_up": {
+        "texture": "Ressources/sprites/pop_up_background.png",
+        "scale": 1.3,
+        "position": [325.6, 175.35, 0]
+    },
+    "3-information": {
+        "texture": "Ressources/sprites/information.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    }
+}

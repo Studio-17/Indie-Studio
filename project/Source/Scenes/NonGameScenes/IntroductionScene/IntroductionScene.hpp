@@ -12,10 +12,6 @@
     #include "AScene.hpp"
     #include "clock.hpp"
 
-/**
- * @brief The IntroductionScene class
- * @details This class is used to display the introduction scene
- */
 namespace Scene {
     /**
      * @brief The IntroductionScene class
