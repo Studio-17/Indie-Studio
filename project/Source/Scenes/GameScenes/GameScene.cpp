@@ -24,6 +24,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _backgroundImage = loadObjects<Object::Image>("Conf/Scenes/GameScene/background.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
+    _startingGameTexts = loadObjects<Object::Text>("Conf/Scenes/GameScene/startingGameText.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
     _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
@@ -108,6 +109,7 @@ void Scene::GameScene::loadSceneAssets()
 void Scene::GameScene::restartSet()
 {
     _playerSkin = _gameSettings->getPlayerSkins();
+    _startingGameTexts.at(0)->setText("3");
     std::vector<Position> playerPositions;
 
     _ai.clear();
@@ -169,6 +171,15 @@ void Scene::GameScene::handleCinematicCamera()
         _cinematicCamera = false;
         resumeGame();
     }
+    std::cout << timer << std::endl;
+    if (timer > 500 && timer < 1000)
+        _startingGameTexts.at(0)->setText("2");
+    if (timer > 1001)
+        _startingGameTexts.at(0)->setText("1");
+    if (timer > 1500) {
+        _startingGameTexts.at(0)->setPosition(Position(820, 500, 0));
+        _startingGameTexts.at(0)->setText("GO !!");
+    }
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -223,8 +234,7 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    if (!_cinematicCamera)
-        drawUserInterface();
+    _cinematicCamera ? _startingGameTexts.at(0)->draw() : drawUserInterface();
 }
 
 void Scene::GameScene::handleWin()
