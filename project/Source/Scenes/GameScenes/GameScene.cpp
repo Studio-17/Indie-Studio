@@ -138,6 +138,7 @@ void Scene::GameScene::restartSet()
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
     setCameraView();
+    setBombToPause(false);
 }
 
 void Scene::GameScene::applyGameParams()
@@ -618,6 +619,7 @@ void Scene::GameScene::drawObjects()
 void Scene::GameScene::resumeGame()
 {
     _clockGame.unpause();
+    setBombToPause(false);
     _isPaused = false;
 }
 

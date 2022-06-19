@@ -1,9 +1,37 @@
 {
-    "1": {
+    "0": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [915, 35, 0]
+    },
+    "1-1J": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "1J",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [45, 290, 0]
+    },
+    "2-2J": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "2J",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1822, 300, 0]
+    },
+    "3-3J": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "3J",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [40, 690, 0]
+    },
+    "4-4J": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "4J",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1822, 700, 0]
     }
 }
