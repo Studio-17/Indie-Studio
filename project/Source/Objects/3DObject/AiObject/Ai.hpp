@@ -64,7 +64,21 @@ namespace Object {
              * @return false
              */
             bool checkAiIsSafe();
+            /**
+             * @brief Looking ai position to determine if he is safe
+             *
+             * @param newPosAi new position of ai in map
+             * @return true
+             * @return false
+             */
             bool checkAiIsSafe(std::pair<int, int> newPosAi);
+            /**
+             * @brief Validate the chosen direction
+             *
+             * @param action action to validate (left, right, up, down)
+             * @return true
+             * @return false
+             */
             bool validDir(PlayerAction action);
 
         protected:
@@ -78,7 +92,7 @@ namespace Object {
 
             bool _isMoving = false; ///< is moving
             bool _isSafe = true; ///< is safe
-            int _actionMove = 0; ///< action move
+            int _playerAction = 0; ///< action move
             std::vector<PlayerAction> _possibleDirection; ///< ia possible direction
             std::vector<std::pair<int, int>> _forbiddenCells; ///< ai forbidden cells
     };
