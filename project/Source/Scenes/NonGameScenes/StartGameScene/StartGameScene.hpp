@@ -22,11 +22,24 @@ namespace Scene {
              * @brief Construct a new Start Game Scene object
              *
              * @param settings Shared pointer to Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
+             * @param updateSaveFiles Callback function to update Save File list
              */
             StartGameScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> updateSaveFiles);
+            /**
+             * @brief Destroy the Start Game Scene object
+             */
             ~StartGameScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
         protected:

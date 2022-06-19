@@ -20,11 +20,23 @@ namespace Scene {
              * @brief Construct a new Main Menu Scene object
              *
              * @param settings Shared pointer to Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              */
             MainMenuScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            /**
+             * @brief Destroy the Option Main Menu Scene object
+             */
             ~MainMenuScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
         protected:

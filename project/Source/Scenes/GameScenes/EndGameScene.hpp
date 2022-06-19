@@ -26,7 +26,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> _restartCallBack);
             ~EndGameScene();
 
             Scenes handleEvent() override;
@@ -34,8 +34,13 @@ namespace Scene {
 
             /**
              * @brief Call back function executed when next button is pressed to set next scene to main menu scene
-             */
+            */
             void goToMainMenu();
+
+            /**
+             * @brief Call back function executed to restart the game
+            */
+            void restartGame();
 
             void drawPlayerNameAndScore(Object::PLAYER_ORDER player, std::size_t score, std::size_t nbText);
             void drawScore();
@@ -46,6 +51,7 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> _winner;
             std::shared_ptr<GameSettings> _gameSettings;
             int _winnerId;
+            std::function<void(void)> _restartGameCallBack;
     };
 }
 

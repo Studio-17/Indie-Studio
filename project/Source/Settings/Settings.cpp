@@ -124,10 +124,10 @@ void Settings::updateSettingsDatas(std::string const &filepath)
         throw Error::FileError("File " + filepath + " failed to open");
     incrementSaveIndex();
     saveData["saveIndex"] = _saveIndex;
-    std::cout << "audio Volume " << _audio->getSoundVolume() << std::endl;
-    std::cout << "music Volume " << _audio->getMusicVolume() << std::endl;
+
     saveData["soundVolume"] = _audio->getSoundVolume();
     saveData["musicVolume"] = _audio->getMusicVolume();
+    saveData["frameRate"] = _framerate;
     fileToWrite << saveData.dump(4);
 }
 

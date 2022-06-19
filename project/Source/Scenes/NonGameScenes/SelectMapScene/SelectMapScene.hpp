@@ -23,26 +23,92 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              */
             SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            /**
+             * @brief Destroy the Select Map Scene object
+             */
             ~SelectMapScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
+            /**
+             * @brief Generate random map in a file of defined size and percentage of Box spwaning
+             *
+             * @param filename string of file path where the map will be generate
+             * @param width number of columns in the map
+             * @param height number of rows in the map
+             * @param percentageDrop percentage of box spwaning in the map
+             */
             void generate(std::string const &filename, std::size_t width, std::size_t height, std::size_t percentageDrop);
-            // void createFile(std::string const &filename);
 
         protected:
+            /**
+             * @brief Exit the scene
+             */
             void exitSelectMapSceneScene();
+            /**
+             * @brief Run the Select Player Scene
+             */
             void runSelectPlayerScene();
+            /**
+             * @brief Set display map selection in basic mode
+             */
             void basicMode();
+            /**
+             * @brief Set display map selection in custom mode
+             */
             void customMode();
+            /**
+             * @brief Increase map height and width by 2
+             */
             void previousMap();
+            /**
+             * @brief Reduces map height and width by 2
+             */
             void nextMap();
+            /**
+             * @brief Check if the line is a valid map line
+             *
+             * @param line string of line to check
+             * @param sizeLine good size of line
+             * @param nbrLine line index
+             * @return true if the line is valid for a map line
+             * @return false if the line is not valid for a map line
+             */
             bool isGoodLineMap(std::string const &line, std::size_t sizeLine, int nbrLine);
+            /**
+             * @brief Get the Vector Map From File object
+             *
+             * @param filename string of file path
+             * @return std::vector<std::string> of the map obtained from the file
+             */
             std::vector<std::string> getVectorMapFromFile(const std::string &filename);
+            /**
+             * @brief Check if the spawns of the 4 players are good
+             *
+             * @param vecMap std::vector<std::string> of the map
+             * @return true if the three cases of each spawn are empty
+             * @return false if the a case of the three cases of a spawn is not empty
+             */
             bool haveGoodSpawn(std::vector<std::string> vecMap);
+            /**
+             * @brief Check the map in the file validity
+             *
+             * @param filename string of file path to obtain the map
+             * @return true if the map in the file is valid
+             * @return false if the map in the file is invalid
+             */
             bool isGoodFileMap(const std::string &filename);
 
         private:

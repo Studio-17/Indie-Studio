@@ -22,7 +22,7 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
-             * @param callBack
+             * @param callBack Vector of Callbacks functions
              * @param saveCallBack Call back function to save game
              */
             FramerateScene(std::shared_ptr<Settings> settings, std::vector<std::function<void(void)>> callBacks);
@@ -38,7 +38,6 @@ namespace Scene {
             Scenes handleEvent() override;
             /**
              * @brief Draw the scene
-             * 
              */
             void draw() override;
 
