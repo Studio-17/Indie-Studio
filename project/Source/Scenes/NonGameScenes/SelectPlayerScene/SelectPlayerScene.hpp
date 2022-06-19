@@ -41,8 +41,10 @@ namespace Scene {
              * @brief Draw the scene
              */
             void draw() override;
-
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         protected:
             /**
              * @brief Exit the scene
@@ -81,6 +83,7 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> _playersInfo; ///< Vector of every Images of the icon infos
             std::function<void(void)> _applyGameSettings; ///< Function to apply game settings
             std::vector<Position> _colorBar; ///< Vector of every position of the color bar
+            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

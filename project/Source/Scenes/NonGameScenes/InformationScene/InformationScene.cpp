@@ -43,6 +43,7 @@ Scene::Scenes Scene::InformationScene::handleEvent()
     }
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
+    handleAction();
     return _nextScene;
 }
 
@@ -56,6 +57,16 @@ void Scene::InformationScene::draw()
         text->draw();
     for (auto &button : _buttons)
         button->draw();
+}
+
+void Scene::InformationScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+
+    if (tmp.at(Action::Next))
+        startGameScene();
+    else if (tmp.at(Action::Previous))
+        mainMenuScene();
 }
 
 void Scene::InformationScene::mainMenuScene()

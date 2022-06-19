@@ -86,7 +86,10 @@ namespace Scene {
              * @return std::vector<std::string> of the Files List of files withthe wanted extension from the Directory
              */
             std::vector<std::string> getFilesListFromDirectory(std::string const &directory, std::string const &suffix);
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         private:
             /**
              * @brief actualyse _savesFilesList and _settings infos
