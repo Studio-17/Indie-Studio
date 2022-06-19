@@ -55,17 +55,67 @@ namespace Object {
              * @param jsonData path to JSON file
              */
             void operator ()(nlohmann::json const &jsonData);
+            /**
+             * @brief draw a two dimensional object
+             */
             void draw() override;
 
+            /**
+             * @brief Enable drawing an object
+             *
+             */
             void enable() override;
+            /**
+             * @brief Disable drawing an object
+             *
+             */
             void disable() override;
+            /**
+             * @brief Check if an object is enabled
+             *
+             * @return true
+             * @return false
+             */
             bool isEnable() const override;
 
+            /**
+             * @brief Set the Position object
+             *
+             * @param position
+             */
             void setPosition(Position const &position) override;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             */
             void setPosition(float x, float y) override;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             * @param z
+             */
             void setPosition(float x, float y, float z) override;
+            /**
+             * @brief Get the Position object
+             *
+             * @return Position
+             */
             Position getPosition() const override;
+            /**
+             * @brief Set the Rotation object
+             *
+             * @param rotation
+             */
             void setRotation(float rotation);
+            /**
+             * @brief Get the Rotation object
+             *
+             * @return float
+             */
             float getRotation() const;
 
             /**
@@ -74,6 +124,7 @@ namespace Object {
              * @param scale float scale value
              */
             void setScale(float scale);
+
         protected:
         private:
             bool _isEnable; ///< image is enable

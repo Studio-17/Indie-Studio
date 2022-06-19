@@ -62,10 +62,28 @@ namespace Object {
              */
             ~Button() override;
 
+            /**
+             * @brief draw a two dimensional object
+             *
+             */
             void draw() override;
 
+            /**
+             * @brief Enable drawing an object
+             *
+             */
             void enable() override;
+            /**
+             * @brief Disable drawing an object
+             *
+             */
             void disable() override;
+            /**
+             * @brief Check if an object is enabled
+             *
+             * @return true
+             * @return false
+             */
             bool isEnable() const override;
 
             /**
@@ -84,9 +102,32 @@ namespace Object {
              */
             bool isClickable() const;
 
+            /**
+             * @brief Set the Position object
+             *
+             * @param position
+             */
             void setPosition(Position const &position) override;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             */
             void setPosition(float x, float y) override;
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             * @param z
+             */
             void setPosition(float x, float y, float z) override;
+            /**
+             * @brief Get the Position object
+             *
+             * @return Position
+             */
             Position getPosition() const override;
 
             /**
@@ -114,6 +155,11 @@ namespace Object {
              * @param y
              */
             void setTextPosition(float x, float y);
+            /**
+             * @brief Get the Text Position object
+             *
+             * @return Position
+             */
             Position getTextPosition() const;
 
             /**
@@ -144,8 +190,20 @@ namespace Object {
              */
             void checkHover(Vector2 const &mousePosition);
 
+            /**
+             * @brief Set the Hover object
+             *
+             */
             void setHover();
+            /**
+             * @brief Set the Hover object
+             *
+             */
             void unsetHover();
+            /**
+             * @brief Handle mouse click
+             *
+             */
             void click();
         protected:
         private:
