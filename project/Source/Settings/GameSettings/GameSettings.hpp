@@ -16,6 +16,9 @@
     #include "Map.hpp"
     #include "Player.hpp"
 
+/**
+ * @brief GameSettings class that handles all game related settings
+ */
 class GameSettings {
     public:
         /**
@@ -155,13 +158,13 @@ class GameSettings {
 
         /**
          * @brief Set the Players Rank object
-         * 
-         * @param playerRank 
+         *
+         * @param playerRank
          */
         void setPlayersRank(std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> playerRank) { _playersRank = playerRank; };
         /**
          * @brief Construct a new std::vector<std::pair<std::size t, Object::PLAYER ORDER>>getPlayersRank object
-         * 
+         *
          */
         std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>>getPlayersRank()
         {
@@ -171,15 +174,15 @@ class GameSettings {
 
         /**
          * @brief Set the Time Out object
-         * 
-         * @param timeOut 
+         *
+         * @param timeOut
          */
         void setTimeOut(bool timeOut) { _timeOut = timeOut; };
         /**
          * @brief Get the Time Out object
-         * 
-         * @return true 
-         * @return false 
+         *
+         * @return true
+         * @return false
          */
         bool getTimeOut() { return _timeOut; };
 
