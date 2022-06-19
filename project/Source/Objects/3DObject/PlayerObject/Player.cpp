@@ -110,11 +110,6 @@ void Object::Player::setAlreadyPlacedBombs(bool addBomb)
         _alreadyPlacedBombs -= 1;
 }
 
-void Object::Player::setIsMoving(bool isMoving)
-{
-    _isMoving = isMoving;
-}
-
 void Object::Player::setWon(std::size_t nb)
 {
     if (nb == 0)
@@ -150,54 +145,4 @@ void Object::Player::reset()
     _rangeExplosion = _defaultRangeExplosion.first;
     _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
-}
-
-bool Object::Player::getIsSafe() const
-{
-    return _isSafe;
-}
-
-void Object::Player::setIsSafe(bool isSafe)
-{
-    _isSafe = isSafe;
-}
-
-bool Object::Player::getAllowForbiddenCells() const
-{
-    return _allowForbiddenCells;
-}
-
-void Object::Player::setAllowForbiddenCells(bool allowForbiddenCells)
-{
-    _allowForbiddenCells = allowForbiddenCells;
-}
-
-int Object::Player::getActionMove() const
-{
-    return _actionMove;
-}
-
-void Object::Player::setActionMove(int actionMove)
-{
-    _actionMove = actionMove;
-}
-
-std::vector<PlayerAction> Object::Player::getAiPossibleDirections() const
-{
-    return _aiPossibleDirection;
-}
-
-void Object::Player::setAiPossibleDirections(std::vector<PlayerAction> aiPossibleDirections)
-{
-    _aiPossibleDirection = aiPossibleDirections;
-}
-
-std::vector<std::pair<int, int>> Object::Player::getAiForbiddenCells() const
-{
-    return _aiForbiddenCells;
-}
-
-void Object::Player::setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells)
-{
-    _aiForbiddenCells = aiForbiddenCells;
 }
