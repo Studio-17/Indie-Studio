@@ -75,6 +75,7 @@ namespace Scene {
             void handleExplosions();
             void handleTimer();
 
+            void handleCinematicCamera();
 
             void handleAi(std::map<PlayerAction, bool> &tmp, std::shared_ptr<Object::Player> const &ai, int indexAi);
             std::vector<PlayerAction> getPossibleDir(std::shared_ptr<Object::Player> const &ai, int indexAi);
@@ -109,6 +110,7 @@ namespace Scene {
             bool _3dcameraVue; //!< Boolean to know if 3d camera is enabled or not
 
             Clock _clockGame; //!< Clock to manage game time
+            Clock _clockcamera; //!< Clock to manage the cinematic camera time
 
             std::size_t _timePerRound; //!< Time per round
 
@@ -153,6 +155,8 @@ namespace Scene {
             std::unique_ptr<Scene::PauseScene> _pauseScene; //!< Pause scene
             bool _isPaused; //!< Is paused
             std::size_t _actualSet; //!< Actual set
+            bool _cinematicCamera; //!< Cinematic camera
+
     };
 }
 
