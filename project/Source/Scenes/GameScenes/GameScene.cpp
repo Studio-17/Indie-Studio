@@ -29,7 +29,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
-    _isPaused = false;
+    _cinematicCamera = true;
+    _isPaused = true;
     _3dcameraVue = false;
 
     _margin = 5.0;
@@ -111,9 +112,10 @@ void Scene::GameScene::restartSet()
 
     _3dcameraVue = false;
     _nextScene = Scene::Scenes::GAME;
+    _clockcamera.start();
     _clockGame.reset();
     _explosions.clear();
-    _isPaused = false;
+    _isPaused = true;
     _bombs.clear();
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
@@ -139,6 +141,8 @@ void Scene::GameScene::restartSet()
     }
     setCameraView();
     setBombToPause(false);
+    _cinematicCamera = true;
+    _settings->getCamera()->setPosition({(_gameSettings->getMapSize().first * _gameMap->getBlockSize()) / 2, 1, ((_gameSettings->getMapSize().second * _gameMap->getBlockSize()) / 2)});
 }
 
 void Scene::GameScene::applyGameParams()
@@ -149,6 +153,18 @@ void Scene::GameScene::applyGameParams()
     for (auto &[index, player] : _players)
         player->setWon(0);
     _actualSet = 0;
+}
+
+void Scene::GameScene::handleCinematicCamera()
+{
+    long long int timer = _clockcamera.getElapsedTime();
+
+    if (_settings->getCamera()->getCamera().position.y < (_gameSettings->getMapSize().first * 5) * 4) {
+        _settings->getCamera()->setPosition({(_gameSettings->getMapSize().first * _gameMap->getBlockSize()) / 2, static_cast<float>(timer / 10), ((_gameSettings->getMapSize().second * _gameMap->getBlockSize()) / 2) + 1});
+    } else {
+        _cinematicCamera = false;
+        resumeGame();
+    }
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -171,8 +187,11 @@ Scene::Scenes Scene::GameScene::handleEvent()
 
     _nextScene = Scene::Scenes::GAME;
     _settings->updateMusicStream(MusicsEnum::Game);
-    for (auto &button: _buttons)
-        button->checkHover(mousePos);
+    if (!_cinematicCamera) {
+        for (auto &button: _buttons)
+            button->checkHover(mousePos);
+    } else
+        handleCinematicCamera();
     if (!_isPaused) {
         handleWin();
         handlePlayers();
@@ -199,30 +218,32 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    for (auto &image : _images)
-        image->draw();
-    for (std::size_t index = 0; index < _players.size(); index++) {
-        if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
-            _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
-        else
-            _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
-        for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
-            if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
-                _setsIcons.at(index).second.at(nbSets + 5)->draw();
+    if (!_cinematicCamera) {
+        for (auto &image : _images)
+            image->draw();
+        for (std::size_t index = 0; index < _players.size(); index++) {
+            if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
+                _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
             else
-                _setsIcons.at(index).second.at(nbSets)->draw();
+                _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+            for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
+                if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
+                    _setsIcons.at(index).second.at(nbSets + 5)->draw();
+                else
+                    _setsIcons.at(index).second.at(nbSets)->draw();
+            }
         }
+        for (auto &text : _texts)
+            text->draw();
+        for (auto &parameter : _playerParameters)
+            parameter->draw();
+        if (_3dcameraVue)
+            _buttons.at(1)->draw();
+        else
+            _buttons.at(0)->draw();
+        if (_isPaused && !_cinematicCamera)
+            _pauseScene->draw();
     }
-    for (auto &text : _texts)
-        text->draw();
-    for (auto &parameter : _playerParameters)
-        parameter->draw();
-    if (_3dcameraVue)
-        _buttons.at(1)->draw();
-    else
-        _buttons.at(0)->draw();
-    if (_isPaused)
-        _pauseScene->draw();
 }
 
 void Scene::GameScene::handleWin()
@@ -653,10 +674,12 @@ void Scene::GameScene::setCameraView()
 {
     std::pair<float, float> mapSize = _gameSettings->getMapSize();
 
-    if (_3dcameraVue) {
-        _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 3, mapSize.second * _gameMap->getBlockSize()});
-    } else {
-        _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 4, ((mapSize.second * _gameMap->getBlockSize()) / 2) + 1});
+    if (!_cinematicCamera) {
+        if (_3dcameraVue) {
+            _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 3, mapSize.second * _gameMap->getBlockSize()});
+        } else {
+            _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 4, ((mapSize.second * _gameMap->getBlockSize()) / 2) + 1});
+        }
     }
     _settings->getCamera()->setTarget({(mapSize.first * _gameMap->getBlockSize()) / 2, 0, (mapSize.first * _gameMap->getBlockSize()) / 2});
 }
