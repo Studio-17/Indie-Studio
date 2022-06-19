@@ -85,6 +85,12 @@ Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, 
         _playerColors.emplace_back(0, loadObjects<Object::Text>(pathToText));
     }
     _nextScene = Scene::Scenes::SELECT_PLAYER;
+    _colorBar = {
+        Position(227, 619),
+        Position(627, 619),
+        Position(1027, 619),
+        Position(1427, 619)
+    };
 }
 
 Scene::SelectPlayerScene::~SelectPlayerScene()
@@ -126,14 +132,23 @@ void Scene::SelectPlayerScene::SetInfoOfPlayers(std::size_t index)
 
 void Scene::SelectPlayerScene::draw()
 {
+    std::size_t index = 0;
+
     for (auto &parallax : _parallax)
         parallax->draw();
     for (auto &image : _images)
         image->draw();
     for (auto &[id, player] : _players)
         player.at(id)->draw();
-    for (auto &[id, playerColor] : _playerColors)
+    for (auto &[id, playerColor] : _playerColors) {
         playerColor.at(id)->draw();
+        _images.at(index + 6)->setPosition(_colorBar.at(index).getX() + (37 * id), _colorBar.at(index).getY());
+        index++;
+    }
+    // for (std::size_t index = 0; index < _players.size(); index++) {
+    //     _images.at(index + 6)->setPosition(_colorBar.at(index).getX(), _colorBar.at(index).getY());
+    // }
+    //  _playerColors.at(index).first + 1
     for (auto &pop : _popPlayerNames)
         pop->draw();
     SetInfoOfPlayers(_gameSettings->getNbPlayers());

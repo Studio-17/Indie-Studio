@@ -50,6 +50,7 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> _popPlayerNames; ///< Vector of every Images of the pop player names
             std::vector<std::unique_ptr<Object::Image>> _playersInfo; ///< Vector of every Images of the icon infos
             std::function<void(void)> _applyGameSettings; ///< Function to apply game settings
+            std::vector<Position> _colorBar; ///< Vector of every position of the color bar
     };
 }
 
