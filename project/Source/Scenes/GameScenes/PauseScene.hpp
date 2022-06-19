@@ -61,6 +61,8 @@ namespace Scene {
              */
             void unPrintSettingsPopUp();
 
+            std::vector<std::function<void(void)>> _callBacks; //!< Call back function to execute when button is pressed
+            std::shared_ptr<GameSettings> _gameSettings; //!< Shared pointer to Game Settings class
 
             bool _shouldPrintExitPopUp; ///< To know if we should display exit popUp
             bool _shouldPrintSettingsPopUp; ///< To know if we should display settings popUp
