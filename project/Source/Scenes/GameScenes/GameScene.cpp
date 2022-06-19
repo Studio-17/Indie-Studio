@@ -28,6 +28,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
     _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
     _endingGameText = loadObjects<Object::Text>("Conf/Scenes/GameScene/endingGameText.json");
+    _bannerImage = loadObjects<Object::Image>("Conf/Scenes/GameScene/bannerImage.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
@@ -239,7 +240,11 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    _cinematicCamera ? _startingGameTexts.at(0)->draw() : drawUserInterface();
+    if (_cinematicCamera) {
+        _bannerImage.at(0)->draw();
+        _startingGameTexts.at(0)->draw();
+    } else
+        drawUserInterface();
 }
 
 void Scene::GameScene::handleWin()
@@ -563,8 +568,10 @@ void Scene::GameScene::drawUserInterface()
         _buttons.at(0)->draw();
     if (_isPaused && !_cinematicCamera)
         _pauseScene->draw();
-    if (_endSet)
+    if (_endSet) {
+        _bannerImage.at(0)->draw();
         _endingGameText.at(0)->draw();
+    }
 }
 
 void Scene::GameScene::drawObjects()

@@ -2,8 +2,8 @@
     "0-counter": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
-        "color": [255, 255, 255, 255],
+        "color": [255, 255, 0, 255],
         "fontSize": 100,
-        "position": [700, 400, 0]
+        "position": [800, 500, 0]
     }
 }

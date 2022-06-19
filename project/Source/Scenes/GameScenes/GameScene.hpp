@@ -228,6 +228,7 @@ namespace Scene {
             std::shared_ptr<GameSettings> _gameSettings; //!< Shared pointer to Game Settings class
 
             std::vector<std::unique_ptr<Object::Image>> _backgroundImage; //!< Background image of the game
+            std::vector<std::unique_ptr<Object::Image>> _bannerImage; //!< Banner image of the game
             std::vector<std::unique_ptr<Object::Text>> _endingGameText; //!< Text of the ending game
 
             bool _3dcameraVue; //!< Boolean to know if 3d camera is enabled or not
