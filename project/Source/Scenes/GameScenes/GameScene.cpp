@@ -99,14 +99,14 @@ void Scene::GameScene::loadSceneAssets()
     _models.emplace_back("Ressources/models/block/dirt/wall_side.obj");
     _models.emplace_back("Ressources/models/block/stone/wall_side.obj");
     _models.emplace_back("Ressources/models/block/dirt/box.obj");
-    _models.emplace_back(""); // For empty block
+    _models.emplace_back("Ressources/models/block/dirt/box.obj"); // For empty block
     _models.emplace_back("Ressources/models/explosion/explosion.iqm");
 
     _textures.emplace_back("Ressources/models/block/stone/box.png");
     _textures.emplace_back("Ressources/models/block/dirt/wall_side.png");
     _textures.emplace_back("Ressources/models/block/stone/wall_side.png");
     _textures.emplace_back("Ressources/models/block/dirt/box.png");
-    _textures.emplace_back(""); // For empty block
+    _textures.emplace_back("Ressources/models/block/dirt/empty.png"); // For empty block
     _textures.emplace_back("Ressources/models/explosion/Fire_baseColor.png");
 }
 
@@ -488,7 +488,7 @@ void Scene::GameScene::handleExplosions()
         for (auto &[line, timer] : explosions) {
             float newTimer = timer + timeBeforeExplosion;
             if (newTimer <= static_cast<float>(_gameClock.getElapsedTime())) {
-                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(12), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
+                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(12), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.000001));
                 _explosions.at(col).erase(line);
             }
         }

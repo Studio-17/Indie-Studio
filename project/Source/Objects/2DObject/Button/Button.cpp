@@ -31,7 +31,7 @@ Object::Button::Button(nlohmann::json const &jsonData) :
     _isClickable(jsonData.value("isClickable", true)),
     _nbFrame(jsonData.value("nbFrame", 1)),
     _state(Default),
-    _buttonTexture(LoadTexture(jsonData.value("texture", "default").c_str())),
+    _buttonTexture(LoadTexture(jsonData.value("texture", "Ressources/buttons/back_button.png").c_str())),
     _frameHeight(_buttonTexture.height / _nbFrame),
     _isAudio(false),
     _callBack(nullptr)
@@ -40,7 +40,7 @@ Object::Button::Button(nlohmann::json const &jsonData) :
     _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, _frameHeight};
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
     try {
-        _audio = jsonData.value("audio", "default");
+        _audio = jsonData.value("audio", "Ressources/buttons/click_sound.ogg");
         _isAudio = true;
     } catch (Error::AudioError const &) {
         _isAudio = false;
@@ -69,7 +69,7 @@ Object::Button::Button(nlohmann::json const &jsonData, Object::Render::MyTexture
     _buttonRect = { _position.getX(),  _position.getY(), (float)_buttonTexture.width, _frameHeight};
     _sourceRec = { 0, 0, (float)_buttonTexture.width, _frameHeight };
     try {
-        _audio = jsonData.value("audio", "default");
+        _audio = jsonData.value("audio", "Ressources/buttons/click_sound.ogg");
         _isAudio = true;
     } catch (Error::AudioError const &) {
         _isAudio = false;

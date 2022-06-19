@@ -8,25 +8,25 @@
 #include "tools.hpp"
 #include "PauseScene.hpp"
 
-Scene::PauseScene::PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::function<void(void)>> callBacks) : AScene(settings),
- _shouldPrintExitPopUp(false)
+Scene::PauseScene::PauseScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::function<void(void)>> callBacks) : AScene(settings), _gameSettings(gameSettings), _callBacks(callBacks)
 {
     std::vector<std::function<void(void)>> callBack = {
-        callBacks.at(0),
+        _callBacks.at(0),
         std::bind(&Scene::PauseScene::printSettingsPopUp, this),
-        callBacks.at(1),
+        _callBacks.at(1),
         std::bind(&Scene::PauseScene::printExitPopUp, this),
         std::bind(&Scene::PauseScene::save, this),
         std::bind(&Scene::PauseScene::exitGame, this),
         std::bind(&Scene::PauseScene::unPrintExitPopUp, this)
     };
+    _shouldPrintExitPopUp = false;
 
     std::vector<std::function<void(void)>> volumeSettingsCallBacks = {std::bind(&Scene::PauseScene::unPrintSettingsPopUp, this)};
 
     _buttons = loadObjects<Object::Button>("Conf/Scenes/PauseScene/button.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/PauseScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/PauseScene/text.json");
-    _saveFunction = callBacks.at(2);
+    _saveFunction = _callBacks.at(2);
     _volumeSettingsScene = std::make_shared<VolumeSettingsScene>(settings, volumeSettingsCallBacks);
 
     for (std::size_t index = 0; index !=_buttons.size(); index++) {
