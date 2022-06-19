@@ -134,7 +134,7 @@ void Scene::OptionGameMenuScene::selectMapScene()
     _gameSettings->setIaPlayers(typePlayers);
     _gameSettings->setNbSets(std::stoi(_options.at(NBSETS).second.at(_options.at(NBSETS).first)->getText()));
     _gameSettings->setTimePerRound(std::stof(_options.at(GAMETIME).second.at(_options.at(GAMETIME).first)->getText()));
-    if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Oui")
+    if (_options.at(BONUS).second.at(_options.at(BONUS).first)->getText() == "Yes")
         _gameSettings->enableBonus();
     else
         _gameSettings->disableBonus();
