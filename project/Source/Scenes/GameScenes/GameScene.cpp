@@ -28,6 +28,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
     _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
     _endingGameText = loadObjects<Object::Text>("Conf/Scenes/GameScene/endingGameText.json");
+    _bannerImage = loadObjects<Object::Image>("Conf/Scenes/GameScene/bannerImage.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
@@ -178,13 +179,12 @@ void Scene::GameScene::handleCinematicCamera()
         _cinematicCamera = false;
         resumeGame();
     }
-    std::cout << timer << std::endl;
     if (timer > 500 && timer < 1000)
         _startingGameTexts.at(0)->setText("2");
     if (timer > 1001)
         _startingGameTexts.at(0)->setText("1");
     if (timer > 1500) {
-        _startingGameTexts.at(0)->setPosition(Position(820, 500, 0));
+        _startingGameTexts.at(0)->setPosition(Position(850, 500, 0));
         _startingGameTexts.at(0)->setText("GO !!");
     }
 }
@@ -250,7 +250,11 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    _cinematicCamera ? _startingGameTexts.at(0)->draw() : drawUserInterface();
+    if (_cinematicCamera) {
+        _bannerImage.at(0)->draw();
+        _startingGameTexts.at(0)->draw();
+    } else
+        drawUserInterface();
 }
 
 void Scene::GameScene::handleWin()
@@ -574,8 +578,10 @@ void Scene::GameScene::drawUserInterface()
         _buttons.at(0)->draw();
     if (_isPaused && !_cinematicCamera)
         _pauseScene->draw();
-    if (_endSet)
+    if (_endSet) {
+        _bannerImage.at(0)->draw();
         _endingGameText.at(0)->draw();
+    }
 }
 
 void Scene::GameScene::drawObjects()
@@ -607,7 +613,6 @@ void Scene::GameScene::save()
         throw Error::FileError("File Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json Failed to open");
     _gameMap->save("Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map");
     _gameClock.unpause();
-    std::cout <<_timePerRound * 60 - (_gameClock.getElapsedTime() / 1000)<<std::endl;
     gameData["time"] = _gameClock.getElapsedTime() / 1000;
     gameData["timePerRound"] = _timePerRound;
     gameData["map"] = "Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map";
