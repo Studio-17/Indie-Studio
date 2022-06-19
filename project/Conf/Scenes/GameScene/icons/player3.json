@@ -1,0 +1,82 @@
+{
+    "00-Blue": {
+        "texture": "Ressources/sprites/players_icon/alive_blue.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "01-Cyan": {
+        "texture": "Ressources/sprites/players_icon/alive_cyan.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "02-Green": {
+        "texture": "Ressources/sprites/players_icon/alive_green.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "03-Purple": {
+        "texture": "Ressources/sprites/players_icon/alive_purple.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "04-Red": {
+        "texture": "Ressources/sprites/players_icon/alive_red.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "05-Yellow": {
+        "texture": "Ressources/sprites/players_icon/alive_yellow.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "06-Pink": {
+        "texture": "Ressources/sprites/players_icon/alive_pink.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "07-white": {
+        "texture": "Ressources/sprites/players_icon/alive_white.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "08-Blue": {
+        "texture": "Ressources/sprites/players_icon/dead_blue.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "09-Cyan": {
+        "texture": "Ressources/sprites/players_icon/dead_cyan.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "10-Green": {
+        "texture": "Ressources/sprites/players_icon/dead_green.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "11-Purple": {
+        "texture": "Ressources/sprites/players_icon/dead_purple.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "12-Red": {
+        "texture": "Ressources/sprites/players_icon/dead_red.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "13-Yellow": {
+        "texture": "Ressources/sprites/players_icon/dead_yellow.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "14-Pink": {
+        "texture": "Ressources/sprites/players_icon/dead_pink.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    },
+    "15-white": {
+        "texture": "Ressources/sprites/players_icon/dead_white.png",
+        "scale": 0.5,
+        "position": [40, 528, 0]
+    }
+}

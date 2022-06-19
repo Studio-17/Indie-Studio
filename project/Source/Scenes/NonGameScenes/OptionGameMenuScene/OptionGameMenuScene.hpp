@@ -23,7 +23,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~OptionGameMenuScene();
 
             Scenes handleEvent() override;
@@ -64,9 +64,9 @@ namespace Scene {
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Text>>>> _options; ///< Vector of pair of with his Text
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::vector<std::unique_ptr<Object::Button>> _emptyButton; ///< Vector of background unused Buttons
-            std::size_t _activeButton;
+            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

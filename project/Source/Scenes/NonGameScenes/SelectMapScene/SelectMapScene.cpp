@@ -32,7 +32,6 @@ void Scene::SelectMapScene::runSelectPlayerScene()
     _settings->stopMusic(MusicsEnum::Menu);
     _settings->playMusic(MusicsEnum::PlayerSelectMenu);
     _nextScene = Scenes::SELECT_PLAYER;
-    std::cout << "runed" << std::endl;
 }
 
 void Scene::SelectMapScene::basicMode()
@@ -157,7 +156,7 @@ bool Scene::SelectMapScene::isGoodFileMap(const std::string &filename)
     return false;
 }
 
-Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings) : AScene(settings), _gameSettings(gameSettings)
+Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings), _gameSettings(gameSettings), _parallax(parallax)
 {
     std::string name;
 
@@ -177,7 +176,6 @@ Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::s
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/SelectMapScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectMapScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 
     _currentPath = "Save/Maps/random.map";
     _count = 0;
@@ -269,22 +267,20 @@ void Scene::SelectMapScene::generate(std::string const &filename, std::size_t wi
 
     if ((width % 2) == 0 || (height % 2) == 0)
         throw Error::Errors("Height and Width are not compatible !");
-    // createFile(filename);
     std::ofstream file;
     file.open(filename, std::ofstream::out);
     if (!file) {
         file.close();
         throw Error::FileError("file failed to open " + filename);
     }
-    std::cout << "file created" << std::endl;
-    for (size_t one = 0; one < height + 2; one++) {
+    for (std::size_t one = 0; one < height + 2; one++) {
         file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
     }
     file << std::endl;
     // printLine(height);
-    for (size_t x = 0; x < height; x++) {
+    for (std::size_t x = 0; x < height; x++) {
         file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
-        for (size_t y = 0; y < width; y++) {
+        for (std::size_t y = 0; y < width; y++) {
             if (x % 2 && y % 2)
                 file << static_cast<char>(Object::MAP_OBJECTS::WALL_MIDDLE);
             else {
@@ -298,22 +294,9 @@ void Scene::SelectMapScene::generate(std::string const &filename, std::size_t wi
         file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
         file << std::endl;
     }
-    for (size_t one = 0; one < height + 2; one++) {
+    for (std::size_t one = 0; one < height + 2; one++) {
         file << static_cast<char>(Object::MAP_OBJECTS::WALL_SIDE);
     }
     file << std::endl;
-    // printLine(height);
     file.close();
 }
-
-// void Object::Map::createFile(std::string const &filename)
-// {
-//     std::cout << "create" << std::endl;
-//     _file.open(filename, std::ofstream::out);
-//     std::cout << "opened" << std::endl;
-
-//     if (!_file) {
-//         _file.close();
-//         throw Error::FileError("file failed to open " + filename);
-//     }
-// }

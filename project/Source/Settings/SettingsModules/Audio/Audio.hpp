@@ -18,28 +18,70 @@
 
 namespace RayLib
 {
+    /**
+     * @brief Audio calss that handles RAII and handling of all audio related stuff
+     */
     class Audio
     {
         public:
-            Audio(float audioVolume, float soundVolume);
+            /**
+             * @brief Construct a new Audio object
+             *
+             * @param musicVolume
+             * @param soundVolume
+             */
+            Audio(float musicVolume, float soundVolume);
+            /**
+             * @brief Destroy the Audio object
+             *
+             */
             ~Audio();
 
-            // Audio management functions
-            bool isAudioDeviceReady() const;                                      // Check if audio device has been initialized successfully
+            /**
+             * @brief Check if audio device has been initialized successfully
+             *
+             * @return true
+             * @return false
+             */
+            bool isAudioDeviceReady() const;
 
-            void setMasterVolume(float volume);                                 // Set master volume (listener)
+            /**
+             * @brief Set the Master Volume
+             *
+             * @param volume
+             */
+            void setMasterVolume(float volume);
 
-            // Game Audio management functions
-            void setAudioVolume(float volume);                                  // Set audio volume
-            float getAudioVolume() const;                                         // Get audio volume
+            /**
+             * @brief Set the Music Volume
+             *
+             * @param volume
+             */
+            void setMusicVolume(float volume);
+            /**
+             * @brief Get the Music Volume
+             *
+             * @return float
+             */
+            float getMusicVolume() const;
 
-            void setSoundVolume(float volume);                                  // Set sound volume
-            float getSoundVolume() const;                                         // Get sound volume
+            /**
+             * @brief Set the Sound Volume
+             *
+             * @param volume
+             */
+            void setSoundVolume(float volume);
+            /**
+             * @brief Get the Sound Volume
+             *
+             * @return float
+             */
+            float getSoundVolume() const;
 
         protected:
         private:
-            float _audioVolume;
-            float _soundVolume;
+            float _musicVolume; ///< Music volume
+            float _soundVolume; ///< Sound volume
     };
 }
 

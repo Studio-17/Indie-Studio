@@ -1,13 +1,29 @@
 {
-    "title": "Indie Studio",
-    "windowSize": [1920, 1080],
     "audioVolume": 1,
-    "musicVolume": 1,
-
-    "cameraPosition": [65, 230, 66],
-    "cameraTarget": [65, 0, 65],
-    "cameraUp": [0, 1, 0],
     "cameraFovy": 45,
     "cameraMode": 0,
-    "cameraProjection": 0
+    "cameraPosition": [
+        65,
+        230,
+        66
+    ],
+    "cameraProjection": 0,
+    "cameraTarget": [
+        65,
+        0,
+        65
+    ],
+    "cameraUp": [
+        0,
+        1,
+        0
+    ],
+    "musicVolume": 0.20000001788139343,
+    "saveIndex": 7,
+    "soundVolume": 1.639127766850379e-08,
+    "title": "Indie Studio",
+    "windowSize": [
+        1920,
+        1080
+    ]
 }

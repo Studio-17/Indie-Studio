@@ -1,27 +1,67 @@
 {
-    "0-rose-banner": {
+    "00-rose-banner": {
         "texture": "Ressources/sprites/banner.png",
         "scale": 1,
-        "position": [0, 0, 0]
+        "position": [0, 100, 0]
     },
-    "1-black-banner": {
-        "texture": "Ressources/sprites/title_background.png",
-        "scale": 0.5,
-        "position": [1400, 390, 0]
+    "01-black-banner-player1": {
+        "texture": "Ressources/sprites/podium_bar.png",
+        "scale": 0.8,
+        "position": [1200, 450, 0]
     },
-    "2-black-banner": {
-        "texture": "Ressources/sprites/title_background.png",
-        "scale": 0.5,
-        "position": [1400, 490, 0]
+    "02-black-banner-player2": {
+        "texture": "Ressources/sprites/podium_bar.png",
+        "scale": 0.8,
+        "position": [1200, 550, 0]
     },
-    "3-black-banner": {
-        "texture": "Ressources/sprites/title_background.png",
-        "scale": 0.5,
-        "position": [1400, 590, 0]
+    "03-black-banner-player3": {
+        "texture": "Ressources/sprites/podium_bar.png",
+        "scale": 0.8,
+        "position": [1200, 650, 0]
     },
-    "4-black-banner": {
-        "texture": "Ressources/sprites/title_background.png",
-        "scale": 0.5,
-        "position": [1400, 690, 0]
+    "04-black-banner-player4": {
+        "texture": "Ressources/sprites/podium_bar.png",
+        "scale": 0.8,
+        "position": [1200, 750, 0]
+    },
+    "05-star-player1": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 1.2,
+        "position": [1700, 470, 0]
+    },
+    "06-star-player2": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 1.2,
+        "position": [1700, 570, 0]
+    },
+    "07-star-player3": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 1.2,
+        "position": [1700, 670, 0]
+    },
+    "08-star-player4": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 1.2,
+        "position": [1700, 770, 0]
+    },
+    "09-cross-player1": {
+        "texture": "Ressources/icon/cross_wico.png",
+        "scale": 0.7,
+        "position": [1760, 470, 0]
+    },
+    "10-cross-player2": {
+        "texture": "Ressources/icon/cross_wico.png",
+        "scale": 0.7,
+        "position": [1760, 570, 0]
+    },
+    "11-cross-player3": {
+        "texture": "Ressources/icon/cross_wico.png",
+        "scale": 0.7,
+        "position": [1760, 670, 0]
+    },
+    "12-cross-player4": {
+        "texture": "Ressources/icon/cross_wico.png",
+        "scale": 0.7,
+        "position": [1760, 770, 0]
     }
 }

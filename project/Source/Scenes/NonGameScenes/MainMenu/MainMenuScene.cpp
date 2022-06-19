@@ -10,8 +10,8 @@
 #include "tools.hpp"
 #include "MainMenuScene.hpp"
 
-Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene(settings),
-    _buttonTexture("Ressources/buttons/button2.png")
+Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
+    _parallax(parallax), _buttonTexture("Ressources/buttons/button2.png")
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::gameScene, this), std::bind(&Scene::MainMenuScene::settingsScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
 
@@ -22,8 +22,6 @@ Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings) : AScene
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/MainMenu/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/MainMenu/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
-    _settings->playMusic(MusicsEnum::Menu);
 }
 
 Scene::MainMenuScene::~MainMenuScene()
@@ -67,7 +65,7 @@ void Scene::MainMenuScene::draw()
 
 void Scene::MainMenuScene::gameScene()
 {
-    _nextScene = Scene::Scenes::START_GAME;
+    _nextScene = Scene::Scenes::INFORMATION;
 }
 
 void Scene::MainMenuScene::settingsScene()

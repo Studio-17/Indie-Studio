@@ -46,5 +46,21 @@
         "color": [0, 0, 0, 255],
         "fontSize": 30,
         "position": [1140, 580, 0]
+    },
+    "7-Pink": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Pink",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1140, 580, 0]
+    },
+    "8-White": {
+        "type": "text",
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "white",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [1140, 580, 0]
     }
 }

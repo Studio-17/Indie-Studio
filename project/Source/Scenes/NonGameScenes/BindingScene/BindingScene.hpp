@@ -26,7 +26,7 @@ namespace Scene {
              * @param playerAction Vector of map of key corresponding of a player action
              * @param gamepadPlayerActions Vector of pair of key corresponding of a drop player action with a gamepad
              */
-            BindingScene(std::shared_ptr<Settings> settings, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions);
+            BindingScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, Keyboard &keyboard, std::map<Action, int> const &actionPressed, std::vector<std::map<PlayerAction, int>> &playerAction, std::vector<std::pair<PlayerAction, int>> const &gamepadPlayerActions);
             ~BindingScene();
 
             Scenes handleEvent() override;
@@ -52,7 +52,7 @@ namespace Scene {
              */
             void cancelBind();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::vector<std::unique_ptr<Object::Image>> _popUp; ///< Vector of every Images of binding popUp
             std::vector<std::unique_ptr<Object::Text>> _popUpText; ///< Vector of every Texts of binding popUp
             std::vector<std::unique_ptr<Object::Button>> _popUpButton; ///< Vector of every Buttons of binding popUp

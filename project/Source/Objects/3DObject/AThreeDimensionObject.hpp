@@ -80,15 +80,56 @@ namespace Object
          */
         virtual ~AThreeDimensionObject() = default;
 
+        /**
+         * @brief Draw a three dimension object
+         *
+         */
         virtual void draw() = 0;
 
+        /**
+         * @brief Enable drawing of the object
+         *
+         */
         virtual void enable() override;
+        /**
+         * @brief Disable drawing of the object
+         *
+         */
         virtual void disable() override;
+        /**
+         * @brief Check if the object drawing is enabled
+         *
+         * @return true
+         * @return false
+         */
         virtual bool isEnable() const override;
 
+        /**
+         * @brief Set the Position object
+         *
+         * @param position
+         */
         void setPosition(Position const &position) override;
+        /**
+         * @brief Set the Position object
+         *
+         * @param x
+         * @param y
+         */
         void setPosition(float x, float y) override;
+        /**
+         * @brief Set the Position object
+         *
+         * @param x
+         * @param y
+         * @param z
+         */
         void setPosition(float x, float y, float z) override;
+        /**
+         * @brief Get the Position object
+         *
+         * @return Position
+         */
         Position getPosition() const;
 
         /**

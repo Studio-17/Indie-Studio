@@ -8,6 +8,8 @@
 #ifndef STARTGAMESCENE_HPP_
     #define STARTGAMESCENE_HPP_
 
+    #include <functional>
+
     #include "AScene.hpp"
 
 namespace Scene {
@@ -21,7 +23,7 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              */
-            StartGameScene(std::shared_ptr<Settings> settings);
+            StartGameScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> updateSaveFiles);
             ~StartGameScene();
 
             Scenes handleEvent() override;
@@ -43,9 +45,10 @@ namespace Scene {
              */
             void backScene();
 
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
 
             Object::Render::MyTexture _buttonTexture; ///< Texture of every Button of the Scene
+            std::function<void(void)> _updateSaveFiles; ///< Function to update saveFiles to show in select Save Scene
     };
 }
 

@@ -24,7 +24,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            SelectMapScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~SelectMapScene();
 
             Scenes handleEvent() override;
@@ -47,19 +47,19 @@ namespace Scene {
 
         private:
             std::shared_ptr<GameSettings> _gameSettings; ///< Shared pointer to game Settings class
-            std::unique_ptr<Object::Map> _gameMap;
-            std::vector<std::unique_ptr<Object::Image>> _parallax; ///< Vector of every Images of the parallax
-            std::string _currentPath;
-            int _count;
-            std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText;
-            std::vector<std::unique_ptr<Object::Text>> _droppedFilesText;
-            std::vector<std::unique_ptr<Object::Text>> _mapName;
-            int _minMapSize;
-            int _maxMapSize;
-            int _mapSize;
-            int _scaleModifier;
-            int _height;
-            int _width;
+            std::unique_ptr<Object::Map> _gameMap; ///< Unique pointer to game Map object
+            std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
+            std::string _currentPath; ///< String representing the current path of the map
+            int _count; ///< Integer representing the number of the current map
+            std::vector<std::unique_ptr<Object::Text>> _noDroppedFilesText; ///< Vector of every Text of the no dropped files
+            std::vector<std::unique_ptr<Object::Text>> _droppedFilesText; ///< Vector of every Text of the dropped files
+            std::vector<std::unique_ptr<Object::Text>> _mapName; ///< Vector of every Text of the map name
+            int _minMapSize; ///< Integer representing the minimum size of the map
+            int _maxMapSize; ///< Integer representing the maximum size of the map
+            int _mapSize; ///< Integer representing the size of the map
+            int _scaleModifier; ///< Integer representing the scale modifier of the map
+            int _height; ///< Integer representing the height of the map
+            int _width; ///< Integer representing the width of the map
     };
 }
 

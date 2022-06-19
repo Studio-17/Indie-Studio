@@ -25,10 +25,12 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _images = loadObjects<Object::Image>("Conf/Scenes/GameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
-    _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::setCameraView, this));
+    _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
+    _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
-    _isPaused = false;
+    _cinematicCamera = true;
+    _isPaused = true;
     _3dcameraVue = false;
 
     _margin = 5.0;
@@ -50,15 +52,14 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _gameMap = std::make_shared<Object::Map>(_models, _textures);
     _gameSettings->setPercentageBoxDrop(_percentageBoxDrop);
 
-    for (std::size_t index = 0; index != 4; index++)
-        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
-
-    _placement = _players.size();
-
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
         {"speed", {0.5, 0.8}},
         {"kickRange", {1, 3}}};
+
+    for (std::size_t index = 0; index != 4; index++)
+        _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
+    _actualSet = 0;
 }
 
 Scene::GameScene::~GameScene()
@@ -85,6 +86,8 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/player/purple.png");
     _textures.emplace_back("Ressources/models/player/red.png");
     _textures.emplace_back("Ressources/models/player/yellow.png");
+    _textures.emplace_back("Ressources/models/player/pink.png");
+    _textures.emplace_back("Ressources/models/player/white.png");
 
     /* BLOCKS */
     _models.emplace_back("Ressources/models/block/stone/box.obj");
@@ -102,23 +105,24 @@ void Scene::GameScene::loadSceneAssets()
     _textures.emplace_back("Ressources/models/explosion/Fire_baseColor.png");
 }
 
-void Scene::GameScene::applyGameParams()
+void Scene::GameScene::restartSet()
 {
-    std::vector<std::size_t> playerSkin = _gameSettings->getPlayerSkins();
+    _playerSkin = _gameSettings->getPlayerSkins();
     std::vector<Position> playerPositions;
 
     _ai.clear();
     for (std::size_t player = _gameSettings->getNbPlayers(); player < 4; player++)
         _ai.emplace(static_cast<Object::PLAYER_ORDER>(player), std::make_shared<Object::Ai>(static_cast<Object::PLAYER_ORDER>(player), _players.at(static_cast<Object::PLAYER_ORDER>(player)), _gameMap));
+    _3dcameraVue = false;
     _nextScene = Scene::Scenes::GAME;
-    _clockGame.start();
+    _clockcamera.start();
+    _clockGame.reset();
     _explosions.clear();
-    _isPaused = false;
+    _isPaused = true;
     _bombs.clear();
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
     _mapStatistics.clear();
-    _placement = _players.size();
     _timePerRound = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
     if (_gameSettings->IsEnabledBonus())
@@ -129,7 +133,54 @@ void Scene::GameScene::applyGameParams()
     for (auto &[index, player] : _players) {
         player->reset();
         player->setPosition(playerPositions.at(static_cast<int>(index)));
-        player->setSkin(_textures.at(playerSkin.at(static_cast<int>(index))));
+        player->setSkin(_textures.at(_playerSkin.at(static_cast<int>(index))));
+    }
+    for (std::size_t i = 0; i < _players.size(); i++) {
+        std::string pathToImage = "Conf/Scenes/GameScene/icons/player" + std::to_string(i + 1) + ".json";
+        std::string pathToStars = "Conf/Scenes/GameScene/sets/player" + std::to_string(i + 1) + ".json";
+
+        _setsIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToStars));
+        _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
+    }
+    setCameraView();
+    setBombToPause(false);
+    _cinematicCamera = true;
+    _settings->getCamera()->setPosition({(_gameSettings->getMapSize().first * _gameMap->getBlockSize()) / 2, 1, ((_gameSettings->getMapSize().second * _gameMap->getBlockSize()) / 2)});
+}
+
+void Scene::GameScene::applyGameParams()
+{
+    _settings->stopMusic(MusicsEnum::Game);
+    _settings->playMusic(MusicsEnum::Game);
+    restartSet();
+    for (auto &[index, player] : _players)
+        player->setWon(0);
+    _actualSet = 0;
+}
+
+void Scene::GameScene::handleCinematicCamera()
+{
+    long long int timer = _clockcamera.getElapsedTime();
+
+    if (_settings->getCamera()->getCamera().position.y < (_gameSettings->getMapSize().first * 5) * 4) {
+        _settings->getCamera()->setPosition({(_gameSettings->getMapSize().first * _gameMap->getBlockSize()) / 2, static_cast<float>(timer / 10), ((_gameSettings->getMapSize().second * _gameMap->getBlockSize()) / 2) + 1});
+    } else {
+        _cinematicCamera = false;
+        resumeGame();
+    }
+}
+
+void Scene::GameScene::handleBonusParameters()
+{
+    int textPos = 0;
+
+    for (auto &[index, player] : _players) {
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(player->getRangeExplosion()) + " / " + std::to_string(player->getDefaultRangeExplosion().second));
+        textPos++;
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(player->getAlreadyPlacedBombs()) + " / " + std::to_string(player->getRangeBomb()));
+        textPos++;
+        _playerParameters.at(static_cast<int>(textPos))->setText(std::to_string(static_cast<int>(player->getSpeed() * 10) - 4) + " / " + std::to_string(static_cast<int>(player->getDefaultSpeed().second * 10)  - 4));
+        textPos++;
     }
 }
 
@@ -139,8 +190,11 @@ Scene::Scenes Scene::GameScene::handleEvent()
 
     _nextScene = Scene::Scenes::GAME;
     _settings->updateMusicStream(MusicsEnum::Game);
-    for (auto &button: _buttons)
-        button->checkHover(mousePos);
+    if (!_cinematicCamera) {
+        for (auto &button: _buttons)
+            button->checkHover(mousePos);
+    } else
+        handleCinematicCamera();
     if (!_isPaused) {
         handleWin();
         handlePlayers();
@@ -148,6 +202,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
     } else {
         _nextScene = _pauseScene->handleEvent();
     }
+    handleBonusParameters();
     handlePause();
     handleExplosions();
     handleTimer();
@@ -166,14 +221,32 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    for (auto &image : _images)
-        image->draw();
-    for (auto &text : _texts)
-        text->draw();
-    for (auto &button : _buttons)
-        button->draw();
-    if (_isPaused)
-        _pauseScene->draw();
+    if (!_cinematicCamera) {
+        for (auto &image : _images)
+            image->draw();
+        for (std::size_t index = 0; index < _players.size(); index++) {
+            if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
+                _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
+            else
+                _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+            for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
+                if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
+                    _setsIcons.at(index).second.at(nbSets + 5)->draw();
+                else
+                    _setsIcons.at(index).second.at(nbSets)->draw();
+            }
+        }
+        for (auto &text : _texts)
+            text->draw();
+        for (auto &parameter : _playerParameters)
+            parameter->draw();
+        if (_3dcameraVue)
+            _buttons.at(1)->draw();
+        else
+            _buttons.at(0)->draw();
+        if (_isPaused && !_cinematicCamera)
+            _pauseScene->draw();
+    }
 }
 
 void Scene::GameScene::handleWin()
@@ -190,12 +263,18 @@ void Scene::GameScene::handleWin()
         playerIndex++;
     }
     if (nbPlayersAlive == 1) {
-        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon();
-        _mapStatistics.emplace(_placement, static_cast<Object::PLAYER_ORDER>(alivePlayerIndex));
+        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon(1);
+        for (std::size_t index = 0; index < _players.size(); index++)
+            _mapStatistics.push_back({_players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon(), static_cast<Object::PLAYER_ORDER>(index)});
         _settings->stopMusic(MusicsEnum::Game);
         _settings->playMusic(MusicsEnum::EndGame);
         _gameSettings->setPlayersRank(_mapStatistics);
-        _nextScene = Scene::Scenes::END_GAME;
+        _actualSet += 1;
+        restartSet();
+    }
+    for (auto &[index, player] : _players) {
+        if (player->getSetsWon() == _gameSettings->getNbSets())
+            _nextScene = Scene::Scenes::END_GAME;
     }
 }
 
@@ -304,7 +383,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
 
     _settings->playSound(SoundsEnum::BombExplosion);
     placeExplosions(_clockGame.getElapsedTime(), position);
-    _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+    _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     checkIfPlayerIsInRange(blockPosition);
 
     for (std::size_t bombRange = 1; bombRange < radius + 1; bombRange++) {
@@ -316,13 +395,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                         alreadyDestroyed.at(index) = true;
                     blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * _gameMap->getBlockSize())};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                         alreadyDestroyed.at(index) = true;
                         placeBonus({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, _percentageBonusDrop);
                     }
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EMPTY && !alreadyDestroyed.at(index)) {
-                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(11), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
+                        _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
                         placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
                     }
                     if (!alreadyDestroyed.at(index))
@@ -347,8 +426,6 @@ void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosi
         playerPos = _gameMap->transposeFrom3Dto2D(player->getPosition());
         if (playerPos == explosionPos) {
             player->die();
-            _mapStatistics.emplace(_placement, index);
-            _placement--;
         }
     }
 }
@@ -410,7 +487,7 @@ void Scene::GameScene::handleExplosions()
         for (auto &[line, timer] : explosions) {
             float newTimer = timer + timeBeforeExplosion;
             if (newTimer <= static_cast<float>(_clockGame.getElapsedTime())) {
-                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(10), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
+                _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(12), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
                 _explosions.at(col).erase(line);
             }
         }
@@ -425,7 +502,7 @@ void Scene::GameScene::handleTimer()
     int seconds = remaningTime % 60;
 
     if (remaningTime <= 0)
-        _nextScene = Scene::Scenes::END_GAME;
+        restartSet();
     if (seconds < 10)
         _texts.at(0)->setText(std::to_string(minutes) + ":0" + std::to_string(seconds));
     else
@@ -461,18 +538,21 @@ void Scene::GameScene::drawObjects()
 void Scene::GameScene::resumeGame()
 {
     _clockGame.unpause();
+    setBombToPause(false);
     _isPaused = false;
 }
 
 void Scene::GameScene::save()
 {
-    std::ofstream fileToWrite("Save/Games/gameSave.json");
+    std::ofstream fileToWrite("Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json");
     nlohmann::json saveData;
     nlohmann::json gameData;
 
-    _gameMap->save(_gameSettings->getMapPath());
+    if (!fileToWrite.is_open())
+        throw Error::FileError("File Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json Failed to open");
+    _gameMap->save("Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map");
     gameData["time"] = 0.0;
-    gameData["map"] = _gameSettings->getMapPath();
+    gameData["map"] = "Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map";
     gameData["attributes"] = _defaultAttributes;
     saveData["game-data"] = gameData;
     for (auto &[playerIndex, player] : _players)
@@ -480,15 +560,22 @@ void Scene::GameScene::save()
     fileToWrite << std::setw(4) << saveData << std::endl;
 }
 
+void Scene::GameScene::changeCameraView()
+{
+    _3dcameraVue = !_3dcameraVue;
+    setCameraView();
+}
+
 void Scene::GameScene::setCameraView()
 {
     std::pair<float, float> mapSize = _gameSettings->getMapSize();
 
-    _3dcameraVue = !_3dcameraVue;
-    if (_3dcameraVue) {
-        _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 3, mapSize.second * _gameMap->getBlockSize()});
-    } else {
-        _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 4, ((mapSize.second * _gameMap->getBlockSize()) / 2) + 1});
+    if (!_cinematicCamera) {
+        if (_3dcameraVue) {
+            _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 3, mapSize.second * _gameMap->getBlockSize()});
+        } else {
+            _settings->getCamera()->setPosition({(mapSize.first * _gameMap->getBlockSize()) / 2, (mapSize.first * 5) * 4, ((mapSize.second * _gameMap->getBlockSize()) / 2) + 1});
+        }
     }
     _settings->getCamera()->setTarget({(mapSize.first * _gameMap->getBlockSize()) / 2, 0, (mapSize.first * _gameMap->getBlockSize()) / 2});
 }

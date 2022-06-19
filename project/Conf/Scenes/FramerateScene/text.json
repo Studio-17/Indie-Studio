@@ -1,0 +1,16 @@
+{
+    "1-Framerate": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "Framerate limit",
+        "color": [0, 0, 0, 255],
+        "fontSize": 40,
+        "position": [780, 400, 0]
+    },
+    "2-Framerate-max": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [0, 0, 0, 255],
+        "fontSize": 30,
+        "position": [900, 500, 0]
+    }
+}

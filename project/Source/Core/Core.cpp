@@ -19,6 +19,8 @@
 #include "CreditsScene.hpp"
 #include "SelectSaveScene.hpp"
 #include "IntroductionScene.hpp"
+#include "HelpScene.hpp"
+#include "InformationScene.hpp"
 
 #include "tools.hpp"
 #include "Map.hpp"
@@ -31,6 +33,7 @@ Core::Core() : _isRunning(true),
 {
     // waitingLoad();
     loadKeyBinding(getJsonData("Conf/Settings/keys.json"));
+    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
     loadMenuScenes();
     srand(time(NULL));
 }
@@ -39,15 +42,16 @@ Core::~Core()
 {
 }
 
-void Core::updateLoadingScreen()
+void Core::updateLoadingScreen(std::string const &string)
 {
-     _settings->getWindow()->startDrawing();
+    _settings->getWindow()->startDrawing();
     _settings->getWindow()->clearBackground(DARKPURPLE);
     for (auto &text : _texts)
         text->draw();
-    _images.at(1)->draw();
-    _images.at(0)->setRotation(_images.at(0)->getRotation() + 90.0f);
-    _images.at(0)->draw();
+    _images.at(2)->setRotation(_images.at(2)->getRotation() + 45.0f);
+    for (auto &image : _images)
+        image->draw();
+    _texts.at(0)->setText("Now Loading" + string);
     _settings->getWindow()->endDrawing();
 }
 
@@ -55,34 +59,41 @@ void Core::loadMenuScenes()
 {
     _images = loadObjects<Object::Image>("Conf/WaitingScreen/image.json");
     _texts = loadObjects<Object::Text>("Conf/WaitingScreen/text.json");
-    updateLoadingScreen();
-
+    updateLoadingScreen(".");
     std::shared_ptr<Scene::GameScene> gameScene = std::make_shared<Scene::GameScene>(_settings, _gameSettings);
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::INTRODUCTION, std::make_shared<Scene::IntroductionScene>(_settings, _keyboard));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings));
-    updateLoadingScreen();
+    updateLoadingScreen("..");
+    std::shared_ptr<Scene::SelectSaveScene> selectSaveScene = std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, _parallax, std::bind(&Scene::GameScene::applyGameParams, gameScene));
+    updateLoadingScreen("...");
+    _menuScenes.emplace(Scene::Scenes::SAVE, selectSaveScene);
+    updateLoadingScreen("..");
+    _menuScenes.emplace(Scene::Scenes::INTRODUCTION, std::make_shared<Scene::IntroductionScene>(_settings, _parallax, _keyboard));
+    updateLoadingScreen(".");
+    _menuScenes.emplace(Scene::Scenes::MAIN_MENU, std::make_shared<Scene::MainMenuScene>(_settings, _parallax));
+    updateLoadingScreen("");
+    _menuScenes.emplace(Scene::Scenes::START_GAME, std::make_shared<Scene::StartGameScene>(_settings, _parallax, std::bind(&Scene::SelectSaveScene::updateSaveFiles, selectSaveScene)));
+    updateLoadingScreen(".");
+    _menuScenes.emplace(Scene::Scenes::SETTINGS, std::make_shared<Scene::SettingsScene>(_settings, _parallax));
+    updateLoadingScreen("..");
     _menuScenes.emplace(Scene::Scenes::GAME, gameScene);
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings));
-    updateLoadingScreen();
-    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
-    updateLoadingScreen();
+    updateLoadingScreen("...");
+    _menuScenes.emplace(Scene::Scenes::OPTION_GAME, std::make_shared<Scene::OptionGameMenuScene>(_settings, _gameSettings, _parallax));
+    updateLoadingScreen("..");
+    _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _parallax, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions));
+    updateLoadingScreen(".");
+    _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, _parallax, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
+    updateLoadingScreen("");
+    _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings, _parallax));
+    updateLoadingScreen(".");
+    _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings, _parallax));
+    updateLoadingScreen("..");
+    _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings, _parallax));
+    updateLoadingScreen("...");
+    _menuScenes.emplace(Scene::Scenes::HELP, std::make_shared<Scene::HelpScene>(_settings, _parallax));
+    updateLoadingScreen("..");
+    _menuScenes.emplace(Scene::Scenes::SAVE, std::make_shared<Scene::SelectSaveScene>(_settings, _gameSettings, _parallax, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
+    updateLoadingScreen(".");
+    _menuScenes.emplace(Scene::Scenes::INFORMATION, std::make_shared<Scene::InformationScene>(_settings, _parallax));
+    updateLoadingScreen("");
     _settings->getWindow()->endDrawing();
 }
 

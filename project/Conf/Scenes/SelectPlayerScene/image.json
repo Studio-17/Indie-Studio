@@ -28,5 +28,25 @@
         "texture": "Ressources/sprites/player_card.png",
         "scale": 1,
         "position": [1425, 275, 0]
+    },
+    "6-player1-bar": {
+        "texture": "Ressources/sprites/position_on_card.png",
+        "scale": 1,
+        "position": [227, 619, 0]
+    },
+    "7-player2-bar": {
+        "texture": "Ressources/sprites/position_on_card.png",
+        "scale": 1,
+        "position": [627, 619, 0]
+    },
+    "8-player3-bar": {
+        "texture": "Ressources/sprites/position_on_card.png",
+        "scale": 1,
+        "position": [1027, 619, 0]
+    },
+    "9-player4-bar": {
+        "texture": "Ressources/sprites/position_on_card.png",
+        "scale": 1,
+        "position": [1427, 619, 0]
     }
 }

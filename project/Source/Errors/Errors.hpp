@@ -13,15 +13,35 @@
     #include <string>
 
 namespace Error {
+    /**
+     * @brief Erorr class to handle throw
+     *
+     */
     class Errors : public std::exception
     {
         public:
+            /**
+             * @brief Construct a new Errors object
+             *
+             * @param message
+             */
             Errors(std::string const &message) throw();
+
+            /**
+             * @brief Destroy the Errors object
+             *
+             */
             virtual ~Errors() throw();
+
+            /**
+             * @brief Define the message error object
+             *
+             * @return const char*
+             */
             const char *what() const throw();
 
         private:
-            std::string _message;
+            std::string _message; ///< The error message
     };
 }
 

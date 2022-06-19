@@ -1,0 +1,37 @@
+{
+    "1-Exit": {
+        "type": "button",
+        "nbFrame": 3,
+        "position": [520, 300, 0],
+        "texture": "Ressources/buttons/cross.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "2-Less-Sound": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [600, 390, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "3-More-Sound": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1200, 390, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "4-Less-Music": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [600, 690, 0],
+        "texture": "Ressources/buttons/medium_left_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    },
+    "5-More-Music": {
+        "type": "button",
+        "nbFrame": 2,
+        "position": [1200, 690, 0],
+        "texture": "Ressources/buttons/medium_right_arrow.png",
+        "audio": "Ressources/buttons/click_sound.ogg"
+    }
+}

@@ -26,7 +26,7 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
              */
-            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
+            EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             ~EndGameScene();
 
             Scenes handleEvent() override;
@@ -37,13 +37,15 @@ namespace Scene {
              */
             void goToMainMenu();
 
-            void drawPlayerName(Object::PLAYER_ORDER player, std::size_t nbText);
+            void drawPlayerNameAndScore(Object::PLAYER_ORDER player, std::size_t score, std::size_t nbText);
             void drawScore();
 
         protected:
         private:
-            std::vector<std::unique_ptr<Object::Image>> _parallax;
+            std::vector<std::unique_ptr<Object::Image>> &_parallax;
+            std::vector<std::unique_ptr<Object::Image>> _winner;
             std::shared_ptr<GameSettings> _gameSettings;
+            int _winnerId;
     };
 }
 

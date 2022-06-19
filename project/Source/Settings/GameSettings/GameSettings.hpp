@@ -16,6 +16,9 @@
     #include "Map.hpp"
     #include "Player.hpp"
 
+/**
+ * @brief GameSettings class that handles all game related settings
+ */
 class GameSettings {
     public:
         /**
@@ -153,10 +156,34 @@ class GameSettings {
          */
         bool IsEnabledBonus() const;
 
-        void setPlayersRank(std::map<std::size_t, Object::PLAYER_ORDER> playerRank) { _playersRank = playerRank; };
-        std::map<std::size_t, Object::PLAYER_ORDER> getPlayersRank() { return _playersRank; };
+        /**
+         * @brief Set the Players Rank object
+         *
+         * @param playerRank
+         */
+        void setPlayersRank(std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> playerRank) { _playersRank = playerRank; };
+        /**
+         * @brief Construct a new std::vector<std::pair<std::size t, Object::PLAYER ORDER>>getPlayersRank object
+         *
+         */
+        std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>>getPlayersRank()
+        {
+            std::sort(_playersRank.begin(), _playersRank.end());
+            return _playersRank;
+        };
 
+        /**
+         * @brief Set the Time Out object
+         *
+         * @param timeOut
+         */
         void setTimeOut(bool timeOut) { _timeOut = timeOut; };
+        /**
+         * @brief Get the Time Out object
+         *
+         * @return true
+         * @return false
+         */
         bool getTimeOut() { return _timeOut; };
 
     protected:
@@ -170,12 +197,12 @@ class GameSettings {
         std::size_t _nbSets; //!< nb round
         float _gameTime; //!< game time
         bool _enableBonus; //!< if bonus are enabled
-        std::map<std::size_t, Object::PLAYER_ORDER> _playersRank;
-        bool _timeOut = false;
+        std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _playersRank; //!< map of player rank
+        bool _timeOut = false; //!< if time out is enabled
 
         // End game stats
-        std::size_t victoriousPlayer;
-        std::vector<float> _playersScore;
+        std::size_t victoriousPlayer; //!< player who won the game
+        std::vector<float> _playersScore; //!< vector of player score
 };
 
 #endif /* !GAMESETTINGS_HPP_ */

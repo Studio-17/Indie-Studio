@@ -1,31 +1,41 @@
 {
     "1-Blue": {
-        "texture": "Ressources/sprites/players_icon/blue.png",
+        "texture": "Ressources/sprites/players_icon/alive_blue.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     },
     "2-Cyan": {
-        "texture": "Ressources/sprites/players_icon/cyan.png",
+        "texture": "Ressources/sprites/players_icon/alive_cyan.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     },
     "3-Green": {
-        "texture": "Ressources/sprites/players_icon/green.png",
+        "texture": "Ressources/sprites/players_icon/alive_green.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     },
     "4-Purple": {
-        "texture": "Ressources/sprites/players_icon/purple.png",
+        "texture": "Ressources/sprites/players_icon/alive_purple.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     },
     "5-Red": {
-        "texture": "Ressources/sprites/players_icon/red.png",
+        "texture": "Ressources/sprites/players_icon/alive_red.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     },
     "6-Yellow": {
-        "texture": "Ressources/sprites/players_icon/yellow.png",
+        "texture": "Ressources/sprites/players_icon/alive_yellow.png",
+        "scale": 1.25,
+        "position": [625, 275, 0]
+    },
+    "7-Pink": {
+        "texture": "Ressources/sprites/players_icon/alive_pink.png",
+        "scale": 1.25,
+        "position": [625, 275, 0]
+    },
+    "8-white": {
+        "texture": "Ressources/sprites/players_icon/alive_white.png",
         "scale": 1.25,
         "position": [625, 275, 0]
     }

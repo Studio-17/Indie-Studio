@@ -31,7 +31,9 @@ namespace Scene
         SELECT_PLAYER,
         END_GAME,
         CREDITS,
-        INTRODUCTION
+        INTRODUCTION,
+        HELP,
+        INFORMATION
     };
 
     enum SOUNDS {
@@ -47,6 +49,11 @@ namespace Scene
      */
     class IScene {
         public:
+            /**
+             * @brief Construct a new IScene object
+             *
+             * @param settings Shared pointer to Settings class
+             */
             virtual ~IScene() = default;
 
             /**

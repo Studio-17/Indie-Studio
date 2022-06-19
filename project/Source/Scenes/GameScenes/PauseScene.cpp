@@ -67,6 +67,7 @@ void Scene::PauseScene::draw()
 void Scene::PauseScene::save()
 {
     _saveFunction();
+    _settings->updateSettingsDatas("Conf/Settings/settings.json");
     exitGame();
 }
 
@@ -82,6 +83,9 @@ void Scene::PauseScene::unPrintExitPopUp()
 
 void Scene::PauseScene::exitGame()
 {
+    unPrintExitPopUp();
+    _settings->stopMusic(MusicsEnum::Game);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 

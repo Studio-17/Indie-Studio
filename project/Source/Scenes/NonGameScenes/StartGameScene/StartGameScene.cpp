@@ -10,8 +10,8 @@
 #include "tools.hpp"
 #include "StartGameScene.hpp"
 
-Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings) : AScene(settings),
-    _buttonTexture("Ressources/buttons/button2.png")
+Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> updateSaveFiles) : AScene(settings),
+    _parallax(parallax), _buttonTexture("Ressources/buttons/button2.png"), _updateSaveFiles(updateSaveFiles)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::StartGameScene::newGameScene, this), std::bind(&Scene::StartGameScene::loadSaveScene, this), std::bind(&Scene::StartGameScene::backScene, this)};
 
@@ -22,7 +22,6 @@ Scene::StartGameScene::StartGameScene(std::shared_ptr<Settings> settings) : ASce
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/StartGameScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/StartGameScene/text.json");
-    _parallax = loadObjects<Object::Image>("Conf/Scenes/parallax.json");
 }
 
 Scene::StartGameScene::~StartGameScene()
@@ -70,6 +69,7 @@ void Scene::StartGameScene::newGameScene()
 
 void Scene::StartGameScene::loadSaveScene()
 {
+    _updateSaveFiles();
     _nextScene = Scene::Scenes::SAVE;
 }
 

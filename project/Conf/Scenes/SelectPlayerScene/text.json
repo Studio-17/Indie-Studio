@@ -34,7 +34,7 @@
     "5-name-player4": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "3J",
+        "text": "4J",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
         "position": [1438, 290, 0]
