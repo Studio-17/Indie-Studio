@@ -10,6 +10,7 @@
 
     #include "AScene.hpp"
     #include "GameSettings.hpp"
+    #include "VolumeSettingsScene.hpp"
 
 namespace Scene {
     /**
@@ -51,8 +52,20 @@ namespace Scene {
              */
             void unPrintExitPopUp();
 
+            /**
+             * @brief Call back function executed when settings button is pressed to show exit settings
+             */
+            void printSettingsPopUp();
+            /**
+             * @brief Call back function executed when back button of popUp is pressed to unshow settings popUp
+             */
+            void unPrintSettingsPopUp();
+
+
             bool _shouldPrintExitPopUp; ///< To know if we should display exit popUp
+            bool _shouldPrintSettingsPopUp; ///< To know if we should display settings popUp
             std::function<void(void)> _saveFunction;
+            std::shared_ptr<VolumeSettingsScene> _volumeSettingsScene;
     };
 }
 
