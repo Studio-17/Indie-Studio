@@ -19,24 +19,24 @@
 
 Test(Audio, audioTest)
 {
-    std::string path("Tests/Ressources/musics/music.ogg");
-    MyMusic music(path);
+    // std::string path("Tests/Ressources/musics/music.ogg");
+    // MyMusic music(path);
 
-    music.setVolume(10.0f);
+    // music.setVolume(10.0f);
 
-    while (1) {
-        music.updateMusicStream();
+    // while (1) {
+    //     music.updateMusicStream();
 
-        music.play();
+    //     music.play();
 
-        music.pause();
-        if (music.isPlaying() == false)
-            music.resume();
+    //     music.pause();
+    //     if (music.isPlaying() == false)
+    //         music.resume();
 
-        music.stop();
+    //     music.stop();
 
-        break;
-    }
+    //     break;
+    // }
 
     assert(true);
 }
