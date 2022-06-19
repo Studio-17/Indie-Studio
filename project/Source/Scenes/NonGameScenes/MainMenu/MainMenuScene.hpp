@@ -60,7 +60,6 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
 
             Object::Render::MyTexture _buttonTexture; ///< Texture of every Button of the Scene
-            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

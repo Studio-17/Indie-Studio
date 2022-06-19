@@ -188,7 +188,7 @@ namespace Object {
              *
              * @param mousePosition position of mouse on the screen
              */
-            void checkHover(Vector2 const &mousePosition);
+            void checkHover(Vector2 const &mousePosition, bool alreadyHovered = false);
 
             /**
              * @brief Set the Hover object

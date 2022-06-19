@@ -39,7 +39,10 @@ namespace Scene {
              * @brief Draw the scene
              */
             void draw() override;
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         protected:
         private:
             /**
@@ -80,6 +83,7 @@ namespace Scene {
             bool _isVolumeSettings; ///< Boolean to know if the volume settings scene is displayed
             std::unique_ptr<Scene::FramerateScene> _framerateScene; ///< Unique pointer to Framerate Settings Scene
             bool _isFramerate; ///< Boolean to know if the volume settings scene is displayed
+            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

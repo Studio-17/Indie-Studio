@@ -64,7 +64,6 @@ namespace Scene {
 
             Object::Render::MyTexture _buttonTexture; ///< Texture of every Button of the Scene
             std::function<void(void)> _updateSaveFiles; ///< Function to update saveFiles to show in select Save Scene
-            std::size_t _activeButton; ///< Index of the active button
     };
 }
 
