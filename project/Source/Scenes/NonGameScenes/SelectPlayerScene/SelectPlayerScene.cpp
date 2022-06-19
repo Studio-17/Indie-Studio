@@ -54,7 +54,7 @@ void Scene::SelectPlayerScene::rightClick(std::size_t  index)
 }
 
 Scene::SelectPlayerScene::SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
-    _parallax(parallax), _applyGameSettings(applyGameSettings), _activeButton(0)
+    _parallax(parallax), _applyGameSettings(applyGameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =
     {
@@ -160,23 +160,7 @@ void Scene::SelectPlayerScene::handleAction()
 {
     std::map<Action, bool> tmp = _settings->getActionPressed();
 
-
-    if (tmp.at(Action::Down)) {
-        _activeButton += 1;
-        if (_activeButton >= (_buttons.size() - 2) / 2)
-            _activeButton = 0;
-    } else if (tmp.at(Action::Up)) {
-        if (_activeButton == 0)
-            _activeButton = (_buttons.size() - 2) / 2 - 1;
-        else
-            _activeButton -= 1;
-    } else if (tmp.at(Action::Left)) {
-        _buttons.at(2 + _activeButton * 2)->setHover();
-        _buttons.at(2 + _activeButton * 2)->click();
-    } else if (tmp.at(Action::Right)) {
-        _buttons.at(2 + _activeButton * 2 + 1)->setHover();
-        _buttons.at(2 + _activeButton * 2 + 1)->click();
-    } else if (tmp.at(Action::Next))
+    if (tmp.at(Action::Next))
         _buttons.at(1)->click();
     else if (tmp.at(Action::Previous))
         _buttons.at(0)->click();

@@ -191,11 +191,7 @@ void Scene::SelectSaveScene::handleAction()
 {
     std::map<Action, bool> tmp = _settings->getActionPressed();
 
-    if (tmp.at(Action::Left))
-        _buttons.at(2)->click();
-    else if (tmp.at(Action::Right))
-        _buttons.at(3)->click();
-    else if (tmp.at(Action::Next)) {
+    if (tmp.at(Action::Next)) {
         if (_buttons.at(1)->isClickable())
             _buttons.at(1)->click();
         else

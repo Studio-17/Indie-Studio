@@ -197,7 +197,7 @@ bool Object::Button::onHover()
     return false;
 }
 
-void Object::Button::checkHover(Vector2 const &mousePosition)
+void Object::Button::checkHover(Vector2 const &mousePosition, bool alreadyHovered)
 {
     if (CheckCollisionPointRec(mousePosition, _buttonRect)) {
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
@@ -212,8 +212,12 @@ void Object::Button::checkHover(Vector2 const &mousePosition)
                 _callBack();
         }
     }
-    else
-        _state = Default;
+    else {
+        if (alreadyHovered)
+                _state = Hover;
+        else
+            _state = Default;
+    }
 }
 
 void Object::Button::setHover()

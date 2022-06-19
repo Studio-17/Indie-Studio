@@ -11,7 +11,7 @@
 #include "SettingsScene.hpp"
 
 Scene::SettingsScene::SettingsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
-    _parallax(parallax)
+    _parallax(parallax), _activeButton(0)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::SettingsScene::credits, this), std::bind(&Scene::SettingsScene::help, this), std::bind(&Scene::SettingsScene::volume, this),
         std::bind(&Scene::SettingsScene::framerate, this), std::bind(&Scene::SettingsScene::controls, this), std::bind(&Scene::SettingsScene::back, this), };
@@ -65,6 +65,7 @@ Scene::Scenes Scene::SettingsScene::handleEvent()
     } else {
         _nextScene = _framerateScene->handleEvent();
     }
+    handleAction();
     return _nextScene;
 }
 
@@ -82,6 +83,14 @@ void Scene::SettingsScene::draw()
         _volumeSettingsScene->draw();
     if (_isFramerate)
         _framerateScene->draw();
+}
+
+void Scene::SettingsScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+
+    if (tmp.at(Action::Previous))
+        back();
 }
 
 void Scene::SettingsScene::credits()
