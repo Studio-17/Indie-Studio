@@ -15,6 +15,7 @@ Scene::IntroductionScene::IntroductionScene(std::shared_ptr<Settings> settings, 
     _images = loadObjects<Object::Image>("Conf/Scenes/IntroductionScene/image.json");
     _shouldPrintText = true;
     _clock.start();
+    _settings->playMusic(MusicsEnum::Menu);
 }
 
 Scene::IntroductionScene::~IntroductionScene()
@@ -28,6 +29,7 @@ Scene::Scenes Scene::IntroductionScene::handleEvent()
 
     BlinkText();
     _nextScene = Scene::Scenes::INTRODUCTION;
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

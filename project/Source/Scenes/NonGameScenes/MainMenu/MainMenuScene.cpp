@@ -22,7 +22,6 @@ Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings, std::vec
     }
     _images = loadObjects<Object::Image>("Conf/Scenes/MainMenu/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/MainMenu/text.json");
-    _settings->playMusic(MusicsEnum::Menu);
 }
 
 Scene::MainMenuScene::~MainMenuScene()

@@ -34,6 +34,7 @@ Scene::Scenes Scene::CreditsScene::handleEvent()
     int index = 0;
 
     _nextScene = Scene::Scenes::CREDITS;
+    _settings->updateMusicStream(MusicsEnum::Menu);
     for (auto &parallax : _parallax) {
         if (index % 2 == 0)
             speed += 0.15;

@@ -84,6 +84,8 @@ void Scene::PauseScene::unPrintExitPopUp()
 void Scene::PauseScene::exitGame()
 {
     unPrintExitPopUp();
+    _settings->stopMusic(MusicsEnum::Game);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
