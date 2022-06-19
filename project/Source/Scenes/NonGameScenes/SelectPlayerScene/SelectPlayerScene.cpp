@@ -13,6 +13,8 @@
 
 void Scene::SelectPlayerScene::exitSelectPlayerScene()
 {
+    _settings->stopMusic(MusicsEnum::PlayerSelectMenu);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scenes::SELECT_MAP;
 }
 
