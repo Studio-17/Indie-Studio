@@ -80,17 +80,17 @@ void Core::loadMenuScenes()
     _menuScenes.emplace(Scene::Scenes::BINDING_MENU, std::make_shared<Scene::BindingScene>(_settings, _parallax, _keyboard, _actionPressed, _playerActions, _gamepadPlayerActions));
     updateLoadingScreen("..");
     _menuScenes.emplace(Scene::Scenes::SELECT_PLAYER, std::make_shared<Scene::SelectPlayerScene>(_settings, _gameSettings, _parallax, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
-    updateLoadingScreen(".");
-    _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings, _parallax));
     updateLoadingScreen("");
+    _menuScenes.emplace(Scene::Scenes::END_GAME, std::make_shared<Scene::EndGameScene>(_settings, _gameSettings, _parallax, std::bind(&Scene::GameScene::applyGameParams, gameScene)));
+    updateLoadingScreen(".");
     _menuScenes.emplace(Scene::Scenes::SELECT_MAP, std::make_shared<Scene::SelectMapScene>(_settings, _gameSettings, _parallax));
-    updateLoadingScreen(".");
-    _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings, _parallax));
     updateLoadingScreen("..");
-    _menuScenes.emplace(Scene::Scenes::HELP, std::make_shared<Scene::HelpScene>(_settings, _parallax));
+    _menuScenes.emplace(Scene::Scenes::CREDITS, std::make_shared<Scene::CreditsScene>(_settings, _parallax));
     updateLoadingScreen("...");
+    _menuScenes.emplace(Scene::Scenes::HELP, std::make_shared<Scene::HelpScene>(_settings, _parallax));
+    updateLoadingScreen("..");
     _menuScenes.emplace(Scene::Scenes::INFORMATION, std::make_shared<Scene::InformationScene>(_settings, _parallax));
-    updateLoadingScreen("");
+    updateLoadingScreen(".");
     _settings->getWindow()->endDrawing();
 }
 

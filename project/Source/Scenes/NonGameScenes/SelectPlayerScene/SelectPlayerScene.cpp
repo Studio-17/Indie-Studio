@@ -13,6 +13,8 @@
 
 void Scene::SelectPlayerScene::exitSelectPlayerScene()
 {
+    _settings->stopMusic(MusicsEnum::PlayerSelectMenu);
+    _settings->playMusic(MusicsEnum::Menu);
     _nextScene = Scenes::SELECT_MAP;
 }
 
@@ -145,10 +147,6 @@ void Scene::SelectPlayerScene::draw()
         _images.at(index + 6)->setPosition(_colorBar.at(index).getX() + (37 * id), _colorBar.at(index).getY());
         index++;
     }
-    // for (std::size_t index = 0; index < _players.size(); index++) {
-    //     _images.at(index + 6)->setPosition(_colorBar.at(index).getX(), _colorBar.at(index).getY());
-    // }
-    //  _playerColors.at(index).first + 1
     for (auto &pop : _popPlayerNames)
         pop->draw();
     SetInfoOfPlayers(_gameSettings->getNbPlayers());

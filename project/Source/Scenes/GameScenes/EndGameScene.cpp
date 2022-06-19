@@ -14,14 +14,22 @@ void Scene::EndGameScene::goToMainMenu()
     _nextScene = Scene::Scenes::MAIN_MENU;
 }
 
-Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings), _gameSettings(gameSettings), _parallax(parallax)
+void Scene::EndGameScene::restartGame()
+{
+    _restartGameCallBack();
+    _nextScene = Scene::Scenes::GAME;
+}
+
+Scene::EndGameScene::EndGameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> restartCallBack) : AScene(settings), _gameSettings(gameSettings), _parallax(parallax)
 {
     _buttons = loadObjects<Object::Button>("Conf/Scenes/EndGameScene/button.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::EndGameScene::goToMainMenu, this));
+    _buttons.at(1)->setCallBack(std::bind(&Scene::EndGameScene::restartGame, this));
     _texts = loadObjects<Object::Text>("Conf/Scenes/EndGameScene/text.json");
     _images = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/image.json");
     _winner = loadObjects<Object::Image>("Conf/Scenes/EndGameScene/winner.json");
     _nextScene = Scene::Scenes::END_GAME;
+    _restartGameCallBack = restartCallBack;
 }
 
 Scene::Scenes Scene::EndGameScene::handleEvent()
