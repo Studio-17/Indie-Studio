@@ -45,6 +45,9 @@ namespace Object {
              */
             ~Bonus() override;
 
+            /**
+             * @brief draw a thre dimensional object
+             */
             void draw() override;
 
             /**

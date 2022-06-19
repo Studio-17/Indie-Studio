@@ -13,11 +13,25 @@
     #include "Camera.hpp"
 
 namespace RayLib {
+    /**
+     * @brief CameraMode class that defines the usage of a camera
+     *
+     */
     class CameraMode {
         public:
+            /**
+             * @brief Construct a new Camera Mode object
+             *
+             * @param camera
+             */
             CameraMode(std::shared_ptr<CinematicCamera> camera) {
                 BeginMode3D(camera->getCamera());
             };
+
+            /**
+             * @brief Destroy the Camera Mode object
+             *
+             */
             ~CameraMode() {
                 EndMode3D();
             };

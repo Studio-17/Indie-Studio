@@ -11,10 +11,27 @@
     #include "Errors.hpp"
 
 namespace Error {
+    /**
+     * @brief AudioError class to handle throw, inherited from Errors
+     *
+     */
     class AudioError : public Errors {
         public:
+            /**
+             * @brief Construct a new Audio Error object
+             *
+             * @param message
+             */
             AudioError(std::string const &message) throw();
+
+            /**
+             * @brief Destroy the Audio Error object
+             *
+             */
             virtual ~AudioError() throw();
+
+        protected:
+        private:
     };
 }
 
