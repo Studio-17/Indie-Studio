@@ -36,6 +36,8 @@ void Scene::SelectMapScene::runSelectPlayerScene()
 
 void Scene::SelectMapScene::basicMode()
 {
+    _buttons.at(1)->enable();
+    _buttons.at(1)->enableClick();
     _buttons.at(2)->disable();
     _buttons.at(3)->enable();
     _buttons.at(4)->enable();
@@ -44,10 +46,18 @@ void Scene::SelectMapScene::basicMode()
 
 void Scene::SelectMapScene::customMode()
 {
+    if (_currentPath == "") {
+        _buttons.at(1)->disable();
+        _buttons.at(1)->disableClick();
+    }
     _buttons.at(3)->disable();
+    _buttons.at(3)->disableClick();
     _buttons.at(2)->enable();
+    _buttons.at(2)->enableClick();
     _buttons.at(4)->disable();
+    _buttons.at(4)->disableClick();
     _buttons.at(5)->disable();
+    _buttons.at(5)->disableClick();
 }
 
 void Scene::SelectMapScene::previousMap()
@@ -177,7 +187,7 @@ Scene::SelectMapScene::SelectMapScene(std::shared_ptr<Settings> settings, std::s
     _images = loadObjects<Object::Image>("Conf/Scenes/SelectMapScene/image.json");
     _texts = loadObjects<Object::Text>("Conf/Scenes/SelectMapScene/text.json");
 
-    _currentPath = "Save/Maps/random.map";
+    _currentPath = "";
     _count = 0;
     _noDroppedFilesText = loadObjects<Object::Text>("Conf/Scenes/SelectMapScene/noDroppedFile.json");
     _droppedFilesText = loadObjects<Object::Text>("Conf/Scenes/SelectMapScene/droppedFile.json");
@@ -223,6 +233,8 @@ Scene::Scenes Scene::SelectMapScene::handleEvent()
         newPath = GetDroppedFiles(&_count)[0];
         newPath.erase(0, newPath.find(delim.c_str()) + delim.length());
         if (isGoodFileMap(newPath)) {
+            _buttons.at(1)->enable();
+            _buttons.at(1)->enableClick();
             _currentPath = newPath;
             _droppedFilesText.at(1)->setText(_currentPath);
         } else {
