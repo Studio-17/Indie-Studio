@@ -1,33 +1,40 @@
 {
-    "0": {
+    "0-timer": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "",
         "color": [255, 255, 255, 255],
         "fontSize": 50,
         "position": [915, 35, 0]
     },
-    "1-1J": {
+    "1-number-of-sets": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "",
+        "color": [255, 255, 255, 255],
+        "fontSize": 50,
+        "position": [60, 40, 0]
+    },
+    "2-1J": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "1J",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
         "position": [45, 290, 0]
     },
-    "2-2J": {
+    "3-2J": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "2J",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
         "position": [1822, 300, 0]
     },
-    "3-3J": {
+    "4-3J": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "3J",
         "color": [0, 0, 0, 255],
         "fontSize": 30,
         "position": [40, 690, 0]
     },
-    "4-4J": {
+    "5-4J": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "4J",
         "color": [0, 0, 0, 255],

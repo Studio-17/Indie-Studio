@@ -59,7 +59,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     for (std::size_t index = 0; index != 4; index++)
         _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
-    _actualSet = 0;
+    _actualSet = 1;
 }
 
 Scene::GameScene::~GameScene()
@@ -119,6 +119,7 @@ void Scene::GameScene::restartSet()
     _clockGame.reset();
     _explosions.clear();
     _isPaused = true;
+    _actualSet += 1;
     _bombs.clear();
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
@@ -155,7 +156,7 @@ void Scene::GameScene::applyGameParams()
     restartSet();
     for (auto &[index, player] : _players)
         player->setWon(0);
-    _actualSet = 0;
+    _actualSet = 1;
 }
 
 void Scene::GameScene::handleCinematicCamera()
@@ -206,6 +207,7 @@ Scene::Scenes Scene::GameScene::handleEvent()
     handlePause();
     handleExplosions();
     handleTimer();
+    handleSets();
     return _nextScene;
 }
 
@@ -221,32 +223,8 @@ void Scene::GameScene::draw()
     }
     drawObjects();
     _settings->getCamera()->endMode3D();
-    if (!_cinematicCamera) {
-        for (auto &image : _images)
-            image->draw();
-        for (std::size_t index = 0; index < _players.size(); index++) {
-            if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
-                _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
-            else
-                _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
-            for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
-                if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
-                    _setsIcons.at(index).second.at(nbSets + 5)->draw();
-                else
-                    _setsIcons.at(index).second.at(nbSets)->draw();
-            }
-        }
-        for (auto &text : _texts)
-            text->draw();
-        for (auto &parameter : _playerParameters)
-            parameter->draw();
-        if (_3dcameraVue)
-            _buttons.at(1)->draw();
-        else
-            _buttons.at(0)->draw();
-        if (_isPaused && !_cinematicCamera)
-            _pauseScene->draw();
-    }
+    if (!_cinematicCamera)
+        drawUserInterface();
 }
 
 void Scene::GameScene::handleWin()
@@ -269,7 +247,6 @@ void Scene::GameScene::handleWin()
         _settings->stopMusic(MusicsEnum::Game);
         _settings->playMusic(MusicsEnum::EndGame);
         _gameSettings->setPlayersRank(_mapStatistics);
-        _actualSet += 1;
         restartSet();
     }
     for (auto &[index, player] : _players) {
@@ -494,6 +471,11 @@ void Scene::GameScene::handleExplosions()
     }
 }
 
+void Scene::GameScene::handleSets()
+{
+    _texts.at(1)->setText("Set n°" + std::to_string(_actualSet));
+}
+
 void Scene::GameScene::handleTimer()
 {
     int time = _clockGame.getElapsedTime() / 1000;
@@ -521,6 +503,34 @@ bool Scene::GameScene::isCollidingBomb(Position const &direction, Position const
             return true;
     }
     return false;
+}
+
+void Scene::GameScene::drawUserInterface()
+{
+    for (auto &image : _images)
+        image->draw();
+    for (std::size_t index = 0; index < _players.size(); index++) {
+        if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
+            _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
+        else
+            _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+        for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
+            if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
+                _setsIcons.at(index).second.at(nbSets + 5)->draw();
+            else
+                _setsIcons.at(index).second.at(nbSets)->draw();
+        }
+    }
+    for (auto &text : _texts)
+        text->draw();
+    for (auto &parameter : _playerParameters)
+        parameter->draw();
+    if (_3dcameraVue)
+        _buttons.at(1)->draw();
+    else
+        _buttons.at(0)->draw();
+    if (_isPaused && !_cinematicCamera)
+        _pauseScene->draw();
 }
 
 void Scene::GameScene::drawObjects()
