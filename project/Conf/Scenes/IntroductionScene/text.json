@@ -1,9 +1,23 @@
 {
-    "0-winner-player": {
+    "0-starter-text": {
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
         "text": "Press a Key to Start",
         "color": [255, 255, 255, 255],
+        "fontSize": 40,
+        "position": [750, 700, 0]
+    },
+    "1-copyright-text": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "©2022 Studio17 Entertainment",
+        "color": [128, 128, 128, 255],
         "fontSize": 30,
-        "position": [800, 700, 0]
+        "position": [750, 1035, 0]
+    },
+    "2-version-text": {
+        "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
+        "text": "ver.1.7",
+        "color": [128, 128, 128, 255],
+        "fontSize": 30,
+        "position": [1750, 1035, 0]
     }
 }
