@@ -165,7 +165,6 @@ include_directories(
     Source/Tools/
 )
 
-
 option(UNIT_TEST "Run unit tests" OFF) #OFF by default
 if (UNIT_TEST)
     add_executable(unit_tests ${SOURCES} ${TESTS})
