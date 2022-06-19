@@ -141,7 +141,6 @@ void Settings::applySoundVolume(float volume)
 
 void Settings::applyMusicVolume(float volume)
 {
-    std::cout << "new volume " << volume << std::endl;
     _audio->setMusicVolume(volume);
     for (auto &music : _musics) {
         music->setVolume(volume);

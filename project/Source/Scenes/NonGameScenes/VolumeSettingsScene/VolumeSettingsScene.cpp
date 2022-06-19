@@ -55,7 +55,7 @@ void Scene::VolumeSettingsScene::downgradeSound()
 {
     float soundVolume = _settings->getAudio()->getSoundVolume();
 
-    if (soundVolume > 0.0) {
+    if (soundVolume > 0.01) {
         soundVolume -= 0.1;
         _settings->applySoundVolume(soundVolume);
         _texts.at(1)->setText(std::to_string(static_cast<int>(soundVolume * 100)) + "%");
@@ -77,7 +77,9 @@ void Scene::VolumeSettingsScene::downgradeMusic()
 {
     float musicVolume = _settings->getAudio()->getMusicVolume();
 
-    if (musicVolume > 0.0) {
+    std::cout << musicVolume << std::endl;
+
+    if (musicVolume > 0.01) {
         musicVolume -= 0.1;
         _settings->applyMusicVolume(musicVolume);
         _texts.at(3)->setText(std::to_string(static_cast<int>(musicVolume * 100)) + "%");
