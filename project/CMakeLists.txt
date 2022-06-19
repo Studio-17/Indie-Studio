@@ -67,6 +67,7 @@ file(GLOB SOURCES
     Source/Scenes/NonGameScenes/VolumeSettingsScene/*.cpp
     Source/Scenes/NonGameScenes/FramerateScene/*.cpp
     Source/Scenes/NonGameScenes/HelpScene/*.cpp
+    Source/Scenes/NonGameScenes/InformationScene/*.cpp
 
     Source/Settings/*.cpp
     Source/Settings/GameSetting/*.cpp
@@ -143,6 +144,7 @@ include_directories(
     Source/Scenes/NonGameScenes/VolumeSettingsScene/
     Source/Scenes/NonGameScenes/FramerateScene/
     Source/Scenes/NonGameScenes/HelpScene/
+    Source/Scenes/NonGameScenes/InformationScene/
 
     Source/Settings/
     Source/Settings/GameSetting/

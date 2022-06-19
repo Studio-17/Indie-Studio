@@ -66,7 +66,7 @@ void Scene::MainMenuScene::draw()
 
 void Scene::MainMenuScene::gameScene()
 {
-    _nextScene = Scene::Scenes::START_GAME;
+    _nextScene = Scene::Scenes::INFORMATION;
 }
 
 void Scene::MainMenuScene::settingsScene()
