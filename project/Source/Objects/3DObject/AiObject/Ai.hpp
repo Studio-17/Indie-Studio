@@ -64,6 +64,8 @@ namespace Object {
              * @return false
              */
             bool checkAiIsSafe();
+            bool checkAiIsSafe(std::pair<int, int> newPosAi);
+            bool validDir(PlayerAction action);
 
         protected:
         private:
