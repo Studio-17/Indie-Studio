@@ -120,6 +120,7 @@ namespace Scene {
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players; //!< Map of players
             std::vector<std::size_t> _playerSkin; //!< Vector of player skin
             std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _playersIcons; //!< Vector of players with their skins
+            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _setsIcons; //!< Vector of stars for sets for each player
             std::vector<std::unique_ptr<Object::Text>> _playerParameters; //!< Vector of player with their writed parameters
             float _playerSpeed; //!< Player speed
 
