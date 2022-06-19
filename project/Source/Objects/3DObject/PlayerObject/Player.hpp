@@ -194,20 +194,6 @@ namespace Object {
             void setAlreadyPlacedBombs(bool addBomb);
 
             /**
-             * @brief Get if player is moving
-             *
-             * @return true
-             * @return false
-             */
-            bool getIsMoving() const { return _isMoving; };
-            /**
-             * @brief Set is moving player value
-             *
-             * @param isMoving bool isMoving value
-             */
-            void setIsMoving(bool isMoving);
-
-            /**
              * @brief Get number of sets won
              *
              * @return std::size_t
@@ -247,95 +233,23 @@ namespace Object {
              */
             void reset();
 
-            //AI methods
-            /**
-             * @brief Get the Is Safe object
-             *
-             * @return true
-             * @return false
-             */
-            bool getIsSafe() const;
-            /**
-             * @brief Set the Is Safe object
-             *
-             * @param ifIsSafe
-             */
-            void setIsSafe(bool ifIsSafe);
-            /**
-             * @brief Get the Allow Forbidden Cells object
-             *
-             * @return true
-             * @return false
-             */
-            bool getAllowForbiddenCells() const;
-            /**
-             * @brief Set the Allow Forbidden Cells object
-             *
-             * @param allowForbiddenCells
-             */
-            void setAllowForbiddenCells(bool allowForbiddenCells);
-            /**
-             * @brief Get the Action Move object
-             *
-             * @return int
-             */
-            int getActionMove() const;
-            /**
-             * @brief Set the Action Move object
-             *
-             * @param actionMove
-             */
-            void setActionMove(int actionMove);
-            /**
-             * @brief Get the Ai Possible Directions object
-             *
-             * @return std::vector<PlayerAction>
-             */
-            std::vector<PlayerAction> getAiPossibleDirections() const;
-            /**
-             * @brief Set the Ai Possible Directions object
-             *
-             * @param aiPossibleDirections
-             */
-            void setAiPossibleDirections(std::vector<PlayerAction> aiPossibleDirections);
-            /**
-             * @brief Get the Ai Forbidden Cells object
-             *
-             * @return std::vector<std::pair<int, int>>
-             */
-            std::vector<std::pair<int, int>> getAiForbiddenCells() const;
-            /**
-             * @brief Set the Ai Forbidden Cells object
-             *
-             * @param aiForbiddenCells
-             */
-            void setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells);
-
         private:
-
-            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f}; ///< Default speed of the player
-            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3}; ///< Default range bomb
-            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4}; ///< Default range explosion
-            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3}; ///< Default range of sets
+            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f};
+            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
+            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4};
+            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3};
             std::pair<std::size_t, std::size_t> _defaultKickRange = {1, 3}; ///< Default kick range
 
-            float _speed; ///< Player speed
-            std::size_t _rangeBomb; ///< Bomb range
-            std::size_t _rangeExplosion; ///< Range of explosion
-            std::size_t _kickRange; ///< Kick range
-            std::size_t _setsWon = 0; ///< Number of sets won
+            float _speed;
+            std::size_t _rangeBomb;
+            std::size_t _rangeExplosion;
+            std::size_t _kickRange;
+            std::size_t _setsWon = 0;
 
-            std::size_t _alreadyPlacedBombs; ///< Number of bombes already placed
-            float _scale; ///< Player scale
-            int _life; ///< Player life
-            bool _isAlive = true; ///< Is player alive
-            bool _isMoving = false; ///< is moving
-
-            bool _isSafe = true; ///< is safe
-            bool _allowForbiddenCells = false; ///< allow forbidden cells
-            int _actionMove = 0; ///< action move
-            std::vector<PlayerAction> _aiPossibleDirection; ///< ia possible direction
-            std::vector<std::pair<int, int>> _aiForbiddenCells; ///< ai forbidden cells
+            std::size_t _alreadyPlacedBombs;
+            float _scale;
+            int _life;
+            bool _isAlive = true;
     };
 }
 

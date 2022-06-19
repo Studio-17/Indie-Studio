@@ -49,6 +49,7 @@ file(GLOB SOURCES
     Source/Objects/3DObject/MapObject/Block/*.cpp
     Source/Objects/3DObject/MapObject/Map/*.cpp
     Source/Objects/3DObject/PlayerObject/*.cpp
+    Source/Objects/3DObject/AiObject/*.cpp
 
 
     Source/Scenes/*.cpp
@@ -83,9 +84,15 @@ file(GLOB SOURCES
 
 # specify the sources
 file(GLOB TESTS
+    Tests/Source/Audio/*.cpp
+    Tests/Source/Core/*.cpp
     Tests/Source/Datas/Position/*.cpp
     Tests/Source/Datas/Rendering/*.cpp
     Tests/Source/Errors/*.cpp
+    Tests/Source/Inputs/*.cpp
+    Tests/Source/Objects/*.cpp
+    Tests/Source/Scenes/*.cpp
+    Tests/Source/Settings/*.cpp
     Tests/Source/Tools/*.cpp
 )
 
@@ -126,7 +133,8 @@ include_directories(
     Source/Objects/3DObject/MapObject/
     Source/Objects/3DObject/MapObject/Block/
     Source/Objects/3DObject/MapObject/Map/
-    Source/Objects/3DObject/PlayerObject
+    Source/Objects/3DObject/PlayerObject/
+    Source/Objects/3DObject/AiObject/
 
     Source/Scenes/
     Source/Scenes/GameScenes/
@@ -156,7 +164,6 @@ include_directories(
 
     Source/Tools/
 )
-
 
 option(UNIT_TEST "Run unit tests" OFF) #OFF by default
 if (UNIT_TEST)
