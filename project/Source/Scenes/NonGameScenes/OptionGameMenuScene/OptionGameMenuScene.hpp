@@ -22,17 +22,35 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              */
             OptionGameMenuScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            /**
+             * @brief Destroy the Option Game Menu Scene object
+             */
             ~OptionGameMenuScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
+            /**
+             * @brief handle action
+             */
             void handleAction();
 
         protected:
         private:
+            /**
+             * @brief Enum to define the type of option
+             */
             enum OPTION {
                 NBPLAYERS = 0,
                 NBSETS,

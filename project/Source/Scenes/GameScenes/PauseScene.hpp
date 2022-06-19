@@ -64,8 +64,8 @@ namespace Scene {
 
             bool _shouldPrintExitPopUp; ///< To know if we should display exit popUp
             bool _shouldPrintSettingsPopUp; ///< To know if we should display settings popUp
-            std::function<void(void)> _saveFunction;
-            std::shared_ptr<VolumeSettingsScene> _volumeSettingsScene;
+            std::function<void(void)> _saveFunction; ///< Call back function to save game
+            std::shared_ptr<VolumeSettingsScene> _volumeSettingsScene; ///< Shared pointer of volume settings scene
     };
 }
 

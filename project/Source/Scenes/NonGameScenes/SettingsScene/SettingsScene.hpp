@@ -24,9 +24,20 @@ namespace Scene {
              * @param settings Shared pointer to Settings class
              */
             SettingsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            /**
+             * @brief Destroy the Option Settings Scene object
+             */
             ~SettingsScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
         protected:

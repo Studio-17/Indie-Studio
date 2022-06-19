@@ -22,23 +22,53 @@ namespace Scene {
              *
              * @param settings Shared pointer to Settings class
              * @param gameSettings Shared pointer to Game Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
+             * @param applyGameSettings Callback function to apply game settings
              */
             SelectPlayerScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings);
             /**
              * @brief Destroy the Select Player Scene object
-             * 
              */
             ~SelectPlayerScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
 
         protected:
+            /**
+             * @brief Exit the scene
+             */
             void exitSelectPlayerScene();
+            /**
+             * @brief Run the game
+             */
             void runGame();
+            /**
+             * @brief Change skin player in the previous skin in the skin list
+             *
+             * @param index std::size_t of player index
+             */
             void leftClick(std::size_t index);
+            /**
+             * @brief Change skin player in the next skin in the skin list
+             *
+             * @param index std::size_t of player index
+             */
             void rightClick(std::size_t index);
+            /**
+             * @brief Change the icon that indicates if the player is played by an AI or a human
+             *
+             * @param index std::size_t of player index
+             */
             void SetInfoOfPlayers(std::size_t index);
 
         private:

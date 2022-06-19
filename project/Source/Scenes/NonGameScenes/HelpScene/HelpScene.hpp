@@ -19,7 +19,8 @@ namespace Scene {
             /**
              * @brief Construct a new Help Scene object
              *
-             * @param settings
+             * @param settings Shared pointer to Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              */
             HelpScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
             /**
@@ -28,15 +29,19 @@ namespace Scene {
             ~HelpScene();
 
             /**
-             * @brief handleEvent
-             * @return
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
              */
             Scenes handleEvent() override;
             /**
-             * @brief draw
+             * @brief Draw the scene
              */
             void draw() override;
 
+            /**
+             * @brief return to previous Scene
+             */
             void backScene();
 
         protected:

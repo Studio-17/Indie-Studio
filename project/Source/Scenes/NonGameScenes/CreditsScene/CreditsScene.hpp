@@ -20,11 +20,23 @@ namespace Scene {
              * @brief Construct a new Credits Scene object
              *
              * @param settings Shared pointer to Settings class
+             * @param parallax Vector of unique pointer of Object::Image class
              */
             CreditsScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax);
+            /**
+             * @brief Destroy the Option Credits Scene object
+             */
             ~CreditsScene();
 
+            /**
+             * @brief Handle the event of the scene
+             *
+             * @return Scenes
+             */
             Scenes handleEvent() override;
+            /**
+             * @brief Draw the scene
+             */
             void draw() override;
 
         protected:
