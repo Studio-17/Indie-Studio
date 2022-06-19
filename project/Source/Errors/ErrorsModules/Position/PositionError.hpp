@@ -11,10 +11,25 @@
     #include "Errors.hpp"
 
 namespace Error {
+    /**
+     * @brief PositionError class to handle throw, inherited from Errors
+     *
+     */
     class PositionError : public Errors {
         public:
+            /**
+             * @brief Construct a new Position Error object
+             *
+             * @param message
+             */
             PositionError(std::string const &message) throw();
+
+            /**
+             * @brief Destroy the Position Error object
+             *
+             */
             virtual ~PositionError() throw();
+
         protected:
         private:
     };
