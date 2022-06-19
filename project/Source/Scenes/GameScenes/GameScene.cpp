@@ -132,7 +132,9 @@ void Scene::GameScene::restartSet()
     }
     for (std::size_t i = 0; i < _players.size(); i++) {
         std::string pathToImage = "Conf/Scenes/GameScene/icons/player" + std::to_string(i + 1) + ".json";
+        std::string pathToStars = "Conf/Scenes/GameScene/sets/player" + std::to_string(i + 1) + ".json";
 
+        _setsIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToStars));
         _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
     }
     setCameraView();
@@ -201,6 +203,12 @@ void Scene::GameScene::draw()
             _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
         else
             _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+        for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
+            if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
+                _setsIcons.at(index).second.at(nbSets + 5)->draw();
+            else
+                _setsIcons.at(index).second.at(nbSets)->draw();
+        }
     }
     for (auto &text : _texts)
         text->draw();

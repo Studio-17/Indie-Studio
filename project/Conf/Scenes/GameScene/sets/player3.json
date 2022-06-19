@@ -1,0 +1,52 @@
+{
+    "0-star1": {
+        "texture": "Ressources/icon/star_wico.png",
+        "scale": 0.5,
+        "position": [220, 547, 0]
+    },
+    "1-star2": {
+        "texture": "Ressources/icon/star_wico.png",
+        "scale": 0.5,
+        "position": [250, 547, 0]
+    },
+    "2-star3": {
+        "texture": "Ressources/icon/star_wico.png",
+        "scale": 0.5,
+        "position": [280, 547, 0]
+    },
+    "3-star4": {
+        "texture": "Ressources/icon/star_wico.png",
+        "scale": 0.5,
+        "position": [310, 547, 0]
+    },
+    "4-star5": {
+        "texture": "Ressources/icon/star_wico.png",
+        "scale": 0.5,
+        "position": [340, 547, 0]
+    },
+    "5-star1": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 0.5,
+        "position": [220, 547, 0]
+    },
+    "6-star2": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 0.5,
+        "position": [250, 547, 0]
+    },
+    "7-star3": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 0.5,
+        "position": [280, 547, 0]
+    },
+    "8-star4": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 0.5,
+        "position": [310, 547, 0]
+    },
+    "9-star5": {
+        "texture": "Ressources/icon/star_ico.png",
+        "scale": 0.5,
+        "position": [340, 547, 0]
+    }
+}
