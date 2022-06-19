@@ -23,6 +23,28 @@ Object::Ai::~Ai()
 {
 }
 
+static int escapingTheBomb(int action)
+{
+    int tmp;
+
+    switch (action) {
+        case 0:
+            tmp = 1;
+            break;
+        case 1:
+            tmp = 0;
+            break;
+        case 2:
+            tmp = 3;
+            break;
+        case 3:
+            tmp = 2;
+            break;
+    }
+    return tmp;
+}
+
+
 void Object::Ai::handleEvent(std::map<PlayerAction, bool> &aiAction, std::vector<std::unique_ptr<Object::Bomb>> const &bombs)
 {
     for (auto &[action, isPressed] : aiAction) {
@@ -31,55 +53,37 @@ void Object::Ai::handleEvent(std::map<PlayerAction, bool> &aiAction, std::vector
 
     _forbiddenCells = stockForbiddenCells(bombs);
 
-    if (!checkAiIsSafe())
-        _isSafe = false;
-    else
+    if (checkAiIsSafe())
         _isSafe = true;
+
+    if (_isSafe && !validDir(static_cast<PlayerAction>(_actionMove)))
+        _isMoving = false;
 
     if (!_isMoving) {
         _isMoving = true;
         _possibleDirection = getPossibleDir();
         _actionMove = rand() % _possibleDirection.size();
-    }
-
-    if (!_isSafe) {
-        switch (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition())) {
-            case Object::MAP_OBJECTS::EMPTY:
-                aiAction.at(static_cast<PlayerAction>(_actionMove)) = true;
-                _isMoving = true;
-                break;
-            case Object::MAP_OBJECTS::WALL_SIDE:
-                _isMoving = false;
-                break;
-            case Object::MAP_OBJECTS::WALL_MIDDLE:
-                _isMoving = false;
-                break;
-
-        }
-    }
-    if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
-        aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))) = true;
-        _isMoving = true;
     } else {
-        _isMoving = false;
-        if (_isSafe && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::BOX && _aiPlayer->getAlreadyPlacedBombs() < _aiPlayer->getRangeBomb()) {
-            aiAction.at(PlayerAction::Drop) = true;
-            _isSafe = false;
-            switch (_actionMove) {
-                case 0:
-                    _actionMove = 1;
-                    break;
-                case 1:
-                    _actionMove = 0;
-                    break;
-                case 2:
-                    _actionMove = 3;
-                    break;
-                case 3:
-                    _actionMove = 2;
-                    break;
+        if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
+
+            if (!_isSafe) {
+                aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))) = true;
+                _isMoving = true;
+            } else {
+                if (validDir(static_cast<PlayerAction>(_actionMove))) {
+                    aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))) = true;
+                    _isMoving = true;
+                } else
+                    _isMoving = false;
             }
-            _isMoving = true;
+        } else {
+            _isMoving = false;
+            if (_isSafe && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::BOX   && _aiPlayer->getAlreadyPlacedBombs() < _aiPlayer->getRangeBomb()) {
+                aiAction.at(PlayerAction::Drop) = true;
+                _isSafe = false;
+                _actionMove = escapingTheBomb(_actionMove);
+                _isMoving = true;
+            }
         }
     }
 }
@@ -113,6 +117,18 @@ std::vector<std::pair<int, int>> Object::Ai::stockForbiddenCells(std::vector<std
 
             blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
             aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+
+            for (auto &[x, y] : target) {
+                for (std::size_t bombRangeIndex = 1; bombRangeIndex <= bomb->getRange(); bombRangeIndex++) {
+                    if ((blockPosition.second + y * bombRangeIndex) > 0 && (blockPosition.second + y * bombRangeIndex) < _gameMap->getMapPositionsObjects().size()) {
+                        if ((blockPosition.first + x * bombRangeIndex) > 0 && (blockPosition.first + x * bombRangeIndex) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y * bombRangeIndex).size()) {
+                            blockToPlace = {static_cast<float>((blockPosition.first + x * bombRangeIndex) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y * bombRangeIndex) * _gameMap->getBlockSize())};
+
+                            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+                        }
+                    }
+                }
+            }
         }
     }
     return aiForbiddenCells;
@@ -123,8 +139,29 @@ bool Object::Ai::checkAiIsSafe()
     std::pair<int, int> aiPos = _gameMap->transposeFrom3Dto2D(_aiPlayer->getPosition());
 
     for (auto &cell : _forbiddenCells) {
-        if (cell.first == aiPos.first || cell.second == aiPos.second)
+        if (cell == aiPos)
             return false;
     }
+    return true;
+}
+
+bool Object::Ai::checkAiIsSafe(std::pair<int, int> newPosAi)
+{
+    for (auto &cell : _forbiddenCells) {
+        if (cell == newPosAi)
+            return false;
+    }
+    return true;
+}
+
+bool Object::Ai::validDir(PlayerAction action)
+{
+    Position temppos = _aiPlayer->getPosition();
+
+    temppos += _collisionCondition.at(action);
+    std::pair<int, int> newAiPos = _gameMap->transposeFrom3Dto2D(temppos);
+
+    if (!checkAiIsSafe(newAiPos))
+        return false;
     return true;
 }
