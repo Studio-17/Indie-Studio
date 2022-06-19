@@ -15,18 +15,41 @@
 
 namespace Object {
     namespace Render {
+        /**
+         * @brief Class to handle generic loading of models objects
+         *
+         */
         class MyModel {
             public:
+                /**
+                 * @brief Construct a new My Model object
+                 *
+                 * @param pathToModel
+                 */
                 MyModel(std::string const &pathToModel) { _model = LoadModel(pathToModel.c_str()); };
-                ~MyModel() { /* UnloadModel(_model) */ };
 
+                /**
+                 * @brief Destroy the My Model object
+                 *
+                 */
+                ~MyModel() {};
+
+                /**
+                 * @brief Get the Model object
+                 *
+                 * @return Model
+                 */
                 Model getModel() { return _model; };
 
+                /**
+                 * @brief RAII Unload model
+                 *
+                 */
                 void unload() { UnloadModel(_model); };
 
             protected:
             private:
-                Model _model;
+                Model _model; ///< The model object
         };
     }
 }
