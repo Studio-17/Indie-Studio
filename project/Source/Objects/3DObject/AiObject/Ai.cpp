@@ -27,17 +27,17 @@ static int escapingTheBomb(int action)
 {
     int tmp;
 
-    switch (action) {
-        case 0:
+    switch (static_cast<PlayerAction>(action)) {
+        case PlayerAction::MoveLeft:
             tmp = 1;
             break;
-        case 1:
+        case PlayerAction::MoveRight:
             tmp = 0;
             break;
-        case 2:
+        case PlayerAction::MoveUp:
             tmp = 3;
             break;
-        case 3:
+        case PlayerAction::MoveDown:
             tmp = 2;
             break;
     }
@@ -56,32 +56,32 @@ void Object::Ai::handleEvent(std::map<PlayerAction, bool> &aiAction, std::vector
     if (checkAiIsSafe())
         _isSafe = true;
 
-    if (_isSafe && !validDir(static_cast<PlayerAction>(_actionMove)))
+    if (_isSafe && !validDir(static_cast<PlayerAction>(_playerAction)))
         _isMoving = false;
 
     if (!_isMoving) {
         _isMoving = true;
         _possibleDirection = getPossibleDir();
-        _actionMove = rand() % _possibleDirection.size();
+        _playerAction = rand() % _possibleDirection.size();
     } else {
-        if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
+        if (_gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_playerAction))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::EMPTY) {
 
             if (!_isSafe) {
-                aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))) = true;
+                aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_playerAction))) = true;
                 _isMoving = true;
             } else {
-                if (validDir(static_cast<PlayerAction>(_actionMove))) {
-                    aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))) = true;
+                if (validDir(static_cast<PlayerAction>(_playerAction))) {
+                    aiAction.at(static_cast<PlayerAction>(_possibleDirection.at(_playerAction))) = true;
                     _isMoving = true;
                 } else
                     _isMoving = false;
             }
         } else {
             _isMoving = false;
-            if (_isSafe && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_actionMove))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::BOX   && _aiPlayer->getAlreadyPlacedBombs() < _aiPlayer->getRangeBomb()) {
+            if (_isSafe && _gameMap->isColliding(_collisionCondition.at(static_cast<PlayerAction>(_possibleDirection.at(_playerAction))), _aiPlayer->getPosition()) == Object::MAP_OBJECTS::BOX  && _aiPlayer->getAlreadyPlacedBombs() < _aiPlayer->getRangeBomb()) {
                 aiAction.at(PlayerAction::Drop) = true;
                 _isSafe = false;
-                _actionMove = escapingTheBomb(_actionMove);
+                _playerAction = escapingTheBomb(_playerAction);
                 _isMoving = true;
             }
         }
@@ -112,20 +112,17 @@ std::vector<std::pair<int, int>> Object::Ai::stockForbiddenCells(std::vector<std
     Position blockToPlace;
 
     for (auto &bomb : bombs) {
-        if (bomb->getPlayer() == static_cast<Object::PLAYER_ORDER>(_id)) {
-            std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+        std::pair<int, int> blockPosition = _gameMap->transposeFrom3Dto2D(bomb->getPosition());
+        blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
 
-            blockToPlace = {static_cast<float>(blockPosition.first * _gameMap->getBlockSize()), 0, static_cast<float>(blockPosition.second * _gameMap->getBlockSize())};
-            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
+        aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
 
-            for (auto &[x, y] : target) {
-                for (std::size_t bombRangeIndex = 1; bombRangeIndex <= bomb->getRange(); bombRangeIndex++) {
-                    if ((blockPosition.second + y * bombRangeIndex) > 0 && (blockPosition.second + y * bombRangeIndex) < _gameMap->getMapPositionsObjects().size()) {
-                        if ((blockPosition.first + x * bombRangeIndex) > 0 && (blockPosition.first + x * bombRangeIndex) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y * bombRangeIndex).size()) {
-                            blockToPlace = {static_cast<float>((blockPosition.first + x * bombRangeIndex) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y * bombRangeIndex) * _gameMap->getBlockSize())};
-
-                            aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
-                        }
+        for (auto &[x, y] : target) {
+            for (std::size_t bombRangeIndex = 1; bombRangeIndex <= bomb->getRange(); bombRangeIndex++) {
+                if ((blockPosition.second + y * bombRangeIndex) > 0 && (blockPosition.second + y * bombRangeIndex) < _gameMap->getMapPositionsObjects().size()) {
+                    if ((blockPosition.first + x * bombRangeIndex) > 0 && (blockPosition.first + x * bombRangeIndex) < _gameMap->getMapPositionsObjects().at(blockPosition.second + y * bombRangeIndex).size()) {
+                        blockToPlace = {static_cast<float>((blockPosition.first + x * bombRangeIndex) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second + y * bombRangeIndex) * _gameMap->getBlockSize())};
+                        aiForbiddenCells.emplace_back(_gameMap->transposeFrom3Dto2D(blockToPlace));
                     }
                 }
             }
