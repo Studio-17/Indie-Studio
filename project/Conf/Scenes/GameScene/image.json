@@ -4,22 +4,27 @@
         "scale": 1,
         "position": [830, 0, 0]
     },
-    "1-score-player-1": {
+    "1-set-logo": {
+        "texture": "Ressources/sprites/set.png",
+        "scale": 1,
+        "position": [0, 0, 0]
+    },
+    "2-score-player-1": {
         "texture": "Ressources/sprites/bonus_card_left.png",
         "scale": 1,
         "position": [0, 100, 0]
     },
-    "2-score-player-2": {
+    "3-score-player-2": {
         "texture": "Ressources/sprites/bonus_card_left.png",
         "scale": 1,
         "position": [0, 500, 0]
     },
-    "3-score-player-3": {
+    "4-score-player-3": {
         "texture": "Ressources/sprites/bonus_card_right.png",
         "scale": 1,
         "position": [1500, 110, 0]
     },
-    "4-score-player-4": {
+    "5-score-player-4": {
         "texture": "Ressources/sprites/bonus_card_right.png",
         "scale": 1,
         "position": [1500, 510, 0]

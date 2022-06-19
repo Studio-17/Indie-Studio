@@ -75,6 +75,7 @@ namespace Scene {
 
             void handleExplosions();
             void handleTimer();
+            void handleSets();
 
             void handleCinematicCamera();
         protected:
@@ -84,6 +85,7 @@ namespace Scene {
 
             /* Draw part */
             void drawObjects();
+            void drawUserInterface();
 
             /*              */
             void resumeGame();

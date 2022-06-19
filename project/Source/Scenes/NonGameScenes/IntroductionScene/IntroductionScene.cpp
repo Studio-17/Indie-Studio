@@ -67,4 +67,6 @@ void Scene::IntroductionScene::draw()
         image->draw();
     if (_shouldPrintText)
         _texts.at(0)->draw();
+    for (std::size_t index = 1; index < _texts.size(); index++)
+        _texts.at(index)->draw();
 }
