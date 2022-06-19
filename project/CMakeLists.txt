@@ -83,9 +83,15 @@ file(GLOB SOURCES
 
 # specify the sources
 file(GLOB TESTS
+    Tests/Source/Audio/*.cpp
+    Tests/Source/Core/*.cpp
     Tests/Source/Datas/Position/*.cpp
     Tests/Source/Datas/Rendering/*.cpp
     Tests/Source/Errors/*.cpp
+    Tests/Source/Inputs/*.cpp
+    Tests/Source/Objects/*.cpp
+    Tests/Source/Scenes/*.cpp
+    Tests/Source/Settings/*.cpp
     Tests/Source/Tools/*.cpp
 )
 
