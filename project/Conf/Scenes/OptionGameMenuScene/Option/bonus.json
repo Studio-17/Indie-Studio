@@ -2,7 +2,7 @@
     "1-Yes": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Oui",
+        "text": "Yes",
         "color": [255, 255, 255, 255],
         "fontSize": 40,
         "position": [1100, 730, 0]
@@ -10,7 +10,7 @@
     "2-No": {
         "type": "text",
         "font": "Ressources/fonts/primetime/PRIMETIME.ttf",
-        "text": "Non",
+        "text": "No",
         "color": [255, 255, 255, 255],
         "fontSize": 40,
         "position": [1100, 730, 0]
