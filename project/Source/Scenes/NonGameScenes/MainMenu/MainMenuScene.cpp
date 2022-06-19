@@ -11,7 +11,7 @@
 #include "MainMenuScene.hpp"
 
 Scene::MainMenuScene::MainMenuScene(std::shared_ptr<Settings> settings, std::vector<std::unique_ptr<Object::Image>> &parallax) : AScene(settings),
-    _parallax(parallax), _buttonTexture("Ressources/buttons/button2.png")
+    _parallax(parallax), _buttonTexture("Ressources/buttons/button2.png"), _activeButton(0)
 {
     std::vector<std::function<void(void)>> callBacks = {std::bind(&Scene::MainMenuScene::gameScene, this), std::bind(&Scene::MainMenuScene::settingsScene, this), std::bind(&Scene::MainMenuScene::exitScene, this)};
 
@@ -48,6 +48,7 @@ Scene::Scenes Scene::MainMenuScene::handleEvent()
     }
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
+    handleAction();
     return _nextScene;
 }
 
@@ -61,6 +62,28 @@ void Scene::MainMenuScene::draw()
         text->draw();
     for (auto &button : _buttons)
         button->draw();
+}
+
+void Scene::MainMenuScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+
+    if (tmp.at(Action::Down)) {
+        _activeButton += 1;
+        if (_activeButton >= _buttons.size())
+            _activeButton = 0;
+    } else if (tmp.at(Action::Up)) {
+        if (_activeButton == 0)
+            _activeButton = _buttons.size() - 1;
+        else
+            _activeButton -= 1;
+    } else if (tmp.at(Action::Next))
+        _buttons.at(_activeButton)->click();
+    else if (tmp.at(Action::Previous))
+        exitScene();
+    for (auto &button : _buttons)
+        button->unsetHover();
+    _buttons.at(_activeButton)->setHover();
 }
 
 void Scene::MainMenuScene::gameScene()

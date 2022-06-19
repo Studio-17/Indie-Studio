@@ -41,9 +41,11 @@ namespace Scene {
              * @brief Draw the scene
              */
             void draw() override;
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         protected:
-
         private:
             /**
              * @brief Call back function executed when new game button is pressed to set next scene to new game scene
@@ -62,6 +64,7 @@ namespace Scene {
 
             Object::Render::MyTexture _buttonTexture; ///< Texture of every Button of the Scene
             std::function<void(void)> _updateSaveFiles; ///< Function to update saveFiles to show in select Save Scene
+            std::size_t _activeButton; ///< Index of the active button
     };
 }
 

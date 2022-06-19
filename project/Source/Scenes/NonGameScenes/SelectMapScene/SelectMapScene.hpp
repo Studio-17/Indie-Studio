@@ -51,7 +51,10 @@ namespace Scene {
              * @param percentageDrop percentage of box spwaning in the map
              */
             void generate(std::string const &filename, std::size_t width, std::size_t height, std::size_t percentageDrop);
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         protected:
             /**
              * @brief Exit the scene

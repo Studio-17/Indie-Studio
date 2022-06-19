@@ -231,7 +231,7 @@ void Object::Button::click()
     _state = Click;
     if (_isAudio)
         _audio.play();
-    if (_callBack)
+    if (_callBack && _isClickable)
         _callBack();
 }
 

@@ -124,7 +124,7 @@ Scene::Scenes Scene::SelectSaveScene::handleEvent()
     }
 
     _nextScene = Scene::Scenes::SAVE;
-
+    handleAction();
     for (auto &button : _buttons)
         button->checkHover(GetMousePosition());
     return _nextScene;
@@ -166,6 +166,7 @@ void Scene::SelectSaveScene::updateSaveFiles()
         _texts.at(2)->setText(_savesFilesList.at(_indexListFiles));
         _texts.at(2)->setPosition(440, 560);
         _buttons.at(4)->disable();
+        _buttons.at(4)->disableClick();
         _buttons.at(1)->enable();
         _buttons.at(1)->enableClick();
         _buttons.at(2)->enable();
@@ -174,6 +175,7 @@ void Scene::SelectSaveScene::updateSaveFiles()
         _buttons.at(3)->enableClick();
     } else {
         _buttons.at(4)->enable();
+        _buttons.at(4)->enableClick();
         _texts.at(2)->setText("No save file in Save/Games/Params directory");
         _texts.at(2)->setPosition(150, 560);
         _buttons.at(1)->disable();
@@ -183,4 +185,21 @@ void Scene::SelectSaveScene::updateSaveFiles()
         _buttons.at(3)->disable();
         _buttons.at(3)->disableClick();
     }
+}
+
+void Scene::SelectSaveScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+
+    if (tmp.at(Action::Left))
+        _buttons.at(2)->click();
+    else if (tmp.at(Action::Right))
+        _buttons.at(3)->click();
+    else if (tmp.at(Action::Next)) {
+        if (_buttons.at(1)->isClickable())
+            _buttons.at(1)->click();
+        else
+            _buttons.at(4)->click();
+    } else if (tmp.at(Action::Previous))
+        _buttons.at(0)->click();
 }

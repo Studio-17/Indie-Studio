@@ -241,6 +241,7 @@ Scene::Scenes Scene::SelectMapScene::handleEvent()
             _count = 0;
         }
     }
+    handleAction();
     return _nextScene;
 }
 
@@ -311,4 +312,22 @@ void Scene::SelectMapScene::generate(std::string const &filename, std::size_t wi
     }
     file << std::endl;
     file.close();
+}
+
+void Scene::SelectMapScene::handleAction()
+{
+    std::map<Action, bool> tmp = _settings->getActionPressed();
+
+    if (tmp.at(Action::Up))
+        _buttons.at(2)->click();
+    else if (tmp.at(Action::Down))
+        _buttons.at(3)->click();
+    else if (tmp.at(Action::Left))
+        _buttons.at(4)->click();
+    else if (tmp.at(Action::Right))
+        _buttons.at(5)->click();
+    else if (tmp.at(Action::Next))
+        _buttons.at(1)->click();
+    else if (tmp.at(Action::Previous))
+        _buttons.at(0)->click();
 }

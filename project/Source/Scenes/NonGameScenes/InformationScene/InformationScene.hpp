@@ -47,7 +47,10 @@ namespace Scene {
              * @brief Call back function executed when next button is pressed to set next scene to start game scene
              */
             void startGameScene();
-
+            /**
+             * @brief handle action
+             */
+            void handleAction();
         protected:
         private:
             std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
