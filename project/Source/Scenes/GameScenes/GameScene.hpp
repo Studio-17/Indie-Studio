@@ -31,25 +31,25 @@ namespace Scene {
         public:
             /**
              * @brief Construct a new Game Scene object
-             * 
+             *
              * @param settings 
              * @param gameSettings 
              */
             GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings);
             /**
              * @brief Destroy the Game Scene object
-             * 
              */
             ~GameScene();
             /**
              * @brief Initialize the Game Scene object
-             * 
              */
             void loadSceneAssets();
 
             void applyGameParams();
 
             void restartSet();
+
+            void loadFromSave(nlohmann::json const &jsonData);
 
             Scenes handleEvent() override;
             void draw() override;
@@ -111,6 +111,7 @@ namespace Scene {
             Clock _clockGame; //!< Clock to manage game time
 
             std::size_t _timePerRound; //!< Time per round
+            int _elapsedTime; //!< Elapsed time
 
             std::shared_ptr<Object::Map> _gameMap; //!< Shared pointer to Map class
             std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _mapStatistics; //!< Statistics of the players for the podium
@@ -119,8 +120,8 @@ namespace Scene {
 
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players; //!< Map of players
             std::vector<std::size_t> _playerSkin; //!< Vector of player skin
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _playersIcons; //!< Vector of players with their skins
-            std::vector<std::pair<std::size_t, std::vector<std::unique_ptr<Object::Image>>>> _setsIcons; //!< Vector of stars for sets for each player
+            std::vector<std::vector<std::unique_ptr<Object::Image>>> _playersIcons; //!< Vector of players with their skins
+            std::vector<std::vector<std::unique_ptr<Object::Image>>> _setsIcons; //!< Vector of stars for sets for each player
             std::vector<std::unique_ptr<Object::Text>> _playerParameters; //!< Vector of player with their writed parameters
             float _playerSpeed; //!< Player speed
 
@@ -141,12 +142,6 @@ namespace Scene {
 
             float _margin; //!< Margin
             std::map<PlayerAction, Position> _collisionCondition; //!< Map of collision conditions
-
-            // int _action;
-            // std::vector<PlayerAction> _iaPossibleDirection;
-            // std::vector<std::pair<int, int>> _aiForbiddenCells;
-
-            // std::vector<int, std::vector<std::pair<PlayerAction, std::vector<Position>>>> _aiBombExplosion;
 
             const std::map<PlayerAction, std::pair<Position, Position>> _actionMap; //!< Map of actions
 

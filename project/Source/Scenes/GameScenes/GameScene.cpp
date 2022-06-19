@@ -31,7 +31,8 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _nextScene = Scene::Scenes::GAME;
     _isPaused = false;
     _3dcameraVue = false;
-
+    _elapsedTime = 0;
+    _timePerRound = 1;
     _margin = 5.0;
     _collisionCondition = {
         {PlayerAction::MoveLeft, {-_margin, 0, 0}},
@@ -41,7 +42,6 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
         {PlayerAction::Drop, {0, 0, 0}}
     };
     _timeBeforeBombExplosion = 3;
-    _timePerRound = 3;
 
     _pauseScene = std::make_unique<Scene::PauseScene>(settings, gameSettings, std::vector<std::function<void(void)>>{std::bind(&Scene::GameScene::resumeGame, this), std::bind(&Scene::GameScene::applyGameParams, this), std::bind(&Scene::GameScene::save, this)});
 
@@ -53,8 +53,7 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
 
     _defaultAttributes = {{"bombRange", {1, 3}},
         {"explosionRange", {1, 6}},
-        {"speed", {0.5, 0.8}},
-        {"kickRange", {1, 3}}};
+        {"speed", {0.5, 0.8}}};
 
     for (std::size_t index = 0; index != 4; index++)
         _players.emplace(static_cast<Object::PLAYER_ORDER>(index), std::make_unique<Object::Player>(_models.at(index), _textures.at(index + 1), _animations.at(0), 1, (Position){0, 0, 0}, Object::MAP_OBJECTS::PLAYER));
@@ -118,7 +117,8 @@ void Scene::GameScene::restartSet()
     _gameMap->clearMap();
     _gameMap->process(_gameSettings->getMapPath());
     _mapStatistics.clear();
-    _timePerRound = _gameSettings->getGameTime();
+    _timePerRound = _gameSettings->getTimePerRound();
+    _elapsedTime = _gameSettings->getGameTime();
     _percentageBoxDrop = _gameSettings->getPercentageBoxDrop();
     if (_gameSettings->IsEnabledBonus())
         _percentageBonusDrop = 60;
@@ -129,13 +129,14 @@ void Scene::GameScene::restartSet()
         player->reset();
         player->setPosition(playerPositions.at(static_cast<int>(index)));
         player->setSkin(_textures.at(_playerSkin.at(static_cast<int>(index))));
+        player->setDefaultAttributes(_gameSettings->getDefaultAttributes());
     }
     for (std::size_t i = 0; i < _players.size(); i++) {
         std::string pathToImage = "Conf/Scenes/GameScene/icons/player" + std::to_string(i + 1) + ".json";
         std::string pathToStars = "Conf/Scenes/GameScene/sets/player" + std::to_string(i + 1) + ".json";
 
-        _setsIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToStars));
-        _playersIcons.emplace_back(_playerSkin.at(i), loadObjects<Object::Image>(pathToImage));
+        _setsIcons.emplace_back(loadObjects<Object::Image>(pathToStars));
+        _playersIcons.emplace_back(loadObjects<Object::Image>(pathToImage));
     }
     setCameraView();
     setBombToPause(false);
@@ -147,6 +148,15 @@ void Scene::GameScene::applyGameParams()
     for (auto &[index, player] : _players)
         player->setWon(0);
     _actualSet = 0;
+}
+
+void Scene::GameScene::loadFromSave(nlohmann::json const &jsonData)
+{
+    _gameSettings->loadFromJson(jsonData.at("game-data"));
+    restartSet();
+    for (std::size_t playerIndex = 0; playerIndex != 4; playerIndex++) {
+        _players.at(static_cast<Object::PLAYER_ORDER>(playerIndex))->loadFromJson(jsonData.at("player-" + std::to_string(playerIndex)));
+    }
 }
 
 void Scene::GameScene::handleBonusParameters()
@@ -201,14 +211,14 @@ void Scene::GameScene::draw()
         image->draw();
     for (std::size_t index = 0; index < _players.size(); index++) {
         if (_players.at(static_cast<Object::PLAYER_ORDER>(index))->isAlive())
-            _playersIcons.at(index).second.at(_playerSkin.at(index))->draw();
+            _playersIcons.at(index).at(_playerSkin.at(index))->draw();
         else
-            _playersIcons.at(index).second.at(_playerSkin.at(index) + 8)->draw();
+            _playersIcons.at(index).at(_playerSkin.at(index) + 8)->draw();
         for (std::size_t nbSets = 0; nbSets < _gameSettings->getNbSets(); nbSets++) {
             if (nbSets < _players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon())
-                _setsIcons.at(index).second.at(nbSets + 5)->draw();
+                _setsIcons.at(index).at(nbSets + 5)->draw();
             else
-                _setsIcons.at(index).second.at(nbSets)->draw();
+                _setsIcons.at(index).at(nbSets)->draw();
         }
     }
     for (auto &text : _texts)
@@ -578,7 +588,9 @@ void Scene::GameScene::handleExplosions()
 void Scene::GameScene::handleTimer()
 {
     int time = _clockGame.getElapsedTime() / 1000;
-    int remaningTime = _timePerRound * 60 - time;
+    int remaningTime = _timePerRound * 60 - time - _elapsedTime;
+    std::cout << _elapsedTime << " elapsed" << std::endl;
+    // std::cout << "gime" << _timePerRound <<std::endl;
     int minutes = remaningTime / 60;
     int seconds = remaningTime % 60;
 
@@ -632,9 +644,17 @@ void Scene::GameScene::save()
     if (!fileToWrite.is_open())
         throw Error::FileError("File Save/Games/Params/gameSave" + std::to_string(_settings->getSaveIndex()) + ".json Failed to open");
     _gameMap->save("Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map");
-    gameData["time"] = 0.0;
+    _clockGame.unpause();
+    std::cout <<_timePerRound * 60 - (_clockGame.getElapsedTime() / 1000)<<std::endl;
+    gameData["time"] = _clockGame.getElapsedTime() / 1000;
+    gameData["timePerRound"] = _timePerRound;
     gameData["map"] = "Save/Games/Maps/Savemap" + std::to_string(_settings->getSaveIndex()) + ".map";
+    gameData["mapSize"] = _gameSettings->getMapSize();
+    gameData["playerSkins"] = _gameSettings->getPlayerSkins();
+    gameData["nbPlayers"] = _gameSettings->getNbPlayers();
     gameData["attributes"] = _defaultAttributes;
+    gameData["nbSets"] = _gameSettings->getNbSets();
+    gameData["actualSet"] = _actualSet;
     saveData["game-data"] = gameData;
     for (auto &[playerIndex, player] : _players)
         saveData["player-" + std::to_string(static_cast<int>(playerIndex))] = player->save();

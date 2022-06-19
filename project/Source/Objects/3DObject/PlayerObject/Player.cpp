@@ -15,7 +15,6 @@ Object::Player::Player(std::pair<std::string, std::string> const &pathToRessourc
     _speed = 0.6f;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 
@@ -26,7 +25,6 @@ Object::Player::Player(Object::Render::MyModel &pathToModel, Object::Render::MyT
     _speed = 0.6f;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 
@@ -36,6 +34,18 @@ Object::Player::Player(nlohmann::json const &jsonData) : AThreeDimensionObject(j
 
 Object::Player::~Player()
 {
+}
+
+void Object::Player::loadFromJson(nlohmann::json const &jsonData)
+{
+    _speed = jsonData.value("speed", 1.0);
+    _rangeBomb = jsonData.value("bombRange", 1);
+    _rangeExplosion = jsonData.value("explosionRange", 1);
+    _setsWon = jsonData.value("setsWon", 0);
+    _position.setFromArray(jsonData.value("position", std::array<float, 3>({0, 0, 0})));
+    _alreadyPlacedBombs = jsonData.value("alreadyPlacedBombs", 0);
+    _isAlive = jsonData.value("isAlive", true);
+    _isMoving = false;
 }
 
 void Object::Player::animation(std::size_t animNb)
@@ -131,8 +141,9 @@ nlohmann::json Object::Player::save()
     saveData["speed"] = _speed;
     saveData["bombRange"] = _rangeBomb;
     saveData["explosionRange"] = _rangeExplosion;
-    saveData["kickRange"] = _kickRange;
     saveData["isAlive"] = _isAlive;
+    saveData["setsWon"] = _setsWon;
+    saveData["alreadyPlacedBombs"] = _alreadyPlacedBombs;
     return saveData;
 }
 
@@ -142,13 +153,19 @@ void Object::Player::setSkin(Object::Render::MyTexture &texture)
     SetMaterialTexture(&_model.materials[0], MATERIAL_MAP_DIFFUSE, _texture);
 }
 
+void Object::Player::setDefaultAttributes(std::map<std::string, std::pair<float, float>> defaultAttributes)
+{
+    _defaultSpeed = defaultAttributes.at("speed");
+    std::pair<std::size_t, std::size_t> _defaultRangeBomb =  {static_cast<std::size_t>(defaultAttributes.at("bombRange").first), static_cast<std::size_t>(defaultAttributes.at("bombRange").second)};
+    std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {static_cast<std::size_t>(defaultAttributes.at("explosionRange").first), static_cast<std::size_t>(defaultAttributes.at("explosionRange").second)};
+}
+
 void Object::Player::reset()
 {
     _isAlive = true;
     _speed = _defaultSpeed.first;
     _rangeBomb = _defaultRangeBomb.first;
     _rangeExplosion = _defaultRangeExplosion.first;
-    _kickRange = _defaultKickRange.first;
     _alreadyPlacedBombs = 0;
 }
 

@@ -61,6 +61,7 @@ namespace Object {
              */
             ~Player() override;
 
+            void loadFromJson(nlohmann::json const &jsonData);
             /**
              * @brief draw a three dimensional player object
              *
@@ -128,18 +129,6 @@ namespace Object {
              * @param defaultRangeExplosion
              */
             void setDefaultRangeExplosion(std::pair<std::size_t, std::size_t> const &defaultRangeExplosion) { _defaultRangeExplosion = defaultRangeExplosion; };
-            /**
-             * @brief Get the default kick range
-             *
-             * @return std::size_t
-             */
-            std::pair<std::size_t, std::size_t> getDefaultKickRange() const { return _defaultKickRange; };
-            /**
-             * @brief Set the Default Kick Range object
-             *
-             * @param defaultKickRange
-             */
-            void setDefaultKickRange(std::pair<std::size_t, std::size_t> const &defaultKickRange) { _defaultKickRange = defaultKickRange; };
 
             /**
              * @brief Get player speed
@@ -217,19 +206,6 @@ namespace Object {
 
 
             /**
-             * @brief Get the Kick Range object
-             *
-             * @return std::size_t kickRange value
-             */
-            std::size_t getKickRange() const { return _kickRange; };
-            /**
-             * @brief Set the Kick Range object
-             *
-             * @param kickRange size_t kickRange value
-             */
-            void setKickRange(std::size_t kickRange) { _kickRange = kickRange; };
-
-            /**
              * @brief Save player data in JSON file
              *
              * @return nlohmann::json
@@ -242,6 +218,13 @@ namespace Object {
              * @param texture
              */
             void setSkin(Object::Render::MyTexture &texture);
+
+            /**
+             * @brief Set the Default Attributes
+             *
+             * @param defaultAttributes map of string corresponding of default attributes name and pair of float with the min and max
+             */
+            void setDefaultAttributes(std::map<std::string, std::pair<float, float>> defaultAttributes);
             /**
              * @brief Reset player data
              */
@@ -316,18 +299,14 @@ namespace Object {
             std::pair<float, float> _defaultSpeed = {0.5f, 0.8f}; ///< Default speed of the player
             std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3}; ///< Default range bomb
             std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4}; ///< Default range explosion
-            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3}; ///< Default range of sets
-            std::pair<std::size_t, std::size_t> _defaultKickRange = {1, 3}; ///< Default kick range
 
             float _speed; ///< Player speed
             std::size_t _rangeBomb; ///< Bomb range
             std::size_t _rangeExplosion; ///< Range of explosion
-            std::size_t _kickRange; ///< Kick range
             std::size_t _setsWon = 0; ///< Number of sets won
 
             std::size_t _alreadyPlacedBombs; ///< Number of bombes already placed
             float _scale; ///< Player scale
-            int _life; ///< Player life
             bool _isAlive = true; ///< Is player alive
             bool _isMoving = false; ///< is moving
 
