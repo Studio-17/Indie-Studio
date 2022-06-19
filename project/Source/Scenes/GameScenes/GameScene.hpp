@@ -75,7 +75,16 @@ namespace Scene {
 
             void handleExplosions();
             void handleTimer();
+            /**
+             * @brief print the actual set of the game
+             * 
+             */
             void handleSets();
+            /**
+             * @brief print the winner at the end of every set;
+             * 
+             */
+            void handleEndSet(std::size_t winner);
 
             void handleCinematicCamera();
         protected:
@@ -99,12 +108,14 @@ namespace Scene {
 
             std::shared_ptr<GameSettings> _gameSettings; //!< Shared pointer to Game Settings class
 
-            std::vector<std::unique_ptr<Object::Image>> _backgroundImage; //!< Vector of unique pointer to Image class
+            std::vector<std::unique_ptr<Object::Image>> _backgroundImage; //!< Background image of the game
+            std::vector<std::unique_ptr<Object::Text>> _endingGameText; //!< Text of the ending game
 
             bool _3dcameraVue; //!< Boolean to know if 3d camera is enabled or not
 
-            Clock _clockGame; //!< Clock to manage game time
-            Clock _clockcamera; //!< Clock to manage the cinematic camera time
+            Clock _gameClock; //!< Clock to manage game time
+            Clock _cameraClock; //!< Clock to manage the cinematic camera time
+            Clock _endSetClock; //!< Clock to manage the end of the set time
 
             std::size_t _timePerRound; //!< Time per round
 
@@ -112,6 +123,7 @@ namespace Scene {
             std::vector<std::pair<std::size_t, Object::PLAYER_ORDER>> _mapStatistics; //!< Statistics of the players for the podium
 
             bool _endGame; //!< Boolean to know if game is ended or not
+            bool _endSet; //!< Boolean to know if set is ended or not
 
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Player>> _players; //!< Map of players
             std::map<Object::PLAYER_ORDER, std::shared_ptr<Object::Ai>> _ai;

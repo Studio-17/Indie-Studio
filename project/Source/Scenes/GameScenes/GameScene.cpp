@@ -26,12 +26,15 @@ Scene::GameScene::GameScene(std::shared_ptr<Settings> settings, std::shared_ptr<
     _texts = loadObjects<Object::Text>("Conf/Scenes/GameScene/text.json");
     _buttons = loadObjects<Object::Button>("Conf/Scenes/GameScene/button.json");
     _playerParameters = loadObjects<Object::Text>("Conf/Scenes/GameScene/parameters.json");
+    _endingGameText = loadObjects<Object::Text>("Conf/Scenes/GameScene/endingGameText.json");
     _buttons.at(0)->setCallBack(std::bind(&Scene::GameScene::changeCameraView, this));
 
     _nextScene = Scene::Scenes::GAME;
     _cinematicCamera = true;
     _isPaused = true;
     _3dcameraVue = false;
+    _endSet = false;
+    _endingGameText.at(0)->disable();
 
     _margin = 5.0;
     _collisionCondition = {
@@ -111,12 +114,14 @@ void Scene::GameScene::restartSet()
     std::vector<Position> playerPositions;
 
     _ai.clear();
+    _endSet = false;
+    _endingGameText.at(0)->disable();
     for (std::size_t player = _gameSettings->getNbPlayers(); player < 4; player++)
         _ai.emplace(static_cast<Object::PLAYER_ORDER>(player), std::make_shared<Object::Ai>(static_cast<Object::PLAYER_ORDER>(player), _players.at(static_cast<Object::PLAYER_ORDER>(player)), _gameMap));
     _3dcameraVue = false;
     _nextScene = Scene::Scenes::GAME;
-    _clockcamera.start();
-    _clockGame.reset();
+    _cameraClock.start();
+    _gameClock.reset();
     _explosions.clear();
     _isPaused = true;
     _actualSet += 1;
@@ -161,7 +166,7 @@ void Scene::GameScene::applyGameParams()
 
 void Scene::GameScene::handleCinematicCamera()
 {
-    long long int timer = _clockcamera.getElapsedTime();
+    long long int timer = _cameraClock.getElapsedTime();
 
     if (_settings->getCamera()->getCamera().position.y < (_gameSettings->getMapSize().first * 5) * 4) {
         _settings->getCamera()->setPosition({(_gameSettings->getMapSize().first * _gameMap->getBlockSize()) / 2, static_cast<float>(timer / 10), ((_gameSettings->getMapSize().second * _gameMap->getBlockSize()) / 2) + 1});
@@ -241,17 +246,11 @@ void Scene::GameScene::handleWin()
         playerIndex++;
     }
     if (nbPlayersAlive == 1) {
-        _players.at(static_cast<Object::PLAYER_ORDER>(alivePlayerIndex))->setWon(1);
-        for (std::size_t index = 0; index < _players.size(); index++)
-            _mapStatistics.push_back({_players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon(), static_cast<Object::PLAYER_ORDER>(index)});
-        _settings->stopMusic(MusicsEnum::Game);
-        _settings->playMusic(MusicsEnum::EndGame);
-        _gameSettings->setPlayersRank(_mapStatistics);
-        restartSet();
-    }
-    for (auto &[index, player] : _players) {
-        if (player->getSetsWon() == _gameSettings->getNbSets())
-            _nextScene = Scene::Scenes::END_GAME;
+        handleEndSet(alivePlayerIndex);
+        for (auto &[index, player] : _players) {
+            if (player->getSetsWon() == _gameSettings->getNbSets())
+                _nextScene = Scene::Scenes::END_GAME;
+        }
     }
 }
 
@@ -359,7 +358,7 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
     std::size_t index = 0;
 
     _settings->playSound(SoundsEnum::BombExplosion);
-    placeExplosions(_clockGame.getElapsedTime(), position);
+    placeExplosions(_gameClock.getElapsedTime(), position);
     _gameMap->placeObjectInMap<Object::Block>(blockPosition, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), position, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
     checkIfPlayerIsInRange(blockPosition);
 
@@ -373,13 +372,13 @@ void Scene::GameScene::exploseBomb(Position const &position, int radius)
                     blockToPlace = {static_cast<float>((blockPosition.first +  (x * bombRange)) * _gameMap->getBlockSize()), 0, static_cast<float>((blockPosition.second +(y * bombRange)) * _gameMap->getBlockSize())};
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::BOX && !alreadyDestroyed.at(index)) {
                         _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
-                        placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
+                        placeExplosions(_gameClock.getElapsedTime(), blockToPlace);
                         alreadyDestroyed.at(index) = true;
                         placeBonus({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, _percentageBonusDrop);
                     }
                     if (_gameMap->getMapPositionsObjects().at(blockPosition.second + (y * bombRange)).at(blockPosition.first + (x * bombRange))->getType() == Object::MAP_OBJECTS::EMPTY && !alreadyDestroyed.at(index)) {
                         _gameMap->placeObjectInMap<Object::Block>({blockPosition.first + (x * bombRange), blockPosition.second + (y * bombRange)}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(9), _gameMap->getMapTextures().at(13), blockToPlace, Object::MAP_OBJECTS::EXPLOSION, _gameMap->getBlockSize()));
-                        placeExplosions(_clockGame.getElapsedTime(), blockToPlace);
+                        placeExplosions(_gameClock.getElapsedTime(), blockToPlace);
                     }
                     if (!alreadyDestroyed.at(index))
                         checkIfPlayerIsInRange(_gameMap->transposeFrom3Dto2D(blockToPlace));
@@ -393,7 +392,7 @@ void Scene::GameScene::placeExplosions(float time, Position position)
 {
     std::pair<int, int> tempPos = _gameMap->transposeFrom3Dto2D(position);
     _explosions.try_emplace(tempPos.first, std::map<int, float>());
-    _explosions.at(tempPos.first).try_emplace(tempPos.second, _clockGame.getElapsedTime());
+    _explosions.at(tempPos.first).try_emplace(tempPos.second, _gameClock.getElapsedTime());
 }
 
 void Scene::GameScene::checkIfPlayerIsInRange(std::pair<int, int> const &explosionPos)
@@ -439,12 +438,12 @@ void Scene::GameScene::handlePause()
     std::map<Action, bool> tmp = _settings->getActionPressed();
     if (tmp.at(Action::Previous)) {
         _isPaused = !_isPaused;
-        if (_clockGame.isPaused()) {
-            _clockGame.unpause();
+        if (_gameClock.isPaused()) {
+            _gameClock.unpause();
             setBombToPause(false);
         }
         else {
-            _clockGame.pause();
+            _gameClock.pause();
             setBombToPause(true);
         }
     }
@@ -463,11 +462,34 @@ void Scene::GameScene::handleExplosions()
     for (auto &[col, explosions]: _explosions) {
         for (auto &[line, timer] : explosions) {
             float newTimer = timer + timeBeforeExplosion;
-            if (newTimer <= static_cast<float>(_clockGame.getElapsedTime())) {
+            if (newTimer <= static_cast<float>(_gameClock.getElapsedTime())) {
                 _gameMap->placeObjectInMap<Object::Block>({col, line}, std::make_shared<Object::Block>(_gameMap->getMapModels().at(8), _gameMap->getMapTextures().at(12), (Position){static_cast<float>(col * 10), 0, static_cast<float>(line * 10)}, Object::MAP_OBJECTS::EMPTY, 0.1));
                 _explosions.at(col).erase(line);
             }
         }
+    }
+}
+
+void Scene::GameScene::handleEndSet(std::size_t winner)
+{
+    long long int timer = 0;
+
+    if (_endSet) {
+        _endSetClock.start();
+        while (timer < 3000) {
+            timer = _endSetClock.getElapsedTime();
+        }
+        restartSet();
+    } else {
+        _players.at(static_cast<Object::PLAYER_ORDER>( winner))->setWon(1);
+        for (std::size_t index = 0; index < _players.size(); index++)
+            _mapStatistics.push_back({_players.at(static_cast<Object::PLAYER_ORDER>(index))->getSetsWon(), static_cast<Object::PLAYER_ORDER>(index)});
+        _gameSettings->setPlayersRank(_mapStatistics);
+        _settings->stopMusic(MusicsEnum::Game);
+        _settings->playMusic(MusicsEnum::EndGame);
+        _endingGameText.at(0)->setText(std::to_string(winner + 1) + "J Wins!");
+        _endingGameText.at(0)->enable();
+        _endSet = true;
     }
 }
 
@@ -478,7 +500,7 @@ void Scene::GameScene::handleSets()
 
 void Scene::GameScene::handleTimer()
 {
-    int time = _clockGame.getElapsedTime() / 1000;
+    int time = _gameClock.getElapsedTime() / 1000;
     int remaningTime = _timePerRound * 60 - time;
     int minutes = remaningTime / 60;
     int seconds = remaningTime % 60;
@@ -531,6 +553,8 @@ void Scene::GameScene::drawUserInterface()
         _buttons.at(0)->draw();
     if (_isPaused && !_cinematicCamera)
         _pauseScene->draw();
+    if (_endSet)
+        _endingGameText.at(0)->draw();
 }
 
 void Scene::GameScene::drawObjects()
@@ -547,7 +571,7 @@ void Scene::GameScene::drawObjects()
 
 void Scene::GameScene::resumeGame()
 {
-    _clockGame.unpause();
+    _gameClock.unpause();
     setBombToPause(false);
     _isPaused = false;
 }
