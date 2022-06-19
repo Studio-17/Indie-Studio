@@ -22,8 +22,7 @@ void Scene::SelectSaveScene::exitSelectSaveScene()
 
 void Scene::SelectSaveScene::runGame()
 {
-    _gameSettings->loadFromJson(getJsonData(_directory + "/" + _savesFilesList.at(_indexListFiles) + ".json"));
-    _applyGameSettings();
+    _applyGameSettings(getJsonData(_directory + "/" + _savesFilesList.at(_indexListFiles) + ".json"));
     _nextScene = Scenes::GAME;
 }
 
@@ -81,7 +80,7 @@ std::vector<std::string> Scene::SelectSaveScene::getFilesListFromDirectory(std::
     return files;
 }
 
-Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
+Scene::SelectSaveScene::SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(nlohmann::json const &)> applyGameSettings) : AScene(settings), _gameSettings(gameSettings),
     _parallax(parallax), _applyGameSettings(applyGameSettings)
 {
     std::vector<std::function<void(void)>> callBacks =

@@ -30,7 +30,7 @@ namespace Scene {
              * @param parallax Vector of unique pointer of Object::Image class
              * @param applyGameSettings Callback function to apply game settings
              */
-            SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(void)> applyGameSettings);
+            SelectSaveScene(std::shared_ptr<Settings> settings, std::shared_ptr<GameSettings> gameSettings, std::vector<std::unique_ptr<Object::Image>> &parallax, std::function<void(nlohmann::json const &)> applyGameSettings);
             /**
              * @brief Destroy the Select Save Scene object
              */
@@ -97,7 +97,8 @@ namespace Scene {
             std::vector<std::unique_ptr<Object::Image>> &_parallax; ///< Vector of every Images of the parallax
             std::vector<std::string> _savesFilesList; ///< Vector of every saves files list
             int _indexListFiles; ///< Integer representing the index of the list of files
-            std::function<void(void)> _applyGameSettings; ///< Function to apply the game settings
+            // std::function<void(std::string const &)> _applyGameSettings; ///< Function to apply the game settings
+            std::function<void(nlohmann::json const &)> _applyGameSettings; ///< Function to apply the game settings
             std::string _directory; ///< String representing the directory of the saves files
     };
 }
