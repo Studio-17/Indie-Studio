@@ -42,15 +42,55 @@ namespace Object
              */
             ~Map();
 
+            /**
+             * @brief draw a three dimensional map object
+             */
             void draw();
 
+            /**
+             * @brief Enable drawing an object
+             *
+             */
             void enable() override { _isEnable = true; };
+            /**
+             * @brief Disable drawing an object
+             *
+             */
             void disable() override { _isEnable = false; };
+            /**
+             * @brief Check if an object is enabled
+             *
+             * @return true
+             * @return false
+             */
             bool isEnable() const override { return _isEnable; };
 
+            /**
+             * @brief Set the Position object
+             *
+             * @param position
+             */
             void setPosition(Position const &position) override { _mapPosition = position; };
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             */
             void setPosition(float x, float y) override { _mapPosition.setX(x); _mapPosition.setY(y); };
+            /**
+             * @brief Set the Position object
+             *
+             * @param x
+             * @param y
+             * @param z
+             */
             void setPosition(float x, float y, float z) override { _mapPosition = {x, y ,z}; };
+            /**
+             * @brief Get the Position object
+             *
+             * @return Position
+             */
             Position getPosition() const override { return _mapPosition; };
 
             /**
@@ -167,9 +207,9 @@ namespace Object
              * @brief Save map in file
              */
             void save(std::string const &mapPath);
+
         protected:
         private:
-
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _mapPositionsObjects; ///< map positions objects
             std::vector<std::vector<std::shared_ptr<AThreeDimensionObject>>> _groundMap; ///< ground map objects
 

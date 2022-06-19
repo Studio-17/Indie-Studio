@@ -61,6 +61,10 @@ namespace Object {
              */
             ~Player() override;
 
+            /**
+             * @brief draw a three dimensional player object
+             *
+             */
             void draw() override;
             /**
              * @brief Player Animation
@@ -96,8 +100,8 @@ namespace Object {
             std::pair<float, float> getDefaultSpeed() const { return _defaultSpeed; };
             /**
              * @brief Set the Default Speed object
-             * 
-             * @param defaultSpeed 
+             *
+             * @param defaultSpeed
              */
             void setDefaultSpeed(std::pair<float, float> const &defaultSpeed) { _defaultSpeed = defaultSpeed; };
             /**
@@ -108,8 +112,8 @@ namespace Object {
             std::pair<std::size_t, std::size_t> getDefaultRangeBomb() const { return _defaultRangeBomb; };
             /**
              * @brief Set the Default Range Bomb object
-             * 
-             * @param defaultRangeBomb 
+             *
+             * @param defaultRangeBomb
              */
             void setDefaultRangeBomb(std::pair<std::size_t, std::size_t> const &defaultRangeBomb) { _defaultRangeBomb = defaultRangeBomb; };
             /**
@@ -120,8 +124,8 @@ namespace Object {
             std::pair<std::size_t, std::size_t> getDefaultRangeExplosion() const { return _defaultRangeExplosion; };
             /**
              * @brief Set the Default Range Explosion object
-             * 
-             * @param defaultRangeExplosion 
+             *
+             * @param defaultRangeExplosion
              */
             void setDefaultRangeExplosion(std::pair<std::size_t, std::size_t> const &defaultRangeExplosion) { _defaultRangeExplosion = defaultRangeExplosion; };
             /**
@@ -132,8 +136,8 @@ namespace Object {
             std::pair<std::size_t, std::size_t> getDefaultKickRange() const { return _defaultKickRange; };
             /**
              * @brief Set the Default Kick Range object
-             * 
-             * @param defaultKickRange 
+             *
+             * @param defaultKickRange
              */
             void setDefaultKickRange(std::pair<std::size_t, std::size_t> const &defaultKickRange) { _defaultKickRange = defaultKickRange; };
 
@@ -232,39 +236,99 @@ namespace Object {
              */
             nlohmann::json save();
 
+            /**
+             * @brief Set the Skin object
+             *
+             * @param texture
+             */
             void setSkin(Object::Render::MyTexture &texture);
+            /**
+             * @brief Reset player data
+             */
             void reset();
 
             //AI methods
+            /**
+             * @brief Get the Is Safe object
+             *
+             * @return true
+             * @return false
+             */
             bool getIsSafe() const;
+            /**
+             * @brief Set the Is Safe object
+             *
+             * @param ifIsSafe
+             */
             void setIsSafe(bool ifIsSafe);
+            /**
+             * @brief Get the Allow Forbidden Cells object
+             *
+             * @return true
+             * @return false
+             */
             bool getAllowForbiddenCells() const;
+            /**
+             * @brief Set the Allow Forbidden Cells object
+             *
+             * @param allowForbiddenCells
+             */
             void setAllowForbiddenCells(bool allowForbiddenCells);
+            /**
+             * @brief Get the Action Move object
+             *
+             * @return int
+             */
             int getActionMove() const;
+            /**
+             * @brief Set the Action Move object
+             *
+             * @param actionMove
+             */
             void setActionMove(int actionMove);
+            /**
+             * @brief Get the Ai Possible Directions object
+             *
+             * @return std::vector<PlayerAction>
+             */
             std::vector<PlayerAction> getAiPossibleDirections() const;
+            /**
+             * @brief Set the Ai Possible Directions object
+             *
+             * @param aiPossibleDirections
+             */
             void setAiPossibleDirections(std::vector<PlayerAction> aiPossibleDirections);
+            /**
+             * @brief Get the Ai Forbidden Cells object
+             *
+             * @return std::vector<std::pair<int, int>>
+             */
             std::vector<std::pair<int, int>> getAiForbiddenCells() const;
+            /**
+             * @brief Set the Ai Forbidden Cells object
+             *
+             * @param aiForbiddenCells
+             */
             void setAiForbiddenCells(std::vector<std::pair<int, int>> aiForbiddenCells);
 
         private:
 
-            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f};
-            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3};
-            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4};
-            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3};
-            std::pair<std::size_t, std::size_t> _defaultKickRange = {1, 3};
+            std::pair<float, float> _defaultSpeed = {0.5f, 0.8f}; ///< Default speed of the player
+            std::pair<std::size_t, std::size_t> _defaultRangeBomb = {1, 3}; ///< Default range bomb
+            std::pair<std::size_t, std::size_t> _defaultRangeExplosion = {1, 4}; ///< Default range explosion
+            std::pair<std::size_t, std::size_t> _defaultRangeSets = {1, 3}; ///< Default range of sets
+            std::pair<std::size_t, std::size_t> _defaultKickRange = {1, 3}; ///< Default kick range
 
-            float _speed;
-            std::size_t _rangeBomb;
-            std::size_t _rangeExplosion;
-            std::size_t _kickRange;
-            std::size_t _setsWon = 0;
+            float _speed; ///< Player speed
+            std::size_t _rangeBomb; ///< Bomb range
+            std::size_t _rangeExplosion; ///< Range of explosion
+            std::size_t _kickRange; ///< Kick range
+            std::size_t _setsWon = 0; ///< Number of sets won
 
-            std::size_t _alreadyPlacedBombs;
-            float _scale;
-            int _life;
-            bool _isAlive = true;
+            std::size_t _alreadyPlacedBombs; ///< Number of bombes already placed
+            float _scale; ///< Player scale
+            int _life; ///< Player life
+            bool _isAlive = true; ///< Is player alive
             bool _isMoving = false; ///< is moving
 
             bool _isSafe = true; ///< is safe

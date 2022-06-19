@@ -25,86 +25,230 @@ namespace RayLib
     class Window
     {
         public:
+            /**
+             * @brief Construct a new Window object
+             *
+             * @param width
+             * @param height
+             * @param title
+             */
             Window(float width, float height, std::string const &title);
+            /**
+             * @brief Construct a new Window object
+             *
+             * @param size
+             * @param title
+             */
             Window(std::pair<float, float> const &size, std::string const &title);
+
+            /**
+             * @brief Destroy the Window object
+             *
+             */
             ~Window();
 
-            // Window-related functions
             /**
              * @brief Check if KEY_ESCAPE pressed or Close icon pressed
-             * 
-             * @return true 
-             * @return false 
+             *
+             * @return true
+             * @return false
              */
-            bool windowShouldClose() const;                                       // Check if KEY_ESCAPE pressed or Close icon pressed
+            bool windowShouldClose() const;
 
             /**
              * @brief Check if window has been initialized successfully
-             * 
-             * @return true 
-             * @return false 
+             *
+             * @return true
+             * @return false
              */
-            bool isWindowReady() const;                                           // Check if window has been initialized successfully
+            bool isWindowReady() const;
 
+            /**
+             * @brief Begin drawing 2D plan
+             *
+             */
             void startDrawing(void) const;
+            /**
+             * @brief End drawing 2D plan
+             *
+             */
             void endDrawing(void) const;
+            /**
+             * @brief Refresh backgournd with a constant color
+             *
+             * @param color
+             */
             void clearBackground(Color color) const;
 
             /**
              * @brief Check if window is currently fullscreen
-             * 
+             *
              * @return true if window is fullscreen
              * @return false if window is not fullscreen
              */
-            bool isWindowFullscreen() const;                                      // Check if window is currently fullscreen
+            bool isWindowFullscreen() const;
             /**
              * @brief Check if window is currently hidden (only PLATFORM_DESKTOP)
-             * 
+             *
              * @return true if window is hidden
              * @return false if window is not hidden
              */
-            bool isWindowHidden() const;                                          // Check if window is currently hidden (only PLATFORM_DESKTOP)
+            bool isWindowHidden() const;
             /**
              * @brief Check if window is currently minimized (only PLATFORM_DESKTOP)
-             * 
+             *
              * @return true if window is minimized
              * @return false if window is not minimized
              */
-            bool isWindowMinimized() const;                                       // Check if window is currently minimized (only PLATFORM_DESKTOP)
-            bool isWindowMaximized() const;                                       // Check if window is currently maximized (only PLATFORM_DESKTOP)
-            bool isWindowFocused() const;                                         // Check if window is currently focused (only PLATFORM_DESKTOP)
+            bool isWindowMinimized() const;
+            /**
+             * @brief Check if window is currently maximized (only PLATFORM_DESKTOP)
+             *
+             * @return true if window is maximized
+             * @return false if window is not maximized
+             */
+            bool isWindowMaximized() const;
+            /**
+             * @brief Check if window is currently focused (only PLATFORM_DESKTOP)
+             *
+             * @return true if window is focused
+             * @return false if window is not focused
+             */
+            bool isWindowFocused() const;
 
-            bool isWindowState(unsigned int flag) const;                              // Check if one specific window flag is enabled
-            void setWindowState(unsigned int flags);                            // Set window configuration state using flags
-            void clearWindowState(unsigned int flags);                          // Clear window configuration state flags
+            /**
+             * @brief Check if one specific window flag is enabled
+             *
+             * @return true
+             * @return false
+             */
+            bool isWindowState(unsigned int flag) const;
+            /**
+             * @brief Set window configuration state using flags
+             *
+             * @return true
+             * @return false
+             */
+            void setWindowState(unsigned int flags);
+            /**
+             * @brief Clear window configuration state flags
+             *
+             * @return true
+             * @return false
+             */
+            void clearWindowState(unsigned int flags);
 
-            void toggleFullscreen();                                        // Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+            /**
+             * @brief Toggle window state: fullscreen/windowed (only PLATFORM_DESKTOP)
+             *
+             */
+            void toggleFullscreen();
 
-            void setWindowIcon(Image const &image);                             // Set icon for window (only PLATFORM_DESKTOP)
-            void setWindowTitle(std::string const &title);                      // Set title for window (only PLATFORM_DESKTOP)
-            void setWindowMinSize(int width, int height);                       // Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
-            void setWindowSize(int width, int height);                          // Set window dimensions
+            /**
+             * @brief Set icon for window (only PLATFORM_DESKTOP)
+             *
+             * @param image
+             */
+            void setWindowIcon(Image const &image);
+            /**
+             * @brief Set title for window (only PLATFORM_DESKTOP)
+             *
+             * @param title
+             */
+            void setWindowTitle(std::string const &title);
+            /**
+             * @brief Set window minimum dimensions (for FLAG_WINDOW_RESIZABLE)
+             *
+             * @param width
+             * @param height
+             */
+            void setWindowMinSize(int width, int height);
+            /**
+             * @brief Set window dimensions
+             *
+             * @param width
+             * @param height
+             */
+            void setWindowSize(int width, int height);
 
-            int getScreenWidth() const;                                           // Get current screen width
-            int getScreenHeight() const;                                          // Get current screen height
+            /**
+             * @brief Get current screen width
+             *
+             * @return int
+             */
+            int getScreenWidth() const;
+            /**
+             * @brief Get current screen height
+             *
+             * @return int
+             */
+            int getScreenHeight() const;
 
-            // Cursor-related functions
-            void showCursor();                                              // Shows cursor
-            void hideCursor();                                              // Hides cursor
-            bool isCursorHidden() const;                                          // Check if cursor is not visible
+            /**
+             * @brief Shows cursor
+             *
+             */
+            void showCursor();
+            /**
+             * @brief Hides cursor
+             *
+             */
+            void hideCursor();
+            /**
+             * @brief Check if cursor is not visible
+             *
+             * @return true
+             * @return false
+             */
+            bool isCursorHidden() const;
 
-            void enableCursor();                                            // Enables cursor (unlock cursor)
-            void disableCursor();                                           // Disables cursor (lock cursor)
+            /**
+             * @brief Enables cursor (unlock cursor)
+             *
+             */
+            void enableCursor();
+            /**
+             * @brief Disables cursor (lock cursor)
+             *
+             */
+            void disableCursor();
 
-            bool isCursorOnScreen() const;                                        // Check if cursor is on the screen
+            /**
+             * @brief Check if cursor is enabled
+             *
+             * @return true
+             * @return false
+             */
+            bool isCursorOnScreen() const;
 
-            // Timing-related functions
-            void setTargetFPS(int fps);                                         // Set target FPS (maximum)
-            int getFPS() const;                                                   // Get current FPS
+            /**
+             * @brief Set target FPS (maximum)
+             *
+             * @param x
+             * @param y
+             */
+            void setTargetFPS(int fps);
+            /**
+             * @brief Get current FPS
+             *
+             * @return int
+             */
+            int getFPS() const;
 
-            float getFrameTime() const;                                           // Get time in seconds for last frame drawn (delta time)
+            /**
+             * @brief Get time in seconds for last frame drawn (delta time)
+             *
+             * @param x
+             * @param y
+             */
+            float getFrameTime() const;
 
-            double getTime() const;                                               // Get elapsed time in seconds since InitWindow()
+            /**
+             * @brief Get elapsed time in seconds since InitWindow()
+             *
+             * @return double
+             */
+            double getTime() const;
 
         protected:
         private:

@@ -34,6 +34,9 @@ namespace Object
              */
             ~Bomb() override;
 
+            /**
+             * @brief draw a tree dimensional object
+             */
             void draw() override;
 
             /**

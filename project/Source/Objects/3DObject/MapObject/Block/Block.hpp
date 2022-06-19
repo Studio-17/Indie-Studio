@@ -42,8 +42,15 @@ namespace Object
              * @param scale scale of block
              */
             Block(Object::Render::MyModel pathToModel, Object::Render::MyTexture pathToTexture, Position const &position, Object::MAP_OBJECTS type, float scale);
+            /**
+             * @brief Destroy the Block object
+             *
+             */
             ~Block() override;
 
+            /**
+             * @brief draw a three dimensional block object
+             */
             void draw() override;
 
             /**

@@ -10,10 +10,27 @@
 
     #include "Errors.hpp"
 namespace Error {
+    /**
+     * @brief FileError class to handle throw, inherited from Errors
+     *
+     */
     class FileError : public Errors {
         public:
+            /**
+             * @brief Construct a new File Error object
+             *
+             * @param message
+             */
             FileError(std::string const &message) throw();
+
+            /**
+             * @brief Destroy the File Error object
+             *
+             */
             virtual ~FileError() throw();
+
+        protected:
+        private:
     };
 }
 

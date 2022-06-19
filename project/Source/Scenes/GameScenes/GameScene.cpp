@@ -147,6 +147,8 @@ void Scene::GameScene::restartSet()
 
 void Scene::GameScene::applyGameParams()
 {
+    _settings->stopMusic(MusicsEnum::Game);
+    _settings->playMusic(MusicsEnum::Game);
     restartSet();
     for (auto &[index, player] : _players)
         player->setWon(0);
