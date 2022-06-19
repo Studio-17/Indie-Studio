@@ -75,7 +75,7 @@ void Object::Map::process(std::string const &pathToFile)
         {MAP_OBJECTS::GROUND, 0.5f},
         {MAP_OBJECTS::WALL_SIDE, 0.5f},
         {MAP_OBJECTS::BOX, 0.5f},
-        {MAP_OBJECTS::EMPTY, 0.1f},
+        {MAP_OBJECTS::EMPTY, 0.000001f},
         {MAP_OBJECTS::EXPLOSION, 10.0f}
     };
 
