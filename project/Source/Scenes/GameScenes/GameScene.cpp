@@ -496,6 +496,7 @@ void Scene::GameScene::handleEndSet(std::size_t winner)
     long long int timer = 0;
 
     if (_endSet) {
+        _settings->playMusic(MusicsEnum::Game);
         _endSetClock.start();
         while (timer < 3000) {
             timer = _endSetClock.getElapsedTime();
