@@ -1,9 +1,6 @@
-## Indie Studio
+# Indie Studio
 
-Epitech Project
-
-![CI Epitech Project - Indie Studio](https://github.com/MyEpitech/B-YEP-400-PAR-4-1-indiestudio-martin.vanaud/actions/workflows/main.yml/badge.svg?branch=master)
-#
+## $\color{green}{Grade: A}$
 
 > Setup
 ```
