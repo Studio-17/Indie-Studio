@@ -47,7 +47,7 @@ These are the features we implemented:
   - map selection menu
   - loading map/game menu
   - game mode selection menu
-  - bind keys menu
+  - bind keys menu (**all the players can play with controllers**)
   - volume menu
   - framerate menu
   - credits menu
