@@ -23,7 +23,11 @@ We used the [Raylib](https://www.raylib.com) library to create the game, which i
 
 ### Mini view of all the menus and the gameplay
 
+<div align="center">
+
 ![schema](./Ressources/sprites/schema.png)
+
+</div>
 
 ### Gameplay
 
