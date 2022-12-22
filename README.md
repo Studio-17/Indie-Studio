@@ -8,8 +8,11 @@
 
 > A more detailed video is available [here](https://www.youtube.com/watch?v=_IWi5skP5Hg)
 
-![gameplay](./Ressources/sprites/game.gif)
+<div align="center">
 
+![gameplay](./Ressources/sprites/game.gif)
+  
+</div>
 
 [Bomberman](https://en.wikipedia.org/wiki/Bomberman) is a well known game, where the player embodies a bomber, the goal being to explode the opponents/enemies to win.
 
