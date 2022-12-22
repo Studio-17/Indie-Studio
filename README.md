@@ -92,3 +92,12 @@ $ cmake -DUNIT_TEST=ON ..
 
 $ ./build/unit_tests
 ```
+
+### Project realised by:
+
+- **[@Clément F.](https://github.com/Clement-Fernandes)**
+- **[@Gurvan L.](https://github.com/Gurvan-Le-Letty)**
+- **[@Martin V.](https://github.com/martinvanaud)**
+- **[@Victor P.](https://github.com/victorpalle)**
+- **[@Maxime C.](https://github.com/maxime-carabina)**
+- **[@Valentin D.](https://github.com/ValentinDurieux)**
