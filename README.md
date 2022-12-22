@@ -1,4 +1,4 @@
-# Indie Studio
+# Indie Studio (Bomberman) :bomb:
 
 ## $\color{green}{Grade: A}$
 
